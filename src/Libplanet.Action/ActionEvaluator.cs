@@ -666,7 +666,7 @@ namespace Libplanet.Action
                             ? evaluation.InputContext.PreviousState.Trie.Hash
                             : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
-                        isBlockAction: evaluation.InputContext.IsPolicyAction),
+                        isPolicyAction: evaluation.InputContext.IsPolicyAction),
                     outputState: evaluation.OutputState.Trie.Recorded
                         ? evaluation.OutputState.Trie.Hash
                         : throw new ArgumentException("Trie is not recorded"),

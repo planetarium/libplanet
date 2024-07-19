@@ -17,7 +17,7 @@ namespace Libplanet.Action
                 blockProtocolVersion: context.BlockProtocolVersion,
                 previousState: context.PreviousState.Trie.Hash,
                 randomSeed: context.RandomSeed,
-                isBlockAction: context.IsPolicyAction)
+                isPolicyAction: context.IsPolicyAction)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Libplanet.Action
             int blockProtocolVersion,
             HashDigest<SHA256> previousState,
             int randomSeed,
-            bool isBlockAction)
+            bool isPolicyAction)
         {
             Signer = signer;
             TxId = txId;
@@ -38,7 +38,7 @@ namespace Libplanet.Action
             BlockProtocolVersion = blockProtocolVersion;
             PreviousState = previousState;
             RandomSeed = randomSeed;
-            IsBlockAction = isBlockAction;
+            IsPolicyAction = isPolicyAction;
         }
 
         /// <inheritdoc cref="ICommittedActionContext.Signer"/>
@@ -68,9 +68,9 @@ namespace Libplanet.Action
         /// <inheritdoc cref="ICommittedActionContext.RandomSeed"/>
         public int RandomSeed { get; }
 
-        /// <inheritdoc cref="ICommittedActionContext.IsBlockAction"/>
+        /// <inheritdoc cref="ICommittedActionContext.IsPolicyAction"/>
         [Pure]
-        public bool IsBlockAction { get; }
+        public bool IsPolicyAction { get; }
 
         /// <inheritdoc cref="ICommittedActionContext.GetRandom"/>
         [Pure]

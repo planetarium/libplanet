@@ -193,7 +193,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
@@ -333,7 +333,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.IsType<UnexpectedlyTerminatedActionException>(
@@ -1319,7 +1319,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
@@ -1389,7 +1389,7 @@ namespace Libplanet.Tests.Action
                 block,
                 chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
@@ -1460,7 +1460,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.IsBlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);

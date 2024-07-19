@@ -69,11 +69,11 @@ namespace Libplanet.Action
         int RandomSeed { get; }
 
         /// <summary>
-        /// Whether this action is executed as a block action.
+        /// Whether this action is executed as a policy action.
         /// <see langword="false"/> if it belongs to a transaction.
         /// </summary>
         [Pure]
-        bool IsBlockAction { get; }
+        bool IsPolicyAction { get; }
 
         /// <summary>
         /// Returns a newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
