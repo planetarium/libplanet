@@ -17,7 +17,7 @@ namespace Libplanet.Action
                 blockProtocolVersion: context.BlockProtocolVersion,
                 previousState: context.PreviousState.Trie.Hash,
                 randomSeed: context.RandomSeed,
-                isBlockAction: context.IsBlockAction)
+                isBlockAction: context.IsPolicyAction)
         {
         }
 

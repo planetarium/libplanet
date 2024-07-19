@@ -26,7 +26,7 @@ To be released.
     `PolicyActionsRegistry` parameter instead of the
     `policyBlockActionGetter` parameter.  [[#3701], [#3748]]
  -  (Libplanet.Action) Renamed `IActionContext.BlockAction` property to
-    `IActionContext.IsBlockAction`.  [[#3764]]
+    `IActionContext.IsPolicyAction`.  [[#3764]]
 
 ### Backward-incompatible network protocol changes
 
