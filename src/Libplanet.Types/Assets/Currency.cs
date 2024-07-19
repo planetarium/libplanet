@@ -49,46 +49,11 @@ namespace Libplanet.Types.Assets
     /// </remarks>
     /// <seealso cref="FungibleAssetValue"/>
     [Serializable]
-    public readonly struct Currency : IEquatable<Currency>, ISerializable
+    public sealed class Currency : IEquatable<Currency>, ISerializable
     {
-        /// <summary>
-        /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
-        /// </summary>
-        [JsonInclude]
-        public readonly string Ticker;
-
-        /// <summary>
-        /// The number of digits to treat as <a
-        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
-        /// units (i.e., exponent)</a>.
-        /// </summary>
-        [JsonInclude]
-        public readonly byte DecimalPlaces;
-
-        /// <summary>
-        /// The <see cref="Address"/>es who can mint the currency.
-        /// If this is <see langword="null"/> <em>anyone</em> can mint the currency.
-        /// </summary>
-        /// <remarks>
-        /// Unlike <see langword="null"/>, an empty set means <em>no one</em> can mint the currency.
-        /// </remarks>
-        /// <seealso cref="Libplanet.Action.State.IAccount.MintAsset"/>
-        [JsonInclude]
-        public readonly IImmutableSet<Address>? Minters;
-
-        /// <summary>
-        /// The deterministic hash derived from other fields.
-        /// </summary>
-        [JsonInclude]
-        public readonly HashDigest<SHA1> Hash;
-
-        /// <summary>
-        /// Whether the total supply of this instance of <see cref="Currency"/> is trackable.
-        /// </summary>
-        [JsonInclude]
-        public readonly bool TotalSupplyTrackable;
-
         private readonly (BigInteger Major, BigInteger Minor)? _maximumSupply;
+
+        private HashDigest<SHA1>? _hash;
 
         /// <summary>
         /// Deserializes a <see cref="Currency"/> type from a Bencodex value.
@@ -242,8 +207,6 @@ namespace Libplanet.Types.Assets
             {
                 Minters = null;
             }
-
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -285,8 +248,6 @@ namespace Libplanet.Types.Assets
                       $"  maximumSupply: {MaximumSupply?.ToString() ?? "N/A"}";
                 throw new JsonException(msg);
             }
-
-            Hash = hash;
         }
 
         private Currency(SerializationInfo info, StreamingContext context)
@@ -349,8 +310,6 @@ namespace Libplanet.Types.Assets
                     throw new ArgumentException(msg, nameof(minor));
                 }
             }
-
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -377,28 +336,8 @@ namespace Libplanet.Types.Assets
             byte decimalPlaces,
             (BigInteger Major, BigInteger Minor)? maximumSupply,
             IImmutableSet<Address>? minters)
-            : this(ticker, decimalPlaces, minters, true)
+            : this(ticker, decimalPlaces, maximumSupply, minters, true)
         {
-            if (maximumSupply is var (major, minor))
-            {
-                if (major < 0 || minor < 0)
-                {
-                    var msg = $"Both the major ({major}) and minor ({minor}) units of"
-                              + $" {nameof(maximumSupply)} must not be a negative number.";
-                    throw new ArgumentException(msg, nameof(maximumSupply));
-                }
-
-                if (minor > 0 && Math.Floor(BigInteger.Log10(minor)) >= decimalPlaces)
-                {
-                    var msg = $"The given minor unit {minor} of the maximum supply value is too"
-                              + $" big for the given decimal places {decimalPlaces}.";
-                    throw new ArgumentException(msg, nameof(minor));
-                }
-
-                _maximumSupply = maximumSupply;
-            }
-
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -418,11 +357,28 @@ namespace Libplanet.Types.Assets
         private Currency(
             string ticker,
             byte decimalPlaces,
+            (BigInteger Major, BigInteger Minor)? maximumSupply,
             IImmutableSet<Address>? minters,
             bool totalSupplyTrackable)
         {
-            ticker = ticker.Trim();
+            if (maximumSupply is var (major, minor))
+            {
+                if (major < 0 || minor < 0)
+                {
+                    var msg = $"Both the major ({major}) and minor ({minor}) units of"
+                              + $" {nameof(maximumSupply)} must not be a negative number.";
+                    throw new ArgumentException(msg, nameof(maximumSupply));
+                }
 
+                if (minor > 0 && Math.Floor(BigInteger.Log10(minor)) >= decimalPlaces)
+                {
+                    var msg = $"The given minor unit {minor} of the maximum supply value is too"
+                              + $" big for the given decimal places {decimalPlaces}.";
+                    throw new ArgumentException(msg, nameof(minor));
+                }
+            }
+
+            ticker = ticker.Trim();
             if (string.IsNullOrEmpty(ticker))
             {
                 throw new ArgumentException(
@@ -434,10 +390,47 @@ namespace Libplanet.Types.Assets
             Ticker = ticker;
             Minters = minters;
             DecimalPlaces = decimalPlaces;
-            _maximumSupply = null;
+            _maximumSupply = maximumSupply;
             TotalSupplyTrackable = totalSupplyTrackable;
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
+
+        /// <summary>
+        /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
+        /// </summary>
+        [JsonInclude]
+        public string Ticker { get; }
+
+        /// <summary>
+        /// The number of digits to treat as <a
+        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
+        /// units (i.e., exponent)</a>.
+        /// </summary>
+        [JsonInclude]
+        public byte DecimalPlaces { get; }
+
+        /// <summary>
+        /// The <see cref="Address"/>es who can mint the currency.
+        /// If this is <see langword="null"/> <em>anyone</em> can mint the currency.
+        /// </summary>
+        /// <remarks>
+        /// Unlike <see langword="null"/>, an empty set means <em>no one</em> can mint the currency.
+        /// </remarks>
+        /// <seealso cref="Libplanet.Action.State.IAccount.MintAsset"/>
+        [JsonInclude]
+        public IImmutableSet<Address>? Minters { get; }
+
+        /// <summary>
+        /// The deterministic hash derived from other fields.
+        /// </summary>
+        [JsonInclude]
+        public HashDigest<SHA1> Hash => _hash ??=
+            GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
+
+        /// <summary>
+        /// Whether the total supply of this instance of <see cref="Currency"/> is trackable.
+        /// </summary>
+        [JsonInclude]
+        public bool TotalSupplyTrackable { get; }
 
         /// <summary>
         /// The uppermost quantity of currency allowed to exist.
@@ -557,7 +550,7 @@ namespace Libplanet.Types.Assets
             string ticker,
             byte decimalPlaces,
             IImmutableSet<Address>? minters) =>
-            new Currency(ticker, decimalPlaces, minters, true);
+            new Currency(ticker, decimalPlaces, null, minters, true);
 
         /// <summary>
         /// Define a <see cref="Currency"/> without a maximum supply limit.
@@ -601,7 +594,7 @@ namespace Libplanet.Types.Assets
             string ticker,
             byte decimalPlaces,
             IImmutableSet<Address>? minters) =>
-            new Currency(ticker, decimalPlaces, minters, false);
+            new Currency(ticker, decimalPlaces, null, minters, false);
 
         /// <summary>
         /// <b>OBSOLETE! DO NOT USE.</b><br/><br/>(unless you are upgrading your project from an old
@@ -678,8 +671,8 @@ namespace Libplanet.Types.Assets
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
-        public bool Equals(Currency other) =>
-            Hash.Equals(other.Hash);
+        public bool Equals(Currency? other) =>
+            other is Currency currency && Hash.Equals(currency.Hash);
 
         /// <summary>
         /// Serializes the currency into a Bencodex value.
