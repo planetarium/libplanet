@@ -6,6 +6,7 @@ using System.Net;
 using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
+using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
@@ -48,7 +49,8 @@ namespace Libplanet.Net.Tests
         public static readonly ValidatorSet ValidatorSet = Libplanet.Tests.TestUtils.ValidatorSet;
 
         public static readonly IBlockPolicy Policy = new BlockPolicy(
-            blockAction: new MinerReward(1),
+            beginBlockActions: ImmutableArray<IAction>.Empty,
+            endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
             getMaxTransactionsBytes: _ => 50 * 1024);
 
         public static readonly IActionLoader ActionLoader = new SingleActionLoader(
@@ -97,7 +99,9 @@ namespace Libplanet.Net.Tests
         {
             policy ??= Policy;
             actionLoader ??= ActionLoader;
-            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var fx = new MemoryStoreFixture(
+                beginBlockActions: policy.BeginBlockActions,
+                endBlockActions: policy.EndBlockActions);
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 policy,
                 fx.Store,
@@ -340,7 +344,7 @@ namespace Libplanet.Net.Tests
             validatorPeers ??= Peers;
 
             var apvOption = new AppProtocolVersionOptions
-                { AppProtocolVersion = AppProtocolVersion };
+            { AppProtocolVersion = AppProtocolVersion };
             var hostOption = new HostOptions(host, Array.Empty<IceServer>(), consensusPort);
             var consensusTransport = NetMQTransport.Create(
                 key,

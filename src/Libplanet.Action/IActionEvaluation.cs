@@ -8,7 +8,7 @@ namespace Libplanet.Action
     {
         /// <summary>
         /// An action data to evaluate. When the
-        /// <see cref="InputContext"/>.<see cref="IActionContext.BlockAction"/> is true,
+        /// <see cref="InputContext"/>.<see cref="IActionContext.IsPolicyAction"/> is true,
         /// use <see cref="IBlockPolicy.BlockAction"/> instead of trying deserialization.
         /// </summary>
         public IValue Action { get; }

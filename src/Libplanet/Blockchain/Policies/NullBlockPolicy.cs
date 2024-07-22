@@ -1,6 +1,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
@@ -20,7 +21,13 @@ namespace Libplanet.Blockchain.Policies
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
 
-        public IAction BlockAction => null;
+        public ImmutableArray<IAction> BeginBlockActions => ImmutableArray<IAction>.Empty;
+
+        public ImmutableArray<IAction> EndBlockActions => ImmutableArray<IAction>.Empty;
+
+        public ImmutableArray<IAction> BeginTxActions => ImmutableArray<IAction>.Empty;
+
+        public ImmutableArray<IAction> EndTxActions => ImmutableArray<IAction>.Empty;
 
         public int GetMinTransactionsPerBlock(long index) => 0;
 

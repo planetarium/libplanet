@@ -53,6 +53,7 @@ namespace Libplanet.Action.Tests.Sys
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,
                 randomSeed: 123,
+                isPolicyAction: false,
                 gasLimit: 0);
             var initialize = new Initialize(
                 states: _states,
@@ -82,6 +83,7 @@ namespace Libplanet.Action.Tests.Sys
                 blockProtocolVersion: Block.CurrentProtocolVersion,
                 previousState: prevState,
                 randomSeed: 123,
+                isPolicyAction: false,
                 gasLimit: long.MaxValue);
             var initialize = new Initialize(
                 states: _states,

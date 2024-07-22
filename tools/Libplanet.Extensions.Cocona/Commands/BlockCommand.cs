@@ -156,6 +156,18 @@ public class BlockCommand
                 }.Select(x => x.PlainValue)))
             .ToImmutableList();
 
+        var beginBlockActions = blockPolicyParams.GetBeginBlockActions();
+        var endBlockActions = blockPolicyParams.GetEndBlockActions();
+        var beginTxActions = blockPolicyParams.GetBeginTxActions();
+        var endTxActions = blockPolicyParams.GetEndTxActions();
+        var actionEvaluator = new ActionEvaluator(
+            new PolicyActionsRegistry(
+                _ => beginBlockActions,
+                _ => endBlockActions,
+                _ => beginTxActions,
+                _ => endTxActions),
+            new TrieStateStore(new DefaultKeyValueStore(null)),
+            new SingleActionLoader(typeof(NullAction)));
         Block genesis = BlockChain.ProposeGenesisBlock(
             privateKey: key, transactions: txs);
         using Stream stream = file == "-"

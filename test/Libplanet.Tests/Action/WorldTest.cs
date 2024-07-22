@@ -143,6 +143,7 @@ namespace Libplanet.Tests.Action
                 ProtocolVersion,
                 world,
                 0,
+                false,
                 0);
         }
 

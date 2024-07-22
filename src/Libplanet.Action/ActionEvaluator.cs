@@ -24,27 +24,29 @@ namespace Libplanet.Action
     public class ActionEvaluator : IActionEvaluator
     {
         private readonly ILogger _logger;
-        private readonly PolicyBlockActionGetter _policyBlockActionGetter;
+        private readonly PolicyActionsRegistry _policyActionsRegistry;
         private readonly IStateStore _stateStore;
         private readonly IActionLoader _actionLoader;
 
         /// <summary>
         /// Creates a new <see cref="ActionEvaluator"/>.
         /// </summary>
-        /// <param name="policyBlockActionGetter">A delegator to get policy block action to evaluate
-        /// at the end for each <see cref="IPreEvaluationBlock"/> that gets evaluated.</param>
+        /// <param name="policyActionsRegistry">
+        /// A <see cref="PolicyActionsRegistry"/> containing delegators
+        /// to get policy actions to evaluate at each situation.
+        /// </param>
         /// <param name="stateStore">The <see cref="IStateStore"/> to use to retrieve
         /// the states for a provided <see cref="HashDigest{SHA256}"/>.</param>
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
-            PolicyBlockActionGetter policyBlockActionGetter,
+            PolicyActionsRegistry policyActionsRegistry,
             IStateStore stateStore,
             IActionLoader actionTypeLoader)
         {
             _logger = Log.ForContext<ActionEvaluator>()
                 .ForContext("Source", nameof(ActionEvaluator));
-            _policyBlockActionGetter = policyBlockActionGetter;
+            _policyActionsRegistry = policyActionsRegistry;
             _stateStore = stateStore;
             _actionLoader = actionTypeLoader;
         }
@@ -121,16 +123,30 @@ namespace Libplanet.Action
                 IWorld previousState = _stateStore.GetWorld(baseStateRootHash);
                 previousState = _stateStore.MigrateWorld(previousState, block.ProtocolVersion);
 
-                ImmutableList<ActionEvaluation> evaluations =
-                    EvaluateBlock(block, previousState).ToImmutableList();
+                var evaluations = ImmutableList<ActionEvaluation>.Empty;
+                if (_policyActionsRegistry.BeginBlockActionsGetter(block) is
+                        { } beginBlockActions &&
+                    beginBlockActions.Length > 0)
+                {
+                    evaluations = evaluations.AddRange(EvaluatePolicyBeginBlockActions(
+                        block, previousState
+                    ));
+                    previousState = evaluations.Last().OutputState;
+                }
 
-                var policyBlockAction = _policyBlockActionGetter(block);
-                if (policyBlockAction is { } blockAction)
+                evaluations = evaluations.AddRange(
+                    EvaluateBlock(block, previousState).ToImmutableList()
+                );
+
+                if (_policyActionsRegistry.EndBlockActionsGetter(block) is { } endBlockActions &&
+                    endBlockActions.Length > 0)
                 {
                     previousState = evaluations.Count > 0
                         ? evaluations.Last().OutputState
                         : previousState;
-                    evaluations = evaluations.Add(EvaluatePolicyBlockAction(block, previousState));
+                    evaluations = evaluations.AddRange(EvaluatePolicyEndBlockActions(
+                        block, previousState
+                    ));
                 }
 
                 var committed = ToCommittedEvaluation(block, evaluations, baseStateRootHash);
@@ -176,6 +192,8 @@ namespace Libplanet.Action
         /// being executed.</param>
         /// <param name="actions">Actions to evaluate.</param>
         /// <param name="stateStore">An <see cref="IStateStore"/> to use.</param>
+        /// <param name="isPolicyAction">
+        /// Flag indicates that whether the action is a policy action.</param>
         /// <param name="logger">An optional logger.</param>
         /// <returns>An enumeration of <see cref="ActionEvaluation"/>s for each
         /// <see cref="IAction"/> in <paramref name="actions"/>.
@@ -187,6 +205,7 @@ namespace Libplanet.Action
             IWorld previousState,
             IImmutableList<IAction> actions,
             IStateStore stateStore,
+            bool isPolicyAction,
             ILogger? logger = null)
         {
             IActionContext CreateActionContext(
@@ -202,6 +221,7 @@ namespace Libplanet.Action
                     blockProtocolVersion: block.ProtocolVersion,
                     txs: block.Transactions,
                     previousState: prevState,
+                    isPolicyAction: isPolicyAction,
                     randomSeed: randomSeed,
                     gasLimit: actionGasLimit,
                     evidence: block.Evidence);
@@ -223,6 +243,7 @@ namespace Libplanet.Action
                     context,
                     action,
                     stateStore,
+                    isPolicyAction,
                     logger);
 
                 yield return result.Evaluation;
@@ -243,6 +264,7 @@ namespace Libplanet.Action
             IActionContext context,
             IAction action,
             IStateStore stateStore,
+            bool isPolicyAction,
             ILogger? logger = null)
         {
             if (!context.PreviousState.Trie.Recorded)
@@ -265,10 +287,11 @@ namespace Libplanet.Action
                     miner: inputContext.Miner,
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
-                    txs: inputContext.Txs,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
+                    isPolicyAction: isPolicyAction,
                     gasLimit: inputContext.GasLimit(),
+                    txs: inputContext.Txs,
                     evidence: inputContext.Evidence);
             }
 
@@ -459,53 +482,163 @@ namespace Libplanet.Action
             ITransaction tx,
             IWorld previousState)
         {
+            var evaluations = ImmutableList<ActionEvaluation>.Empty;
+            if (_policyActionsRegistry.BeginTxActionsGetter(block) is
+                    { } beginTxActions &&
+                beginTxActions.Length > 0)
+            {
+                evaluations = evaluations.AddRange(
+                    EvaluatePolicyBeginTxActions(block, tx, previousState));
+                previousState = evaluations.Last().OutputState;
+            }
+
             ImmutableList<IAction> actions =
                 ImmutableList.CreateRange(LoadActions(block.Index, tx));
-            return EvaluateActions(
+            evaluations = evaluations.AddRange(EvaluateActions(
                 block: block,
                 tx: tx,
                 previousState: previousState,
                 actions: actions,
                 stateStore: _stateStore,
-                logger: _logger);
+                isPolicyAction: false,
+                logger: _logger));
+
+            if (_policyActionsRegistry.EndTxActionsGetter(block) is
+                    { } endTxActions &&
+                endTxActions.Length > 0)
+            {
+                previousState = evaluations.Count > 0
+                    ? evaluations.Last().OutputState
+                    : previousState;
+                evaluations = evaluations.AddRange(
+                    EvaluatePolicyEndTxActions(block, tx, previousState));
+            }
+
+            return evaluations;
         }
 
         /// <summary>
-        /// Evaluates the <see cref="IBlockPolicy.BlockAction"/> set by the policy when
+        /// Evaluates the <see cref="IBlockPolicy.BeginBlockActions"/> set by the policy when
         /// this <see cref="ActionEvaluator"/> was instantiated for a given
         /// <see cref="IPreEvaluationBlockHeader"/>.
         /// </summary>
         /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
         /// <param name="previousState">The states immediately before the evaluation of
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// the <see cref="IBlockPolicy.BeginBlockActions"/> held by the instance.</param>
         /// <returns>The <see cref="ActionEvaluation"/> of evaluating
-        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// the <see cref="IBlockPolicy.BeginBlockActions"/> held by the instance
         /// for the <paramref name="block"/>.</returns>
         [Pure]
-        internal ActionEvaluation EvaluatePolicyBlockAction(
+        internal ActionEvaluation[] EvaluatePolicyBeginBlockActions(
             IPreEvaluationBlock block,
             IWorld previousState)
         {
-            var policyBlockAction = _policyBlockActionGetter(block);
-            if (policyBlockAction is null)
-            {
-                var message =
-                    "To evaluate policy block action, " +
-                    "policyBlockAction must not be null.";
-                throw new InvalidOperationException(message);
-            }
-
             _logger.Information(
-                $"Evaluating policy block action for block #{block.Index} " +
+                $"Evaluating policy begin block actions for block #{block.Index} " +
                 $"{ByteUtil.Hex(block.PreEvaluationHash.ByteArray)}");
 
             return EvaluateActions(
                 block: block,
                 tx: null,
                 previousState: previousState,
-                actions: new[] { policyBlockAction }.ToImmutableList(),
+                actions: _policyActionsRegistry.BeginBlockActionsGetter(block),
                 stateStore: _stateStore,
-                logger: _logger).Single();
+                isPolicyAction: true,
+                logger: _logger).ToArray();
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IBlockPolicy.EndBlockActions"/> set by the policy when
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
+        /// <see cref="IPreEvaluationBlockHeader"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
+        /// <param name="previousState">The states immediately before the evaluation of
+        /// the <see cref="IBlockPolicy.EndBlockActions"/> held by the instance.</param>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// the <see cref="IBlockPolicy.EndBlockActions"/> held by the instance
+        /// for the <paramref name="block"/>.</returns>
+        [Pure]
+        internal ActionEvaluation[] EvaluatePolicyEndBlockActions(
+            IPreEvaluationBlock block,
+            IWorld previousState)
+        {
+            _logger.Information(
+                $"Evaluating policy end block actions for block #{block.Index} " +
+                $"{ByteUtil.Hex(block.PreEvaluationHash.ByteArray)}");
+
+            return EvaluateActions(
+                block: block,
+                tx: null,
+                previousState: previousState,
+                actions: _policyActionsRegistry.EndBlockActionsGetter(block),
+                stateStore: _stateStore,
+                isPolicyAction: true,
+                logger: _logger).ToArray();
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IBlockPolicy.BeginTxActions"/> set by the policy when
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
+        /// <see cref="IPreEvaluationBlockHeader"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
+        /// <param name="transaction">The transaction that the tx action belongs to.</param>
+        /// <param name="previousState">The states immediately before the evaluation of
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// for the <paramref name="block"/>.</returns>
+        [Pure]
+        internal ActionEvaluation[] EvaluatePolicyBeginTxActions(
+            IPreEvaluationBlock block,
+            ITransaction transaction,
+            IWorld previousState)
+        {
+            _logger.Information(
+                $"Evaluating policy begin tx actions for block #{block.Index} " +
+                $"{ByteUtil.Hex(block.PreEvaluationHash.ByteArray)}");
+
+            return EvaluateActions(
+                block: block,
+                tx: transaction,
+                previousState: previousState,
+                actions: _policyActionsRegistry.BeginTxActionsGetter(block),
+                stateStore: _stateStore,
+                isPolicyAction: true,
+                logger: _logger).ToArray();
+        }
+
+        /// <summary>
+        /// Evaluates the <see cref="IBlockPolicy.BeginTxActions"/> set by the policy when
+        /// this <see cref="ActionEvaluator"/> was instantiated for a given
+        /// <see cref="IPreEvaluationBlockHeader"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="IPreEvaluationBlock"/> to evaluate.</param>
+        /// <param name="transaction">The transaction that the tx action belongs to.</param>
+        /// <param name="previousState">The states immediately before the evaluation of
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance.</param>
+        /// <returns>The <see cref="ActionEvaluation"/> of evaluating
+        /// the <see cref="IBlockPolicy.BlockAction"/> held by the instance
+        /// for the <paramref name="block"/>.</returns>
+        [Pure]
+        internal ActionEvaluation[] EvaluatePolicyEndTxActions(
+            IPreEvaluationBlock block,
+            ITransaction transaction,
+            IWorld previousState)
+        {
+            _logger.Information(
+                $"Evaluating policy end tx actions for block #{block.Index} " +
+                $"{ByteUtil.Hex(block.PreEvaluationHash.ByteArray)}");
+
+            return EvaluateActions(
+                block: block,
+                tx: transaction,
+                previousState: previousState,
+                actions: _policyActionsRegistry.EndTxActionsGetter(block),
+                stateStore: _stateStore,
+                isPolicyAction: true,
+                logger: _logger).ToArray();
         }
 
         internal IReadOnlyList<ICommittedActionEvaluation>
@@ -533,7 +666,7 @@ namespace Libplanet.Action
                             ? evaluation.InputContext.PreviousState.Trie.Hash
                             : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
-                        blockAction: evaluation.InputContext.BlockAction),
+                        isPolicyAction: evaluation.InputContext.IsPolicyAction),
                     outputState: evaluation.OutputState.Trie.Recorded
                         ? evaluation.OutputState.Trie.Hash
                         : throw new ArgumentException("Trie is not recorded"),

@@ -25,6 +25,7 @@ namespace Libplanet.Action
             int blockProtocolVersion,
             IWorld previousState,
             int randomSeed,
+            bool isPolicyAction,
             long gasLimit,
             IReadOnlyList<ITransaction>? txs = null,
             IReadOnlyList<EvidenceBase>? evidence = null)
@@ -36,6 +37,7 @@ namespace Libplanet.Action
             BlockProtocolVersion = blockProtocolVersion;
             PreviousState = previousState;
             RandomSeed = randomSeed;
+            IsPolicyAction = isPolicyAction;
             _gasLimit = gasLimit;
             _txs = txs ?? ImmutableList<Transaction>.Empty;
             Evidence = evidence ?? ImmutableList<EvidenceBase>.Empty;
@@ -64,11 +66,11 @@ namespace Libplanet.Action
         /// <inheritdoc cref="IActionContext.RandomSeed"/>
         public int RandomSeed { get; }
 
-        /// <inheritdoc cref="IActionContext.BlockAction"/>
-        public bool BlockAction => TxId is null;
+        /// <inheritdoc cref="IActionContext.IsPolicyAction"/>
+        public bool IsPolicyAction { get; }
 
         /// <inheritdoc cref="IActionContext.Txs"/>
-        public IReadOnlyList<ITransaction> Txs => BlockAction
+        public IReadOnlyList<ITransaction> Txs => IsPolicyAction
             ? _txs
             : ImmutableList<ITransaction>.Empty;
 

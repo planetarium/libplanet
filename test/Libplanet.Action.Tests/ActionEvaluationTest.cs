@@ -43,6 +43,7 @@ namespace Libplanet.Action.Tests
                     Block.CurrentProtocolVersion,
                     new World(MockWorldState.CreateModern()),
                     123,
+                    false,
                     0),
                 world);
             var action = (DumbAction)evaluation.Action;

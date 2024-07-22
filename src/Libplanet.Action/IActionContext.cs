@@ -79,16 +79,16 @@ namespace Libplanet.Action
         int RandomSeed { get; }
 
         /// <summary>
-        /// Whether this action is executed as a block action.
-        /// <see langword="false"/> if it belongs to a transaction.
+        /// Whether this action is executed as a policy action.
+        /// <see langword="false"/> if it is a user action.
         /// </summary>
         [Pure]
-        bool BlockAction { get; }
+        bool IsPolicyAction { get; }
 
         /// <summary>
         /// A list of <see cref="ITransaction"/>s that are included in a <see cref="Block"/> as
         /// the <see cref="IAction"/> to be evaluated.  This information is provided only if
-        /// <see cref="BlockAction"/> is <see langword="true"/>, otherwise returns an empty set.
+        /// <see cref="IsPolicyAction"/> is <see langword="true"/>, otherwise returns an empty set.
         /// </summary>
         [Pure]
         IReadOnlyList<ITransaction> Txs { get; }

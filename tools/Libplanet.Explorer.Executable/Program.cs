@@ -194,7 +194,11 @@ If omitted (default) explorer only the local blockchain store.")]
                         await options.GetGenesisBlockAsync(policy),
                         blockChainStates,
                         new ActionEvaluator(
-                            _ => policy.BlockAction,
+                            new PolicyActionsRegistry(
+                                _ => policy.BeginBlockActions,
+                                _ => policy.EndBlockActions,
+                                _ => policy.BeginTxActions,
+                                _ => policy.EndTxActions),
                             stateStore,
                             new SingleActionLoader(typeof(NullAction))));
                 Startup.PreloadedSingleton = false;
@@ -335,7 +339,8 @@ If omitted (default) explorer only the local blockchain store.")]
         private static BlockPolicy LoadBlockPolicy(Options options)
         {
             return new BlockPolicy(
-                blockAction: null,
+                beginBlockActions: ImmutableArray<IAction>.Empty,
+                endBlockActions: ImmutableArray<IAction>.Empty,
                 blockInterval: TimeSpan.FromMilliseconds(options.BlockIntervalMilliseconds),
                 getMaxTransactionsBytes: i => i > 0
                     ? options.MaxTransactionsBytes
@@ -378,7 +383,13 @@ If omitted (default) explorer only the local blockchain store.")]
                 _impl = blockPolicy;
             }
 
-            public IAction BlockAction => _impl.BlockAction;
+            public ImmutableArray<IAction> BeginBlockActions => _impl.BeginBlockActions;
+
+            public ImmutableArray<IAction> EndBlockActions => _impl.EndBlockActions;
+
+            public ImmutableArray<IAction> BeginTxActions => _impl.BeginTxActions;
+
+            public ImmutableArray<IAction> EndTxActions => _impl.EndTxActions;
 
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);

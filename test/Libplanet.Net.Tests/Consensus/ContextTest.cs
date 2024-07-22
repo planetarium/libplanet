@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
@@ -321,9 +322,12 @@ namespace Libplanet.Net.Tests.Consensus
             TimeSpan newHeightDelay = TimeSpan.FromSeconds(1);
 
             var policy = new BlockPolicy(
-                blockAction: new MinerReward(1),
+                beginBlockActions: ImmutableArray<IAction>.Empty,
+                endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
                 getMaxTransactionsBytes: _ => 50 * 1024);
-            var fx = new MemoryStoreFixture(policy.BlockAction);
+            var fx = new MemoryStoreFixture(
+                policy.BeginBlockActions,
+                policy.EndBlockActions);
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 policy,
                 fx.Store,

@@ -40,6 +40,18 @@ namespace Libplanet.Tests.Action
         private readonly StoreFixture _storeFx;
         private readonly TxFixture _txFx;
 
+        private readonly Address _beginBlockValueAddress =
+            new Address("0000000000000000000000000000000000000120");
+
+        private readonly Address _endBlockValueAddress =
+            new Address("0000000000000000000000000000000000000121");
+
+        private readonly Address _beginTxValueAddress =
+            new Address("0000000000000000000000000000000000000122");
+
+        private readonly Address _endTxValueAddress =
+            new Address("0000000000000000000000000000000000000123");
+
         public ActionEvaluatorTest(ITestOutputHelper output)
         {
             Log.Logger = _logger = new LoggerConfiguration()
@@ -49,11 +61,36 @@ namespace Libplanet.Tests.Action
                 .CreateLogger()
                 .ForContext<ActionEvaluatorTest>();
 
+            var beginBlockActions = new IAction[]
+            {
+                new UpdateValueAction(_beginBlockValueAddress, 1),
+            };
+            var endBlockActions = new IAction[]
+            {
+                new UpdateValueAction(_endBlockValueAddress, 1),
+            };
+            var beginTxActions = new IAction[]
+            {
+                new UpdateValueAction(_beginTxValueAddress, 1),
+            };
+            var endTxActions = new IAction[]
+            {
+                new UpdateValueAction(_endTxValueAddress, 1),
+            };
+
             _output = output;
             _policy = new BlockPolicy(
-                blockAction: new MinerReward(1),
+                beginBlockActions: beginBlockActions.ToImmutableArray(),
+                endBlockActions: endBlockActions.ToImmutableArray(),
+                beginTxActions: beginTxActions.ToImmutableArray(),
+                endTxActions: endTxActions.ToImmutableArray(),
                 getMaxTransactionsBytes: _ => 50 * 1024);
-            _storeFx = new MemoryStoreFixture(_policy.BlockAction);
+            _storeFx = new MemoryStoreFixture(
+                _policy.BeginBlockActions,
+                _policy.EndBlockActions,
+                _policy.BeginTxActions,
+                _policy.EndTxActions
+            );
             _txFx = new TxFixture(null);
         }
 
@@ -91,7 +128,11 @@ namespace Libplanet.Tests.Action
                 transactions: txs,
                 evidence: evs).Propose();
             var actionEvaluator = new ActionEvaluator(
-                _ => null,
+                new PolicyActionsRegistry(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore,
                 new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
@@ -152,7 +193,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
@@ -188,6 +229,84 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void EvaluateWithPolicyActions()
+        {
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var (chain, actionEvaluator) =
+                TestUtils.MakeBlockChainAndActionEvaluator(
+                    policy: _policy,
+                    store: store,
+                    stateStore: stateStore,
+                    actionLoader: new SingleActionLoader(typeof(DumbAction)));
+
+            Assert.Equal(
+                (Integer)1,
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginBlockValueAddress));
+            Assert.Equal(
+                (Integer)1,
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_endBlockValueAddress));
+            Assert.Equal(
+                (Integer)chain.Genesis.Transactions.Count,
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginTxValueAddress));
+            Assert.Equal(
+                (Integer)chain.Genesis.Transactions.Count,
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_endTxValueAddress));
+
+            (_, Transaction[] txs) = MakeFixturesForAppendTests();
+            var block = chain.ProposeBlock(
+                proposer: GenesisProposer,
+                transactions: txs.ToImmutableList(),
+                lastCommit: CreateBlockCommit(chain.Tip),
+                evidence: ImmutableArray<EvidenceBase>.Empty);
+            var evaluations = actionEvaluator.Evaluate(
+                block, chain.Store.GetStateRootHash(chain.Tip.Hash)).ToArray();
+
+            // BeginBlockAction + (BeginTxAction + #Action + EndTxAction) * #Tx + EndBlockAction
+            Assert.Equal(
+                2 + txs.Length * 2 + txs.Aggregate(0, (sum, tx) => sum + tx.Actions.Count),
+                evaluations.Length);
+
+            chain.Append(block, CreateBlockCommit(block));
+            Assert.Equal(
+                (Integer)2,
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginBlockValueAddress));
+            Assert.Equal(
+                (Integer)2,
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_endBlockValueAddress));
+            Assert.Equal(
+                (Integer)(chain.Genesis.Transactions.Count + txs.Length),
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginTxValueAddress));
+            Assert.Equal(
+                (Integer)(chain.Genesis.Transactions.Count + txs.Length),
+                chain
+                    .GetNextWorldState()
+                    .GetAccountState(ReservedAddresses.LegacyAccount)
+                    .GetState(_endTxValueAddress));
+        }
+
+        [Fact]
         public void EvaluateWithException()
         {
             var privateKey = new PrivateKey();
@@ -214,7 +333,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.IsType<UnexpectedlyTerminatedActionException>(
@@ -310,7 +429,11 @@ namespace Libplanet.Tests.Action
                 TestUtils.GenesisProposer,
                 stateRootHash: trie.Hash);
             var actionEvaluator = new ActionEvaluator(
-                policyBlockActionGetter: _ => null,
+                new PolicyActionsRegistry(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -576,7 +699,11 @@ namespace Libplanet.Tests.Action
                 .SetBalance(addresses[2], DumbAction.DumbCurrency * 100));
             ITrie initTrie = stateStore.Commit(world.Trie);
             var actionEvaluator = new ActionEvaluator(
-                policyBlockActionGetter: _ => null,
+                new PolicyActionsRegistry(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
 
@@ -671,7 +798,11 @@ namespace Libplanet.Tests.Action
             var hash = new BlockHash(GetRandomBytes(BlockHash.Size));
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
-                policyBlockActionGetter: _ => null,
+                new PolicyActionsRegistry(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 stateStore: stateStore,
                 actionTypeLoader: new SingleActionLoader(typeof(ThrowException))
             );
@@ -716,7 +847,8 @@ namespace Libplanet.Tests.Action
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                stateStore: fx.StateStore).ToArray();
+                stateStore: fx.StateStore,
+                isPolicyAction: false).ToArray();
 
             Assert.Equal(evalsA.Length, deltaA.Count - 1);
             Assert.Equal(
@@ -739,7 +871,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockA.Miner, context.Miner);
                 Assert.Equal(blockA.Index, context.BlockIndex);
                 Assert.Equal(txA.Signer, context.Signer);
-                Assert.False(context.BlockAction);
+                Assert.False(context.IsPolicyAction);
                 Assert.Equal(
                     (Integer)deltaA[i].Value,
                     prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txA.Signer));
@@ -772,7 +904,8 @@ namespace Libplanet.Tests.Action
                 actions: txB.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                stateStore: fx.StateStore).ToArray();
+                stateStore: fx.StateStore,
+                isPolicyAction: false).ToArray();
 
             Assert.Equal(evalsB.Length, deltaB.Count - 1);
             Assert.Equal(
@@ -796,7 +929,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(blockB.Miner, context.Miner);
                 Assert.Equal(blockB.Index, context.BlockIndex);
                 Assert.Equal(txB.Signer, context.Signer);
-                Assert.False(context.BlockAction);
+                Assert.False(context.IsPolicyAction);
                 Assert.Equal(
                     (Integer)deltaB[i].Value,
                     prevState.GetAccount(ReservedAddresses.LegacyAccount).GetState(txB.Signer));
@@ -823,7 +956,58 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
-        public void EvaluatePolicyBlockAction()
+        public void EvaluatePolicyBeginBlockActions()
+        {
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
+                policy: _policy,
+                store: _storeFx.Store,
+                stateStore: _storeFx.StateStore,
+                actionLoader: new SingleActionLoader(typeof(DumbAction)),
+                genesisBlock: _storeFx.GenesisBlock,
+                privateKey: ChainPrivateKey);
+            (_, Transaction[] txs) = MakeFixturesForAppendTests();
+            var genesis = chain.Genesis;
+            var block = chain.ProposeBlock(
+                proposer: GenesisProposer,
+                transactions: txs.ToImmutableList(),
+                lastCommit: CreateBlockCommit(chain.Tip),
+                evidence: ImmutableArray<EvidenceBase>.Empty);
+
+            IWorld previousState = _storeFx.StateStore.GetWorld(null);
+            var evaluations = actionEvaluator.EvaluatePolicyBeginBlockActions(
+                genesis,
+                previousState);
+
+            Assert.Equal<IAction>(
+                chain.Policy.BeginBlockActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
+            Assert.Equal(
+                (Integer)1,
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginBlockValueAddress));
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+
+            previousState = evaluations[0].OutputState;
+            evaluations = actionEvaluator.EvaluatePolicyBeginBlockActions(
+                block,
+                previousState);
+
+            Assert.Equal<IAction>(
+                chain.Policy.BeginBlockActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
+            Assert.Equal(
+                (Integer)2,
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginBlockValueAddress));
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+        }
+
+        [Fact]
+        public void EvaluatePolicyEndBlockActions()
         {
             var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
                 policy: _policy,
@@ -841,40 +1025,148 @@ namespace Libplanet.Tests.Action
                 ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
-            var evaluation = actionEvaluator.EvaluatePolicyBlockAction(genesis, previousState);
+            var evaluations = actionEvaluator.EvaluatePolicyEndBlockActions(
+                genesis,
+                previousState);
 
-            Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
+            Assert.Equal<IAction>(
+                chain.Policy.EndBlockActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
             Assert.Equal(
                 (Integer)1,
-                (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(genesis.Miner));
-            Assert.True(evaluation.InputContext.BlockAction);
-            Assert.Equal(genesis.Transactions, evaluation.InputContext.Txs);
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_endBlockValueAddress));
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+            Assert.Equal(genesis.Transactions, evaluations[0].InputContext.Txs);
 
-            previousState = evaluation.OutputState;
-            evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousState);
-
-            Assert.Equal(chain.Policy.BlockAction, evaluation.Action);
-            Assert.Equal(
-                (Integer)2,
-                (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
-            Assert.True(evaluation.InputContext.BlockAction);
-            Assert.Equal(block.Transactions, evaluation.InputContext.Txs);
-
-            chain.Append(block, CreateBlockCommit(block), render: true);
-            previousState = _storeFx.StateStore.GetWorld(block.StateRootHash);
-            var txEvaluations = actionEvaluator.EvaluateBlock(
+            previousState = evaluations[0].OutputState;
+            evaluations = actionEvaluator.EvaluatePolicyEndBlockActions(
                 block,
-                previousState).ToList();
-            previousState = txEvaluations.Last().OutputState;
-            evaluation = actionEvaluator.EvaluatePolicyBlockAction(block, previousState);
+                previousState);
 
+            Assert.Equal<IAction>(
+                chain.Policy.EndBlockActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
             Assert.Equal(
                 (Integer)2,
-                (Integer)evaluation.OutputState
-                    .GetAccount(ReservedAddresses.LegacyAccount).GetState(block.Miner));
-            Assert.Equal(block.Transactions, evaluation.InputContext.Txs);
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_endBlockValueAddress));
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+        }
+
+        [Fact]
+        public void EvaluatePolicyBeginTxActions()
+        {
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
+                policy: _policy,
+                store: _storeFx.Store,
+                stateStore: _storeFx.StateStore,
+                actionLoader: new SingleActionLoader(typeof(DumbAction)),
+                genesisBlock: _storeFx.GenesisBlock,
+                privateKey: GenesisProposer);
+            (_, Transaction[] txs) = MakeFixturesForAppendTests();
+            var genesis = chain.Genesis;
+            var block = chain.ProposeBlock(
+                proposer: GenesisProposer,
+                transactions: txs.ToImmutableList(),
+                lastCommit: CreateBlockCommit(chain.Tip),
+                evidence: ImmutableArray<EvidenceBase>.Empty);
+
+            IWorld previousState = _storeFx.StateStore.GetWorld(null);
+            var evaluations = actionEvaluator.EvaluatePolicyBeginTxActions(
+                genesis,
+                txs[0],
+                previousState);
+
+            Assert.Equal<IAction>(
+                chain.Policy.BeginTxActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
+            Assert.Equal(
+                (Integer)1,
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginTxValueAddress));
+            Assert.Equal(txs[0].Signer, evaluations[0].InputContext.Signer);
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+
+            previousState = evaluations[0].OutputState;
+            evaluations = actionEvaluator.EvaluatePolicyBeginTxActions(
+                block,
+                txs[1],
+                previousState);
+
+            Assert.Equal<IAction>(
+                chain.Policy.BeginTxActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
+            Assert.Equal(
+                (Integer)2,
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_beginTxValueAddress));
+            Assert.Equal(txs[1].Signer, evaluations[0].InputContext.Signer);
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+        }
+
+        [Fact]
+        public void EvaluatePolicyEndTxActions()
+        {
+            var (chain, actionEvaluator) = MakeBlockChainAndActionEvaluator(
+                policy: _policy,
+                store: _storeFx.Store,
+                stateStore: _storeFx.StateStore,
+                actionLoader: new SingleActionLoader(typeof(DumbAction)),
+                genesisBlock: _storeFx.GenesisBlock,
+                privateKey: GenesisProposer);
+            (_, Transaction[] txs) = MakeFixturesForAppendTests();
+            var genesis = chain.Genesis;
+            var block = chain.ProposeBlock(
+                proposer: GenesisProposer,
+                transactions: txs.ToImmutableList(),
+                lastCommit: CreateBlockCommit(chain.Tip),
+                evidence: ImmutableArray<EvidenceBase>.Empty);
+
+            IWorld previousState = _storeFx.StateStore.GetWorld(null);
+            var evaluations = actionEvaluator.EvaluatePolicyEndTxActions(
+                genesis,
+                txs[0],
+                previousState);
+
+            Assert.Equal<IAction>(
+                chain.Policy.EndTxActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
+            Assert.Equal(
+                (Integer)1,
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_endTxValueAddress));
+            Assert.Equal(txs[0].Signer, evaluations[0].InputContext.Signer);
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+
+            previousState = evaluations[0].OutputState;
+            evaluations = actionEvaluator.EvaluatePolicyEndTxActions(
+                block,
+                txs[1],
+                previousState);
+
+            Assert.Equal<IAction>(
+                chain.Policy.EndTxActions,
+                evaluations.Select(item => item.Action).ToImmutableArray());
+            Assert.Single(evaluations);
+            Assert.Equal(
+                (Integer)2,
+                (Integer)evaluations[0].OutputState
+                    .GetAccount(ReservedAddresses.LegacyAccount)
+                    .GetState(_endTxValueAddress));
+            Assert.Equal(txs[1].Signer, evaluations[0].InputContext.Signer);
+            Assert.True(evaluations[0].InputContext.IsPolicyAction);
+            Assert.Equal(block.Transactions, evaluations[0].InputContext.Txs);
         }
 
         [Theory]
@@ -1027,7 +1319,7 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
             Assert.Equal(
@@ -1097,7 +1389,7 @@ namespace Libplanet.Tests.Action
                 block,
                 chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
@@ -1168,14 +1460,14 @@ namespace Libplanet.Tests.Action
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
 
-            Assert.False(evaluations[0].InputContext.BlockAction);
+            Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.NotNull(evaluations.Single().Exception);
             Assert.NotNull(evaluations.Single().Exception?.InnerException);
             Assert.Equal(
                 typeof(InsufficientBalanceException),
                 evaluations.Single().Exception?.InnerException?.GetType());
-         }
+        }
 
         [Fact]
         public void GenerateRandomSeed()
@@ -1221,7 +1513,8 @@ namespace Libplanet.Tests.Action
                 actions: txA.Actions
                     .Select(action => (IAction)ToAction<Arithmetic>(action))
                     .ToImmutableArray(),
-                stateStore: fx.StateStore).ToArray();
+                stateStore: fx.StateStore,
+                isPolicyAction: false).ToArray();
 
             byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
             int[] randomSeeds = Enumerable
@@ -1245,7 +1538,11 @@ namespace Libplanet.Tests.Action
         {
             Block block = BlockMarshaler.UnmarshalBlock(LegacyBlocks.BencodedV1Block);
             var actionEvaluator = new ActionEvaluator(
-                _ => null,
+                new PolicyActionsRegistry(
+                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
+                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
                 new TrieStateStore(new MemoryKeyValueStore()),
                 new SingleActionLoader(typeof(DumbAction)));
             Assert.Throws<BlockProtocolVersionNotSupportedException>(
