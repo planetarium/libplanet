@@ -64,7 +64,7 @@ namespace Libplanet.Action.State
         /// <returns>A new <see cref="IWorld"/> instance where the account state of given
         /// <paramref name="address"/> is set to given <paramref name="account"/>.</returns>
         /// <remarks>
-        /// This method method does not manipulate the instance, but returns
+        /// This method does not manipulate the instance, but returns
         /// a new <see cref="IWorld"/> instance with an updated world state instead.
         /// </remarks>
         /// <exception cref="ArgumentException">
