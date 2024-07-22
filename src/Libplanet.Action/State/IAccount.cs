@@ -47,7 +47,7 @@ namespace Libplanet.Action.State
         /// the account state of the given <paramref name="address"/>
         /// is set to the given <paramref name="state"/>.</returns>
         /// <remarks>
-        /// This method method does not manipulate the instance,
+        /// This method does not manipulate the instance,
         /// but returns a new <see cref="IAccount"/> instance
         /// with updated states instead.
         /// </remarks>
@@ -64,7 +64,7 @@ namespace Libplanet.Action.State
         /// the account state of the given <paramref name="address"/>
         /// is removed.</returns>
         /// <remarks>
-        /// This method method does not manipulate the instance,
+        /// This method does not manipulate the instance,
         /// but returns a new <see cref="IAccount"/> instance
         /// with updated states instead.
         /// </remarks>
