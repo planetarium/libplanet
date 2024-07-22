@@ -65,12 +65,32 @@
 <p>To be released.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet) Removed <code>IBlockPolicy.BlockAction</code> property. [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
+<li>(Libplanet) Added <code>IBlockPolicy.BeginBlockActions</code>. property. [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
+<li>(Libplanet) Added <code>IBlockPolicy.EndBlockActions</code>. property. [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
+<li>(Libplanet) Added <code>IBlockPolicy.BeginTxActions</code>. property. [<a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet) Added <code>IBlockPolicy.EndTxActions</code>. property. [<a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet) <code>BlockPolicy</code> constructor requires <code>beginBlockActions</code>,
+<code>endBlockActions</code>, <code>beginTxActions</code> and <code>endTxActions</code> parameters
+instead of the <code>blockAction</code> parameter.
+[<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>, <a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet.Action) Renamed <code>PolicyBlockActionGetter</code> delegate to
+<code>PolicyActionsGetter</code> and changed return type to
+<code>ImmutableArray&lt;IAction&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>, <a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet.Action) <code>ActionEvaluator</code> constructor requires
+<code>PolicyActionsRegistry</code> parameter instead of the
+<code>policyBlockActionGetter</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>, <a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet.Action) Renamed <code>IActionContext.BlockAction</code> property to
+<code>IActionContext.IsPolicyAction</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3764">#3764</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>(Libplanet.Store) Added <code>MerkleTrie.GenerateProof()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3870">#3870</a>]</li>
 <li>(Libplanet.Store) Added <code>MerkleTrie.ValidateProof()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3870">#3870</a>]</li>
+<li>(Libplanet.Action) Added <code>PolicyActionsRegistry</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
