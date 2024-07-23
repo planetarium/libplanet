@@ -34,12 +34,8 @@ namespace Libplanet.Net.Tests
 
             if (blocks is null)
             {
-                var beginActions = ImmutableArray.Create<IAction>(
-                );
-                var endActions = ImmutableArray.Create<IAction>(
-                    new MinerReward(1)
-                );
-                var policy = new BlockPolicy(beginActions, endActions);
+                var policy = new BlockPolicy(new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))));
                 using (var storeFx = new MemoryStoreFixture())
                 {
                     var chain =
@@ -122,13 +118,10 @@ namespace Libplanet.Net.Tests
             Block genesis = null,
             ConsensusReactorOption? consensusReactorOption = null)
         {
-            var beginActions = ImmutableArray.Create<IAction>(
-            );
-            var endActions = ImmutableArray.Create<IAction>(
-                new MinerReward(1)
-            );
-            policy = policy ?? new BlockPolicy(beginActions, endActions);
-            var fx = new MemoryStoreFixture(policy.BeginBlockActions, policy.EndBlockActions);
+            policy = policy ?? new BlockPolicy(
+                new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))));
+            var fx = new MemoryStoreFixture(policy.PolicyActionsRegistry);
             var blockchain = MakeBlockChain(
                 policy,
                 fx.Store,

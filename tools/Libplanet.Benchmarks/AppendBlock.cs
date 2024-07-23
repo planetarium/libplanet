@@ -29,11 +29,7 @@ namespace Libplanet.Benchmarks
                 fx.StateStore,
                 fx.GenesisBlock,
                 new ActionEvaluator(
-                    policyActionsRegistry: new PolicyActionsRegistry(
-                        beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                        endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                        beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                        endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                    policyActionsRegistry: new PolicyActionsRegistry(),
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
             _privateKey = new PrivateKey();

@@ -33,8 +33,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _fx = new MemoryStoreFixture();
             _output = output;
             _policy = new BlockPolicy(
-                beginBlockActions: ImmutableArray<IAction>.Empty,
-                endBlockActions: ImmutableArray<IAction>.Empty,
+                new PolicyActionsRegistry(),
                 blockInterval: TimeSpan.FromMilliseconds(3 * 60 * 60 * 1000));
             _stagePolicy = new VolatileStagePolicy();
             _chain = BlockChain.Create(
@@ -44,11 +43,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _fx.StateStore,
                 _fx.GenesisBlock,
                 new ActionEvaluator(
-                    new PolicyActionsRegistry(
-                        _ => _policy.BeginBlockActions,
-                        _ => _policy.EndBlockActions,
-                        _ => _policy.BeginTxActions,
-                        _ => _policy.EndTxActions),
+                    _policy.PolicyActionsRegistry,
                     stateStore: _fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
         }
@@ -63,8 +58,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             var tenSec = new TimeSpan(0, 0, 10);
             var a = new BlockPolicy(
-                beginBlockActions: ImmutableArray<IAction>.Empty,
-                endBlockActions: ImmutableArray<IAction>.Empty,
+                new PolicyActionsRegistry(),
                 blockInterval: tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
@@ -164,8 +158,8 @@ namespace Libplanet.Tests.Blockchain.Policies
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionLoader = new SingleActionLoader(typeof(DumbAction));
             var policy = new BlockPolicy(
-                beginBlockActions: ImmutableArray<IAction>.Empty,
-                endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
+                new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))),
                 getMinTransactionsPerBlock: index => index == 0 ? 0 : policyLimit);
             var privateKey = new PrivateKey();
             var chain = TestUtils.MakeBlockChain(policy, store, stateStore, actionLoader);

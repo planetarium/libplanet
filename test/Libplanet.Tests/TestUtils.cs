@@ -630,11 +630,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             var blockChainStates = new BlockChainStates(store, stateStore);
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsRegistry(
-                    _ => policy.BeginBlockActions,
-                    _ => policy.EndBlockActions,
-                    _ => policy.BeginTxActions,
-                    _ => policy.EndTxActions),
+                policy.PolicyActionsRegistry,
                 stateStore: stateStore,
                 actionTypeLoader: actionLoader);
 

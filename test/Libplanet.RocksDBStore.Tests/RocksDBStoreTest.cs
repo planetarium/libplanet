@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -87,11 +86,7 @@ namespace Libplanet.RocksDBStore.Tests
                     stateStore,
                     Fx.GenesisBlock,
                     new ActionEvaluator(
-                        policyActionsRegistry: new PolicyActionsRegistry(
-                            beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                            endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                            beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                            endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                        policyActionsRegistry: new PolicyActionsRegistry(),
                         stateStore: stateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 store.Dispose();

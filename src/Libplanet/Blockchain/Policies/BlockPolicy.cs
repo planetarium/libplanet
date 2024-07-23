@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Libplanet.Action;
@@ -23,6 +22,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<BlockChain, Block, BlockPolicyViolationException?>
             _validateNextBlock;
 
+        private readonly PolicyActionsRegistry _policyActionsRegistry;
         private readonly Func<long, long> _getMaxTransactionsBytes;
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
@@ -38,25 +38,8 @@ namespace Libplanet.Blockchain.Policies
         /// description for more detail.
         /// </para>
         /// </summary>
-        /// <param name="beginBlockActions">
-        /// Array of <see cref="IAction"/> to executed for the beginning of every
-        /// <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
-        /// in no additional execution other than those included in <see cref="Transaction"/>s.
-        /// </param>
-        /// <param name="endBlockActions">
-        /// Array of <see cref="IAction"/> to executed for the end of every
-        /// <see cref="Block"/>.  Set to <see langword="null"/> by default, which results
-        /// in no additional execution other than those included in <see cref="Transaction"/>s.
-        /// </param>
-        /// <param name="beginTxActions">
-        /// Array of <see cref="IAction"/> to executed for the beginning of every
-        /// <see cref="Transaction"/>.  Set to <see langword="null"/> by default, which results
-        /// in no additional execution other than those included in <see cref="Transaction"/>s.
-        /// </param>
-        /// <param name="endTxActions">
-        /// Array of <see cref="IAction"/> to executed for the end of every
-        /// <see cref="Transaction"/>.  Set to <see langword="null"/> by default, which results
-        /// in no additional execution other than those included in <see cref="Transaction"/>s.
+        /// <param name="policyActionsRegistry">
+        /// A class containing policy actions to evaluate at each situation.
         /// </param>
         /// <param name="blockInterval">Goes to <see cref="BlockInterval"/>.
         /// Set to <see cref="DefaultTargetBlockInterval"/> by default.
@@ -90,10 +73,7 @@ namespace Libplanet.Blockchain.Policies
         /// Goes to <see cref="GetMaxEvidencePendingDuration"/>.  Set to a constant function
         /// of <c>10</c> by default.</param>
         public BlockPolicy(
-            ImmutableArray<IAction>? beginBlockActions = null,
-            ImmutableArray<IAction>? endBlockActions = null,
-            ImmutableArray<IAction>? beginTxActions = null,
-            ImmutableArray<IAction>? endTxActions = null,
+            PolicyActionsRegistry? policyActionsRegistry = null,
             TimeSpan? blockInterval = null,
             Func<BlockChain, Transaction, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
@@ -105,10 +85,7 @@ namespace Libplanet.Blockchain.Policies
             Func<long, int>? getMaxTransactionsPerSignerPerBlock = null,
             Func<long, long>? getMaxEvidencePendingDuration = null)
         {
-            BeginBlockActions = beginBlockActions ?? ImmutableArray<IAction>.Empty;
-            EndBlockActions = endBlockActions ?? ImmutableArray<IAction>.Empty;
-            BeginTxActions = beginTxActions ?? ImmutableArray<IAction>.Empty;
-            EndTxActions = endTxActions ?? ImmutableArray<IAction>.Empty;
+            _policyActionsRegistry = policyActionsRegistry ?? new PolicyActionsRegistry();
             BlockInterval = blockInterval ?? DefaultTargetBlockInterval;
             _getMaxTransactionsBytes = getMaxTransactionsBytes ?? (_ => 100L * 1024L);
             _getMinTransactionsPerBlock = getMinTransactionsPerBlock ?? (_ => 0);
@@ -192,17 +169,7 @@ namespace Libplanet.Blockchain.Policies
             }
         }
 
-        /// <inheritdoc/>
-        public ImmutableArray<IAction> BeginBlockActions { get; }
-
-        /// <inheritdoc/>
-        public ImmutableArray<IAction> EndBlockActions { get; }
-
-        /// <inheritdoc/>
-        public ImmutableArray<IAction> BeginTxActions { get; }
-
-        /// <inheritdoc/>
-        public ImmutableArray<IAction> EndTxActions { get; }
+        public PolicyActionsRegistry PolicyActionsRegistry => _policyActionsRegistry;
 
         /// <summary>
         /// Targeted time interval between two consecutive <see cref="Block"/>s.

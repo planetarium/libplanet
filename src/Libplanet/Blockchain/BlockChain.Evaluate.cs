@@ -94,8 +94,8 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Evaluates all actions in the <see cref="PreEvaluationBlock.Transactions"/> and
-        /// optional <see cref="Policies.IBlockPolicy.BeginBlockActions"/>,
-        /// <see cref="Policies.IBlockPolicy.EndBlockActions"/>, and returns
+        /// optional <see cref="IAction"/>s in
+        /// <see cref="Policies.IBlockPolicy.PolicyActionsRegistry"/> and returns
         /// a <see cref="Block"/> instance combined with the <see cref="Block.StateRootHash"/>
         /// The returned <see cref="Block"/> is signed by the given <paramref name="privateKey"/>.
         /// </summary>

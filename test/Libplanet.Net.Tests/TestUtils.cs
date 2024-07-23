@@ -49,8 +49,8 @@ namespace Libplanet.Net.Tests
         public static readonly ValidatorSet ValidatorSet = Libplanet.Tests.TestUtils.ValidatorSet;
 
         public static readonly IBlockPolicy Policy = new BlockPolicy(
-            beginBlockActions: ImmutableArray<IAction>.Empty,
-            endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1)),
+            new PolicyActionsRegistry(
+                endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))),
             getMaxTransactionsBytes: _ => 50 * 1024);
 
         public static readonly IActionLoader ActionLoader = new SingleActionLoader(
@@ -99,9 +99,7 @@ namespace Libplanet.Net.Tests
         {
             policy ??= Policy;
             actionLoader ??= ActionLoader;
-            var fx = new MemoryStoreFixture(
-                beginBlockActions: policy.BeginBlockActions,
-                endBlockActions: policy.EndBlockActions);
+            var fx = new MemoryStoreFixture(policy.PolicyActionsRegistry);
             var blockChain = Libplanet.Tests.TestUtils.MakeBlockChain(
                 policy,
                 fx.Store,

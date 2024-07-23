@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -29,11 +28,7 @@ namespace Libplanet.Tests.Action
         {
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
             var actionEvaluator = new ActionEvaluator(
-                new PolicyActionsRegistry(
-                    beginBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endBlockActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    beginTxActionsGetter: _ => ImmutableArray<IAction>.Empty,
-                    endTxActionsGetter: _ => ImmutableArray<IAction>.Empty),
+                new PolicyActionsRegistry(),
                 stateStore,
                 new SingleActionLoader(typeof(DumbAction)));
 #pragma warning disable CS0618

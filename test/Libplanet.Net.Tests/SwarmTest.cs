@@ -398,9 +398,7 @@ namespace Libplanet.Net.Tests
                 new AsyncAutoResetEvent()).ToList();
             var roundOneProposed = new AsyncAutoResetEvent();
             var policy = new NullBlockPolicy();
-            var genesis = new MemoryStoreFixture(
-                policy.BeginBlockActions,
-                policy.EndBlockActions).GenesisBlock;
+            var genesis = new MemoryStoreFixture(policy.PolicyActionsRegistry).GenesisBlock;
 
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
                 new BoundPeer(
@@ -879,12 +877,9 @@ namespace Libplanet.Net.Tests
         [Fact(Timeout = Timeout)]
         public async Task RenderInFork()
         {
-            var beginActions = ImmutableArray.Create<IAction>(
-            );
-            var endActions = ImmutableArray.Create<IAction>(
-                new MinerReward(1)
-            );
-            var policy = new BlockPolicy(beginActions, endActions);
+            var policy = new BlockPolicy(
+                new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))));
             var renderer = new RecordingActionRenderer();
             var chain = MakeBlockChain(
                 policy,
@@ -953,12 +948,9 @@ namespace Libplanet.Net.Tests
         [Fact(Skip = "This should be fixed to work deterministically.")]
         public async Task HandleReorgInSynchronizing()
         {
-            var beginActions = ImmutableArray.Create<IAction>(
-            );
-            var endActions = ImmutableArray.Create<IAction>(
-                new MinerReward(1)
-            );
-            var policy = new BlockPolicy(beginActions, endActions);
+            var policy = new BlockPolicy(
+                new PolicyActionsRegistry(
+                    endBlockActions: ImmutableArray.Create<IAction>(new MinerReward(1))));
 
             async Task<Swarm> MakeSwarm(PrivateKey key = null) =>
                 await CreateSwarm(
@@ -1289,11 +1281,7 @@ namespace Libplanet.Net.Tests
             var policyB = new NullBlockPolicy();
             var fx = new DefaultStoreFixture();
             var aev = new ActionEvaluator(
-                new PolicyActionsRegistry(
-                    _ => ImmutableArray<IAction>.Empty,
-                    _ => ImmutableArray<IAction>.Empty,
-                    _ => ImmutableArray<IAction>.Empty,
-                    _ => ImmutableArray<IAction>.Empty),
+                new PolicyActionsRegistry(),
                 fx.StateStore,
                 new SingleActionLoader(typeof(DumbAction)));
             var genesis = fx.GenesisBlock;
