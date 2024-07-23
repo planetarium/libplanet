@@ -1,0 +1,1126 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct EvidenceId
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct EvidenceId
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Evidence.EvidenceId">
+
+
+  <h1 id="Libplanet_Types_Evidence_EvidenceId" data-uid="Libplanet.Types.Evidence.EvidenceId" class="text-break">Struct EvidenceId
+</h1>
+  <div class="markdown level0 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">ISerializable</span></div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>&gt;</div>
+    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>&gt;</div>
+    <div><span class="xref">IComparable</span></div>
+    <div><span class="xref">IBencodable</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Evidence.html">Libplanet.Types.Evidence</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly struct EvidenceId</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId__ctor_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.%23ctor(ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L52">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId__ctor_" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId__ctor_ImmutableArray_System_Byte___" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor(ImmutableArray{System.Byte}@)">EvidenceId(in ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts an immutable <see cref="!:System.Byte"></see> array into a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvidenceId(in ImmutableArray&lt;byte&gt; evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>An immutable <see cref="!:System.Byte"></see> array that encodes
+a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.  It must not be <span class="xref">null</span>, and its
+<see cref="!:ImmutableArray&lt;T>.Length"></see> must be the same to <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId__ctor_ImmutableArray_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId__ctor_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.%23ctor(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L88">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId__ctor_" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId__ctor_IValue_" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor(IValue)">EvidenceId(IValue)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> instance from given <code data-dev-comment-type="paramref" class="paramref">bencoded</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvidenceId(IValue bencoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
+        <td><p>A Bencodex <see cref="!:Binary"></see> of 32 <see cref="!:System.Byte"></see>s which
+represents an <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId__ctor_IValue__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId__ctor_ImmutableArray_System_Byte___">EvidenceId(in ImmutableArray&lt;Byte&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId__ctor_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.%23ctor(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L98">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId__ctor_" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId__ctor_SerializationInfo_StreamingContext_" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor(SerializationInfo,StreamingContext)">EvidenceId(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvidenceId(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializationInfo</span></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">StreamingContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId__ctor_SerializationInfo_StreamingContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId__ctor_" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId__ctor_System_Byte___" data-uid="Libplanet.Types.Evidence.EvidenceId.#ctor(System.Byte[])">EvidenceId(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Converts a mutable <see cref="!:System.Byte"></see> array into a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvidenceId(byte[] evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td><p>A mutable <see cref="!:System.Byte"></see> array that encodes
+a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.  It must not be <span class="xref">null</span>,
+and its <see cref="!:Array.Length"></see> must be the same to
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId__ctor_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_Size.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.Size%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L34">View Source</a>
+  </span>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_Size" data-uid="Libplanet.Types.Evidence.EvidenceId.Size">Size</h4>
+  <div class="markdown level1 summary"><p>The <see cref="!:System.Byte"></see>s size that each <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> takes.</p>
+<p>As a evidenceId is a SHA-256 digest, it is 32 <see cref="!:System.Byte"></see>s.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int Size = null</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_Size_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L126">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_Bencoded_" data-uid="Libplanet.Types.Evidence.EvidenceId.Bencoded*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_Bencoded" data-uid="Libplanet.Types.Evidence.EvidenceId.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_Bencoded_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L121">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_ByteArray_" data-uid="Libplanet.Types.Evidence.EvidenceId.ByteArray*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_ByteArray" data-uid="Libplanet.Types.Evidence.EvidenceId.ByteArray">ByteArray</h4>
+  <div class="markdown level1 summary"><p>A bare immutable <see cref="!:System.Byte"></see> array of
+this <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_ByteArray_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is immutable.  For a mutable array, use
+<a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_ToByteArray">ToByteArray()</a> method instead.</p>
+</div>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_ByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_ToByteArray">ToByteArray()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_DefaultByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.DefaultByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L112">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_DefaultByteArray_" data-uid="Libplanet.Types.Evidence.EvidenceId.DefaultByteArray*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_DefaultByteArray" data-uid="Libplanet.Types.Evidence.EvidenceId.DefaultByteArray">DefaultByteArray</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly ImmutableArray&lt;byte&gt; DefaultByteArray { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_DefaultByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_CompareTo_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.CompareTo(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L202">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_CompareTo_" data-uid="Libplanet.Types.Evidence.EvidenceId.CompareTo*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_CompareTo_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Types.Evidence.EvidenceId.CompareTo(Libplanet.Types.Evidence.EvidenceId)">CompareTo(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int CompareTo(EvidenceId other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_CompareTo_Libplanet_Types_Evidence_EvidenceId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_CompareTo_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.CompareTo(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L217">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_CompareTo_" data-uid="Libplanet.Types.Evidence.EvidenceId.CompareTo*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_CompareTo_System_Nullable_System_Object__" data-uid="Libplanet.Types.Evidence.EvidenceId.CompareTo(System.Nullable{System.Object})">CompareTo(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int CompareTo(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_CompareTo_System_Nullable_System_Object___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_Equals_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.Equals(Libplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L173">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_Equals_" data-uid="Libplanet.Types.Evidence.EvidenceId.Equals*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_Equals_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Types.Evidence.EvidenceId.Equals(Libplanet.Types.Evidence.EvidenceId)">Equals(EvidenceId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Equals(EvidenceId other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_Equals_Libplanet_Types_Evidence_EvidenceId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L175">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_Equals_" data-uid="Libplanet.Types.Evidence.EvidenceId.Equals*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Evidence.EvidenceId.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_Equals_System_Nullable_System_Object___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L177">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_GetHashCode_" data-uid="Libplanet.Types.Evidence.EvidenceId.GetHashCode*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_GetHashCode" data-uid="Libplanet.Types.Evidence.EvidenceId.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_GetHashCode_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L220">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_GetObjectData_" data-uid="Libplanet.Types.Evidence.EvidenceId.GetObjectData*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Types.Evidence.EvidenceId.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializationInfo</span></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">StreamingContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_GetObjectData_SerializationInfo_StreamingContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_Parse_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.Parse(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L144">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_Parse_" data-uid="Libplanet.Types.Evidence.EvidenceId.Parse*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_Parse_System_String_" data-uid="Libplanet.Types.Evidence.EvidenceId.Parse(System.String)">Parse(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> value from a <code data-dev-comment-type="paramref" class="paramref">hex</code> string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EvidenceId Parse(string hex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">hex</span></td>
+        <td><p>A hexadecimal string which encodes a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.
+This has to contain 64 hexadecimal digits and must not be <span class="xref">null</span>
+This is usually made by <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_ToString">ToString()</a> method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><p>A corresponding <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_Parse_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_ToString">ToString()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L190">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_ToByteArray_" data-uid="Libplanet.Types.Evidence.EvidenceId.ToByteArray*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_ToByteArray" data-uid="Libplanet.Types.Evidence.EvidenceId.ToByteArray">ToByteArray()</h4>
+  <div class="markdown level1 summary"><p>Gets a bare mutable <see cref="!:System.Byte"></see> array of
+this <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly byte[] ToByteArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>A new mutable <see cref="!:System.Byte"></see> array of
+this <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.
+Since a returned array is created every time the method is called,
+any mutations on that array does not affect to
+the <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a> object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_ToByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_ByteArray">ByteArray</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L198">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_ToString_" data-uid="Libplanet.Types.Evidence.EvidenceId.ToString*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_ToString" data-uid="Libplanet.Types.Evidence.EvidenceId.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>'s representative string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override readonly string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>A string which represents this <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_ToString_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_TryParse_System_String_System_Nullable_Libplanet_Types_Evidence_EvidenceId___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.TryParse(System.String%2CSystem.Nullable%7BLibplanet.Types.Evidence.EvidenceId%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L159">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_TryParse_" data-uid="Libplanet.Types.Evidence.EvidenceId.TryParse*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_TryParse_System_String_System_Nullable_Libplanet_Types_Evidence_EvidenceId___" data-uid="Libplanet.Types.Evidence.EvidenceId.TryParse(System.String,System.Nullable{Libplanet.Types.Evidence.EvidenceId}@)">TryParse(String, out Nullable&lt;EvidenceId&gt;)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool TryParse(string hex, out EvidenceId? evidenceId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">hex</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>&gt;</td>
+        <td><span class="parametername">evidenceId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_TryParse_System_String_System_Nullable_Libplanet_Types_Evidence_EvidenceId____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <h3 id="operators">Operators
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_op_Equality_Libplanet_Types_Evidence_EvidenceId_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.op_Equality(Libplanet.Types.Evidence.EvidenceId%2CLibplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L128">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_op_Equality_" data-uid="Libplanet.Types.Evidence.EvidenceId.op_Equality*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_op_Equality_Libplanet_Types_Evidence_EvidenceId_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Types.Evidence.EvidenceId.op_Equality(Libplanet.Types.Evidence.EvidenceId,Libplanet.Types.Evidence.EvidenceId)">Equality(EvidenceId, EvidenceId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(EvidenceId left, EvidenceId right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_op_Equality_Libplanet_Types_Evidence_EvidenceId_Libplanet_Types_Evidence_EvidenceId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId_op_Inequality_Libplanet_Types_Evidence_EvidenceId_Libplanet_Types_Evidence_EvidenceId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId.op_Inequality(Libplanet.Types.Evidence.EvidenceId%2CLibplanet.Types.Evidence.EvidenceId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L130">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceId_op_Inequality_" data-uid="Libplanet.Types.Evidence.EvidenceId.op_Inequality*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceId_op_Inequality_Libplanet_Types_Evidence_EvidenceId_Libplanet_Types_Evidence_EvidenceId_" data-uid="Libplanet.Types.Evidence.EvidenceId.op_Inequality(Libplanet.Types.Evidence.EvidenceId,Libplanet.Types.Evidence.EvidenceId)">Inequality(EvidenceId, EvidenceId)</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>, abbreviation of Evidence identifier,
+is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>'s
+content.</p>
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+and 64 characters in hexadecimal.
+(See also <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_Size">Size</a> constant.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(EvidenceId left, EvidenceId right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Evidence_EvidenceId_op_Inequality_Libplanet_Types_Evidence_EvidenceId_Libplanet_Types_Evidence_EvidenceId__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">ISerializable</span>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <div>
+      <span class="xref">IComparable&lt;&gt;</span>
+  </div>
+  <div>
+      <span class="xref">IComparable</span>
+  </div>
+  <div>
+      <span class="xref">IBencodable</span>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Id">Id</a></div>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.2.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceId.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.2.0/src/Libplanet.Types/Evidence/EvidenceId.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

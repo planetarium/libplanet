@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Libplanet.Net.Consensus
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Libplanet.Net.Consensus
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Consensus">
+
+  <h1 id="Libplanet_Net_Consensus" data-uid="Libplanet.Net.Consensus" class="text-break">Namespace Libplanet.Net.Consensus
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+</h3>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html">ConsensusContext</a></h4>
+      <section><p>
+A class that maintains a collection of <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a>s.
+</p>
+<p>
+Internally, multiple <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a>s may be managed at any given time.
+In particular, a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> with its <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Height">Height</a> that
+is greater than <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height">Height</a> may be created preemptively to hold
+<a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>s to be processed at later time.  Furthermore,
+it is guaranteed that no <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> with its <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Height">Height</a>
+less than <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height">Height</a>, as any such <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> is disposed
+when <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Height">Height</a> is updated.
+</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusReactor.html">ConsensusReactor</a></h4>
+      <section><p>A manager class for starting network and joining into consensus.
+<span class="xref">Libplanet.Net.Consensus.ConsensusReactor.ConsensusContext</span></p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a></h4>
+      <section><p>A state machine class of PBFT consensus algorithm. The state machine is responsible for
+proposing, validating, voting a block and committing the voted block to the blockchain.
+There are five states:</p>
+<ul><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Default">Default</a> which is the initial state when
+the <a class="xref" href="Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context_Start">Start()</a> is not called (i.e., round has not been started).
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, which is the state when
+the round has been started and waiting for the block proposal. If a validator is a
+proposer of the round, it will propose a block to the other validators and to
+itself.
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>, which is the state when a block
+proposal for a round has been received. While translating to this step, state
+machine votes for the block whether block is valid or not, and waiting for any +2/3
+votes from other validators.
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>, which is the state received
+any +2/3 votes in <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a>. While
+translating to this step, state machine votes for whether the block should be
+committed or not, and waiting for any +2/3 committing votes from other validators.
+If <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a>
+receives +2/3 commit votes with NIL, starts new round <span class="xref">Libplanet.Net.Consensus.Context.StartRound(System.Int32)</span> and
+moves step to <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>.
+</li><li>
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_EndCommit">EndCommit</a>, which is the state represents
+committing vote has been received from other validators. Block will be committed
+to the blockchain and consensus for this height is stopped. (responsibility of next
+height handling is at <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html">ConsensusContext</a>).
+</li><li>
+    In the above states, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_Propose">Propose</a>, If
+    receiving proposal fails in <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPropose(System.Int64)</span>, then step is moved to
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and vote NIL.
+</li><li>
+    Similar to Propose, <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreVote">PreVote</a> and
+<a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html#Libplanet_Net_Consensus_ConsensusStep_PreCommit">PreCommit</a> also wait for
+<span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreVote(System.Int64)</span> or <span class="xref">Libplanet.Net.Consensus.Context.TimeoutPreCommit(System.Int64)</span> respectively,
+if +2/3 vote received but neither NIL nor Block is not +2/3. If still +2/3 vote is
+not received neither NIL nor Block after timeout runs out, then move to next step
+and vote NIL.
+</li></ul>
+Validators are bonding/bonded nodes that participate in the consensus.
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a></h4>
+      <section><p>A options class to configure <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> timeout
+for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.Gossip.html">Gossip</a></h4>
+      <section><p>A class gossips messages into network. Peers will be stored and managed by Kademlia DHT.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.html">GossipConsensusMessageCommunicator</a></h4>
+      <section><p>An <a class="xref" href="Libplanet.Net.Consensus.IConsensusMessageCommunicator.html">IConsensusMessageCommunicator</a> implementation using <span class="xref">Libplanet.Net.Consensus.GossipConsensusMessageCommunicator.Gossip</span>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.HeightVoteSet.html">HeightVoteSet</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidConsensusMessageException.html">InvalidConsensusMessageException</a></h4>
+      <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> is invalid.  In particular,
+this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a> is processed, i.e.
+does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> in a meaningful way.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidHeightIncreasingException.html">InvalidHeightIncreasingException</a></h4>
+      <section><p>An exception thrown when a <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_NewHeight_System_Int64_">NewHeight(Int64)</a> has called with
+height is not the index of <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a> + 1.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html">InvalidMaj23Exception</a></h4>
+      <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_Maj23">Maj23</a> is invalid.  In particular,
+this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_Maj23">Maj23</a> is processed, i.e.
+does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> in a meaningful way.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidProposalException.html">InvalidProposalException</a></h4>
+      <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_Proposal">Proposal</a> is invalid.  In particular,
+this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_Proposal">Proposal</a> is processed, i.e.
+does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> in a meaningful way.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.InvalidVoteException.html">InvalidVoteException</a></h4>
+      <section><p>An exception thrown when a received <a class="xref" href="Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_Vote">Vote</a> is invalid.  In particular,
+this is thrown pre-emptively before a <a class="xref" href="Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_Vote">Vote</a> is processed, i.e.
+does not change the state of a <a class="xref" href="Libplanet.Net.Consensus.Context.html">Context</a> in a meaningful way.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.MessageCache.html">MessageCache</a></h4>
+      <section><p>Cache object that stores recently seen <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a></h4>
+      <section></section>
+    <h3 id="structs">Structs
+</h3>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusReactorOption.html">ConsensusReactorOption</a></h4>
+      <section><p>A option struct for initializing <a class="xref" href="Libplanet.Net.Consensus.ConsensusReactor.html">ConsensusReactor</a>.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+</h3>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.IConsensusMessageCommunicator.html">IConsensusMessageCommunicator</a></h4>
+      <section><p>Interface for communicating <a class="xref" href="Libplanet.Net.Messages.ConsensusMsg.html">ConsensusMsg</a>s with peers.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.IReactor.html">IReactor</a></h4>
+      <section><p>A interface of consensus reactors.</p>
+</section>
+    <h3 id="enums">Enums
+</h3>
+      <h4><a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a></h4>
+      <section></section>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
