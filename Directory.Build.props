@@ -4,7 +4,7 @@
     <TargetFrameworks Condition="'$(_IsPacking)'=='true'">net6.0</TargetFrameworks>
     <TargetFramework Condition="'$(_IsPacking)'!='true'">net6.0</TargetFramework>
     <LangVersion>10</LangVersion>
-    <VersionPrefix>5.2.0</VersionPrefix>
+    <VersionPrefix>5.3.0</VersionPrefix>
     <!-- Note: don't be confused by the word "prefix" here.  It's merely a
     version without suffix like "-dev.123".  See the following examples:
     Version: 1.2.3-dev.456
