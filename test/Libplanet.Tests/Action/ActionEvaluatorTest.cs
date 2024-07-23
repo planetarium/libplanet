@@ -309,6 +309,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
             var evaluations = actionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(chain.Tip.Hash)).ToArray();
@@ -1043,6 +1044,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
@@ -1147,6 +1149,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
@@ -1202,6 +1205,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);

@@ -201,7 +201,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableFact]
         public void ForkChainWithIncompleteBlockStates()
         {
-            var fx = new MemoryStoreFixture(_policy.BlockAction);
+            var fx = new MemoryStoreFixture(_policy.PolicyActionsRegistry);
             (_, _, BlockChain chain) =
                 MakeIncompleteBlockStates(fx.Store, fx.StateStore);
             BlockChain forked = chain.Fork(chain[5].Hash);
@@ -262,7 +262,7 @@ namespace Libplanet.Tests.Blockchain
             using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
             {
                 var actionEvaluator = new ActionEvaluator(
-                    _ => _policy.BlockAction,
+                    _policy.PolicyActionsRegistry,
                     stateStore,
                     new SingleActionLoader(typeof(DumbAction)));
                 var privateKey = new PrivateKey();
@@ -294,7 +294,7 @@ namespace Libplanet.Tests.Blockchain
                     stateStore,
                     genesis,
                     new ActionEvaluator(
-                        _ => _policy.BlockAction,
+                        _policy.PolicyActionsRegistry,
                         stateStore: stateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))),
                     renderers: new[] { renderer }
@@ -665,8 +665,8 @@ namespace Libplanet.Tests.Blockchain
             var locator = new BlockLocator(
                 new[] { b4.Hash, b3.Hash, b1.Hash, _blockChain.Genesis.Hash });
 
-            using (var emptyFx = new MemoryStoreFixture(_policy.BlockAction))
-            using (var forkFx = new MemoryStoreFixture(_policy.BlockAction))
+            using (var emptyFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
+            using (var forkFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
             {
                 var emptyChain = BlockChain.Create(
                     _blockChain.Policy,
@@ -675,7 +675,7 @@ namespace Libplanet.Tests.Blockchain
                     emptyFx.StateStore,
                     emptyFx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => _blockChain.Policy.BlockAction,
+                        _blockChain.Policy.PolicyActionsRegistry,
                         stateStore: emptyFx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 var fork = BlockChain.Create(
@@ -685,7 +685,7 @@ namespace Libplanet.Tests.Blockchain
                     forkFx.StateStore,
                     forkFx.GenesisBlock,
                     new ActionEvaluator(
-                        _ => _blockChain.Policy.BlockAction,
+                        _blockChain.Policy.PolicyActionsRegistry,
                         stateStore: forkFx.StateStore,
                         actionTypeLoader: new SingleActionLoader(typeof(DumbAction))));
                 fork.Append(b1, CreateBlockCommit(b1));
