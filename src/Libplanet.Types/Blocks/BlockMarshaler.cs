@@ -316,6 +316,5 @@ namespace Libplanet.Types.Blocks
             marshaled.ContainsKey(ProofKey)
                 ? new Proof(marshaled[ProofKey])
                 : (Proof?)null;
-
     }
 }

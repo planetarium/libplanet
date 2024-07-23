@@ -165,8 +165,8 @@ namespace Libplanet.Types.Blocks
         /// <param name="lastCommit">Goes to <see cref="IBlockMetadata.LastCommit"/>.</param>
         /// <param name="proof">Goes to <see cref="IBlockMetadata.Proof"/>.</param>
         /// <param name="evidenceHash">Goes to <see cref="IBlockMetadata.EvidenceHash"/>.</param>
-        /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address,
-        /// PublicKey?, BlockHash?, HashDigest{SHA256}?, BlockCommit?, Proof?, HashDigest{SHA256}?)"/>
+        /// <seealso cref="BlockMetadata(int, long, DateTimeOffset, Address, PublicKey?,
+        /// BlockHash?, HashDigest{SHA256}?, BlockCommit?, Proof?, HashDigest{SHA256}?)"/>
         public BlockMetadata(
             long index,
             DateTimeOffset timestamp,
