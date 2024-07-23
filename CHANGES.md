@@ -4,9 +4,7 @@ Libplanet changelog
 Version 5.2.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on July 23, 2024.
 
 ### Backward-incompatible API changes
 
@@ -22,23 +20,11 @@ To be released.
  -  (Libplanet.Action) Renamed `IActionContext.BlockAction` property to
     `IActionContext.IsPolicyAction`.  [[#3764]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
 ### Added APIs
 
  -  (Libplanet.Store) Added `MerkleTrie.GenerateProof()` method.  [[#3870]]
  -  (Libplanet.Store) Added `MerkleTrie.ValidateProof()` method.  [[#3870]]
  -  (Libplanet.Action) Added `PolicyActionsRegistry` class.  [[#3748]]
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3870]: https://github.com/planetarium/libplanet/pull/3870
 [#3701]: https://github.com/planetarium/libplanet/pull/3701
