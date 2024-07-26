@@ -1,3 +1,4 @@
+using System;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
-internal class BlockChainService
+public sealed class BlockChainService
 {
     private readonly StoreOption _storeOption;
     private readonly BlockChain _blockChain;

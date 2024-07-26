@@ -1,3 +1,4 @@
+using System;
 using Libplanet.Node.Extensions.NodeBuilder;
 using Libplanet.Node.Options;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,7 @@ public static class LibplanetServicesExtensions
         Action<LibplanetOption> configure)
     {
         services.Configure(configure);
-        return services.AddLibplanetNode();
+        return AddLibplanetNode(services);
     }
 
     public static ILibplanetNodeBuilder AddLibplanetNode(
@@ -20,7 +21,7 @@ public static class LibplanetServicesExtensions
         IConfiguration configuration)
     {
         services.Configure<StoreOption>(configuration.GetSection(StoreOption.Position));
-        return services.AddLibplanetNode();
+        return AddLibplanetNode(services);
     }
 
     private static ILibplanetNodeBuilder AddLibplanetNode(this IServiceCollection services)

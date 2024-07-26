@@ -56,3 +56,6 @@ yarn-error.log*
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# sdk
+.db

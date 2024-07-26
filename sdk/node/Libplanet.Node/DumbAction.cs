@@ -4,15 +4,13 @@ using Libplanet.Action.State;
 
 namespace Libplanet.Node;
 
-public class DumbAction : IAction
+public sealed class DumbAction : IAction
 {
-    public IValue PlainValue
-    {
-        get;
-    }
+    public IValue PlainValue => Dictionary.Empty;
 
     public void LoadPlainValue(IValue plainValue)
     {
+        // Do nothing.
     }
 
     public IWorld Execute(IActionContext context) =>

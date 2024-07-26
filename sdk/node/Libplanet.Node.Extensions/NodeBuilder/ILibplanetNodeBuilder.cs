@@ -1,13 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Libplanet.Node.Extensions.NodeBuilder
+namespace Libplanet.Node.Extensions.NodeBuilder;
+
+public interface ILibplanetNodeBuilder
 {
-    public interface ILibplanetNodeBuilder
-    {
-        public IServiceCollection Services { get; }
+    public IServiceCollection Services { get; }
 
-        public ILibplanetNodeBuilder WithSwarm();
+    public ILibplanetNodeBuilder WithSwarm();
 
-        public ILibplanetNodeBuilder WithValidate();
-    }
+    public ILibplanetNodeBuilder WithValidate();
 }

@@ -1,16 +1,17 @@
-namespace Libplanet.Node.Options
+using System.IO;
+
+namespace Libplanet.Node.Options;
+
+public class StoreOption
 {
-    public class StoreOption
-    {
-        public const string Position = "Store";
+    public const string Position = "Store";
 
-        public string RootPath { get; set; } =
-            Path.Combine(Directory.GetCurrentDirectory(), "db");
+    public string RootPath { get; set; } =
+        Path.Combine(Directory.GetCurrentDirectory(), ".db");
 
-        public StoreType Type { get; set; } = StoreType.RocksDB;
+    public StoreType Type { get; set; } = StoreType.RocksDB;
 
-        public string StorePath => Path.Combine(RootPath, "store");
+    public string StorePath => Path.Combine(RootPath, "store");
 
-        public string StateStorePath => Path.Combine(RootPath, "state");
-    }
+    public string StateStorePath => Path.Combine(RootPath, "state");
 }

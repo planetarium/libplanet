@@ -1,8 +1,7 @@
-namespace Libplanet.Node.Options
+namespace Libplanet.Node.Options;
+
+public enum StoreType
 {
-    public enum StoreType
-    {
-        RocksDB,
-        InMemory,
-    }
+    RocksDB,
+    InMemory,
 }
