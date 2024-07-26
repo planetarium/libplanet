@@ -6,7 +6,7 @@ public class ReadChainService : IReadChainService
 {
     private readonly BlockChainService _blockChainService;
 
-    internal ReadChainService(BlockChainService blockChainService)
+    public ReadChainService(BlockChainService blockChainService)
     {
         _blockChainService = blockChainService;
     }

@@ -1,7 +1,6 @@
-namespace Libplanet.Node.Options
+namespace Libplanet.Node.Options;
+
+public class LibplanetOption
 {
-    public class LibplanetOption
-    {
-        public StoreOption Store { get; set; } = new StoreOption();
-    }
+    public StoreOption Store { get; set; } = new StoreOption();
 }
