@@ -16,6 +16,7 @@ version_prefix="$(cat obj/version_prefix.txt)" # e.g. 0.50.0
 if [[ -f obj/version_suffix.txt ]]; then       # e.g. dev.20230221015836+35a2dbc
   version_suffix="$(cat obj/version_suffix.txt)"
 fi
+repository_url="$(cat obj/repository_url.txt)"
 
 for project in "${executables[@]}"; do
   for rid in "${rids[@]}"; do
@@ -63,6 +64,11 @@ for project in "${projects[@]}"; do
     dotnet_args="$dotnet_args --version-suffix=$version_suffix"
     dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
   fi
+
+  if [[ "$repository_url" != "" ]]; then
+    dotnet_args="$dotnet_args -p:RepositoryUrl=$repository_url"
+  fi
+
   dotnet_args="$dotnet_args -p:_IsPacking=true"
   # shellcheck disable=SC2086
   dotnet build -c "$configuration" $dotnet_args || \
