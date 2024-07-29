@@ -56,6 +56,7 @@ jobs:
         VERSION_SUFFIX: ${{ steps.determine-version.outputs.version-suffix }}
         PACKAGE_VERSION: ${{ steps.determine-version.outputs.package-version }}
         VERSION_TYPE: ${{ steps.determine-version.outputs.version-type }}
+    - run: echo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/$GITHUB_SHA" > obj/repository_url.txt
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
     - uses: actions/upload-artifact@main
       with:
