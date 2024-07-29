@@ -529,6 +529,7 @@ namespace Libplanet.Blockchain
         /// to add.</param>
         /// <param name="blockCommit">A <see cref="BlockCommit"/> that has +2/3 commits for the
         /// given block.</param>
+        /// <param name="validate">Validate block.</param>
         /// <exception cref="BlockPolicyViolationException">Thrown when given
         /// <paramref name="block"/> does not satisfy any of the constraints
         /// validated by <see cref="IBlockPolicy.ValidateNextBlock"/> of <see cref="Policy"/>.
@@ -545,7 +546,8 @@ namespace Libplanet.Blockchain
         /// <paramref name="block"/> and <paramref name="blockCommit"/> is invalid.</exception>
         public void Append(
             Block block,
-            BlockCommit blockCommit)
+            BlockCommit blockCommit,
+            bool validate = true)
         {
             if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
@@ -553,7 +555,7 @@ namespace Libplanet.Blockchain
             }
             else
             {
-                Append(block, blockCommit, render: true);
+                Append(block, blockCommit, render: true, validate: validate);
             }
         }
 
@@ -780,7 +782,8 @@ namespace Libplanet.Blockchain
         internal void Append(
             Block block,
             BlockCommit blockCommit,
-            bool render)
+            bool render,
+            bool validate = true)
         {
             if (Count == 0)
             {
@@ -797,14 +800,20 @@ namespace Libplanet.Blockchain
             _logger.Information(
                 "Trying to append block #{BlockIndex} {BlockHash}...", block.Index, block.Hash);
 
-            block.ValidateTimestamp();
+            if (validate)
+            {
+                block.ValidateTimestamp();
+            }
 
             _rwlock.EnterUpgradeableReadLock();
             Block prevTip = Tip;
             try
             {
-                ValidateBlock(block);
-                ValidateBlockCommit(block, blockCommit);
+                if (validate)
+                {
+                    ValidateBlock(block);
+                    ValidateBlockCommit(block, blockCommit);
+                }
 
                 var nonceDeltas = ValidateBlockNonces(
                     block.Transactions
@@ -813,14 +822,19 @@ namespace Libplanet.Blockchain
                         .ToDictionary(signer => signer, signer => Store.GetTxNonce(Id, signer)),
                     block);
 
-                if (Policy.ValidateNextBlock(this, block) is { } bpve)
+                if (validate)
+                {
+                    ValidateBlockLoadActions(block);
+                }
+
+                if (validate && Policy.ValidateNextBlock(this, block) is { } bpve)
                 {
                     throw bpve;
                 }
 
                 foreach (Transaction tx in block.Transactions)
                 {
-                    if (Policy.ValidateNextBlockTx(this, tx) is { } tpve)
+                    if (validate && Policy.ValidateNextBlockTx(this, tx) is { } tpve)
                     {
                         throw new TxPolicyViolationException(
                             "According to BlockPolicy, this transaction is not valid.",
@@ -832,7 +846,10 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
-                    ValidateBlockStateRootHash(block);
+                    if (validate)
+                    {
+                        ValidateBlockStateRootHash(block);
+                    }
 
                     // FIXME: Using evaluateActions as a proxy flag for preloading status.
                     const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
