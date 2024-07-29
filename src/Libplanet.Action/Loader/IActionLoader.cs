@@ -1,4 +1,6 @@
+using System.Security.Cryptography;
 using Bencodex.Types;
+using Libplanet.Common;
 
 namespace Libplanet.Action.Loader
 {
@@ -20,5 +22,7 @@ namespace Libplanet.Action.Loader
         /// </exception>
         /// <returns>An <see cref="IAction"/> instantiated with <paramref name="value"/>.</returns>
         public IAction LoadAction(long index, IValue value);
+
+        public IAction LoadAction(HashDigest<SHA256> rootHash, IValue value);
     }
 }
