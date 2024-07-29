@@ -33,31 +33,14 @@ namespace Libplanet.Explorer.Queries
                             "offset index range to query, not the result, i.e. excluded " +
                             "blocks due to a block being empty or not matching the miner " +
                             "(if specified in other arguments) are still counted.",
-                    },
-                    new QueryArgument<NonNullGraphType<BooleanGraphType>>
-                    {
-                        Name = "excludeEmptyTxs",
-                        Description =
-                            "Whether to include empty blocks with no transactions or not. " +
-                            "Default is set to false, i.e. to return empty blocks.",
-                        DefaultValue = false,
-                    },
-                    new QueryArgument<AddressType>
-                    {
-                        Name = "miner",
-                        Description =
-                            "If not null, returns blocks only by mined by the address given. " +
-                            "Default is set to null.",
                     }
                 ),
                 resolve: context =>
                 {
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
-                    int? limit = context.GetArgument<int?>("limit", null);
-                    bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
-                    Address? miner = context.GetArgument<Address?>("miner", null);
-                    return ExplorerQuery.ListBlocks(desc, offset, limit, excludeEmptyTxs, miner);
+                    int? limit = context.GetArgument<int?>("limit", 100);
+                    return ExplorerQuery.ListBlocks(desc, offset, limit);
                 }
             );
 
