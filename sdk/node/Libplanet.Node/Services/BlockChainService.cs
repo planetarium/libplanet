@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
@@ -13,20 +12,22 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
-public sealed class BlockChainService
+public class BlockChainService
 {
     private readonly StoreOption _storeOption;
     private readonly BlockChain _blockChain;
 
-    public BlockChainService(IOptions<StoreOption> storeOption)
+    public BlockChainService(
+        PolicyService policyService,
+        IOptions<StoreOption> storeOption)
     {
         _storeOption = storeOption.Value;
-        _blockChain = CreateBlockChain();
+        _blockChain = CreateBlockChain(policyService.StagePolicy);
     }
 
     public BlockChain GetBlockChain() => _blockChain;
 
-    private BlockChain CreateBlockChain()
+    private BlockChain CreateBlockChain(IStagePolicy stagePolicy)
     {
         var (store, stateStore) = CreateStore();
 
@@ -45,7 +46,7 @@ public sealed class BlockChainService
         {
             return BlockChain.Create(
                 new BlockPolicy(),
-                new VolatileStagePolicy(),
+                stagePolicy,
                 store,
                 stateStore,
                 genesis,
@@ -55,7 +56,7 @@ public sealed class BlockChainService
         {
             return new BlockChain(
                 new BlockPolicy(),
-                new VolatileStagePolicy(),
+                stagePolicy,
                 store,
                 stateStore,
                 genesis,

@@ -1,4 +1,3 @@
-using System;
 using Libplanet.Node.Extensions.NodeBuilder;
 using Libplanet.Node.Options;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +20,8 @@ public static class LibplanetServicesExtensions
         IConfiguration configuration)
     {
         services.Configure<StoreOption>(configuration.GetSection(StoreOption.Position));
-        return AddLibplanetNode(services);
+        services.Configure<SoloProposeOption>(configuration.GetSection(SoloProposeOption.Position));
+        return services.AddLibplanetNode();
     }
 
     private static ILibplanetNodeBuilder AddLibplanetNode(this IServiceCollection services)
