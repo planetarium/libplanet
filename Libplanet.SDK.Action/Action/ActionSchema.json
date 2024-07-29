@@ -1,6 +1,7 @@
 {
   "type_id": "Bar",
-  "value": {
+  "contract_address": "",
+  "values": {
     "call": "HelloWorld",
     "args": ["Alice", "1000"]
   }
