@@ -52,6 +52,11 @@ Released on July 30, 2024.
 
 [#3898]: https://github.com/planetarium/libplanet/pull/3898
 
+ - (Libplanet.Explorer) Fix an issue with high CPU usage
+   when querying blocks [[#3897]]
+
+[#3897]: https://github.com/planetarium/libplanet/pull/3897
+
 
 Version 5.1.2
 -------------
