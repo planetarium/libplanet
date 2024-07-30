@@ -6,6 +6,7 @@
 See also the docs for details:
 https://docs.libplanet.io/</Description>
     <!-- FIXME: The above summary/description should be rewritten. -->
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>

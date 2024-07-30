@@ -3,6 +3,7 @@
   <PropertyGroup>
     <Summary>A Libplanet.IStore implementation using RocksDB</Summary>
     <Description>A Libplanet.IStore implementation using RocksDB</Description>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
