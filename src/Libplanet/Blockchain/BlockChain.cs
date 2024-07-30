@@ -677,22 +677,12 @@ namespace Libplanet.Blockchain
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            // FIXME Theoretically, we don't accept empty chain. so `tip` can't be null on this
-            // assumption. but during some test case(e.g. GetDemandBlockHashesDuringReorg),
-            // it had been occurred.
-            // We should find a reason for that and fix it before remote this early return.
-            BlockHash? tip = Store.IndexBlockHash(Id, -1);
-            if (tip is null)
+            if (!(FindBranchpoint(locator) is { } branchpoint))
             {
                 return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
 
-            if (!(FindBranchpoint(locator) is BlockHash branchpoint))
-            {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
-            }
-
-            if (!(Store.GetBlockIndex(branchpoint) is long branchpointIndex))
+            if (!(Store.GetBlockIndex(branchpoint) is { } branchpointIndex))
             {
                 return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
             }
