@@ -803,7 +803,7 @@ namespace Libplanet.Tests.Blockchain
                 blocks.Add(block);
             }
 
-            BlockLocator actual = _blockChain.GetBlockLocator(threshold: 3);
+            BlockLocator actual = _blockChain.GetBlockLocator();
             BlockLocator expected = new BlockLocator(new[]
             {
                 blocks[9].Hash,

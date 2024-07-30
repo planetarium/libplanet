@@ -35,18 +35,15 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 BlockLocator.Create(
                     startIndex: -1,
-                    indexToBlockHash: i => (BlockHash?)indexToBlockHash(i),
-                    sampleAfter: 0));
+                    indexToBlockHash: i => (BlockHash?)indexToBlockHash(i)));
             Assert.Throws<ArgumentException>(() =>
                 BlockLocator.Create(
                     startIndex: 0,
-                    indexToBlockHash: i => i == 0 ? null : (BlockHash?)indexToBlockHash(i),
-                    sampleAfter: 0));
+                    indexToBlockHash: i => i == 0 ? null : (BlockHash?)indexToBlockHash(i)));
 
             var locator = BlockLocator.Create(
                 startIndex: hashes.Count - 1,
-                indexToBlockHash: i => (BlockHash?)indexToBlockHash(i),
-                sampleAfter: 0);
+                indexToBlockHash: i => (BlockHash?)indexToBlockHash(i));
             var expected = new BlockHash[]
             {
                 hashes[0xf],
@@ -57,8 +54,7 @@ namespace Libplanet.Tests.Blockchain
 
             locator = BlockLocator.Create(
                 startIndex: hashes.Count - 3,
-                indexToBlockHash: i => (BlockHash?)indexToBlockHash(i),
-                sampleAfter: 0);
+                indexToBlockHash: i => (BlockHash?)indexToBlockHash(i));
             expected = new BlockHash[]
             {
                 hashes[0xd],
@@ -69,8 +65,7 @@ namespace Libplanet.Tests.Blockchain
 
             locator = BlockLocator.Create(
                 startIndex: 0,
-                indexToBlockHash: i => (BlockHash?)indexToBlockHash(i),
-                sampleAfter: 0);
+                indexToBlockHash: i => (BlockHash?)indexToBlockHash(i));
             expected = new BlockHash[]
             {
                 hashes[0x0],
@@ -80,8 +75,7 @@ namespace Libplanet.Tests.Blockchain
 
             locator = BlockLocator.Create(
                 startIndex: count,
-                indexToBlockHash: i => i >= count ? null : (BlockHash?)indexToBlockHash(i),
-                sampleAfter: 0);
+                indexToBlockHash: i => i >= count ? null : (BlockHash?)indexToBlockHash(i));
             expected = new BlockHash[]
             {
                 hashes[0x0],

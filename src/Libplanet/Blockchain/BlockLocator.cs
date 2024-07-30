@@ -30,8 +30,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// <para>
         /// Creates a new instance of <see cref="BlockLocator"/> with an indexer
-        /// function, sampling after <paramref name="sampleAfter"/> number of
-        /// <see cref="Block"/>s.
+        /// function.
         /// </para>
         /// <para>
         /// This collects all <see cref="BlockHash"/>es corresponding to indices inductively
@@ -61,8 +60,6 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockHash"/>.  This can be <see langword="null"/> which indicates
         /// a missing <see cref="Block"/> at the index.  Any value from <c>0</c> to
         /// <paramref name="startIndex"/> may be used as an argument to call this function.</param>
-        /// <param name="sampleAfter">The number of consecutive blocks to include before sampling.
-        /// </param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="startIndex"/>
         /// is negative.</exception>
         /// <exception cref="ArgumentException">Thrown when either <see cref="BlockHash"/> returned
@@ -77,8 +74,7 @@ namespace Libplanet.Blockchain
         /// </remarks>
         public static BlockLocator Create(
             long startIndex,
-            Func<long, BlockHash?> indexToBlockHash,
-            long sampleAfter = 10)
+            Func<long, BlockHash?> indexToBlockHash)
         {
             if (startIndex < 0)
             {

@@ -437,7 +437,7 @@ namespace Libplanet.Net
         {
             var sessionRandom = new Random();
             int subSessionId = sessionRandom.Next();
-            BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
+            BlockLocator locator = blockChain.GetBlockLocator();
             Block tip = blockChain.Tip;
 
             IAsyncEnumerable<Tuple<long, BlockHash>> hashesAsync = GetBlockHashes(
