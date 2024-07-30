@@ -1118,32 +1118,11 @@ namespace Libplanet.Net
                             );
                         }
 
-                        locator = BlockLocator.Create(
-                            startIndex: branchingIndex + downloaded.Count,
-                            idx =>
-                            {
-                                long arg = idx;
-                                if (idx <= branchingIndex)
-                                {
-                                    return blockChain.Store.IndexBlockHash(blockChain.Id, idx);
-                                }
-
-                                int relIdx = (int)(idx - branchingIndex - 1);
-
-                                try
-                                {
-                                    return downloaded[relIdx];
-                                }
-                                catch (ArgumentOutOfRangeException e)
-                                {
-                                    const string msg =
-                                        "Failed to look up a block hash by its index {Index} " +
-                                        "(branching index: {BranchingIndex}; " +
-                                        "downloaded: {Downloaded})";
-                                    _logger.Error(e, msg, arg, branchingIndex, downloaded.Count);
-                                    return null;
-                                }
-                            });
+                        locator = downloaded.Count > 0
+                            ? BlockLocator.Create(
+                                genesisHash: blockChain.Genesis.Hash,
+                                tipHash: downloaded.Last())
+                            : locator;
                     }
                     while (downloaded.Count < chunkBlockHashesToDownload);
                 }
