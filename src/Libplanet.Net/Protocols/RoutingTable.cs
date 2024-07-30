@@ -34,11 +34,13 @@ namespace Libplanet.Net.Protocols
             if (tableSize <= 0)
             {
                 throw new ArgumentOutOfRangeException(
+                    nameof(tableSize),
                     $"The value of {nameof(tableSize)} must be positive.");
             }
             else if (bucketSize <= 0)
             {
                 throw new ArgumentOutOfRangeException(
+                    nameof(bucketSize),
                     $"The value of {nameof(bucketSize)} must be positive.");
             }
 

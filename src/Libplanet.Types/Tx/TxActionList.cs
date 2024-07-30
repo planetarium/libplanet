@@ -80,8 +80,8 @@ namespace Libplanet.Types.Tx
                 if (index < 0)
                 {
                     throw new ArgumentOutOfRangeException(
-                        "Only non-negative index is valid for subscription of a " +
-                        $"{nameof(TxActionList)} instance.");
+                        nameof(index),
+                        $"Given {nameof(index)} must be non-negative: {index}");
                 }
                 else if (index >= Count)
                 {
