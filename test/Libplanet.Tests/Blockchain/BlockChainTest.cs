@@ -807,11 +807,6 @@ namespace Libplanet.Tests.Blockchain
             BlockLocator expected = new BlockLocator(new[]
             {
                 blocks[9].Hash,
-                blocks[8].Hash,
-                blocks[7].Hash,
-                blocks[6].Hash,
-                blocks[5].Hash,
-                blocks[3].Hash,
                 _blockChain.Genesis.Hash,
             });
 
