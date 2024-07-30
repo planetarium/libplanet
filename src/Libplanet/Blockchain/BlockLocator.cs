@@ -92,20 +92,12 @@ namespace Libplanet.Blockchain
                     $"Given {nameof(indexToBlockHash)} should not be null at zero index.",
                     nameof(indexToBlockHash));
             var hashes = new List<BlockHash>();
-
-            foreach (long index in GetEnumeratedIndices(startIndex, sampleAfter))
+            if (startIndex > 0 && indexToBlockHash(startIndex) is { } hash)
             {
-                if (indexToBlockHash(index) is { } hash)
-                {
-                    hashes.Add(hash);
-                }
-                else
-                {
-                    hashes.Add(genesisHash);
-                    break;
-                }
+                hashes.Add(hash);
             }
 
+            hashes.Add(genesisHash);
             return new BlockLocator(hashes);
         }
 
@@ -121,20 +113,6 @@ namespace Libplanet.Blockchain
         IEnumerator IEnumerable.GetEnumerator()
         {
             return _impl.GetEnumerator();
-        }
-
-        private static IEnumerable<long> GetEnumeratedIndices(long startIndex, long sampleAfter)
-        {
-            long currentIndex = startIndex;
-            long step = 1;
-            while (currentIndex > 0)
-            {
-                yield return currentIndex;
-                currentIndex = Math.Max(currentIndex - step, 0);
-                step = startIndex - currentIndex <= sampleAfter ? step : step * 2;
-            }
-
-            yield return currentIndex;
         }
     }
 }
