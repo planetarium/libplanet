@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.1.3
 -------------
 
-To be released.
+Released on July 30, 2024.
 
  -  (Libplanet.Explorer) Removed code that was used in development.  [[#3898]]
 
