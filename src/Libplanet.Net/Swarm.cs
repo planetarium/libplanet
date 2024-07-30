@@ -1329,10 +1329,7 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(broadcastBlockInterval, cancellationToken);
-                    if (BlockChain.Tip is { } tip)
-                    {
-                        BroadcastBlock(tip);
-                    }
+                    BroadcastBlock(BlockChain.Tip);
                 }
                 catch (OperationCanceledException e)
                 {
