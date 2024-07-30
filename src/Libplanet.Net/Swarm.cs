@@ -999,7 +999,7 @@ namespace Libplanet.Net
             [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
-            BlockLocator locator = blockChain.GetBlockLocator(Options.BranchpointThreshold);
+            BlockLocator locator = blockChain.GetBlockLocator();
             var exceptions = new List<Exception>();
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
