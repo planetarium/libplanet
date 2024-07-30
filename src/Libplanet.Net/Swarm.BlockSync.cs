@@ -92,14 +92,13 @@ namespace Libplanet.Net
                     completionPredicate: BlockChain.ContainsBlock,
                     window: InitialBlockDownloadWindow
                 );
-                var demandBlockHashes = GetDemandBlockHashes(
+                var demandBlockHashes = await GetDemandBlockHashes(
                     BlockChain,
                     peersWithBlockExcerpt,
                     chunkSize,
                     progress,
-                    cancellationToken
-                ).WithCancellation(cancellationToken);
-                await foreach ((long index, BlockHash hash) in demandBlockHashes)
+                    cancellationToken);
+                foreach ((long index, BlockHash hash) in demandBlockHashes)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 

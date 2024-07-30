@@ -151,7 +151,6 @@ namespace Libplanet.Net
             bool forked = false;
 
             Block oldTip = blockChain.Tip;
-            Block newTip = candidate.Blocks.Last().Item1;
             List<(Block, BlockCommit)> blocks = candidate.Blocks.ToList();
             Block branchpoint = FindBranchpoint(
                  oldTip,
@@ -441,14 +440,13 @@ namespace Libplanet.Net
             BlockLocator locator = blockChain.GetBlockLocator();
             Block tip = blockChain.Tip;
 
-            IAsyncEnumerable<Tuple<long, BlockHash>> hashesAsync = GetBlockHashes(
+            List<(long, BlockHash)> hashes = await GetBlockHashes(
                 peer: peer,
                 locator: locator,
                 stop: stop.Hash,
                 timeout: null,
                 logSessionIds: (logSessionId, subSessionId),
                 cancellationToken: cancellationToken);
-            IEnumerable<Tuple<long, BlockHash>> hashes = await hashesAsync.ToArrayAsync();
 
             if (!hashes.Any())
             {
