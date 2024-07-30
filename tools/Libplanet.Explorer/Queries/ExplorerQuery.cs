@@ -51,51 +51,12 @@ namespace Libplanet.Explorer.Queries
             long tipIndex = tip.Index;
             IStore store = ChainContext.Store;
 
-            if (desc)
-            {
-                if (offset < 0)
-                {
-                    offset = tipIndex + offset + 1;
-                }
-                else
-                {
-                    offset = tipIndex - offset + 1 - (limit ?? 0);
-                }
-            }
-            else
-            {
-                if (offset < 0)
-                {
-                    offset = tipIndex + offset + 1;
-                }
-            }
-
-            var indexList = store.IterateIndexes(
-                    Chain.Id,
-                    (int)offset,
-                    limit == null ? null : (int)limit)
-                .Select((value, i) => new { i, value });
-
-            if (desc)
-            {
-                indexList = indexList.Reverse();
-            }
-
-            foreach (var index in indexList)
-            {
-                Block block = store.GetBlock(index.value)
-                    ?? throw new InvalidOperationException(
-                        $"Could not find block with block hash {index.value} in store.");
-
-                bool isMinerValid = miner is null || miner == block.Miner;
-                bool isTxValid = !excludeEmptyTxs || block.Transactions.Any();
-                if (!isMinerValid || !isTxValid)
-                {
-                    continue;
-                }
-
-                yield return block;
-            }
+            var blocks = ListBlocks(
+                Chain,
+                desc ? tipIndex - offset - (limit ?? 100) : offset,
+                limit ?? 100);
+            return desc ? blocks.OrderByDescending(x => x.Index)
+                : blocks.OrderBy(x => x.Index);
         }
 
         internal static IEnumerable<Transaction> ListTransactions(
@@ -111,27 +72,32 @@ namespace Libplanet.Explorer.Queries
 
             if (tipIndex < offset || offset < 0)
             {
-                yield break;
+                return new List<Transaction>();
             }
 
-            Block? block = Chain[desc ? tipIndex - offset : offset];
-            while (!(block is null) && (limit is null || limit > 0))
+            List<Transaction> result = new List<Transaction>();
+            const int batchSize = 3;
+
+            while (result.Count < (limit ?? 100))
             {
-                foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
+                var blocks = ListBlocks(
+                    Chain,
+                    desc ? tipIndex - offset - batchSize : offset,
+                    batchSize);
+                var transactions = blocks
+                    .SelectMany(x => x.Transactions)
+                    .Where(x => IsValidTransaction(x, signer));
+                var delta = (limit ?? 100) - result.Count;
+                if (delta <= 0)
                 {
-                    if (IsValidTransaction(tx, signer))
-                    {
-                        yield return tx;
-                        limit--;
-                        if (limit <= 0)
-                        {
-                            break;
-                        }
-                    }
+                    break;
                 }
 
-                block = GetNextBlock(block, desc);
+                result.AddRange(transactions.Take(delta));
+                offset += batchSize;
             }
+
+            return result;
         }
 
         internal static IEnumerable<Transaction> ListStagedTransactions(
@@ -210,6 +176,21 @@ namespace Libplanet.Explorer.Queries
             }
 
             return null;
+        }
+
+        private static IEnumerable<Block> ListBlocks(BlockChain chain, long from, long limit)
+        {
+            if (chain.Tip.Index < from)
+            {
+                return new List<Block>();
+            }
+
+            var count = (int)Math.Min(limit, chain.Tip.Index - from + 1);
+            var blocks = Enumerable.Range(0, count)
+                .Select(offset => chain[from + offset])
+                .OrderBy(block => block.Index);
+
+            return blocks;
         }
 
         private static bool IsValidTransaction(
