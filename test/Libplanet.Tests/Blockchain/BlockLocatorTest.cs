@@ -4,19 +4,11 @@ using System.Linq;
 using Libplanet.Blockchain;
 using Libplanet.Types.Blocks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Blockchain
 {
     public class BlockLocatorTest
     {
-        private readonly ITestOutputHelper _output;
-
-        public BlockLocatorTest(ITestOutputHelper output)
-        {
-            _output = output;
-        }
-
         [Fact]
         public void Constructor()
         {
@@ -25,11 +17,12 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void Factory()
+        public void Create()
         {
             // Generate fixture block hashes looks like 0x00...00 0x00...01, 0x00...02, and so on,
             // for the sake of easier debugging.
-            List<long> indices = Enumerable.Range(0, 0x10).Select(i => (long)i).ToList();
+            const int count = 0x10;
+            List<long> indices = Enumerable.Range(0, count).Select(i => (long)i).ToList();
             Func<long, BlockHash> indexToBlockHash = i =>
             {
                 byte[] bytes = GetBigEndianBytes(i);
@@ -38,14 +31,6 @@ namespace Libplanet.Tests.Blockchain
                 return new BlockHash(buffer);
             };
             List<BlockHash> hashes = indices.Select(i => indexToBlockHash(i)).ToList();
-            Action<BlockLocator> printLocator = loc =>
-            {
-                _output.WriteLine(
-                    string.Join(", ", loc
-                        .Select(hash => hash.ToString())
-                        .Select(str => str.Substring(str.Length - 2))
-                        .Select(str => $"0x00..{str}")));
-            };
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 BlockLocator.Create(
@@ -64,52 +49,44 @@ namespace Libplanet.Tests.Blockchain
                 sampleAfter: 0);
             var expected = new BlockHash[]
             {
-                hashes[0xf],    // Sampling starts here.
-                hashes[0xe],
-                hashes[0xc],
-                hashes[0x8],
+                hashes[0xf],
                 hashes[0x0],
             };
 
-            printLocator(locator);
             Assert.Equal(expected, locator);
 
             locator = BlockLocator.Create(
-                startIndex: hashes.Count - 1,
+                startIndex: hashes.Count - 3,
                 indexToBlockHash: i => (BlockHash?)indexToBlockHash(i),
-                sampleAfter: 1);
+                sampleAfter: 0);
             expected = new BlockHash[]
             {
-                hashes[0xf],
-                hashes[0xe],    // Sampling starts here.
                 hashes[0xd],
-                hashes[0xb],
-                hashes[0x7],
                 hashes[0x0],
             };
 
-            printLocator(locator);
             Assert.Equal(expected, locator);
 
             locator = BlockLocator.Create(
-                startIndex: hashes.Count - 1,
+                startIndex: 0,
                 indexToBlockHash: i => (BlockHash?)indexToBlockHash(i),
-                sampleAfter: 5);
+                sampleAfter: 0);
             expected = new BlockHash[]
             {
-                hashes[0xf],
-                hashes[0xe],
-                hashes[0xd],
-                hashes[0xc],
-                hashes[0xb],
-                hashes[0xa],    // Sampling starts here.
-                hashes[0x9],
-                hashes[0x7],
-                hashes[0x3],
                 hashes[0x0],
             };
 
-            printLocator(locator);
+            Assert.Equal(expected, locator);
+
+            locator = BlockLocator.Create(
+                startIndex: count,
+                indexToBlockHash: i => i >= count ? null : (BlockHash?)indexToBlockHash(i),
+                sampleAfter: 0);
+            expected = new BlockHash[]
+            {
+                hashes[0x0],
+            };
+
             Assert.Equal(expected, locator);
         }
 
