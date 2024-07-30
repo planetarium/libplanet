@@ -191,7 +191,7 @@ namespace Libplanet.Net
 
                     block.ValidateTimestamp();
                     blocks.Add((block, commit));
-                    if (tempTip is null || block.Index > tempTip.Index)
+                    if (block.Index > tempTip.Index)
                     {
                         tempTip = block;
                     }
