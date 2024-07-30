@@ -6,6 +6,11 @@ Version 5.2.1
 
 To be released.
 
+-  Ported changes from [Libplanet 5.1.3] release.  [[#3902]]
+
+[#3902]: https://github.com/planetarium/libplanet/pull/3902
+[Libplanet 5.1.3]: https://www.nuget.org/packages/Libplanet/5.1.3
+
 
 Version 5.2.0
 -------------
@@ -36,6 +41,16 @@ Released on July 23, 2024.
 [#3701]: https://github.com/planetarium/libplanet/pull/3701
 [#3748]: https://github.com/planetarium/libplanet/pull/3748
 [#3764]: https://github.com/planetarium/libplanet/pull/3764
+
+
+Version 5.1.3
+-------------
+
+Released on July 30, 2024.
+
+ -  (Libplanet.Explorer) Removed code that was used in development.  [[#3898]]
+
+[#3898]: https://github.com/planetarium/libplanet/pull/3898
 
 
 Version 5.1.2
