@@ -54,8 +54,8 @@ namespace Libplanet.Types.Evidence
             if (evidenceId.Length != Size)
             {
                 throw new ArgumentOutOfRangeException(
-                    paramName: nameof(evidenceId),
-                    message: $"Given {nameof(evidenceId)} must be {Size} bytes.");
+                    nameof(evidenceId),
+                    $"Given {nameof(evidenceId)} must be {Size} bytes.");
             }
 
             _byteArray = evidenceId;

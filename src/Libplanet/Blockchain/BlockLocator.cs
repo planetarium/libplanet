@@ -83,8 +83,8 @@ namespace Libplanet.Blockchain
             if (startIndex < 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"Given {nameof(startIndex)} cannot be negative: {startIndex}",
-                    nameof(startIndex));
+                    nameof(startIndex),
+                    $"Given {nameof(startIndex)} cannot be negative: {startIndex}");
             }
 
             BlockHash genesisHash = indexToBlockHash(0) ??

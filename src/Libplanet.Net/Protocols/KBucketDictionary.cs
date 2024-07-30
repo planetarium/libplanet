@@ -48,6 +48,7 @@ namespace Libplanet.Net.Protocols
             if (size <= 0)
             {
                 throw new ArgumentOutOfRangeException(
+                    nameof(size),
                     $"The value of {nameof(size)} must be positive.");
             }
 

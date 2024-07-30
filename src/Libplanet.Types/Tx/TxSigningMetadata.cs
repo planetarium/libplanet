@@ -25,9 +25,8 @@ namespace Libplanet.Types.Tx
             if (nonce < 0)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"The nonce must be greater than or equal to 0, but {nonce} was given.",
-                    nameof(nonce)
-                );
+                    nameof(nonce),
+                    $"The nonce must be greater than or equal to 0, but {nonce} was given.");
             }
 
             PublicKey = publicKey;

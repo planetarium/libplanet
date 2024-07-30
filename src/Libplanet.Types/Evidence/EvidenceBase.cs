@@ -42,8 +42,8 @@ namespace Libplanet.Types.Evidence
             if (height < 0L)
             {
                 throw new ArgumentOutOfRangeException(
-                    message: $"Parameter {nameof(height)} must be greater than or equal to 0.",
-                    paramName: nameof(height));
+                    nameof(height),
+                    $"Parameter {nameof(height)} must be greater than or equal to 0.");
             }
 
             Height = height;
