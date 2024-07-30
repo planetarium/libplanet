@@ -6,6 +6,10 @@ Version 5.1.3
 
 To be released.
 
+ -  (Libplanet.Explorer) Removed code that was used in development.  [[#3898]]
+
+[#3898]: https://github.com/planetarium/libplanet/pull/3898
+
 
 Version 5.1.2
 -------------
