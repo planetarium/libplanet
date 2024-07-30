@@ -815,22 +815,17 @@ namespace Libplanet.Blockchain
         /// <returns>A instance of block locator.</returns>
         public BlockLocator GetBlockLocator()
         {
-            long startIndex;
-            Guid id;
             _rwlock.EnterReadLock();
             try
             {
-                startIndex = Tip.Index;
-                id = Id;
+                return BlockLocator.Create(
+                    genesisHash: Genesis.Hash,
+                    tipHash: Tip.Hash);
             }
             finally
             {
                 _rwlock.ExitReadLock();
             }
-
-            return BlockLocator.Create(
-                startIndex: startIndex,
-                indexToBlockHash: idx => Store.IndexBlockHash(Id, idx));
         }
 
         /// <summary>
