@@ -12,7 +12,6 @@ namespace Libplanet.Explorer.Schemas
             : base(serviceProvider)
         {
             Query = serviceProvider.GetRequiredService<ExplorerQuery>();
-            Mutation = serviceProvider.GetRequiredService<ExplorerMutation>();
         }
     }
 }
