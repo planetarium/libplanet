@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.SDK.Tests;
@@ -43,12 +45,17 @@ public class MockActionContext : IActionContext
         get;
     }
 
-    public bool BlockAction
+    public bool IsPolicyAction
     {
         get;
     }
 
     public IReadOnlyList<ITransaction> Txs
+    {
+        get;
+    }
+
+    public IReadOnlyList<EvidenceBase> Evidence
     {
         get;
     }

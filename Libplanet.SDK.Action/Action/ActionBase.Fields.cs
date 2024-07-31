@@ -4,14 +4,11 @@ using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 
-namespace Libplanet.SDK.Action.ActionBase
+namespace Libplanet.SDK.Action
 {
     public partial class ActionBase
     {
-        private static readonly Address MetadataAddress
-            = new Address("999999cf1046e68e36E1aA2E0E07105eDDD1f08E");
-
-
+        private string? _name = null;
         private IValue? _args = null;
         private string? _call = null;
 
@@ -22,4 +19,3 @@ namespace Libplanet.SDK.Action.ActionBase
         private IWorld? _world = null;
     }
 }
-
