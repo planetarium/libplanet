@@ -1,0 +1,439 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet changelog | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet changelog | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-changelog">Libplanet changelog</h1>
+
+<h2 id="version-250">Version 2.5.0</h2>
+<p>Released on July 12, 2023.</p>
+<p>Due to changes in [<a href="https://github.com/planetarium/libplanet/pull/3272">#3272</a>], a network ran with a prior version may not
+be compatible with this version.</p>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Net) Added
+<code>Gossip.PublishMessage(MessageContent, IEnumerable&lt;BoundPeer&gt;)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.AddMaj23()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.GetVoteSetBits()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.GetVoteSetBitsResponse()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusContext.HandleMaj23()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusContext.HandleVoteSetBits()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusContext.HandleProposalClaim()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>Removed <code>ActionTypeAttribute.ValueOf()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3267">#3267</a>]</li>
+<li>Added <code>Action&lt;Message&gt; validateMessageToReceive</code> parameter
+to <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li>Added <code>Action&lt;MessageContent&gt; validateMessageToSend</code> parameter
+to <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li>Removed <code>Action&lt;Message&gt; validateMessage</code> parameter
+from <code>Gossip</code>'s constructor.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li>Removed <code>AccountStateGetter</code>, <code>AccountBalanceGetter</code>, <code>TotalSupplyGetter</code>,
+and <code>ValidatorSetGetter</code> delegates.  [<a href="https://github.com/planetarium/libplanet/pull/3282">#3282</a>]</li>
+<li>Removed <code>IFeeCalculator</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3283">#3283</a>]</li>
+<li>Removed <code>IBlockPolicy.FeeCalculator</code> interface property.  [<a href="https://github.com/planetarium/libplanet/pull/3283">#3283</a>]</li>
+<li>Removed <code>TxExecution.ActionsLogsList</code>, <code>TxFailure.ActionsLogsList</code>,
+and <code>TxSuccess.ActionsLogsList</code> properties.  [<a href="https://github.com/planetarium/libplanet/pull/3291">#3291</a>]</li>
+<li>(Libplanet.Explorer) Removed <code>TxResult.ActionsLogsList</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3291">#3291</a>]</li>
+<li>Removed <code>IActionContext.Logs</code> property and <code>IActionContext.PutLog()</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3292">#3292</a>]</li>
+<li>Removed <code>IActionEvaluation.Logs</code> property. [<a href="https://github.com/planetarium/libplanet/pull/3292">#3292</a>]</li>
+</ul>
+<h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>VoteSetBits</code> and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]
+<ul>
+<li>Added <code>VoteSetBits</code> class.</li>
+<li>Added <code>VoteSetBitsMetadata</code> class.</li>
+<li>(Libplanet.Net) Added <code>ConsensusVoteSetBitsMsg</code> class.</li>
+</ul>
+</li>
+<li>Added <code>ProposalClaim</code> and its related class.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]
+<ul>
+<li>Added <code>ProposalClaim</code> class.</li>
+<li>Added <code>ProposalClaimMetadata</code> class.</li>
+<li>(Libplanet.Net) Added <code>ConsensusProposalClaimMsg</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>ConsensusMaj23Msg</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>(Libplanet.Net) Added enumeration items to <code>MessageType</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]
+<ul>
+<li>Added <code>ConsensusMaj23Msg</code> of value <code>0x53</code>.</li>
+<li>Added <code>ConsensusVoteSetBitsMsg</code> of value <code>0x54</code>.</li>
+<li>Added <code>ConsensusProposalClaimMsg</code> of value <code>0x55</code>.</li>
+</ul>
+</li>
+<li>Added <code>IActionContext.Logs</code> interface property.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
+<li>Changed the type for <code>IActionEvaluation.Logs</code> to
+<code>IReadOnlyList&lt;string&gt;</code> from <code>List&lt;string&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
+<li>Changed the type for <code>TxExecution.ActionsLogList</code> to
+<code>List&lt;IReadOnlyList&lt;string&gt;&gt;?</code> from <code>List&lt;List&lt;string&gt;&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
+<li>(Libplanet.Explorer) Changed the type for <code>TxResult.ActionsLogList</code> to
+<code>List&lt;IReadOnlyList&lt;string&gt;&gt;?</code> from <code>List&lt;List&lt;string&gt;&gt;?</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3274">#3274</a>]</li>
+<li>(Libplanet.Explorer) Added <code>BlockType.PreEvaluationHash</code> field.
+[<a href="https://github.com/planetarium/libplanet/issues/3280">#3280</a>, <a href="https://github.com/planetarium/libplanet/pull/3281">#3281</a>]</li>
+<li>(Libplanet.Net) Added <code>VoteSet.GetAllVotes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3288">#3288</a>]</li>
+</ul>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Net) <code>Context</code> became to remove its proposal
+when +2/3 valid votes were collected.  [<a href="https://github.com/planetarium/libplanet/pull/3206">#3206</a>]</li>
+<li>Changed <code>ActionEvaluator</code> to evaluate all <code>IAction</code>s in a <code>Transaction</code>
+without early termination even if an <code>IAction</code> throws an <code>Exception</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3272">#3272</a>]</li>
+<li><code>Gossip.HandleMessageAsync()</code> now executes <code>_validateMessageToReceive</code>
+on given message received.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>Gossip.SendWantAsync()</code> now executes <code>_validateMessageToReceive</code>
+on replies of <code>WantMessage</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>Gossip.HandleWantAsync()</code> now executes <code>_validateMessageToSend</code>
+on given message to send as a reply of <code>WantMessage</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>GossipConsensusMessageCommunicator</code> now prevents sending a message
+with a round other than its own as a reply to a <code>WantMessage</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+<li><code>GossipConsensusMessageCommunicator</code> now executes anti-spam logic
+when messages are received.  [<a href="https://github.com/planetarium/libplanet/pull/3273">#3273</a>]</li>
+</ul>
+<h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a broken backwards compatibility of Currency  [<a href="https://github.com/planetarium/libplanet/issues/3268">#3268</a>, <a href="https://github.com/planetarium/libplanet/pull/3284">#3284</a>]</li>
+</ul>
+<h2 id="version-241">Version 2.4.1</h2>
+<p>Released on July 14, 2023.</p>
+<ul>
+<li>Slight speed and memory optimization for <code>ByteUtil.Hex()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3297">#3297</a>]</li>
+<li>(Libplanet.RocksDBStore) Slight improvement for speed and memory usage.
+[<a href="https://github.com/planetarium/libplanet/pull/3298">#3298</a>]</li>
+<li>Upgrade <em>Bencodex</em> from [0.10.0][Bencodex 0.10.0] to
+<a href="https://www.nuget.org/packages/Bencodex/0.11.0">0.11.0</a>.  [<a href="https://github.com/planetarium/libplanet/pull/3302">#3302</a>]</li>
+</ul>
+<h2 id="version-240">Version 2.4.0</h2>
+<p>Released on July 3, 2023.</p>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>(Libplanet.Net) Removed <code>ConsensusContext.BroadcastMessage</code> property.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+</ul>
+<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<ul>
+<li><code>Vote.BlockHash</code> property became <code>BlockHash</code> type. (was <code>BlockHash?</code>)
+[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li><code>VoteMetadata(long, int, BlockHash?, DateTimeOffset, PublicKey, VoteFlag)</code>
+constructor became
+<code>VoteMetadata(long, int, BlockHash, DateTimeOffset, PublicKey, VoteFlag)</code>
+[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Renamed <code>Step</code> enum to <code>ConsensusStep</code>
+to remove ambiguity.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) <code>ConsensusProposalMsg</code>, <code>ConsensusPreVoteMsg</code> and
+<code>ConsensusPreCommitMsg</code> became to inherit <code>ConsensusVoteMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Removed <code>ConsensusMsg.BlockHash</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Some enumeration items to <code>MessageType</code> enum has modified.
+[<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]
+<ul>
+<li><code>ConsensusProposal</code> changed to <code>0x50</code> (was <code>0x40</code>).</li>
+<li><code>ConsensusVote</code> changed to <code>0x51</code> (was <code>0x41</code>).</li>
+<li><code>ConsensusCommit</code> changed to <code>0x52</code> (was <code>0x42</code>).</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>Flag</code> property to <code>ConsensusVoteMsg</code> abstract class.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) <code>ConsensusProposalMsg</code> no longer inherits
+<code>ConsensusVoteMsg</code>. Instead, inherits <code>ConsensusMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added parameter
+<code>IConsensusMessageCommunicator consensusMessageCommunicator</code> to
+<code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Removed parameter
+<code>DelegateBroadcastMessage broadcastMessage</code> from <code>ConsensusContext</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added parameter
+<code>IConsensusMessageCommunicator consensusMessageCommunicator</code> to
+<code>Context</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Renamed <code>Context.BroadcastMessage(ConsensusMsg)</code>
+as <code>Context.PublishMessage(ConsensusMsg)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Removed constructor of <code>MessageCache</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Explorer) Changed <code>TxResult.UpdatedStates</code>'s type to
+<code>IImmutableDictionary&lt;Address, IValue&gt;</code> from
+<code>IImmutableDictionary&lt;Address, IValue?&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3262">#3262</a>]</li>
+</ul>
+<h3 id="added-apis-1">Added APIs</h3>
+<ul>
+<li>Added <code>Maj23</code> and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]
+<ul>
+<li>Added <code>Maj23</code> class.</li>
+<li>Added <code>Maj23Metadata</code> class.</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>VoteSet</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>HeightVoteSet</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>ConsensusVoteMsg</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidProposalException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidVoteException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>(Libplanet.Net) Added <code>InvalidMaj23Exception</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3249">#3249</a>]</li>
+<li>Added <code>IAccountDelta.OrderedSum()</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/3256">#3256</a>]</li>
+<li>Added <code>IAccountDelta.ToRawDelta()</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/3256">#3256</a>]</li>
+<li>Removed several properties from <code>IAccountStateDelta</code> pertaining to
+the delta part of <code>IAccountStateDelta</code>.  Access the equivalent data
+through <code>IAccountStateDelta.Delta</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/3257">#3257</a>]
+<ul>
+<li>Removed <code>IAccountStateDelta.UpdatedAddresses</code> property.</li>
+<li>Removed <code>IAccountStateDelta.StateUpdatedAddresses</code> property.</li>
+<li>Removed <code>IAccountStateDelta.UpdatedFungibleAssets</code> property.</li>
+<li>Removed <code>IAccountStateDelta.UpdatedTotalSupplyCurrencies</code> property.</li>
+</ul>
+</li>
+<li>Changed <code>IBlockStates</code> to <code>IBlockState</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3259">#3259</a>]</li>
+<li>Changed <code>IBlockChainStates.GetBlockStates()</code> to
+<code>IBlockChainStates.GetBlockState()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3259">#3259</a>]</li>
+<li>Changes <code>IActionContext.PreviousStates</code> to <code>IActionContext.PreviousState</code>.</li>
+<li>Changed <code>IActionEvaluation.OutputStates</code> to <code>IActionEvaluation.OutputState</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3259">#3259</a>]</li>
+<li>(Libplanet.Net) Added <code>IConsensusMessageCommunicator</code> interface
+and its related classes.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]
+<ul>
+<li>(Libplanet.Net) Added <code>GossipConsensusMessageCommunicator</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+</ul>
+</li>
+<li>(Libplanet.Net) Added <code>Gossip.DenyPeer(BoundPeer)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip.AllowPeer(BoundPeer)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip.ClearCache()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) Added <code>Gossip.ClearDenySet(BoundPeer)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+</ul>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<ul>
+<li>(Libplanet.Net) <code>Gossip</code> now maintains single message cache,
+and contents of this cache does not decayed by time or new messages.
+This cache is cleared only by <code>Gossip.ClearCache()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) There are no mechanism for bootstrapping consensus
+any more. Instead, logic change on <code>Gossip</code> solves bootstrapping
+problem.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) <code>Context.Start()</code> now triggers
+<code>IConsensusMessageCommunicator.OnStartHeight()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+<li>(Libplanet.Net) <code>Context.StartRound()</code> now triggers
+<code>IConsensusMessageCommunicator.OnStartRound()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3260">#3260</a>]</li>
+</ul>
+<h2 id="version-230">Version 2.3.0</h2>
+<p>Released on June 28, 2023.</p>
+<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
+<ul>
+<li>(@planetarium/tx) Removed some types and functions related to actions
+because the concept of <code>SystemAction</code> and <code>CustomAction</code> was removed
+since 1.1.0 and some system actions were removed since 1.2.0.  [<a href="https://github.com/planetarium/libplanet/pull/3230">#3230</a>]
+<ul>
+<li>Removed <code>encodeUnsignedTxWithCustomActions()</code> function.</li>
+<li>Removed <code>encodeUnsignedTxWithSystemAction()</code> function.</li>
+<li>Removed <code>UnsignedTxWithCustomActions</code> type.</li>
+<li>Removed <code>UnsignedTxWithSystemAction</code> type.</li>
+<li>Removed <code>encodeMint()</code> function.</li>
+<li>Removed <code>encodeTransfer()</code> function.</li>
+<li>Removed <code>encodeSystemAction()</code> function.</li>
+<li>Removed <code>CustomAction</code> type.</li>
+<li>Removed <code>SystemAction</code> type.</li>
+<li>Removed <code>Mint</code> type.</li>
+<li>Removed <code>Transfer</code> type.</li>
+<li>Added <code>encodeUnsignedTx()</code> function.</li>
+<li>Added <code>UnsignedTx</code> type.</li>
+<li><code>signTx(UnsignedTxWithCustomActions | UnsignedTxWithSystemAction)</code>
+function's signature became <code>signTx(UnsignedTx)</code>.</li>
+<li><code>SignedTx&lt;T extends UnsignedTxWithCustomActions | UnsignedTxWithSystemAction&gt;</code>'s signature became
+<code>SignedTx&lt;T extends UnsignedTx&gt;</code>.</li>
+</ul>
+</li>
+<li>Changed the type for <code>IAccountStateDelta.UpdatedFungibleAssets</code>
+to <code>IImmutableSet&lt;(Address, Currency)&gt;</code>
+from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3244">#3244</a>]</li>
+<li>Changed the type for <code>IAccountStateDelta.TotalUpdatedFungibleAssets</code>
+to <code>IImmutableSet&lt;(Address, Currency)&gt;</code>
+from <code>IImmutableDictionary&lt;Address, IImmutableSet&lt;Currency&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3244">#3244</a>]</li>
+<li>Added <code>IAccountStateDelta.Delta</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3245">#3245</a>]</li>
+<li>Removed <code>IValidatorSupportStateDelta</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3247">#3247</a>]</li>
+<li>Added <code>IAccountStateDeltaView.GetValidatorSet()</code> interface method.
+[<a href="https://github.com/planetarium/libplanet/pull/3247">#3247</a>]</li>
+<li>Added <code>IAccountStateDelta.SetValidator()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3247">#3247</a>]</li>
+<li>Changed the name <code>IAccountStateDelta.TotalSupplyUpdatedCurrencies</code> to
+<code>IAccountStateDelta.UpdatedTotalSupplyCurrencies</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3248">#3248</a>]</li>
+<li>Changed <code>TxSuccess.UpdatedStates</code>'s type to
+<code>IImmutableDictionary&lt;Address, IValue&gt;</code> from
+<code>IImmutableDictionary&lt;Address, IValue?&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3248">#3248</a>]</li>
+<li>Added <code>IBlockChainStates.GetState()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3250">#3250</a>]</li>
+<li>Added <code>IBlockStates.GetState()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3250">#3250</a>]</li>
+<li>Changed <code>IBlockStates</code> to inherit <code>IAccountState</code> interface.  [<a href="https://github.com/planetarium/libplanet/pull/3251">#3251</a>]</li>
+</ul>
+<h3 id="added-apis-2">Added APIs</h3>
+<ul>
+<li>Added <code>IAccountDelta</code> interface and its default implementation
+<code>AccountDelta</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3245">#3245</a>]</li>
+</ul>
+<h2 id="version-220">Version 2.2.0</h2>
+<p>Released on June 23, 2023.</p>
+<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
+<ul>
+<li>Added <code>BlockProtocolVersion</code> property to <code>IActionContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3228">#3228</a>]</li>
+<li>Changed <code>IAccountStateDelta.TransferAsset()</code> to require additional
+<code>IActionContext</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/3229">#3229</a>]</li>
+<li>Changed <code>IAccountStateDelta.MintAsset()</code> and
+<code>IAccountStateDelta.BurnAsset()</code> to each require an additional
+<code>IActionContext</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/3231">#3231</a>]</li>
+</ul>
+<h3 id="bug-fixes-1">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where <code>IActionContext.BlockProtocolVersion</code> was not being set
+properly in <a href="https://github.com/planetarium/libplanet/pull/3228">#3228</a>.</li>
+</ul>
+<h2 id="version-211">Version 2.1.1</h2>
+<p>Released on June 22, 2023.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/2.0.1">Libplanet 2.0.1</a> release.  [<a href="https://github.com/planetarium/libplanet/3234">#3234</a>]</li>
+</ul>
+<h2 id="version-210">Version 2.1.0</h2>
+<p>Released on June 20, 2023.</p>
+<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
+<ul>
+<li>All <code>IBlockChainStates</code> methods now take nullable <code>BlockHash?</code>
+instead of <code>BlockHash</code> as <code>offset</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/3214">#3214</a>]</li>
+<li>Removed <code>IncompleteBlockStatesException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3214">#3214</a>]</li>
+<li>Changed <code>BlockChain</code>'s implementation of <code>IBlockChainStates</code> to match
+interface description.  [<a href="https://github.com/planetarium/libplanet/pull/3214">#3214</a>]</li>
+<li>Added <code>IBlockChainStates.GetBlockStates()</code> interface method.  [<a href="https://github.com/planetarium/libplanet/pull/3216">#3216</a>]</li>
+</ul>
+<h3 id="added-apis-3">Added APIs</h3>
+<ul>
+<li>Added <code>IBlockStates</code> interface and its default implementation
+<code>BlockStates</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3216">#3216</a>]</li>
+</ul>
+<h3 id="behavioral-changes-2">Behavioral changes</h3>
+<ul>
+<li>Improved performance of fungible asset APIs on default
+<code>IAccountStateDelta</code> implementation.  [<a href="https://github.com/planetarium/libplanet/pull/3218">#3218</a>]</li>
+</ul>
+<h3 id="bug-fixes-2">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where <code>BlockAction</code> could have unintended
+<code>AccountStateDeltaImpl.Signer</code> during its execution.  [<a href="https://github.com/planetarium/libplanet/pull/3215">#3215</a>]</li>
+</ul>
+<h2 id="version-201">Version 2.0.1</h2>
+<p>Released on June 22, 2023.</p>
+<ul>
+<li>(@planetarium/tx) Fixed a bug where an <code>encodeCurrency</code> serialized
+<code>Currency</code> in an incompatible way with Libplanet.  [<a href="https://github.com/planetarium/libplanet/pull/3225">#3225</a>]</li>
+</ul>
+<h2 id="version-200">Version 2.0.0</h2>
+<p>Released on June 14, 2023.</p>
+<h3 id="backward-incompatible-api-changes-5">Backward-incompatible API changes</h3>
+<ul>
+<li>Added <code>IAccountStateDelta.TotalUpdatedFungibleAssets</code> interface property.
+[<a href="https://github.com/planetarium/libplanet/pull/3208">#3208</a>]</li>
+<li>Removed <code>blockAction</code> parameter from <code>ActionContext()</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3209">#3209</a>]</li>
+<li>Added <code>ITransaction.MaxGasPrice</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3201">#3201</a>]</li>
+<li>Added <code>ITransaction.GasLimit</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3201">#3201</a>]</li>
+<li><code>Currency.Serialize()</code>'s behavioral is changed.
+the serialize field is replaced.  [<a href="https://github.com/planetarium/libplanet/pull/3201">#3201</a>]</li>
+</ul>
+<h3 id="added-apis-4">Added APIs</h3>
+<ul>
+<li>Added <code>FungibleAssetValue.Serialize()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3201">#3201</a>]</li>
+</ul>
+<h3 id="behavioral-changes-3">Behavioral changes</h3>
+<ul>
+<li>Improved performance of <code>StateStoreExtensions.Commit()</code> extension method
+and <code>MerkleTrie.Commit()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3165">#3165</a>]</li>
+<li>Improved performance of <code>HashDigest&lt;T&gt;.DeriveFrom()</code> static method on
+.NET Standard 2.1+.  [<a href="https://github.com/planetarium/libplanet/pull/3165">#3165</a>]</li>
+</ul>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.2.1/changes/v2.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
