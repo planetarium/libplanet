@@ -14,20 +14,5 @@ namespace Libplanet.Tests.Blockchain
             Assert.Throws<ArgumentException>(() =>
                 new BlockLocator(new List<BlockHash>()));
         }
-
-        [Fact]
-        public void Create()
-        {
-            BlockHash genesisHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
-            BlockHash tipHash = genesisHash;
-            BlockLocator locator = BlockLocator.Create(genesisHash, tipHash);
-            Assert.Equal(genesisHash, Assert.Single(locator));
-
-            tipHash = new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size));
-            locator = BlockLocator.Create(genesisHash, tipHash);
-            Assert.Equal(
-                new BlockHash[] { tipHash, genesisHash },
-                locator);
-        }
     }
 }
