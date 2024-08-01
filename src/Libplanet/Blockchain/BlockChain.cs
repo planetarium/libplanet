@@ -818,9 +818,7 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                return BlockLocator.Create(
-                    genesisHash: Genesis.Hash,
-                    tipHash: Tip.Hash);
+                return BlockLocator.Create(tipHash: Tip.Hash);
             }
             finally
             {

@@ -1119,9 +1119,7 @@ namespace Libplanet.Net
                         }
 
                         locator = downloaded.Count > 0
-                            ? BlockLocator.Create(
-                                genesisHash: blockChain.Genesis.Hash,
-                                tipHash: downloaded.Last())
+                            ? BlockLocator.Create(tipHash: downloaded.Last())
                             : locator;
                     }
                     while (downloaded.Count < chunkBlockHashesToDownload);

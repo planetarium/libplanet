@@ -32,15 +32,12 @@ namespace Libplanet.Blockchain
         /// Creates a new instance of <see cref="BlockLocator"/>.
         /// </para>
         /// </summary>
-        /// <param name="genesisHash">The <see cref="BlockHash"/> of the genesis.</param>
         /// <param name="tipHash">The <see cref="BlockHash"/> of the tip.</param>
         /// <returns>
         /// An instance of <see cref="BlockLocator"/> created with given arguments.
         /// </returns>
-        public static BlockLocator Create(BlockHash genesisHash, BlockHash tipHash) =>
-            genesisHash.Equals(tipHash)
-                ? new BlockLocator(new[] { genesisHash })
-                : new BlockLocator(new[] { tipHash, genesisHash });
+        public static BlockLocator Create(BlockHash tipHash) =>
+            new BlockLocator(new[] { tipHash });
 
         /// <summary>
         /// Gets the enumerator.
