@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed `BlockLocator.Create()` to take a single `BlockHash`.  [[#3913]]
+ -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`  [[#3913]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -17,6 +20,9 @@ To be released.
 ### Added APIs
 
 ### Behavioral changes
+
+ -  Changed `BlockChain.FindBranchPoint()` to only check for the first
+    `BlockHash` in a given `BlockLocator`.  [[#3913]]
 
 ### Bug fixes
 
