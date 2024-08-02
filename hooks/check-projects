@@ -9,7 +9,7 @@ if ! [[ -f "$SOLUTION" ]]; then
 fi
 
 list-projects() {
-  dotnet sln "$SOLUTION" list | grep -E $'\\...proj\r?$' | sed 's/[/][^/]*$//'
+  dotnet sln "$SOLUTION" list | grep -E $'(src|tools|test).+\\...proj\r?$' | sed 's/[/][^/]*$//'
 }
 
 # shellcheck source=.github/bin/constants.sh

@@ -3,10 +3,41 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
+    <TargetFrameworks Condition="'$(_IsPacking)'=='true'">net8.0</TargetFrameworks>
+    <TargetFramework Condition="'$(_IsPacking)'!='true'">net8.0</TargetFramework>
+    <LangVersion>12</LangVersion>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
     <Title>$(ProjectName)</Title>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Remove="StyleCop.Analyzers" />
+    <PackageReference Remove="Menees.Analyzers.2017" />
+    <PackageReference Remove="Microsoft.DotNet.Analyzers.Compatibility" />
+    <PackageReference Remove="SonarAnalyzer.CSharp" />
+
+    <AdditionalFiles Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers
+      </IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Menees.Analyzers" Version="3.2.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="9.27.0.93347">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+  </ItemGroup>
 
 </Project>

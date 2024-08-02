@@ -32,7 +32,6 @@ public class SoloProposeService : BackgroundService
             _blockInterval);
     }
 
-
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using PeriodicTimer timer = new PeriodicTimer(_blockInterval);
@@ -44,9 +43,9 @@ public class SoloProposeService : BackgroundService
                 await ProposeBlockAsync(stoppingToken);
             }
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException e)
         {
-            _logger.LogInformation("Timed Hosted Service is stopping.");
+            _logger.LogInformation(e, "Timed Hosted Service is stopping.");
         }
     }
 
