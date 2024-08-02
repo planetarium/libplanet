@@ -271,14 +271,12 @@ namespace Libplanet.Net.Tests
                 await a.AddPeersAsync(new[] { b.AsPeer }, null);
 
                 var minerCanceller = new CancellationTokenSource();
-                Task miningA = CreateMiner(minerA, a, chainA, 5000, minerCanceller.Token);
-                Task miningB = CreateMiner(minerB, b, chainB, 8000, minerCanceller.Token);
+                Task miningA = CreateMiner(minerA, a, chainA, 4000, minerCanceller.Token);
 
                 await Task.Delay(10000);
                 minerCanceller.Cancel();
 
-                await Task.WhenAll(miningA, miningB);
-
+                await miningA;
                 await Task.Delay(5000);
             }
             finally
@@ -652,13 +650,10 @@ namespace Libplanet.Net.Tests
                 Block block = chainA.ProposeBlock(
                     keyA, CreateBlockCommit(chainA.Tip));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
-            }
-
-            foreach (int i in Enumerable.Range(0, 3))
-            {
-                Block block = chainB.ProposeBlock(
-                    keyB, CreateBlockCommit(chainB.Tip));
-                chainB.Append(block, TestUtils.CreateBlockCommit(block));
+                if (i < 5)
+                {
+                    chainB.Append(block, TestUtils.CreateBlockCommit(block));
+                }
             }
 
             try
@@ -670,7 +665,7 @@ namespace Libplanet.Net.Tests
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
-                swarmB.BroadcastBlock(chainB[-1]);
+                swarmB.BroadcastBlock(chainB.Tip);
 
                 // chainA ignores block header received because its index is shorter.
                 await swarmA.BlockHeaderReceived.WaitAsync();
@@ -681,7 +676,7 @@ namespace Libplanet.Net.Tests
                 // than chainA
                 Assert.NotEqual(chainB, chainA);
 
-                swarmA.BroadcastBlock(chainA[-1]);
+                swarmA.BroadcastBlock(chainA.Tip);
 
                 await swarmB.BlockAppended.WaitAsync();
                 await swarmC.BlockAppended.WaitAsync();
@@ -709,8 +704,7 @@ namespace Libplanet.Net.Tests
             var blockChain = MakeBlockChain(
                 policy, fx1.Store, fx1.StateStore, new SingleActionLoader(typeof(DumbAction)));
             var privateKey = new PrivateKey();
-            var minerSwarm =
-                await CreateSwarm(blockChain, privateKey).ConfigureAwait(false);
+            var minerSwarm = await CreateSwarm(blockChain, privateKey).ConfigureAwait(false);
             var fx2 = new MemoryStoreFixture();
             var receiverRenderer = new RecordingActionRenderer();
             var loggedRenderer = new LoggedActionRenderer(
@@ -902,27 +896,22 @@ namespace Libplanet.Net.Tests
             BlockChain chainB = swarmB.BlockChain;
             BlockChain chainC = swarmC.BlockChain;
 
-            foreach (int i in Enumerable.Range(0, 10))
+            foreach (int i in Enumerable.Range(0, 5))
             {
-                Block block = chainA.ProposeBlock(
-                    keyA, CreateBlockCommit(chainA.Tip));
+                Block block = chainA.ProposeBlock(keyA, CreateBlockCommit(chainA.Tip));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
+                if (i < 3)
+                {
+                    chainC.Append(block, TestUtils.CreateBlockCommit(block));
+                }
             }
 
             Block chainATip = chainA.Tip;
 
-            foreach (int i in Enumerable.Range(0, 5))
+            foreach (int i in Enumerable.Range(0, 10))
             {
-                Block block = chainB.ProposeBlock(
-                    keyB, CreateBlockCommit(chainB.Tip));
+                Block block = chainB.ProposeBlock(keyB, CreateBlockCommit(chainB.Tip));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
-            }
-
-            foreach (int i in Enumerable.Range(0, 3))
-            {
-                Block block = chainC.ProposeBlock(
-                    keyB, CreateBlockCommit(chainC.Tip));
-                chainC.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
             try

@@ -1098,7 +1098,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
-        public void ReorgIsUnableToHeterogenousChain(bool render)
+        public void CannotSwapToChainWithDifferentGenesis(bool render)
         {
             using (var fx2 = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
             {
