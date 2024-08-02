@@ -47,13 +47,6 @@ namespace Libplanet.Net.Options
         public TimeSpan StaticPeersMaintainPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
-        /// The threshold for detecting branchpoint when block synchronization.
-        /// If the branch point is outside threshold from the <see cref="BlockChain.Tip" />,
-        /// using an approximated value.
-        /// </summary>
-        public int BranchpointThreshold { get; set; } = 10;
-
-        /// <summary>
         /// The minimum number to select from routing table when broadcast messages.
         /// It is 10 by default.
         /// </summary>

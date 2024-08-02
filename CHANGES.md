@@ -12,6 +12,8 @@ To be released.
 
  -  Changed `BlockLocator.Create()` to take a single `BlockHash`.  [[#3913]]
  -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`  [[#3913]]
+ -  (Libplanet.Net) Removed `SwarmOptions.BranchpointThreshold` property.
+    [[#3913]]
  -  (Libplanet.Store) Removed unused `HashNode.Serialize()` method.
     [[#3922], [#3924]]
 
