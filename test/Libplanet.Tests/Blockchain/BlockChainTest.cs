@@ -499,8 +499,8 @@ namespace Libplanet.Tests.Blockchain
             forked.FindNextHashes(locator)
                 .Deconstruct(out long? offset, out IReadOnlyList<BlockHash> hashes);
 
-            Assert.Equal(forked[0].Index, offset);
-            Assert.Equal(new[] { forked[0].Hash, forked[1].Hash }, hashes);
+            Assert.Null(offset);
+            Assert.Empty(hashes);
         }
 
         [SkippableFact]
@@ -804,11 +804,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             BlockLocator actual = _blockChain.GetBlockLocator();
-            BlockLocator expected = new BlockLocator(new[]
-            {
-                blocks[9].Hash,
-                _blockChain.Genesis.Hash,
-            });
+            BlockLocator expected = new BlockLocator(new[] { blocks[9].Hash });
 
             Assert.Equal(expected, actual);
         }
@@ -1457,8 +1453,9 @@ namespace Libplanet.Tests.Blockchain
             var emptyLocator = new BlockLocator(new[] { _blockChain.Genesis.Hash });
             var invalidLocator = new BlockLocator(
                 new[] { new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)) });
-            var locator = new BlockLocator(
+            var legacyLocator = new BlockLocator(
                 new[] { b4.Hash, b3.Hash, b1.Hash, _blockChain.Genesis.Hash });
+            var locator = new BlockLocator(new[] { b4.Hash });
 
             using (var emptyFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
             using (var forkFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
@@ -1491,18 +1488,21 @@ namespace Libplanet.Tests.Blockchain
 
                 // Testing emptyChain
                 Assert.Equal(_blockChain.Genesis.Hash, emptyChain.FindBranchpoint(emptyLocator));
-                Assert.Equal(_blockChain.Genesis.Hash, emptyChain.FindBranchpoint(locator));
                 Assert.Null(emptyChain.FindBranchpoint(invalidLocator));
+                Assert.Null(emptyChain.FindBranchpoint(legacyLocator));
+                Assert.Null(emptyChain.FindBranchpoint(locator));
 
                 // Testing _blockChain
                 Assert.Equal(_blockChain.Genesis.Hash, _blockChain.FindBranchpoint(emptyLocator));
-                Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(locator));
                 Assert.Null(_blockChain.FindBranchpoint(invalidLocator));
+                Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(legacyLocator));
+                Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(locator));
 
                 // Testing fork
                 Assert.Equal(_blockChain.Genesis.Hash, fork.FindBranchpoint(emptyLocator));
-                Assert.Equal(b1.Hash, fork.FindBranchpoint(locator));
-                Assert.Null(_blockChain.FindBranchpoint(invalidLocator));
+                Assert.Null(fork.FindBranchpoint(invalidLocator));
+                Assert.Null(fork.FindBranchpoint(legacyLocator));
+                Assert.Null(fork.FindBranchpoint(locator));
             }
         }
 
