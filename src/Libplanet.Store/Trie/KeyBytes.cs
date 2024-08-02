@@ -122,7 +122,7 @@ namespace Libplanet.Store.Trie
         /// <returns>A new copy of mutable byte array.</returns>
         public byte[] ToByteArray() => ByteArray.IsDefault
             ? Array.Empty<byte>()
-            : ByteArray.ToBuilder().ToArray();
+            : ByteArray.ToArray();
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         public bool Equals(KeyBytes other) => ByteArray.SequenceEqual(other.ByteArray);

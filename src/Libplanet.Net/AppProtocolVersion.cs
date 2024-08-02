@@ -84,7 +84,7 @@ namespace Libplanet.Net
             get
             {
                 string sig = Convert.ToBase64String(
-                    Signature.ToBuilder().ToArray(),
+                    Signature.ToArray(),
                     Base64FormattingOptions.None
                 ).Replace('/', '.');
                 var prefix =
