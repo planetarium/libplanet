@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed `BlockLocator.Create()` to take a single `BlockHash`.  [[#3913]]
+ -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`  [[#3913]]
  -  (Libplanet.Store) Removed unused `HashNode.Serialize()` method.
     [[#3922], [#3924]]
 
@@ -21,6 +23,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed `BlockChain.FindBranchPoint()` to only check for the first
+    `BlockHash` in a given `BlockLocator`.  [[#3913]]
  -  (Libplanet.Store) Optimized `HashNode.ToBencodex()` method.
     [[#3922], [#3924]]
 
