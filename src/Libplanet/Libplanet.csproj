@@ -17,6 +17,10 @@ https://docs.libplanet.io/</Description>
     <!-- FIXME: NU1902 should be removed once BouncyCastle is bumped to a secure version -->
   </PropertyGroup>
 
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.0" />

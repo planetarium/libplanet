@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Summary>A STUN/TURN client implementation for Libplanet.</Summary>
     <Description>A STUN/TURN client implementation for Libplanet.</Description>
   </PropertyGroup>

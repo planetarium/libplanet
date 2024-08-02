@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Title>P2P implementation for Libplanet</Title>
     <Description>A peer-to-peer networking layer based on Libplanet.</Description>
   </PropertyGroup>
