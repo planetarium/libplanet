@@ -8,7 +8,7 @@
             "name": "C#: Libplanet Node",
             "type": "coreclr",
             "request": "launch",
-            "program": "${workspaceFolder}/sdk/node/Libplanet.Node.Executable/bin/Debug/net6.0/Libplanet.Node.Executable.dll",
+            "program": "${workspaceFolder}/sdk/node/Libplanet.Node.Executable/bin/Debug/net8.0/Libplanet.Node.Executable.dll",
             "console": "integratedTerminal",
             "args": [
             ],
