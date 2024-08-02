@@ -461,7 +461,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(0, offsetIndex);
             Assert.Equal(new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash }, hashes);
 
-            _blockChain.FindNextHashes(new BlockLocator(new[] { block1.Hash, block0.Hash }))
+            _blockChain.FindNextHashes(new BlockLocator(new[] { block1.Hash }))
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Equal(1, offsetIndex);
             Assert.Equal(new[] { block1.Hash, block2.Hash, block3.Hash }, hashes);
@@ -1453,8 +1453,6 @@ namespace Libplanet.Tests.Blockchain
             var emptyLocator = new BlockLocator(new[] { _blockChain.Genesis.Hash });
             var invalidLocator = new BlockLocator(
                 new[] { new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)) });
-            var legacyLocator = new BlockLocator(
-                new[] { b4.Hash, b3.Hash, b1.Hash, _blockChain.Genesis.Hash });
             var locator = new BlockLocator(new[] { b4.Hash });
 
             using (var emptyFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
@@ -1489,19 +1487,16 @@ namespace Libplanet.Tests.Blockchain
                 // Testing emptyChain
                 Assert.Equal(_blockChain.Genesis.Hash, emptyChain.FindBranchpoint(emptyLocator));
                 Assert.Null(emptyChain.FindBranchpoint(invalidLocator));
-                Assert.Null(emptyChain.FindBranchpoint(legacyLocator));
                 Assert.Null(emptyChain.FindBranchpoint(locator));
 
                 // Testing _blockChain
                 Assert.Equal(_blockChain.Genesis.Hash, _blockChain.FindBranchpoint(emptyLocator));
                 Assert.Null(_blockChain.FindBranchpoint(invalidLocator));
-                Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(legacyLocator));
                 Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(locator));
 
                 // Testing fork
                 Assert.Equal(_blockChain.Genesis.Hash, fork.FindBranchpoint(emptyLocator));
                 Assert.Null(fork.FindBranchpoint(invalidLocator));
-                Assert.Null(fork.FindBranchpoint(legacyLocator));
                 Assert.Null(fork.FindBranchpoint(locator));
             }
         }

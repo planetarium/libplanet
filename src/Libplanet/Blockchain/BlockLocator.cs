@@ -17,14 +17,16 @@ namespace Libplanet.Blockchain
         /// Initializes a new instance of <see cref="BlockLocator"/> from <paramref name="hashes"/>.
         /// </summary>
         /// <param name="hashes">Enumerable of <see cref="BlockHash"/>es to convert from.</param>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="hashes"/> is empty.
+        /// <exception cref="ArgumentException">Thrown when <paramref name="hashes"/>
+        /// does not consist of a single element.
         /// </exception>
         public BlockLocator(IEnumerable<BlockHash> hashes)
         {
-            _impl = hashes.Any()
+            _impl = hashes.Count() == 1
                 ? hashes.ToList()
                 : throw new ArgumentException(
-                    $"Given {nameof(hashes)} cannot be empty.", nameof(hashes));
+                    $"Given {nameof(hashes)} must have exactly one element: {hashes.Count()}",
+                    nameof(hashes));
         }
 
         /// <summary>
