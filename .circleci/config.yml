@@ -70,7 +70,7 @@ commands:
     steps:
     - checkout
     - concat_files:
-        glob: "{src,test,tools}/*/*.csproj"
+        glob: "{src,test,tools,sdk/*}/*/*.csproj"
         to: .combined-package-files.txt
     - restore_cache:
         keys:
@@ -117,6 +117,8 @@ commands:
         - "test/*/obj/"
         - "tools/*/bin/"
         - "tools/*/obj/"
+        - "sdk/node/*/bin/"
+        - "sdk/node/*/obj/"
 
   netcore_test_base:
     parameters:
