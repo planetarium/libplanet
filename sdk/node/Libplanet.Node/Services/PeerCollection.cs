@@ -24,7 +24,7 @@ internal sealed class PeerCollection(SeedOptions seedOptions) : IEnumerable<Peer
             {
                 var peer = new Peer(transport, boundPeer)
                 {
-                    LifeTimeSpan = _seedOptions.PeerLifetime,
+                    LifeTimeSpan = TimeSpan.FromSeconds(_seedOptions.PeerLifetime),
                 };
                 peer.Update();
                 return peer;
@@ -39,7 +39,7 @@ internal sealed class PeerCollection(SeedOptions seedOptions) : IEnumerable<Peer
     public async Task RefreshAsync(CancellationToken cancellationToken)
     {
         var peers = _infoByAddress.Values.ToArray();
-        var pingTimeout = _seedOptions.PingTimeout;
+        var pingTimeout = TimeSpan.FromSeconds(_seedOptions.PingTimeout);
         var updatedCount = 0;
         await Parallel.ForEachAsync(_infoByAddress.Values, cancellationToken, async (peer, ct) =>
         {

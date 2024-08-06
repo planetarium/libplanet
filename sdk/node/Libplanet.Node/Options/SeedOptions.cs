@@ -13,9 +13,12 @@ public sealed class SeedOptions
     [RegularExpression(@"^((([a-zA-Z0-9\-\.]+)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})):\d{1,5})$")]
     public string EndPoint { get; set; } = string.Empty;
 
-    public TimeSpan RefreshInterval { get; set; } = TimeSpan.FromSeconds(5);
+    [Range(0, int.MaxValue)]
+    public int RefreshInterval { get; set; } = 5;
 
-    public TimeSpan PeerLifetime { get; set; } = TimeSpan.FromSeconds(120);
+    [Range(0, int.MaxValue)]
+    public int PeerLifetime { get; set; } = 120;
 
-    public TimeSpan PingTimeout { get; set; } = TimeSpan.FromSeconds(5);
+    [Range(0, int.MaxValue)]
+    public int PingTimeout { get; set; } = 5;
 }
