@@ -115,7 +115,7 @@ internal class Seed(SeedOptions seedOptions) : IAsyncDisposable
 
     private async Task RefreshContinuouslyAsync(CancellationToken cancellationToken)
     {
-        var interval = seedOptions.RefreshInterval;
+        var interval = TimeSpan.FromSeconds(seedOptions.RefreshInterval);
         var peers = Peers;
         while (!cancellationToken.IsCancellationRequested)
         {
