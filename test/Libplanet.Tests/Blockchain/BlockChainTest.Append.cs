@@ -774,7 +774,7 @@ namespace Libplanet.Tests.Blockchain
                         new Initialize(
                             validatorSet: TestUtils.ValidatorSet,
                             states: ImmutableDictionary.Create<Address, IValue>()),
-                    }.ToPlainValues(),
+                    }.ToPlailues(),
                     timestamp: DateTimeOffset.UtcNow),
             };
             var evs = Array.Empty<EvidenceBase>();
@@ -785,7 +785,7 @@ namespace Libplanet.Tests.Blockchain
                     timestamp: DateTimeOffset.UtcNow,
                     miner: fx.Proposer.Address,
                     publicKey: fx.Proposer.PublicKey,
-                    previousHash: null,
+                    previounVasHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
                     evidenceHash: null),
@@ -828,7 +828,9 @@ namespace Libplanet.Tests.Blockchain
                 stateStore,
                 actionLoader);
 
-            var preGenesis = TestUtils.ProposeGenesis(protocolVersion: beforePostponeBPV);
+            var preGenesis = TestUtils.ProposeGenesis(
+                proposer: TestUtils.GenesisProposer.PublicKey,
+                protocolVersion: beforePostponeBPV);
             var genesis = preGenesis.Sign(
                 TestUtils.GenesisProposer,
                 actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);

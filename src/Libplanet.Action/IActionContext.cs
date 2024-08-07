@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
@@ -55,6 +55,13 @@ namespace Libplanet.Action
         int BlockProtocolVersion { get; }
 
         /// <summary>
+        /// The <see cref="BlockCommit"/> about previous <see cref="Block"/>'s vote information.
+        /// <see langword="null"/> if the block is the genesis block.
+        /// </summary>
+        [Pure]
+        BlockCommit? LastCommit { get; }
+
+        /// <summary>
         /// A null delta of states, which means it represents the states
         /// before <see cref="IAction"/> executes.
         /// <para>Although a <see cref="IAccount"/> instance is
@@ -86,6 +93,13 @@ namespace Libplanet.Action
         bool IsPolicyAction { get; }
 
         /// <summary>
+        /// Max gas price set by the transaction.
+        /// <see langword="null"/> if the action does not belongs to a transaction.
+        /// </summary>
+        [Pure]
+        FungibleAssetValue? MaxGasPrice { get; }
+
+        /// <summary>
         /// A list of <see cref="ITransaction"/>s that are included in a <see cref="Block"/> as
         /// the <see cref="IAction"/> to be evaluated.  This information is provided only if
         /// <see cref="IsPolicyAction"/> is <see langword="true"/>, otherwise returns an empty set.
@@ -101,14 +115,6 @@ namespace Libplanet.Action
         IReadOnlyList<EvidenceBase> Evidence { get; }
 
         /// <summary>
-        /// Consumes the specified amount of gas.
-        /// </summary>
-        /// <param name="gas">
-        /// The amount of gas to consume.
-        /// </param>
-        void UseGas(long gas);
-
-        /// <summary>
         /// Returns a newly initialized <see cref="IRandom"/> using <see cref="RandomSeed"/>
         /// as its seed value.
         /// </summary>
@@ -116,21 +122,5 @@ namespace Libplanet.Action
         /// as its seed value.</returns>
         [Pure]
         IRandom GetRandom();
-
-        /// <summary>
-        /// Returns the total gas used by the current action.
-        /// </summary>
-        /// <returns>The total gas used by the current action.</returns>
-        [Pure]
-        long GasUsed();
-
-        /// <summary>
-        /// Returns the limit gas of the current action.
-        /// </summary>
-        /// <returns>
-        /// The limit gas of the current action.
-        /// </returns>
-        [Pure]
-        long GasLimit();
     }
 }

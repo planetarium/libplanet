@@ -682,7 +682,7 @@ namespace Libplanet.Net.Tests.Consensus
                             block.Hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.PrivateKeys[i].PublicKey,
-                            BigInteger.One,
+                            TestUtils.ValidatorSet[i].Power,
                             VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i])));
             }
 
@@ -696,7 +696,7 @@ namespace Libplanet.Net.Tests.Consensus
                             block.Hash,
                             DateTimeOffset.UtcNow,
                             TestUtils.PrivateKeys[i].PublicKey,
-                            BigInteger.One,
+                            TestUtils.ValidatorSet[i].Power,
                             VoteFlag.PreCommit).Sign(TestUtils.PrivateKeys[i])));
             }
 
