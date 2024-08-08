@@ -5,6 +5,7 @@ using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.SDK.Action.Attributes;
 using Libplanet.SDK.Action.Tests.Sample.Actions;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -109,23 +110,23 @@ namespace Libplanet.SDK.Action.Tests.Sample
         [Fact]
         public void InvalidPlainValueForLoading()
         {
-            IValue plainValue = Dictionary.Empty    // Invalid type_id
+            IValue plainValue = Dictionary.Empty // Invalid type_id
                 .Add("type_id", "Run")
                 .Add("call", "Append")
                 .Add("args", "Hello");
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
-            plainValue = Dictionary.Empty           // Missing type_id
+            plainValue = Dictionary.Empty // Missing type_id
                 .Add("call", "Append")
                 .Add("args", "Hello");
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
-            plainValue = Dictionary.Empty           // Missing call
+            plainValue = Dictionary.Empty // Missing call
                 .Add("type_id", "Number")
                 .Add("args", 5);
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
-            plainValue = Dictionary.Empty           // Missing args
+            plainValue = Dictionary.Empty // Missing args
                 .Add("type_id", "Number")
                 .Add("call", "Add");
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
@@ -134,7 +135,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         [Fact]
         public void InvalidPlainValueForExecution()
         {
-            IValue plainValue = Dictionary.Empty    // Invalid call
+            IValue plainValue = Dictionary.Empty // Invalid call
                 .Add("type_id", "Number")
                 .Add("call", "Divide")
                 .Add("args", 5);
@@ -143,7 +144,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             Assert.Throws<InvalidOperationException>(() =>
                 action.Execute(new MockActionContext(address, address, _world)));
 
-            plainValue = Dictionary.Empty           // Invalid args
+            plainValue = Dictionary.Empty // Invalid args
                 .Add("type_id", "Number")
                 .Add("call", "Add")
                 .Add("args", "Hello");
@@ -169,6 +170,39 @@ namespace Libplanet.SDK.Action.Tests.Sample
                 Assert.Throws<TargetInvocationException>(() =>
                     action.Execute(new MockActionContext(signer, signer, world)))
                     .InnerException);
+        }
+
+        [Fact]
+        public void GeneratePlainValue()
+        {
+            IValue expected = Dictionary.Empty
+                .Add("type_id", "Number")
+                .Add("call", "Add")
+                .Add("args", 5);
+            IValue generated = ActionBase.GeneratePlainValue<NumberAction>(
+                "Add", new Integer(5));
+            Assert.Equal(expected, generated);
+
+            expected = Dictionary.Empty
+                .Add("type_id", "Text")
+                .Add("call", "Append")
+                .Add("args", "Hello");
+            generated = ActionBase.GeneratePlainValue<TextAction>(
+                "Append", new Text("Hello"));
+            Assert.Equal(expected, generated);
+
+            Assert.Contains(
+                $"{nameof(ActionTypeAttribute)}",
+                Assert.Throws<ArgumentException>(() =>
+                    ActionBase.GeneratePlainValue<InvalidAction>("Add", new Integer(5))).Message);
+            Assert.Contains(
+                $"cannot be found",
+                Assert.Throws<ArgumentException>(() =>
+                    ActionBase.GeneratePlainValue<NumberAction>("Divide", new Integer(5))).Message);
+            Assert.Contains(
+                $"{nameof(ExecutableAttribute)}",
+                Assert.Throws<ArgumentException>(() =>
+                    ActionBase.GeneratePlainValue<NumberAction>("DoNothing", new Integer(5))).Message);
         }
     }
 }

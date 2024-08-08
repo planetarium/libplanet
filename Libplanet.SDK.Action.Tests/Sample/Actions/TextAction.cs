@@ -3,7 +3,7 @@ using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.SDK.Action.Attributes;
 
-namespace Libplanet.SDK.Action.Tests
+namespace Libplanet.SDK.Action.Tests.Sample.Actions
 {
     [ActionType("Text")]
     public class TextAction : ActionBase

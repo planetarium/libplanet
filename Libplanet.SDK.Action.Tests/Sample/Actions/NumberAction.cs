@@ -43,5 +43,11 @@ namespace Libplanet.SDK.Action.Tests.Sample.Actions
             Call<NumberLogAction>(nameof(NumberLogAction.Multiply), new object?[] { operand });
             SetState(Signer, new Integer(stored.Value * operand.Value));
         }
+
+        // Just some random public method for testing.
+        public void DoNothing()
+        {
+            return;
+        }
     }
 }
