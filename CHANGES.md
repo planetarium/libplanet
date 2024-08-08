@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.2.2
 -------------
 
-To be released.
+Released on August 8, 2024.
 
  - (Libplanet.Explorer) Fix an issue with high CPU usage
    when querying blocks [[#3897]]
