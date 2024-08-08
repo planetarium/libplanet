@@ -1,4 +1,3 @@
-using System.Reflection;
 using Libplanet.Node.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,14 +10,12 @@ public class LibplanetNodeBuilder : ILibplanetNodeBuilder
         Services = services;
         Services.AddSingleton<PolicyService>();
         Services.AddSingleton<BlockChainService>();
+        Services.AddSingleton<IBlockChainService, BlockChainService>();
         Services.AddSingleton<IReadChainService, ReadChainService>();
         Services.AddSingleton<TransactionService>();
     }
 
-    public IServiceCollection Services
-    {
-        get;
-    }
+    public IServiceCollection Services { get; }
 
     public ILibplanetNodeBuilder WithSolo()
     {
@@ -26,8 +23,11 @@ public class LibplanetNodeBuilder : ILibplanetNodeBuilder
         return this;
     }
 
-    public ILibplanetNodeBuilder WithSwarm()
+    public ILibplanetNodeBuilder WithNode()
     {
+        Services.AddHostedService<NodeService>();
+        Services.AddSingleton<INodeService, NodeService>();
+        Services.AddSingletonsFromDomain(scope: "Node");
         return this;
     }
 
@@ -40,6 +40,8 @@ public class LibplanetNodeBuilder : ILibplanetNodeBuilder
         Services.AddSingleton<IConsensusSeedService, ConsensusSeedService>();
         Services.AddHostedService<BlocksyncSeedService>();
         Services.AddHostedService<ConsensusSeedService>();
+        Services.AddHostedService<NodeService>();
+        Services.AddSingletonsFromDomain(scope: "Seed");
         return this;
     }
 }

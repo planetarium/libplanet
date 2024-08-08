@@ -10,6 +10,11 @@ service Greeter {
   rpc SayHello (HelloRequest) returns (HelloReply);
   rpc GetGenesisBlock (GetGenesisBlockRequest) returns (GetGenesisBlockReply);
   rpc GetSeed(GetSeedRequest) returns (GetSeedReply);
+  rpc GetTip(Empty) returns (GetTipReply);
+  rpc GetBlock(GetBlockRequest) returns (GetBlockReply);
+}
+
+message Empty {
 }
 
 // The request message containing the user's name.
@@ -33,6 +38,29 @@ message GetSeedRequest {
 }
 
 message GetSeedReply {
-  string blocksyncSeed = 1;
-  string consensusSeed = 2;
+  string blocksync_seed = 1;
+  string consensus_seed = 2;
+}
+
+message GetTipReply {
+  string hash = 1;
+  int64 height = 2;
+}
+
+message GetBlockRequest {
+  oneof block_identifier {
+    int64 height = 1;
+    string hash = 2;
+  }
+}
+
+message GetBlockReply {
+  string hash = 1;
+  int64 height = 2;
+  string miner = 3;
+  string public_key = 4;
+  string previous_hash = 5;
+  string state_root_hash = 6;
+  string signature = 7;
+  int64 protocol_version = 8;
 }

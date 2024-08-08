@@ -8,7 +8,7 @@ public interface ILibplanetNodeBuilder
 
     ILibplanetNodeBuilder WithSolo();
 
-    ILibplanetNodeBuilder WithSwarm();
+    ILibplanetNodeBuilder WithNode();
 
     ILibplanetNodeBuilder WithValidate();
 
