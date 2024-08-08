@@ -4,11 +4,13 @@ namespace Libplanet.Node.Extensions.NodeBuilder;
 
 public interface ILibplanetNodeBuilder
 {
-    public IServiceCollection Services { get; }
+    IServiceCollection Services { get; }
 
-    public ILibplanetNodeBuilder WithSolo();
+    ILibplanetNodeBuilder WithSolo();
 
-    public ILibplanetNodeBuilder WithSwarm();
+    ILibplanetNodeBuilder WithSwarm();
 
-    public ILibplanetNodeBuilder WithValidate();
+    ILibplanetNodeBuilder WithValidate();
+
+    ILibplanetNodeBuilder WithSeed();
 }

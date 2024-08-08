@@ -9,6 +9,7 @@ service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply);
   rpc GetGenesisBlock (GetGenesisBlockRequest) returns (GetGenesisBlockReply);
+  rpc GetSeed(GetSeedRequest) returns (GetSeedReply);
 }
 
 // The request message containing the user's name.
@@ -26,4 +27,12 @@ message GetGenesisBlockRequest {
 
 message GetGenesisBlockReply {
   string hash = 1;
+}
+
+message GetSeedRequest {
+}
+
+message GetSeedReply {
+  string blocksyncSeed = 1;
+  string consensusSeed = 2;
 }
