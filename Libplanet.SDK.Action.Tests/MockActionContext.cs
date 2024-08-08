@@ -1,76 +1,60 @@
-using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 
-namespace Libplanet.SDK.Tests;
-
-public class MockActionContext : IActionContext
+namespace Libplanet.SDK.Action.Tests
 {
-    public Address Signer
+    public class MockActionContext : IActionContext
     {
-        get;
+        public MockActionContext(
+            Address signer,
+            Address miner,
+            IWorld previousState)
+        {
+            Signer = signer;
+            Miner = miner;
+            PreviousState = previousState;
+        }
+
+        public Address Signer { get; }
+
+        public TxId? TxId =>
+            throw new NotSupportedException();
+
+        public Address Miner { get; }
+
+        public long BlockIndex =>
+            throw new NotSupportedException();
+
+        public int BlockProtocolVersion =>
+            throw new NotSupportedException();
+
+        public IWorld PreviousState { get; }
+
+        public int RandomSeed =>
+            throw new NotSupportedException();
+
+        public bool IsPolicyAction =>
+            throw new NotSupportedException();
+
+        public IReadOnlyList<ITransaction> Txs =>
+            throw new NotSupportedException();
+
+        public IReadOnlyList<EvidenceBase> Evidence =>
+            throw new NotSupportedException();
+
+        public void UseGas(long gas) =>
+            throw new NotSupportedException();
+
+        public IRandom GetRandom() =>
+            throw new NotSupportedException();
+
+        public long GasUsed() =>
+            throw new NotSupportedException();
+
+        public long GasLimit() =>
+            throw new NotSupportedException();
     }
-
-    public TxId? TxId
-    {
-        get;
-    }
-
-    public Address Miner
-    {
-        get;
-    }
-
-    public long BlockIndex
-    {
-        get;
-    }
-
-    public int BlockProtocolVersion
-    {
-        get;
-    }
-
-    public IWorld PreviousState
-    {
-        get;
-        set;
-    }
-
-    public int RandomSeed
-    {
-        get;
-    }
-
-    public bool IsPolicyAction
-    {
-        get;
-    }
-
-    public IReadOnlyList<ITransaction> Txs
-    {
-        get;
-    }
-
-    public IReadOnlyList<EvidenceBase> Evidence
-    {
-        get;
-    }
-
-    public void UseGas(long gas)
-    {
-        throw new NotSupportedException();
-    }
-
-    public IRandom GetRandom() =>
-        throw new NotSupportedException();
-
-    public long GasUsed() =>
-        throw new NotSupportedException();
-
-    public long GasLimit() =>
-        throw new NotSupportedException();
 }

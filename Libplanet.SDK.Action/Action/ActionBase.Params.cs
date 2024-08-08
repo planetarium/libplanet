@@ -2,6 +2,7 @@ using System.Reflection;
 using Libplanet.Action;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
+using Libplanet.SDK.Action.Attributes;
 
 namespace Libplanet.SDK.Action
 {
@@ -9,9 +10,10 @@ namespace Libplanet.SDK.Action
     {
         public abstract Address StorageAddress { get; }
 
-        private MethodInfo[] CallableMethods => GetType()
+        private MethodInfo[] ExecutableMethods => GetType()
             .GetMethods()
             .Where(methodInfo => methodInfo.IsPublic)
+            .Where(methodInfo => methodInfo.GetCustomAttribute<ExecutableAttribute>() is { })
             .ToArray();
 
         private IActionContext ActionContext => _actionContext ??
@@ -20,6 +22,6 @@ namespace Libplanet.SDK.Action
         private IWorld World => _world ??
             throw new InvalidOperationException("State is not set.");
 
-        private bool Loaded => _args is null || _call is null || _name is null;
+        private bool Loaded => _args is { } && _call is { } && _name is { };
     }
 }

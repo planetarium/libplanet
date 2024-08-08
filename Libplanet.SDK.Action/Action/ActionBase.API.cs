@@ -1,7 +1,7 @@
 using System.Reflection;
 using Bencodex.Types;
 using Libplanet.Crypto;
-using Libplanet.SDK.Interfaces;
+using Libplanet.SDK.Action.Attributes;
 
 namespace Libplanet.SDK.Action
 {
@@ -17,23 +17,52 @@ namespace Libplanet.SDK.Action
                 World.GetAccount(StorageAddress).SetState(address, value));
         }
 
-        protected IValue? Call<T>(Address address, string method, object?[]? args = null)
-            where T : ActionBase, ICallable
+        protected void Call<T>(string methodName, object?[]? args = null)
+            where T : ActionBase
         {
-            if ((T?)Activator.CreateInstance(typeof(T), address) is not { } callAction)
+            if (Activator.CreateInstance(typeof(T)) is not T calledAction)
             {
                 throw new Exception("Action cannot be found.");
             }
 
-            callAction.LoadContext(ActionContext, World);
+            calledAction.LoadContext(ActionContext, World);
 
-            MethodInfo? methodInfo = typeof(T).GetMethod(method);
-            if (methodInfo is null)
-            {
+            MethodInfo methodInfo = typeof(T).GetMethod(methodName) ??
                 throw new Exception("Method cannot be found.");
+            if (methodInfo.GetCustomAttribute<CallableAttribute>() is null)
+            {
+                throw new Exception(
+                    $"Target method is missing a {nameof(CallableAttribute)}");
             }
 
-            return (IValue?)methodInfo.Invoke(callAction, args);
+            methodInfo.Invoke(calledAction, args);
+
+            _world = calledAction._world;
+            _actionContext = calledAction._actionContext;
+        }
+
+        protected U Call<T, U>(string methodName, object?[]? args = null)
+            where T : ActionBase
+        {
+            if (Activator.CreateInstance(typeof(T)) is not T calledAction)
+            {
+                throw new Exception("Action cannot be found.");
+            }
+
+            calledAction.LoadContext(ActionContext, World);
+
+            MethodInfo methodInfo = typeof(T).GetMethod(methodName) ??
+                throw new Exception("Method cannot be found.");
+
+            if (methodInfo.Invoke(calledAction, args) is not U result)
+            {
+                throw new Exception("Return type doesn't match.");
+            }
+
+            _world = calledAction._world;
+            _actionContext = calledAction._actionContext;
+
+            return result;
         }
     }
 }

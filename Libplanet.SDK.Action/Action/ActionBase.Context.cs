@@ -1,4 +1,3 @@
-using Libplanet.Action;
 using Libplanet.Crypto;
 
 namespace Libplanet.SDK.Action
