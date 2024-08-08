@@ -25,6 +25,28 @@ To be released.
 ### CLI tools
 
 
+Version 5.2.2
+-------------
+
+Released on August 8, 2024.
+
+ - Ported changes from [Libplanet 5.2.2] release.  [[#3915]]
+
+[#3915]: https://github.com/planetarium/libplanet/pull/3915
+[Libplanet 5.2.2]: https://www.nuget.org/packages/Libplanet/5.2.2
+
+
+Version 5.2.1
+-------------
+
+Released on July 31, 2024.
+
+ - Ported changes from [Libplanet 5.1.3] release.  [[#3902]]
+
+[#3902]: https://github.com/planetarium/libplanet/pull/3902
+[Libplanet 5.1.3]: https://www.nuget.org/packages/Libplanet/5.1.3
+
+
 Version 5.2.0
 -------------
 
