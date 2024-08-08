@@ -287,6 +287,11 @@ commands:
             echo export DOTNET_ROOT="$HOME/.dotnet"
           } >> $BASH_ENV
     - run:
+        name: Install .NET 6.0 SDK
+        shell: bash
+        command: |
+          curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 6.0
+    - run:
         name: Install .NET 8.0 SDK for Libplanet-SDK
         shell: bash
         command: |
