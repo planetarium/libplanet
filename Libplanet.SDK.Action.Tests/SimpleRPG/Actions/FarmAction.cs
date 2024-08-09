@@ -21,10 +21,14 @@ namespace Libplanet.SDK.Action.Tests.SimpleRPG.Actions
             // Simple type checking.
             _ = (Null)args;
 
-            Avatar avatar = Call<AvatarAction, Avatar>("GetAvatar", new object?[] { Signer });
+            Avatar avatar = Call<AvatarAction, Avatar>(
+                nameof(AvatarAction.GetAvatar),
+                new object?[] { Signer });
             avatar.Info.AddExp(ExpPerFarm);
             avatar.Inventory.AddGold(GoldPerFarm);
-            Call<AvatarAction>("SetAvatar", new object?[] { Signer, avatar });
+            Call<AvatarAction>(
+                nameof(AvatarAction.SetAvatar),
+                new object?[] { Signer, avatar });
         }
     }
 }

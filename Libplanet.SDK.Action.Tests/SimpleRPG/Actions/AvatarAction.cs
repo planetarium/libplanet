@@ -16,18 +16,18 @@ namespace Libplanet.SDK.Action.Tests.SimpleRPG.Actions
         public void Create(IValue args)
         {
             string name = (Text)args;
-            Call<InfoAction, Info>("Create", new object?[] { name });
-            Call<InventoryAction, Inventory>("Create");
+            Call<InfoAction, Info>(nameof(InfoAction.Create), new object?[] { name });
+            Call<InventoryAction, Inventory>(nameof(InventoryAction.Create));
         }
 
         [Callable]
         public Avatar GetAvatar(Address address)
         {
             Info info = Call<InfoAction, Info>(
-                "GetInfo",
+                nameof(InfoAction.GetInfo),
                 new object?[] { address });
             Inventory inventory = Call<InventoryAction, Inventory>(
-                "GetInventory",
+                nameof(InventoryAction.GetInventory),
                 new object?[] { address });
             return new Avatar(info, inventory);
         }
@@ -36,10 +36,10 @@ namespace Libplanet.SDK.Action.Tests.SimpleRPG.Actions
         public void SetAvatar(Address address, Avatar avatar)
         {
             Call<InfoAction>(
-                "SetInfo",
+                nameof(InfoAction.SetInfo),
                 new object?[] { address, avatar.Info });
             Call<InventoryAction>(
-                "SetInventory",
+                nameof(InventoryAction.SetInventory),
                 new object?[] { address, avatar.Inventory });
         }
     }
