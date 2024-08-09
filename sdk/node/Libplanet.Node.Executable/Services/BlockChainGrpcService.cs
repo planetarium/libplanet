@@ -5,23 +5,11 @@ using Libplanet.Types.Blocks;
 
 namespace Libplanet.Node.API.Services;
 
-public class GreeterService(
-    IServiceProvider serviceProvider,
-    ILogger<GreeterService> logger,
+public class BlockChainGrpcService(
     IReadChainService blockChain)
-    : Greeter.GreeterBase
+    : BlockChain.BlockChainBase
 {
-    private readonly ILogger<GreeterService> _logger = logger;
     private readonly IReadChainService _blockChain = blockChain;
-
-    public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
-    {
-        _logger.LogDebug("Saying hello to {Name}", request.Name);
-        return Task.FromResult(new HelloReply
-        {
-            Message = "Hello " + request.Name,
-        });
-    }
 
     public override Task<GetGenesisBlockReply> GetGenesisBlock(
         GetGenesisBlockRequest request,
@@ -30,23 +18,6 @@ public class GreeterService(
         return Task.FromResult(new GetGenesisBlockReply
         {
             Hash = _blockChain.Tip.Hash.ToString(),
-        });
-    }
-
-    public override Task<GetSeedReply> GetSeed(GetSeedRequest request, ServerCallContext context)
-    {
-        var blocksyncSeedService = serviceProvider.GetService<IBlocksyncSeedService>();
-        var consensusSeedService = serviceProvider.GetService<IConsensusSeedService>();
-        if (blocksyncSeedService is null || consensusSeedService is null)
-        {
-            throw new RpcException(
-                new Status(StatusCode.Unavailable, "Seed services are not available."));
-        }
-
-        return Task.FromResult(new GetSeedReply
-        {
-            BlocksyncSeed = EndPointUtility.ToString(blocksyncSeedService.BoundPeer.EndPoint),
-            ConsensusSeed = EndPointUtility.ToString(consensusSeedService.BoundPeer.EndPoint),
         });
     }
 

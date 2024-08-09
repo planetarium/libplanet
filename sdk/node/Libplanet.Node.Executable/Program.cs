@@ -34,7 +34,8 @@ var handlerMessage = """
     """;
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
+app.MapGrpcService<SeedGrpcService>();
+app.MapGrpcService<BlockChainGrpcService>();
 app.MapGet("/", () => handlerMessage);
 
 if (builder.Environment.IsDevelopment())

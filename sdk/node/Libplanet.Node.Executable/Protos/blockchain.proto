@@ -4,12 +4,8 @@ option csharp_namespace = "Libplanet.Node.API";
 
 package greet;
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply);
+service BlockChain {
   rpc GetGenesisBlock (GetGenesisBlockRequest) returns (GetGenesisBlockReply);
-  rpc GetSeed(GetSeedRequest) returns (GetSeedReply);
   rpc GetTip(Empty) returns (GetTipReply);
   rpc GetBlock(GetBlockRequest) returns (GetBlockReply);
 }
@@ -17,29 +13,11 @@ service Greeter {
 message Empty {
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings.
-message HelloReply {
-  string message = 1;
-}
-
 message GetGenesisBlockRequest {
 }
 
 message GetGenesisBlockReply {
   string hash = 1;
-}
-
-message GetSeedRequest {
-}
-
-message GetSeedReply {
-  string blocksync_seed = 1;
-  string consensus_seed = 2;
 }
 
 message GetTipReply {
