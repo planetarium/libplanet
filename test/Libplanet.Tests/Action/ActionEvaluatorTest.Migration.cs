@@ -311,7 +311,8 @@ namespace Libplanet.Tests.Action
             Assert.Equal(0, chain.GetWorldState().Version);
 
             // A block that doesn't touch any state does not migrate its state.
-            var block2 = chain.ProposeBlock(miner, blockCommit);
+            var block2 = chain.ProposeBlock(
+                miner, blockCommit, CreateZeroRoundProof(chain.Tip, miner));
             blockCommit = CreateBlockCommit(block2);
             chain.Append(block2, blockCommit);
             Assert.Equal(0, chain.GetWorldState().Version);
@@ -329,7 +330,8 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action }.ToPlainValues());
 
             chain.StageTransaction(tx);
-            var block3 = chain.ProposeBlock(miner, blockCommit);
+            var block3 = chain.ProposeBlock(
+                miner, blockCommit, CreateZeroRoundProof(chain.Tip, miner));
             chain.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetNextWorldState().Version);
             var accountStateRoot = stateStore.GetStateRoot(chain.GetNextStateRootHash(block3.Hash))
@@ -365,7 +367,8 @@ namespace Libplanet.Tests.Action
             Assert.Equal(0, chain.GetWorldState().Version);
 
             // A block that doesn't touch any state does not migrate its state.
-            var block2 = chain.ProposeBlock(miner, blockCommit);
+            var block2 = chain.ProposeBlock(
+                miner, blockCommit, CreateZeroRoundProof(chain.Tip, miner));
             blockCommit = CreateBlockCommit(block2);
             chain.Append(block2, blockCommit);
             Assert.Equal(0, chain.GetWorldState().Version);
@@ -382,7 +385,8 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action }.ToPlainValues());
 
             chain.StageTransaction(tx);
-            var block3 = chain.ProposeBlock(miner, blockCommit);
+            var block3 = chain.ProposeBlock(
+                miner, blockCommit, CreateZeroRoundProof(chain.Tip, miner));
             chain.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetNextWorldState().Version);
 

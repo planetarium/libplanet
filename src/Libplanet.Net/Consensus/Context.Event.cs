@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using Libplanet.Consensus;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Consensus;
 
@@ -62,5 +65,13 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         internal event EventHandler<(int Round, VoteFlag Flag, IEnumerable<Vote> Votes)>?
             VoteSetModified;
+
+        /// <summary>
+        /// An event that is invoked when the <see cref="LotSet"/> is modified.
+        /// </summary>
+        internal event EventHandler<(
+            ImmutableDictionary<PublicKey, Lot> Lots,
+            ImmutableDictionary<PublicKey, DominantLot> DominantLots)>?
+            LotSetModified;
     }
 }

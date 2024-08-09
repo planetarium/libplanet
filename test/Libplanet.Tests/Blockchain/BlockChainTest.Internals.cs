@@ -113,6 +113,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Proposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(_blockChain.Tip),
+                CreateZeroRoundProof(_blockChain.Tip, _fx.Proposer),
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(block1, CreateBlockCommit(block1), render: true);
 

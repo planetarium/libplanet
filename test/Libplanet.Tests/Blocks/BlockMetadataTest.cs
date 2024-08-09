@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Common;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Types.Blocks;
@@ -45,6 +46,7 @@ namespace Libplanet.Tests.Blocks
                     previousHash: Block1Metadata.PreviousHash,
                     txHash: Block1Metadata.TxHash,
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null));
             Assert.Throws<InvalidBlockProtocolVersionException>(
                 () => new BlockMetadata(
@@ -56,6 +58,7 @@ namespace Libplanet.Tests.Blocks
                     previousHash: Block1Metadata.PreviousHash,
                     txHash: Block1Metadata.TxHash,
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null));
         }
 
@@ -69,6 +72,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: Block1Metadata.TxHash,
                 lastCommit: null,
+                proof: null,
                 evidenceHash: null));
         }
 
@@ -86,6 +90,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: Block1Metadata.TxHash,
                 lastCommit: null,
+                proof: null,
                 evidenceHash: null);
             Assert.Equal(TimeSpan.Zero, metadata.Timestamp.Offset);
             Assert.Equal(
@@ -104,6 +109,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: Block1Metadata.PreviousHash,
                 txHash: GenesisMetadata.TxHash,
                 lastCommit: null,
+                proof: null,
                 evidenceHash: null));
             Assert.Throws<InvalidBlockPreviousHashException>(() => new BlockMetadata(
                 index: Block1Metadata.Index,
@@ -112,6 +118,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: null,
                 txHash: Block1Metadata.TxHash,
                 lastCommit: null,
+                proof: null,
                 evidenceHash: null));
         }
 
@@ -130,6 +137,12 @@ namespace Libplanet.Tests.Blocks
                 .Add(
                     "transaction_fingerprint",
                     ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f")
+                )
+                .Add(
+                    "proof",
+                    ParseHex("0224313f215eb0c9d511f43a4aa55c5df1cd5dffbc29197f1dc7b936aa5a" +
+                    "30813d88ad81348df92917b8fd2e88b513d3c4381e554c41f91f201fe07a7c6967718" +
+                    "03b0740d363ab3e15a76823b092d2f245f288291bb01063fecd2298011449668b")
                 )
                 .Add(
                     "evidence_hash",
@@ -154,6 +167,13 @@ namespace Libplanet.Tests.Blocks
                     ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
                 )
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
+                .Add(
+                    "proof",
+                    ParseHex("02b5de417ca459f8ab048625c55daf95fb47f7a9a41de80dcbbb0a454247" +
+                    "e315ee845dda470812bf8b16741a8aacf7702c57d74e35c9e751089ee478d35a4fdcc" +
+                    "7e150b5880ff57799bb7cd64fff33f99b663e98156f698d1590a472c520ffa9c8"
+                    )
+                )
                 .Add(
                     "evidence_hash",
                     ParseHex("e7198889cc4a82a8b7be4b7f428b6201400ef222709f756e540b32bc1e8d5d86")
@@ -207,7 +227,7 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash();
             AssertBytesEqual(
-                FromHex("9ff328716814fed03de454dfc0a9d9aeb0077ad0c393513bf29895a45ded13aa"),
+                FromHex("b96b3a3bcb0afe52fb4b90a9bc00678dd18b4c4adf3a38099ebc1fd7b8fca4c8"),
                 hash.ByteArray);
         }
 
@@ -241,6 +261,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: blockHash,
                 txHash: null,
                 lastCommit: invalidHeightLastCommit,
+                proof: new ConsensusInformation(2L, 0, null).Prove(validatorA),
                 evidenceHash: null));
 
             // BlockHash of the last commit is invalid.
@@ -263,6 +284,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: GenesisHash,
                 txHash: null,
                 lastCommit: invalidBlockHashLastCommit,
+                proof: new ConsensusInformation(2L, 0, null).Prove(validatorA),
                 evidenceHash: null));
 
             var validLastCommit = new BlockCommit(
@@ -292,6 +314,7 @@ namespace Libplanet.Tests.Blocks
                 previousHash: blockHash,
                 txHash: null,
                 lastCommit: validLastCommit,
+                proof: new ConsensusInformation(2L, 0, null).Prove(validatorA),
                 evidenceHash: null);
         }
 

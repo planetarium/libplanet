@@ -59,7 +59,7 @@ namespace Libplanet.Action
         public IActionLoader ActionLoader => _actionLoader;
 
         /// <summary>
-        /// Creates a random seed.
+        /// Creates a legacy random seed.
         /// </summary>
         /// <param name="preEvaluationHashBytes">The pre-evaluation hash as bytes.
         /// </param>
@@ -72,7 +72,7 @@ namespace Libplanet.Action
         /// <exception cref="ArgumentException">Thrown when
         /// <paramref name="preEvaluationHashBytes"/> is empty.</exception>
         [Pure]
-        public static int GenerateRandomSeed(
+        public static int GenerateLegacyRandomSeed(
             byte[] preEvaluationHashBytes,
             byte[] signature,
             int actionOffset)
@@ -228,7 +228,9 @@ namespace Libplanet.Action
 
             byte[] preEvaluationHashBytes = block.PreEvaluationHash.ToByteArray();
             byte[] signature = tx?.Signature ?? Array.Empty<byte>();
-            int seed = GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
+            int seed = block.Proof is { } proof
+                ? proof.Seed
+                : GenerateLegacyRandomSeed(preEvaluationHashBytes, signature, 0);
 
             IWorld state = previousState;
             foreach (IAction action in actions)

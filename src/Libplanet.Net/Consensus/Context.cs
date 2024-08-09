@@ -85,6 +85,7 @@ namespace Libplanet.Net.Consensus
         private readonly ValidatorSet _validatorSet;
         private readonly Channel<ConsensusMsg> _messageRequests;
         private readonly Channel<System.Action> _mutationRequests;
+        private readonly LotSet _lotSet;
         private readonly HeightVoteSet _heightVoteSet;
         private readonly PrivateKey _privateKey;
         private readonly HashSet<int> _preVoteTimeoutFlags;
@@ -105,6 +106,7 @@ namespace Libplanet.Net.Consensus
         private Block? _decision;
         private int _committedRound;
         private BlockCommit? _lastCommit;
+        private Proof? _lastProof;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -139,6 +141,7 @@ namespace Libplanet.Net.Consensus
                 validators,
                 ConsensusStep.Default,
                 -1,
+                20,
                 128,
                 contextTimeoutOptions)
         {
@@ -152,6 +155,7 @@ namespace Libplanet.Net.Consensus
             ValidatorSet validators,
             ConsensusStep consensusStep,
             int round = -1,
+            int drawSize = 20,
             int cacheSize = 128,
             ContextTimeoutOption? contextTimeoutOptions = null)
         {
@@ -172,6 +176,7 @@ namespace Libplanet.Net.Consensus
             Round = round;
             Step = consensusStep;
             _lastCommit = lastCommit;
+            _lastProof = blockChain[height - 1].Proof;
             _lockedValue = null;
             _lockedRound = -1;
             _validValue = null;
@@ -182,6 +187,7 @@ namespace Libplanet.Net.Consensus
             _codec = new Codec();
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
+            _lotSet = new LotSet(height, round, _lastProof, validators, drawSize);
             _heightVoteSet = new HeightVoteSet(height, validators);
             _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
@@ -214,7 +220,16 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public ConsensusStep Step { get; private set; }
 
+        /// <summary>
+        /// A proposal block for this round. If the block is proposed, it will be stored here.
+        /// </summary>
         public Proposal? Proposal { get; private set; }
+
+        /// <summary>
+        /// The proposer of this round. Determined by the <see cref="LotSet.Maj23"/>.
+        /// </summary>
+        public PublicKey? Proposer
+            => _lotSet.Maj23?.PublicKey;
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
@@ -411,6 +426,28 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Gets the timeout of <see cref="ConsensusStep.Sortition"/> with the given
+        /// round.
+        /// </summary>
+        /// <param name="round">A round to get the timeout.</param>
+        /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
+        private TimeSpan TimeoutSortition(long round)
+        {
+            return TimeSpan.FromSeconds(
+                _contextTimeoutOption.SortitionSecondBase +
+                round * _contextTimeoutOption.SortitionMultiplier);
+        }
+
+        /// <summary>
+        /// Gets the delay to gather <see cref="Lot"/>s to determine <see cref="DominantLot"/>.
+        /// </summary>
+        /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
+        private TimeSpan DelayLotGather()
+        {
+            return TimeSpan.FromSeconds(_contextTimeoutOption.LotGatherSecond);
+        }
+
+        /// <summary>
         /// Creates a new <see cref="Block"/> to propose.
         /// </summary>
         /// <returns>A new <see cref="Block"/> if successfully proposed,
@@ -419,8 +456,11 @@ namespace Libplanet.Net.Consensus
         {
             try
             {
-                var evidence = _blockChain.GetPendingEvidence();
-                Block block = _blockChain.ProposeBlock(_privateKey, _lastCommit, evidence);
+                Block block = _blockChain.ProposeBlock(
+                    _privateKey,
+                    _lastCommit,
+                    _lotSet.GenerateProof(_privateKey),
+                    _blockChain.GetPendingEvidence());
                 _blockChain.Store.PutBlock(block);
                 return block;
             }
@@ -470,6 +510,16 @@ namespace Libplanet.Net.Consensus
 
                 try
                 {
+                    if (!(block.Proof is Proof proof
+                        && proof.Equals(_lotSet.Maj23?.Proof)))
+                    {
+                        throw new InvalidBlockProofException(
+                            $"Proof if given block is different from " +
+                            $"majority proof of consensus. " +
+                            $"Expected: {_lotSet.Maj23?.Proof}" +
+                            $"Actual: {block.Proof}");
+                    }
+
                     _blockChain.ValidateBlock(block);
                     _blockChain.ValidateBlockNonces(
                         block.Transactions

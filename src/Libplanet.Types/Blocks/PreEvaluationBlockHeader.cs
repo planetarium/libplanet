@@ -97,6 +97,9 @@ namespace Libplanet.Types.Blocks
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => Metadata.LastCommit;
 
+        /// <inheritdoc cref="IBlockMetadata.Proof"/>
+        public Proof? Proof => Metadata.Proof;
+
         /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
         public HashDigest<SHA256>? EvidenceHash => Metadata.EvidenceHash;
 

@@ -27,43 +27,20 @@ namespace Libplanet.Net.Consensus
 
             Round = round;
             RoundStarted?.Invoke(this, Round);
+
+            // TODO: Update last proof by peers.
+            // Last proof is not a parameter of StartRound()
+            // for its update by peers developed in future.
+            // It's crucial, to prevent network partition.
+            _lotSet.SetRound(round, _lastProof);
             _heightVoteSet.SetRound(round);
 
             Proposal = null;
-            Step = ConsensusStep.Propose;
-            if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
-            {
-                _logger.Information(
-                    "Starting round {NewRound} and is a proposer.",
-                    round,
-                    ToString());
-                if ((_validValue ?? GetValue()) is Block proposalValue)
-                {
-                    Proposal proposal = new ProposalMetadata(
-                        Height,
-                        Round,
-                        DateTimeOffset.UtcNow,
-                        _privateKey.PublicKey,
-                        _codec.Encode(proposalValue.MarshalBlock()),
-                        _validRound).Sign(_privateKey);
+            Step = ConsensusStep.Sortition;
 
-                    PublishMessage(new ConsensusProposalMsg(proposal));
-                }
-                else
-                {
-                    _logger.Information(
-                        "Failed to propose a block for round {Round}.",
-                        round);
-                    _ = OnTimeoutPropose(Round);
-                }
-            }
-            else
-            {
-                _logger.Information(
-                    "Starting round {NewRound} and is not a proposer.",
-                    round);
-                _ = OnTimeoutPropose(Round);
-            }
+            PublishMessage(new ConsensusLotMsg(_lotSet.GenerateLot(_privateKey)));
+            _ = OnTimeoutSortition(Round);
+            _ = VoteLotAfterGathering();
         }
 
         /// <summary>
@@ -75,9 +52,13 @@ namespace Libplanet.Net.Consensus
         /// If an invalid <see cref="ConsensusMsg"/> is given, this method throws
         /// an <see cref="InvalidConsensusMessageException"/> and handles it <em>internally</em>
         /// while invoking <see cref="ExceptionOccurred"/> event.
-        /// An <see cref="InvalidConsensusMessageException"/> can be thrown when
+        /// An <see cref="InvalidVoteException"/> can be thrown when
         /// the internal <see cref="HeightVoteSet"/> does not accept it, i.e.
         /// <see cref="HeightVoteSet.AddVote"/> returns <see langword="false"/>.
+        /// An <see cref="InvalidLotException"/> or <see cref="InvalidDominantLotException"/>
+        /// can be thrown when the internal <see cref="LotSet"/> does not accept it, i.e.
+        /// <see cref="LotSet.AddLot"/> or <see cref="LotSet.AddDominantLot"/>
+        /// returns <see langword="false"/>.
         /// </remarks>
         /// <seealso cref="HeightVoteSet.AddVote"/>
         private bool AddMessage(ConsensusMsg message)
@@ -98,9 +79,46 @@ namespace Libplanet.Net.Consensus
                         message);
                 }
 
+                if (message is ConsensusLotMsg lot)
+                {
+                    _lotSet.AddLot(lot.Lot);
+                    LotSetModified?.Invoke(this, (_lotSet.Lots, _lotSet.DominantLots));
+                    _logger.Debug(
+                        "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                        "Public key: {PublicKey}, " +
+                        "Lot: {Lot}. (context: {Context})",
+                        nameof(AddMessage),
+                        lot,
+                        lot.Height,
+                        lot.Round,
+                        lot.ValidatorPublicKey,
+                        lot.Lot,
+                        ToString());
+                    return true;
+                }
+
+                if (message is ConsensusDominantLotMsg dominantLot)
+                {
+                    _lotSet.AddDominantLot(dominantLot.DominantLot);
+                    LotSetModified?.Invoke(this, (_lotSet.Lots, _lotSet.DominantLots));
+                    _logger.Debug(
+                        "{FName}: Message: {Message} => Height: {Height}, Round: {Round}, " +
+                        "Public key: {PublicKey}, " +
+                        "Dominant lot: {Lot}. (context: {Context})",
+                        nameof(AddMessage),
+                        dominantLot,
+                        dominantLot.Height,
+                        dominantLot.Round,
+                        dominantLot.ValidatorPublicKey,
+                        dominantLot.DominantLot.Lot,
+                        ToString());
+                    return true;
+                }
+
                 if (message is ConsensusProposalMsg proposal)
                 {
                     AddProposal(proposal.Proposal);
+                    return true;
                 }
 
                 if (message is ConsensusVoteMsg voteMsg)
@@ -142,6 +160,28 @@ namespace Libplanet.Net.Consensus
 
                 return false;
             }
+            catch (InvalidLotException ile)
+            {
+                var icme = new InvalidConsensusMessageException(
+                    ile.Message,
+                    message);
+                var msg = $"Failed to add invalid message {message} to the " +
+                          $"{nameof(LotSet)}";
+                _logger.Error(icme, msg);
+                ExceptionOccurred?.Invoke(this, icme);
+                return false;
+            }
+            catch (InvalidDominantLotException idle)
+            {
+                var icme = new InvalidConsensusMessageException(
+                    idle.Message,
+                    message);
+                var msg = $"Failed to add invalid message {message} to the " +
+                          $"{nameof(LotSet)}";
+                _logger.Error(icme, msg);
+                ExceptionOccurred?.Invoke(this, icme);
+                return false;
+            }
             catch (InvalidProposalException ipe)
             {
                 var icme = new InvalidConsensusMessageException(
@@ -176,8 +216,7 @@ namespace Libplanet.Net.Consensus
 
         private void AddProposal(Proposal proposal)
         {
-            if (!_validatorSet.GetProposer(Height, Round)
-                    .PublicKey.Equals(proposal.ValidatorPublicKey))
+            if (!Proposer!.Equals(proposal.ValidatorPublicKey))
             {
                 throw new InvalidProposalException(
                     $"Given proposal's proposer {proposal.ValidatorPublicKey} is not the " +
@@ -236,7 +275,47 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
+            if (Proposer is { } proposer &&
+                Step == ConsensusStep.Sortition)
+            {
+                Step = ConsensusStep.Propose;
+                if (proposer == _privateKey.PublicKey)
+                {
+                    _logger.Information(
+                        "Entering propose step for round {NewRound} and is a proposer.",
+                        Round,
+                        ToString());
+                    if ((_validValue ?? GetValue()) is Block proposalValue)
+                    {
+                        Proposal proposal = new ProposalMetadata(
+                            Height,
+                            Round,
+                            DateTimeOffset.UtcNow,
+                            _privateKey.PublicKey,
+                            _codec.Encode(proposalValue.MarshalBlock()),
+                            _validRound).Sign(_privateKey);
+
+                        PublishMessage(new ConsensusProposalMsg(proposal));
+                    }
+                    else
+                    {
+                        _logger.Information(
+                            "Failed to propose a block for round {Round}.",
+                            Round);
+                        _ = OnTimeoutPropose(Round);
+                    }
+                }
+                else
+                {
+                    _logger.Information(
+                        "Entering propose step for round {NewRound} and is not a proposer.",
+                        Round);
+                    _ = OnTimeoutPropose(Round);
+                }
+            }
+
             (Block Block, int ValidRound)? propose = GetProposal();
+
             if (propose is { } p1 &&
                 p1.ValidRound == -1 &&
                 Step == ConsensusStep.Propose)
@@ -456,8 +535,32 @@ namespace Libplanet.Net.Consensus
                     round,
                     Round,
                     ToString());
+
+                // TODO: This have to be modified with
+                // Update by peers
+                if (_lotSet.Maj23 is { } lotMaj23)
+                {
+                    _lastProof = lotMaj23.Proof;
+                }
+
                 StartRound(round);
                 return;
+            }
+        }
+
+        /// <summary>
+        /// A timeout mutation to run if +2/3 <see cref="ConsensusDominantLotMsg"/>s were
+        /// not gathered in <see cref="TimeoutSortition"/> and is still in
+        /// <see cref="ConsensusStep.Sortition"/> step.
+        /// </summary>
+        /// <param name="round">A round that the timeout task is scheduled for.</param>
+        private void ProcessTimeoutSortition(int round)
+        {
+            if (round == Round && Step == ConsensusStep.Sortition)
+            {
+                Step = ConsensusStep.Propose;
+                TimeoutProcessed?.Invoke(this, (round, ConsensusStep.Sortition));
+                ProcessTimeoutPropose(round);
             }
         }
 
@@ -510,6 +613,11 @@ namespace Libplanet.Net.Consensus
 
             if (round == Round)
             {
+                if (_lotSet.Maj23 is { } lotMaj23)
+                {
+                    _lastProof = lotMaj23.Proof;
+                }
+
                 StartRound(Round + 1);
                 TimeoutProcessed?.Invoke(this, (round, ConsensusStep.PreCommit));
             }

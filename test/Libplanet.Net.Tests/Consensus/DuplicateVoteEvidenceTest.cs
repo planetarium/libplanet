@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Consensus;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
@@ -49,16 +50,29 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusContext: consensusContext,
                 height: 3,
                 cancellationToken: new CancellationTokenSource(Timeout).Token);
-            var consensusProposalMsgAt7Task = WaitUntilPublishedAsync<ConsensusProposalMsg>(
+            var consensusProposalMsgAt5Task = WaitUntilPublishedAsync<ConsensusProposalMsg>(
                 consensusContext: consensusContext,
-                height: 7,
+                height: 5,
                 cancellationToken: new CancellationTokenSource(Timeout).Token);
-            var block = blockChain.ProposeBlock(privateKeys[1]);
+            var proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[1]);
+            var block = blockChain.ProposeBlock(privateKeys[1], proof: proof);
             var blockCommit = TestUtils.CreateBlockCommit(block);
             consensusContext.Start();
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(privateKeys[2], blockCommit);
+            proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[2]);
+            block = blockChain.ProposeBlock(privateKeys[2], blockCommit, proof);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], lot)));
+            }
 
             await consensusProposalMsgAt3Task;
             var consensusProposalMsgAt3 = consensusProposalMsgAt3Task.Result;
@@ -103,23 +117,27 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(0, consensusContext.Round);
 
             blockCommit = blockChain.GetBlockCommit(blockChain.Tip.Hash);
-            block = blockChain.ProposeBlock(privateKeys[0], blockCommit);
+            proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[0]);
+            block = blockChain.ProposeBlock(privateKeys[0], blockCommit, proof);
             blockCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Append(block, blockCommit);
 
-            block = blockChain.ProposeBlock(privateKeys[1], blockCommit);
-            blockCommit = TestUtils.CreateBlockCommit(block);
-            blockChain.Append(block, blockCommit);
+            lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], lot)));
+            }
 
-            block = blockChain.ProposeBlock(privateKeys[2], blockCommit);
-            blockCommit = TestUtils.CreateBlockCommit(block);
-            blockChain.Append(block, blockCommit);
-
-            await consensusProposalMsgAt7Task;
-            var consensusProposalMsgAt7 = consensusProposalMsgAt7Task.Result;
+            await consensusProposalMsgAt5Task;
+            var consensusProposalMsgAt5 = consensusProposalMsgAt5Task.Result;
             Assert.NotNull(consensusProposalMsgAt3?.BlockHash);
             var actualBlock = BlockMarshaler.UnmarshalBlock(
-                (Dictionary)_codec.Decode(consensusProposalMsgAt7.Proposal.MarshaledBlock));
+                (Dictionary)_codec.Decode(consensusProposalMsgAt5.Proposal.MarshaledBlock));
             Assert.Single(actualBlock.Evidence);
         }
 
@@ -137,12 +155,25 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusContext: consensusContext,
                 height: 3,
                 cancellationToken: new CancellationTokenSource(Timeout).Token);
-            var block = blockChain.ProposeBlock(privateKeys[1]);
+            var proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[1]);
+            var block = blockChain.ProposeBlock(privateKeys[1], proof: proof);
             var blockCommit = TestUtils.CreateBlockCommit(block);
             consensusContext.Start();
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(privateKeys[2], blockCommit);
+            proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[2]);
+            block = blockChain.ProposeBlock(privateKeys[2], blockCommit, proof);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], lot)));
+            }
 
             await consensusProposalMsgAt3Task;
             var consensusProposalMsgAt3 = consensusProposalMsgAt3Task.Result;
@@ -199,12 +230,25 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusContext: consensusContext,
                 height: 3,
                 cancellationToken: new CancellationTokenSource(Timeout).Token);
-            var block = blockChain.ProposeBlock(privateKeys[1]);
+            var proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[1]);
+            var block = blockChain.ProposeBlock(privateKeys[1], proof: proof);
             var blockCommit = TestUtils.CreateBlockCommit(block);
             consensusContext.Start();
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(privateKeys[2], blockCommit);
+            proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[2]);
+            block = blockChain.ProposeBlock(privateKeys[2], blockCommit, proof);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], lot)));
+            }
 
             await consensusProposalMsgAt3Task;
             var consensusProposalMsgAt3 = consensusProposalMsgAt3Task.Result;
@@ -261,12 +305,25 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusContext: consensusContext,
                 height: 3,
                 cancellationToken: new CancellationTokenSource(Timeout).Token);
-            var block = blockChain.ProposeBlock(privateKeys[1]);
+            var proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[1]);
+            var block = blockChain.ProposeBlock(privateKeys[1], proof: proof);
             var blockCommit = TestUtils.CreateBlockCommit(block);
             consensusContext.Start();
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(privateKeys[2], blockCommit);
+            proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[2]);
+            block = blockChain.ProposeBlock(privateKeys[2], blockCommit, proof);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], lot)));
+            }
 
             await consensusProposalMsgAt3Task;
             var consensusProposalMsgAt3 = consensusProposalMsgAt3Task.Result;
@@ -323,12 +380,25 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusContext: consensusContext,
                 height: 3,
                 cancellationToken: new CancellationTokenSource(Timeout).Token);
-            var block = blockChain.ProposeBlock(privateKeys[1]);
+            var proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[1]);
+            var block = blockChain.ProposeBlock(privateKeys[1], proof: proof);
             var blockCommit = TestUtils.CreateBlockCommit(block);
             consensusContext.Start();
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(privateKeys[2], blockCommit);
+            proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[2]);
+            block = blockChain.ProposeBlock(privateKeys[2], blockCommit, proof);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], lot)));
+            }
 
             await consensusProposalMsgAt3Task;
             var consensusProposalMsgAt3 = consensusProposalMsgAt3Task.Result;
@@ -385,12 +455,25 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusContext: consensusContext,
                 height: 3,
                 cancellationToken: new CancellationTokenSource(Timeout).Token);
-            var block = blockChain.ProposeBlock(privateKeys[1]);
+            var proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[1]);
+            var block = blockChain.ProposeBlock(privateKeys[1], proof: proof);
             var blockCommit = TestUtils.CreateBlockCommit(block);
             consensusContext.Start();
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(privateKeys[2], blockCommit);
+            proof = TestUtils.CreateZeroRoundProof(blockChain.Tip, privateKeys[2]);
+            block = blockChain.ProposeBlock(privateKeys[2], blockCommit, proof);
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(
+                            TestUtils.PrivateKeys[i], lot)));
+            }
 
             await consensusProposalMsgAt3Task;
             var consensusProposalMsgAt3 = consensusProposalMsgAt3Task.Result;
