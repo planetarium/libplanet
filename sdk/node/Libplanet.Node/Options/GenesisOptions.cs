@@ -1,0 +1,24 @@
+using Libplanet.Crypto;
+using Libplanet.Net;
+using Libplanet.Node.DataAnnotations;
+
+namespace Libplanet.Node.Options;
+
+public sealed class GenesisOptions : OptionsBase<GenesisOptions>
+{
+    public const string Position = "Genesis";
+
+    public static readonly PrivateKey AppProtocolKey
+        = PrivateKey.FromString("2a15e7deaac09ce631e1faa184efadb175b6b90989cf1faed9dfc321ad1db5ac");
+
+    public static readonly AppProtocolVersion AppProtocolVersion = AppProtocolVersion.Sign(
+        AppProtocolKey, 1);
+
+    [PrivateKey]
+    public string GenesisKey { get; set; } = string.Empty;
+
+    [PublicKeyArray]
+    public string[] Validators { get; set; } = [];
+
+    public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.MinValue;
+}

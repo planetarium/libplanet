@@ -14,7 +14,8 @@
             ],
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-            }
+            },
+            "cwd": "${workspaceFolder}/sdk/node/Libplanet.Node.Executable"
         },
     ]
 }

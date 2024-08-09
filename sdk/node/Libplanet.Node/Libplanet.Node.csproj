@@ -1,15 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
-      <ProjectReference Include="..\..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
-      <ProjectReference Include="..\..\..\src\Libplanet\Libplanet.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <ProjectReference Include="..\..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
+    <ProjectReference Include="..\..\..\src\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\..\..\src\Libplanet.Net\Libplanet.Net.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,16 +1,13 @@
 using Libplanet.Blockchain;
+using Libplanet.Node.DependencyInjection;
 using Libplanet.Types.Tx;
 
 namespace Libplanet.Node.Services;
 
-public class TransactionService
+[Singleton]
+internal sealed class TransactionService(BlockChainService blockChainService)
 {
-    private readonly BlockChain _blockChain;
-
-    public TransactionService(BlockChainService blockChainService)
-    {
-        _blockChain = blockChainService.GetBlockChain();
-    }
+    private readonly BlockChain _blockChain = blockChainService.BlockChain;
 
     public void StageTransaction(Transaction transaction) =>
         _blockChain.StageTransaction(transaction);

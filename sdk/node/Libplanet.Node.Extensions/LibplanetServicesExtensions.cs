@@ -8,22 +8,34 @@ namespace Libplanet.Node.Extensions;
 public static class LibplanetServicesExtensions
 {
     public static ILibplanetNodeBuilder AddLibplanetNode(
-        this IServiceCollection services,
-        Action<LibplanetOption> configure)
+        this IServiceCollection services)
     {
-        services.Configure(configure);
-        return AddLibplanetNode(services);
+        return new LibplanetNodeBuilder(services);
     }
 
     public static ILibplanetNodeBuilder AddLibplanetNode(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.Configure<StoreOption>(configuration.GetSection(StoreOption.Position));
+        SynchronizationContext.SetSynchronizationContext(SynchronizationContext.Current ?? new());
+        services.AddSingleton(SynchronizationContext.Current!);
+        services.AddOptions<StoreOptions>()
+            .Bind(configuration.GetSection(StoreOptions.Position))
+            .ValidateDataAnnotations();
         services.Configure<SoloProposeOption>(configuration.GetSection(SoloProposeOption.Position));
-        return services.AddLibplanetNode();
-    }
+        services.AddOptions<GenesisOptions>()
+            .Bind(configuration.GetSection(GenesisOptions.Position))
+            .ValidateDataAnnotations();
+        services.AddOptions<StoreOptions>(SeedOptions.BlocksyncSeed)
+            .Bind(configuration.GetSection(SeedOptions.BlocksyncSeed))
+            .ValidateDataAnnotations();
+        services.AddOptions<StoreOptions>(SeedOptions.ConsensusSeed)
+            .Bind(configuration.GetSection(SeedOptions.ConsensusSeed))
+            .ValidateDataAnnotations();
+        services.AddOptions<NodeOptions>()
+            .Bind(configuration.GetSection(NodeOptions.Position))
+            .ValidateDataAnnotations();
 
-    private static ILibplanetNodeBuilder AddLibplanetNode(this IServiceCollection services)
-        => new LibplanetNodeBuilder(services);
+        return AddLibplanetNode(services);
+    }
 }
