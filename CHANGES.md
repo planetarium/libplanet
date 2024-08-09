@@ -10,6 +10,14 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed `BlockLocator.Create()` to take a single `BlockHash`.  [[#3913]]
+ -  Changed `BlockLocator()` to throw an `ArgumentException` when
+    the number of given `BlockHash`es is not 1.  [[#3913]]
+ -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`.
+    [[#3913]]
+ -  (Libplanet.Net) Removed `SwarmOptions.BranchpointThreshold` property.
+    [[#3913]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -18,11 +26,16 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed `BlockChain.FindBranchPoint()` to only check for the first
+    `BlockHash` in a given `BlockLocator`.  [[#3913]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#3913]: https://github.com/planetarium/libplanet/pull/3913
 
 
 Version 5.2.2

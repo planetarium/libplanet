@@ -812,28 +812,18 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Returns a new <see cref="BlockLocator"/> from the tip of current chain.
         /// </summary>
-        /// <param name="threshold">The amount of consequent blocks to include before sampling.
-        /// </param>
         /// <returns>A instance of block locator.</returns>
-        public BlockLocator GetBlockLocator(int threshold = 10)
+        public BlockLocator GetBlockLocator()
         {
-            long startIndex;
-            Guid id;
             _rwlock.EnterReadLock();
             try
             {
-                startIndex = Tip.Index;
-                id = Id;
+                return BlockLocator.Create(tipHash: Tip.Hash);
             }
             finally
             {
                 _rwlock.ExitReadLock();
             }
-
-            return BlockLocator.Create(
-                startIndex: startIndex,
-                indexToBlockHash: idx => Store.IndexBlockHash(Id, idx),
-                sampleAfter: threshold);
         }
 
         /// <summary>
@@ -1293,12 +1283,12 @@ namespace Libplanet.Blockchain
 #pragma warning restore MEN003
 
         /// <summary>
-        /// Find an approximate to the topmost common ancestor between this
+        /// Finds an approximate topmost common ancestor between this
         /// <see cref="BlockChain"/> and a given <see cref="BlockLocator"/>.
         /// </summary>
-        /// <param name="locator">A block locator that contains candidate common ancestors.</param>
-        /// <returns>An approximate to the topmost common ancestor.  If it failed to find anything
-        /// returns <see langword="null"/>.</returns>
+        /// <param name="locator">A block locator that contains common ancestor candidates.</param>
+        /// <returns>An approximate to the topmost common ancestor if found, otherwise
+        /// <see langword="null"/>.</returns>
         internal BlockHash? FindBranchpoint(BlockLocator locator)
         {
             try
@@ -1308,19 +1298,16 @@ namespace Libplanet.Blockchain
                 _logger.Debug(
                     "Finding a branchpoint with locator [{LocatorHead}, ...]",
                     locator.FirstOrDefault());
-                foreach (BlockHash hash in locator)
+                BlockHash hash = locator.FirstOrDefault();
+                if (_blocks.ContainsKey(hash)
+                    && _blocks[hash] is Block block
+                    && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                 {
-                    if (_blocks.ContainsKey(hash)
-                        && _blocks[hash] is Block block
-                        && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
-                    {
-                        _logger.Debug(
-                            "Found a branchpoint with locator [{LocatorHead}, ...]: {Hash}",
-                            locator.FirstOrDefault(),
-                            hash
-                        );
-                        return hash;
-                    }
+                    _logger.Debug(
+                        "Found a branchpoint with locator [{LocatorHead}, ...]: {Hash}",
+                        locator.FirstOrDefault(),
+                        hash);
+                    return hash;
                 }
 
                 _logger.Debug(
