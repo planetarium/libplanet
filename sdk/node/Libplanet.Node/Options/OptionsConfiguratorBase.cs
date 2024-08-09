@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-public abstract class ConfigureOptionsBase<T> : IConfigureOptions<T>
+public abstract class OptionsConfiguratorBase<T> : IConfigureOptions<T>
     where T : OptionsBase<T>
 {
     void IConfigureOptions<T>.Configure(T options)

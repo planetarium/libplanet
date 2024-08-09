@@ -9,7 +9,7 @@ namespace Libplanet.Node.Options;
 [Singleton<IConfigureOptions<NodeOptions>>(Scope = "Node")]
 internal sealed class NodeOptionsConfigurator(
     ILogger<NodeOptionsConfigurator> logger)
-    : ConfigureOptionsBase<NodeOptions>
+    : OptionsConfiguratorBase<NodeOptions>
 {
     protected override void OnConfigure(NodeOptions options)
     {
