@@ -1,5 +1,7 @@
 using Libplanet.Node.DependencyInjection;
+using Libplanet.Node.Options;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Extensions;
 
@@ -27,5 +29,23 @@ public static class ServiceCollectionExtensions
         }
 
         return @this;
+    }
+
+    public static IServiceCollection AddOptionsConfigurator<TO, TC>(this IServiceCollection @this)
+        where TO : OptionsBase<TO>
+        where TC : OptionsConfiguratorBase<TO>
+    {
+        var optionsType = typeof(TC).GetGenericArguments()[0];
+        var configuratorType = typeof(IConfigureOptions<>).MakeGenericType(optionsType);
+        return @this.AddSingleton(configuratorType, typeof(TC));
+    }
+
+    public static IServiceCollection AddOptionsValidator<TO, TV>(this IServiceCollection @this)
+        where TO : OptionsBase<TO>
+        where TV : OptionsValidatorBase<TO>
+    {
+        var optionsType = typeof(TV).GetGenericArguments()[0];
+        var validatorType = typeof(IValidateOptions<>).MakeGenericType(optionsType);
+        return @this.AddSingleton(validatorType, typeof(TV));
     }
 }
