@@ -475,6 +475,7 @@ namespace Libplanet.Net.Tests.Consensus
         /// receiving <see cref="ConsensusMaj23Msg"/> message from peer C or D.
         /// </para>
         /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
         [Fact(Timeout = Timeout)]
         public async Task CanReplaceProposal()
         {
