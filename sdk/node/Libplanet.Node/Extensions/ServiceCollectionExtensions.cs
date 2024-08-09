@@ -35,8 +35,7 @@ public static class ServiceCollectionExtensions
         where TO : OptionsBase<TO>
         where TC : OptionsConfiguratorBase<TO>
     {
-        var optionsType = typeof(TC).GetGenericArguments()[0];
-        var configuratorType = typeof(IConfigureOptions<>).MakeGenericType(optionsType);
+        var configuratorType = typeof(IConfigureOptions<>).MakeGenericType(typeof(TO));
         return @this.AddSingleton(configuratorType, typeof(TC));
     }
 
@@ -44,8 +43,7 @@ public static class ServiceCollectionExtensions
         where TO : OptionsBase<TO>
         where TV : OptionsValidatorBase<TO>
     {
-        var optionsType = typeof(TV).GetGenericArguments()[0];
-        var validatorType = typeof(IValidateOptions<>).MakeGenericType(optionsType);
+        var validatorType = typeof(IValidateOptions<>).MakeGenericType(typeof(TO));
         return @this.AddSingleton(validatorType, typeof(TV));
     }
 }
