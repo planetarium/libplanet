@@ -17,6 +17,8 @@ public static class LibplanetServicesExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        SynchronizationContext.SetSynchronizationContext(SynchronizationContext.Current ?? new());
+        services.AddSingleton(SynchronizationContext.Current!);
         services.AddOptions<StoreOptions>()
             .Bind(configuration.GetSection(StoreOptions.Position))
             .ValidateDataAnnotations();
@@ -33,7 +35,6 @@ public static class LibplanetServicesExtensions
         services.AddOptions<NodeOptions>()
             .Bind(configuration.GetSection(NodeOptions.Position))
             .ValidateDataAnnotations();
-        services.AddSingletonsFromDomain();
 
         return AddLibplanetNode(services);
     }

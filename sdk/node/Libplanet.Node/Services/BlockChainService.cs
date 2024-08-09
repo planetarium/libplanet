@@ -11,6 +11,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Node.DependencyInjection;
 using Libplanet.Node.Options;
 using Libplanet.RocksDBStore;
 using Libplanet.Store;
@@ -23,6 +24,8 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
+[Singleton]
+[Singleton<IBlockChainService>]
 internal sealed class BlockChainService : IBlockChainService, IActionRenderer
 {
     private readonly SynchronizationContext _synchronizationContext;
@@ -38,7 +41,7 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
         IEnumerable<IActionLoaderProvider> actionLoaderProviders,
         ILogger<BlockChainService> logger)
     {
-        _synchronizationContext = SynchronizationContext.Current!;
+        _synchronizationContext = SynchronizationContext.Current ?? new();
         _logger = logger;
         _blockChain = CreateBlockChain(
             genesisOptions: genesisOptions.Value.Verify(),

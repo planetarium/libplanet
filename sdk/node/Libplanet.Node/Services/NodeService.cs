@@ -1,3 +1,4 @@
+using Libplanet.Node.DependencyInjection;
 using Libplanet.Node.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -5,6 +6,8 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
+[Singleton<INodeService>(Scope = "Node")]
+[Singleton<IHostedService>(Scope = "Node")]
 internal sealed class NodeService(
     IBlockChainService blockChainService,
     IOptions<NodeOptions> options,

@@ -25,6 +25,7 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 builder.Services.AddLibplanetNode(builder.Configuration)
+    .WithSeed()
     .WithNode();
 
 var app = builder.Build();
