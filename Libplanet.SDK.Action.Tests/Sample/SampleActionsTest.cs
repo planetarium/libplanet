@@ -42,7 +42,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
-                .Add("call", "Add")
+                .Add("exec", "Add")
                 .Add("args", 5);
             NumberAction action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
@@ -61,7 +61,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
 
             plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
-                .Add("call", "Subtract")
+                .Add("exec", "Subtract")
                 .Add("args", 8);
             action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             world = action.Execute(new MockActionContext(signer, signer, world));
@@ -83,7 +83,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Text")
-                .Add("call", "Append")
+                .Add("exec", "Append")
                 .Add("args", "Hello");
             TextAction action = Assert.IsType<TextAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
@@ -97,7 +97,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
 
             plainValue = Dictionary.Empty
                 .Add("type_id", "Text")
-                .Add("call", "Append")
+                .Add("exec", "Append")
                 .Add("args", " world");
             action = Assert.IsType<TextAction>(_loader.LoadAction(0, plainValue));
             world = action.Execute(new MockActionContext(signer, signer, world));
@@ -112,12 +112,12 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue plainValue = Dictionary.Empty // Invalid type_id
                 .Add("type_id", "Run")
-                .Add("call", "Append")
+                .Add("exec", "Append")
                 .Add("args", "Hello");
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
             plainValue = Dictionary.Empty // Missing type_id
-                .Add("call", "Append")
+                .Add("exec", "Append")
                 .Add("args", "Hello");
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
@@ -128,7 +128,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
 
             plainValue = Dictionary.Empty // Missing args
                 .Add("type_id", "Number")
-                .Add("call", "Add");
+                .Add("exec", "Add");
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
         }
 
@@ -137,7 +137,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue plainValue = Dictionary.Empty // Invalid call
                 .Add("type_id", "Number")
-                .Add("call", "Divide")
+                .Add("exec", "Divide")
                 .Add("args", 5);
             IAction action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Address address = new PrivateKey().Address;
@@ -146,7 +146,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
 
             plainValue = Dictionary.Empty // Invalid args
                 .Add("type_id", "Number")
-                .Add("call", "Add")
+                .Add("exec", "Add")
                 .Add("args", "Hello");
             action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Assert.IsType<InvalidCastException>(
@@ -160,7 +160,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
-                .Add("call", "Multiply")
+                .Add("exec", "Multiply")
                 .Add("args", 5);
             NumberAction action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
@@ -177,7 +177,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue expected = Dictionary.Empty
                 .Add("type_id", "Number")
-                .Add("call", "Add")
+                .Add("exec", "Add")
                 .Add("args", 5);
             IValue generated = ActionBase.GeneratePlainValue<NumberAction>(
                 "Add", new Integer(5));
@@ -185,7 +185,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
 
             expected = Dictionary.Empty
                 .Add("type_id", "Text")
-                .Add("call", "Append")
+                .Add("exec", "Append")
                 .Add("args", "Hello");
             generated = ActionBase.GeneratePlainValue<TextAction>(
                 "Append", new Text("Hello"));

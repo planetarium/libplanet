@@ -28,7 +28,7 @@ namespace Libplanet.SDK.Action
 
             return Dictionary.Empty
                 .Add("type_id", actionType.TypeIdentifier)
-                .Add("call", methodName)
+                .Add("execute", methodName)
                 .Add("args", args);
         }
 

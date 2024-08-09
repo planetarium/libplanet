@@ -22,6 +22,6 @@ namespace Libplanet.SDK.Action
         private IWorld World => _world ??
             throw new InvalidOperationException("State is not set.");
 
-        private bool Loaded => _args is { } && _call is { } && _name is { };
+        private bool Loaded => _args is { } && _exec is { } && _name is { };
     }
 }

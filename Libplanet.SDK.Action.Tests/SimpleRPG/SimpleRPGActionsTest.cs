@@ -42,7 +42,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Avatar")
-                .Add("call", "Create")
+                .Add("exec", "Create")
                 .Add("args", "Hero");
             IAction action = Assert.IsType<AvatarAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
@@ -66,7 +66,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             {
                 plainValue = Dictionary.Empty
                     .Add("type_id", "Farm")
-                    .Add("call", "Farm")
+                    .Add("exec", "Farm")
                     .Add("args", Null.Value);
                 action = Assert.IsType<FarmAction>(_loader.LoadAction(0, plainValue));
                 world = action.Execute(new MockActionContext(signer, signer, world));
@@ -90,7 +90,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
         {
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Avatar")
-                .Add("call", "Create")
+                .Add("exec", "Create")
                 .Add("args", "Hero");
             IAction action = Assert.IsType<AvatarAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
@@ -101,7 +101,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
 
             plainValue = Dictionary.Empty
                 .Add("type_id", "Avatar")
-                .Add("call", "Create")
+                .Add("exec", "Create")
                 .Add("args", "Princess");
             action = Assert.IsType<AvatarAction>(_loader.LoadAction(0, plainValue));
             Assert.Contains(

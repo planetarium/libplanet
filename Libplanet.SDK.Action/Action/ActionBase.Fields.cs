@@ -9,7 +9,7 @@ namespace Libplanet.SDK.Action
     {
         private string? _name = null;
         private IValue? _args = null;
-        private string? _call = null;
+        private string? _exec = null;
 
         [SecurityCritical]
         private IActionContext? _actionContext = null;
