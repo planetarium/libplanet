@@ -1,5 +1,4 @@
 using Libplanet.Node.Options;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -7,12 +6,12 @@ using Microsoft.Extensions.Options;
 namespace Libplanet.Node.Services;
 
 internal sealed class NodeService(
-    IServiceProvider serviceProvider,
+    IBlockChainService blockChainService,
     IOptions<NodeOptions> options,
     ILogger<NodeService> logger)
     : IHostedService, INodeService, IAsyncDisposable
 {
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
+    private readonly IBlockChainService _blockChainService = blockChainService;
     private readonly NodeOptions _options = options.Value;
     private readonly ILogger<NodeService> _logger = logger;
 
@@ -31,9 +30,7 @@ internal sealed class NodeService(
             throw new InvalidOperationException("Node is already running.");
         }
 
-        var blockChainService = _serviceProvider.GetRequiredService<BlockChainService>();
-        var blockChain = blockChainService.BlockChain;
-
+        var blockChain = _blockChainService.BlockChain;
         _node = new(blockChain, _options, _logger);
         await _node.StartAsync(cancellationToken);
         Started?.Invoke(this, EventArgs.Empty);
@@ -46,7 +43,7 @@ internal sealed class NodeService(
             throw new InvalidOperationException("Node is not running.");
         }
 
-        await _node.StartAsync(cancellationToken);
+        await _node.StopAsync(cancellationToken);
         _node = null;
         Stopped?.Invoke(this, EventArgs.Empty);
     }
