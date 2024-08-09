@@ -32,7 +32,7 @@ internal sealed class Node : IAsyncDisposable
         ILogger logger)
     {
         BlockChain = blockChain;
-        _nodeOptions = nodeOptions;
+        _nodeOptions = nodeOptions.Verify();
         PrivateKey = PrivateKey.FromString(_nodeOptions.PrivateKey);
         PublicKey = PrivateKey.PublicKey;
         _logger = logger;

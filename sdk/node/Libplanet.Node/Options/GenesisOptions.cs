@@ -4,7 +4,7 @@ using Libplanet.Node.DataAnnotations;
 
 namespace Libplanet.Node.Options;
 
-public sealed class GenesisOptions
+public sealed class GenesisOptions : OptionsBase<GenesisOptions>
 {
     public const string Position = "Genesis";
 

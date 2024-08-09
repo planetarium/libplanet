@@ -9,9 +9,9 @@ namespace Libplanet.Node.Options;
 [Singleton<IConfigureOptions<NodeOptions>>(Scope = "Node")]
 internal sealed class NodeOptionsConfigurator(
     ILogger<NodeOptionsConfigurator> logger)
-    : IConfigureOptions<NodeOptions>
+    : ConfigureOptionsBase<NodeOptions>
 {
-    public void Configure(NodeOptions options)
+    protected override void OnConfigure(NodeOptions options)
     {
         if (options.PrivateKey == string.Empty)
         {

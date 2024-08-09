@@ -10,11 +10,11 @@ namespace Libplanet.Node.Options;
 [Singleton<IConfigureOptions<SeedOptions>>(Scope = "Seed")]
 public sealed class SeedOptionsConfigurator(
     ILogger<SeedOptionsConfigurator> logger)
-    : IConfigureNamedOptions<SeedOptions>
+    : ConfigureNamedOptionsBase<SeedOptions>
 {
     private static readonly PrivateKey _defaultPrivateKey = new();
 
-    public void Configure(string? name, SeedOptions options)
+    protected override void OnConfigure(string? name, SeedOptions options)
     {
         if (name == SeedOptions.BlocksyncSeed)
         {
@@ -53,10 +53,5 @@ public sealed class SeedOptionsConfigurator(
                 name,
                 options.EndPoint);
         }
-    }
-
-    public void Configure(SeedOptions options)
-    {
-        throw new NotSupportedException("This method should not be called.");
     }
 }

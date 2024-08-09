@@ -41,8 +41,8 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
         _synchronizationContext = SynchronizationContext.Current!;
         _logger = logger;
         _blockChain = CreateBlockChain(
-            genesisOptions: genesisOptions.Value,
-            storeOptions: storeOptions.Value,
+            genesisOptions: genesisOptions.Value.Verify(),
+            storeOptions: storeOptions.Value.Verify(),
             stagePolicy: policyService.StagePolicy,
             renderers: [this],
             actionLoaders: [.. actionLoaderProviders.Select(item => item.GetActionLoader())]);

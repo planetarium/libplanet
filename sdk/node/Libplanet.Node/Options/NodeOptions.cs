@@ -2,7 +2,7 @@ using Libplanet.Node.DataAnnotations;
 
 namespace Libplanet.Node.Options;
 
-public sealed class NodeOptions
+public sealed class NodeOptions : OptionsBase<NodeOptions>
 {
     public const string Position = "Node";
 

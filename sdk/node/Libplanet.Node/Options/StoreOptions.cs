@@ -1,6 +1,6 @@
 namespace Libplanet.Node.Options;
 
-public sealed class StoreOptions
+public sealed class StoreOptions : OptionsBase<StoreOptions>
 {
     public const string Position = "Store";
 

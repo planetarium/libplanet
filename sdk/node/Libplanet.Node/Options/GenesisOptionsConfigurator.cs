@@ -9,9 +9,9 @@ namespace Libplanet.Node.Options;
 [Singleton<IConfigureOptions<GenesisOptions>>]
 internal sealed class GenesisOptionsConfigurator(
     IOptions<NodeOptions> nodeOptions, ILogger<GenesisOptionsConfigurator> logger)
-    : IConfigureOptions<GenesisOptions>
+    : ConfigureOptionsBase<GenesisOptions>
 {
-    public void Configure(GenesisOptions options)
+    protected override void OnConfigure(GenesisOptions options)
     {
         if (options.GenesisKey == string.Empty)
         {

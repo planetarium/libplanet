@@ -3,7 +3,7 @@ using Libplanet.Node.DataAnnotations;
 
 namespace Libplanet.Node.Options;
 
-public sealed class SeedOptions
+public sealed class SeedOptions : OptionsBase<SeedOptions>
 {
     public const string BlocksyncSeed = nameof(BlocksyncSeed);
     public const string ConsensusSeed = nameof(ConsensusSeed);

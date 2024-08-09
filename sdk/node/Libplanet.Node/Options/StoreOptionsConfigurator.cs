@@ -6,9 +6,9 @@ namespace Libplanet.Node.Options;
 
 [Singleton<IConfigureOptions<StoreOptions>>]
 internal sealed class StoreOptionsConfigurator(ILogger<StoreOptionsConfigurator> logger)
-    : IConfigureOptions<StoreOptions>
+    : ConfigureOptionsBase<StoreOptions>
 {
-    public void Configure(StoreOptions options)
+    protected override void OnConfigure(StoreOptions options)
     {
         if (options.Type == StoreType.Memory)
         {
