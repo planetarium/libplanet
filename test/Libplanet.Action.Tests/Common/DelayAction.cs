@@ -26,7 +26,7 @@ namespace Libplanet.Action.Tests.Common
             get
             {
                 var plainValue = Bencodex.Types.Dictionary.Empty.Add(
-                    "milisecond", new Bencodex.Types.Integer(MilliSecond));
+                    "millisecond", new Bencodex.Types.Integer(MilliSecond));
                 return plainValue;
             }
         }
@@ -56,7 +56,7 @@ namespace Libplanet.Action.Tests.Common
         public void LoadPlainValue(IValue plainValue)
         {
             var asDict = (Dictionary)plainValue;
-            MilliSecond = (int)((Bencodex.Types.Integer)asDict["milisecond"]);
+            MilliSecond = (int)((Bencodex.Types.Integer)asDict["millisecond"]);
         }
     }
 }

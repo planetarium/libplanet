@@ -207,7 +207,7 @@ namespace Libplanet.Net.Protocols
         /// </summary>
         /// <param name="timeout">A timeout of waiting for the reply of messages.
         /// If <see langword="null"/> is given, the task never halts by itself
-        /// even no any response was given from the the target peer.</param>
+        /// even no any response was given from the target peer.</param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
