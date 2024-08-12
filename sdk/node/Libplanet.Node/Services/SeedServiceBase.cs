@@ -8,7 +8,7 @@ namespace Libplanet.Node.Services;
 internal class SeedServiceBase(SeedOptions seedOptions, ILogger logger)
     : IHostedService
 {
-    private readonly Seed _seed = new(seedOptions);
+    private readonly Seed _seed = new(seedOptions.Verify());
 
     public BoundPeer BoundPeer => _seed.BoundPeer;
 
