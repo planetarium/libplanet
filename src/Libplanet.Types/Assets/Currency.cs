@@ -49,7 +49,7 @@ namespace Libplanet.Types.Assets
     [Serializable]
     public sealed class Currency : IEquatable<Currency>, ISerializable
     {
-        private static Codec _codec = new Codec();
+        private static readonly Codec _codec = new Codec();
 
         private readonly (BigInteger Major, BigInteger Minor)? _maximumSupply;
 
@@ -500,7 +500,6 @@ namespace Libplanet.Types.Assets
                     throw new ArgumentException(
                     $"The value associated with key \"minters\" should be either " +
                     $"{nameof(List)} or {nameof(Null)}.");
-
             }
         }
 
