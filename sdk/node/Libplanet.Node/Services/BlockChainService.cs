@@ -14,12 +14,12 @@ namespace Libplanet.Node.Services;
 
 public class BlockChainService
 {
-    private readonly StoreOption _storeOption;
+    private readonly StoreOptions _storeOption;
     private readonly BlockChain _blockChain;
 
     public BlockChainService(
         PolicyService policyService,
-        IOptions<StoreOption> storeOption)
+        IOptions<StoreOptions> storeOption)
     {
         _storeOption = storeOption.Value;
         _blockChain = CreateBlockChain(policyService.StagePolicy);
@@ -68,8 +68,8 @@ public class BlockChainService
     private (IStore, IStateStore) CreateStore()
         => _storeOption.Type switch
         {
-            StoreType.RocksDB => CreateRocksDBStore(),
-            StoreType.InMemory => CreateInMemoryStore(),
+            StoreType.Disk => CreateRocksDBStore(),
+            StoreType.Memory => CreateInMemoryStore(),
             _ => throw new NotSupportedException($"Unsupported store type: {_storeOption.Type}"),
         };
 
@@ -82,8 +82,8 @@ public class BlockChainService
 
     private (RocksDBStore.RocksDBStore, TrieStateStore) CreateRocksDBStore()
     {
-        var store = new RocksDBStore.RocksDBStore(_storeOption.StorePath);
-        var stateStore = new TrieStateStore(new RocksDBKeyValueStore(_storeOption.StateStorePath));
+        var store = new RocksDBStore.RocksDBStore(_storeOption.StoreName);
+        var stateStore = new TrieStateStore(new RocksDBKeyValueStore(_storeOption.StateStoreName));
         return (store, stateStore);
     }
 }
