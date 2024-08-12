@@ -1,12 +1,12 @@
-using System.ComponentModel.DataAnnotations;
-using Bencodex;
-using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Node.DataAnnotations;
+using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 
-public sealed record class GenesisOptions
+[Options(Position)]
+public sealed class GenesisOptions : OptionsBase<GenesisOptions>
 {
     public const string Position = "Genesis";
 
@@ -16,29 +16,11 @@ public sealed record class GenesisOptions
     public static readonly AppProtocolVersion AppProtocolVersion = AppProtocolVersion.Sign(
         AppProtocolKey, 1);
 
-    private static readonly Codec _codec = new();
+    [PrivateKey]
+    public string GenesisKey { get; set; } = string.Empty;
 
-    public GenesisOptions()
-    {
-    }
+    [PublicKeyArray]
+    public string[] Validators { get; set; } = [];
 
-    [Required]
-    public required PrivateKey GenesisKey { get; init; }
-
-    public PublicKey[] Validators { get; init; } = [];
-
-    public DateTimeOffset Timestamp { get; init; } = DateTimeOffset.MinValue;
-
-    public byte[] ToByteArray()
-    {
-        var genesisKey = GenesisKey.ToByteArray();
-        var genesisValidators
-            = new List(Validators.Select(item => item.ToImmutableArray(compress: false)));
-        var timestamp = Timestamp.ToUnixTimeMilliseconds();
-        var dictionary = Dictionary.Empty
-                            .Add(nameof(GenesisKey), genesisKey)
-                            .Add(nameof(Validators), genesisValidators)
-                            .Add(nameof(Timestamp), timestamp);
-        return _codec.Encode(dictionary);
-    }
+    public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.MinValue;
 }
