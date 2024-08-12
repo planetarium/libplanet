@@ -6,9 +6,11 @@ public interface ILibplanetNodeBuilder
 {
     IServiceCollection Services { get; }
 
+    string[] Scopes { get; }
+
     ILibplanetNodeBuilder WithSolo();
 
-    ILibplanetNodeBuilder WithSwarm();
+    ILibplanetNodeBuilder WithNode();
 
     ILibplanetNodeBuilder WithValidate();
 
