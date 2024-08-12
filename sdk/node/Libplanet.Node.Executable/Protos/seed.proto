@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "Libplanet.Node.API";
+
+package node;
+
+// The greeting service definition.
+service Seed {
+  // Sends a greeting
+  rpc GetSeed(GetSeedRequest) returns (GetSeedReply);
+}
+
+message GetSeedRequest {
+}
+
+message GetSeedReply {
+  string blocksync_seed = 1;
+  string consensus_seed = 2;
+}
