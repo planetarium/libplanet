@@ -1,24 +1,24 @@
-using System.Reflection;
 using Libplanet.Node.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Libplanet.Node.Extensions.NodeBuilder;
 
 public class LibplanetNodeBuilder : ILibplanetNodeBuilder
 {
-    internal LibplanetNodeBuilder(IServiceCollection services)
+    private readonly IConfiguration _configuration;
+    private readonly List<string> _scopeList = [string.Empty];
+
+    internal LibplanetNodeBuilder(IServiceCollection services, IConfiguration configuration)
     {
         Services = services;
-        Services.AddSingleton<PolicyService>();
-        Services.AddSingleton<BlockChainService>();
-        Services.AddSingleton<IReadChainService, ReadChainService>();
-        Services.AddSingleton<TransactionService>();
+        _configuration = configuration;
+        Services.AddSingletonsFromDomain();
     }
 
-    public IServiceCollection Services
-    {
-        get;
-    }
+    public IServiceCollection Services { get; }
+
+    public string[] Scopes => [.. _scopeList];
 
     public ILibplanetNodeBuilder WithSolo()
     {
@@ -26,8 +26,11 @@ public class LibplanetNodeBuilder : ILibplanetNodeBuilder
         return this;
     }
 
-    public ILibplanetNodeBuilder WithSwarm()
+    public ILibplanetNodeBuilder WithNode()
     {
+        Services.AddSingletonsFromDomain(scope: "Node");
+        Services.AddOptionsFromDomain(_configuration, scope: "Node");
+        _scopeList.Add("Node");
         return this;
     }
 
@@ -36,10 +39,9 @@ public class LibplanetNodeBuilder : ILibplanetNodeBuilder
 
     public ILibplanetNodeBuilder WithSeed()
     {
-        Services.AddSingleton<IBlocksyncSeedService, BlocksyncSeedService>();
-        Services.AddSingleton<IConsensusSeedService, ConsensusSeedService>();
-        Services.AddHostedService<BlocksyncSeedService>();
-        Services.AddHostedService<ConsensusSeedService>();
+        Services.AddSingletonsFromDomain(scope: "Seed");
+        Services.AddOptionsFromDomain(_configuration, scope: "Seed");
+        _scopeList.Add("Seed");
         return this;
     }
 }

@@ -24,6 +24,8 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
+[Singleton]
+[Singleton<IBlockChainService>]
 internal sealed class BlockChainService : IBlockChainService, IActionRenderer
 {
     private readonly SynchronizationContext _synchronizationContext;
