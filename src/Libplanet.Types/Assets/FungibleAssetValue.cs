@@ -108,7 +108,7 @@ namespace Libplanet.Types.Assets
         /// i.e., digits <em>before</em> the decimal separator.  Must not be negative.</param>
         /// <param name="minorUnit">The minor unit of the fungible asset value,
         /// i.e., digits <em>after</em> the decimal separator.  Must not be negative.</param>
-        /// <exception cref="ArgumentException">Thrown when the the <paramref name="sign"/> is not
+        /// <exception cref="ArgumentException">Thrown when the <paramref name="sign"/> is not
         /// one of <c>1</c>, <c>0</c>, and <c>-1</c>, or <paramref name="majorUnit"/> or
         /// <paramref name="minorUnit"/> is negative.
         /// </exception>
