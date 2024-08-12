@@ -237,26 +237,6 @@ namespace Libplanet.Types.Consensus
         }
 
         /// <summary>
-        /// Gets the proposer for a given context.
-        /// </summary>
-        /// <param name="height">The height of the context under consideration.</param>
-        /// <param name="round">The round of the context under consideration.</param>
-        /// <returns>A <see cref="Validator"/> deterministically chosen from
-        /// <see cref="Validators"/>, <paramref name="height"/>, and <paramref name="round"/>.
-        /// </returns>
-        /// <exception cref="InvalidOperationException">Thrown when
-        /// <see cref="Validators"/> is empty.</exception>
-        public Validator GetProposer(long height, int round)
-        {
-            // FIXME: Empty Validators should not be allowed.  Preventing during construction
-            // would require heavier refactoring of BlockPolicy.
-            return Validators.IsEmpty
-                ? throw new InvalidOperationException(
-                    "Cannot select a proposer from an empty list of validators.")
-                : Validators[(int)((height + round) % Validators.Count)];
-        }
-
-        /// <summary>
         /// Checks whether <see cref="BlockCommit.Votes"/> is ordered
         /// by <see cref="Address"/> of each <see cref="Vote.ValidatorPublicKey"/>,
         /// and <see cref="Vote.ValidatorPower"/> equals to the one recorded in the chain states.

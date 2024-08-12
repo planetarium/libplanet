@@ -8,6 +8,11 @@ namespace Libplanet.Net.Consensus
         Default,
 
         /// <summary>
+        /// Sortition step.
+        /// </summary>
+        Sortition,
+
+        /// <summary>
         /// Proposing Step.
         /// </summary>
         Propose,

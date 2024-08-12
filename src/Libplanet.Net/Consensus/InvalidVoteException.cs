@@ -13,7 +13,7 @@ namespace Libplanet.Net.Consensus
     public class InvalidVoteException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of <see cref="InvalidVoteException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -31,7 +31,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of <see cref="InvalidVoteException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -44,7 +44,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/>
+        /// Initializes a new instance of the <see cref="InvalidVoteException"/>
         /// class with serialized data.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/>

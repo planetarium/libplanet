@@ -49,6 +49,9 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.Equal(1, consensusContext.Height);
             Assert.Equal(0, consensusContext.Round);
 
+            // Triggers sortition timeout.
+            await timeoutProcessed.WaitAsync();
+
             // Triggers timeout +2/3 with NIL and Block
             consensusContext.HandleMessage(
                 new ConsensusPreVoteMsg(

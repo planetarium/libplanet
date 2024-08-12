@@ -137,19 +137,29 @@ namespace Libplanet.Net.Messages
             ConsensusProposalClaimMsg = 0x55,
 
             /// <summary>
+            /// Consensus message that sends a lot to be drawn.
+            /// </summary>
+            ConsensusLot = 0x56,
+
+            /// <summary>
+            /// Consensus message that sends a dominant lot to vote for proposer.
+            /// </summary>
+            ConsensusDominantLot = 0x57,
+
+            /// <summary>
             /// Inventory to transfer evidence.
             /// </summary>
-            EvidenceIds = 0x56,
+            EvidenceIds = 0x58,
 
             /// <summary>
             /// Request to query evidence.
             /// </summary>
-            GetEvidence = 0x57,
+            GetEvidence = 0x59,
 
             /// <summary>
             /// Message containing serialized evidence.
             /// </summary>
-            Evidence = 0x58,
+            Evidence = 0x60,
         }
 
         /// <summary>

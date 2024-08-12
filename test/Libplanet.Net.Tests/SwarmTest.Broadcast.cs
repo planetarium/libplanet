@@ -58,9 +58,12 @@ namespace Libplanet.Net.Tests
 
             foreach (int i in Enumerable.Range(0, numBlocks))
             {
+                var proposer = new PrivateKey();
                 var block = chainA.ProposeBlock(
-                    new PrivateKey(), TestUtils.CreateBlockCommit(chainA.Tip));
-                chainA.Append(block, TestUtils.CreateBlockCommit(block));
+                    proposer,
+                    CreateBlockCommit(chainA.Tip),
+                    CreateZeroRoundProof(chainA.Tip, proposer));
+                chainA.Append(block, CreateBlockCommit(block));
             }
 
             Assert.Equal(numBlocks, chainA.Tip.Index);
@@ -101,8 +104,10 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 10))
             {
                 Block block = minerChain.ProposeBlock(
-                    miner, CreateBlockCommit(minerChain.Tip));
-                minerChain.Append(block, TestUtils.CreateBlockCommit(block));
+                    miner,
+                    CreateBlockCommit(minerChain.Tip),
+                    CreateZeroRoundProof(minerChain.Tip, miner));
+                minerChain.Append(block, CreateBlockCommit(block));
             }
 
             Swarm seed = await CreateSwarm(
@@ -201,8 +206,10 @@ namespace Libplanet.Net.Tests
                 await StartAsync(seedSwarm);
 
                 await receiverSwarm.AddPeersAsync(new[] { seedSwarm.AsPeer }, null);
-                Block block = seedChain.ProposeBlock(seedMiner);
-                seedChain.Append(block, TestUtils.CreateBlockCommit(block));
+                Block block = seedChain.ProposeBlock(
+                    seedMiner,
+                    proof: CreateZeroRoundProof(seedChain.Tip, seedMiner));
+                seedChain.Append(block, CreateBlockCommit(block));
                 seedSwarm.BroadcastBlock(block);
                 Assert.NotEqual(seedChain.Tip, receiverChain.Tip);
             }
@@ -239,8 +246,10 @@ namespace Libplanet.Net.Tests
                         try
                         {
                             var block = chain.ProposeBlock(
-                                miner, CreateBlockCommit(chain.Tip));
-                            chain.Append(block, TestUtils.CreateBlockCommit(block));
+                                miner,
+                                CreateBlockCommit(chain.Tip),
+                                CreateZeroRoundProof(chain.Tip, miner));
+                            chain.Append(block, CreateBlockCommit(block));
 
                             Log.Debug(
                                 "Block mined. [Node: {0}, Block: {1}]",
@@ -311,8 +320,10 @@ namespace Libplanet.Net.Tests
             );
 
             chainA.StageTransaction(tx);
-            Block block = chainA.ProposeBlock(minerA);
-            chainA.Append(block, TestUtils.CreateBlockCommit(block));
+            Block block = chainA.ProposeBlock(
+                minerA,
+                proof: CreateZeroRoundProof(chainA.Tip, minerA));
+            chainA.Append(block, CreateBlockCommit(block));
 
             try
             {
@@ -374,8 +385,10 @@ namespace Libplanet.Net.Tests
                     for (var i = 0; i < 10; i++)
                     {
                         Block block = chainC.ProposeBlock(
-                            minerC, CreateBlockCommit(chainC.Tip));
-                        chainC.Append(block, TestUtils.CreateBlockCommit(block));
+                            minerC,
+                            CreateBlockCommit(chainC.Tip),
+                            CreateZeroRoundProof(chainC.Tip, minerC));
+                        chainC.Append(block, CreateBlockCommit(block));
                     }
                 });
 
@@ -585,7 +598,9 @@ namespace Libplanet.Net.Tests
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
 
-                Block block = chainB.ProposeBlock(keyB);
+                Block block = chainB.ProposeBlock(
+                    keyB,
+                    proof: CreateZeroRoundProof(chainB.Tip, keyB));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
 
                 var tx3 = chainA.MakeTransaction(
@@ -650,14 +665,18 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 10))
             {
                 Block block = chainA.ProposeBlock(
-                    keyA, CreateBlockCommit(chainA.Tip));
+                    keyA,
+                    CreateBlockCommit(chainA.Tip),
+                    CreateZeroRoundProof(chainA.Tip, keyA));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
                 Block block = chainB.ProposeBlock(
-                    keyB, CreateBlockCommit(chainB.Tip));
+                    keyB,
+                    CreateBlockCommit(chainB.Tip),
+                    CreateZeroRoundProof(chainB.Tip, keyB));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -754,13 +773,15 @@ namespace Libplanet.Net.Tests
             Block block1 = blockChain.ProposeBlock(
                 GenesisProposer,
                 new[] { transactions[0] }.ToImmutableList(),
-                TestUtils.CreateBlockCommit(blockChain.Tip),
+                CreateBlockCommit(blockChain.Tip),
+                CreateZeroRoundProof(blockChain.Tip, GenesisProposer),
                 ImmutableArray<EvidenceBase>.Empty);
             blockChain.Append(block1, TestUtils.CreateBlockCommit(block1), true);
             Block block2 = blockChain.ProposeBlock(
                 GenesisProposer,
                 new[] { transactions[1] }.ToImmutableList(),
                 CreateBlockCommit(blockChain.Tip),
+                CreateZeroRoundProof(blockChain.Tip, GenesisProposer),
                 ImmutableArray<EvidenceBase>.Empty);
             blockChain.Append(block2, TestUtils.CreateBlockCommit(block2), true);
 
@@ -808,7 +829,9 @@ namespace Libplanet.Net.Tests
 
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 var block = chainA.ProposeBlock(
-                    keyA, CreateBlockCommit(chainA.Tip));
+                    keyA,
+                    CreateBlockCommit(chainA.Tip),
+                    CreateZeroRoundProof(chainA.Tip, keyA));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
                 swarmA.BroadcastBlock(chainA[-1]);
 
@@ -817,7 +840,9 @@ namespace Libplanet.Net.Tests
                 Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
 
                 block = chainA.ProposeBlock(
-                    keyB, CreateBlockCommit(chainA.Tip));
+                    keyB,
+                    CreateBlockCommit(chainA.Tip),
+                    CreateZeroRoundProof(chainA.Tip, keyB));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
                 swarmA.BroadcastBlock(chainA[-1]);
 
@@ -846,7 +871,9 @@ namespace Libplanet.Net.Tests
             BlockChain chainB = swarmB.BlockChain;
 
             var block = chainA.ProposeBlock(
-                keyA, CreateBlockCommit(chainA.Tip));
+                keyA,
+                CreateBlockCommit(chainA.Tip),
+                CreateZeroRoundProof(chainA.Tip, keyA));
             BlockCommit blockCommit = TestUtils.CreateBlockCommit(block);
             chainA.Append(block, blockCommit);
             chainB.Append(block, blockCommit);
@@ -854,7 +881,9 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 3))
             {
                 block = chainA.ProposeBlock(
-                    keyA, CreateBlockCommit(chainA.Tip));
+                    keyA,
+                    CreateBlockCommit(chainA.Tip),
+                    CreateZeroRoundProof(chainA.Tip, keyA));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -905,7 +934,9 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 10))
             {
                 Block block = chainA.ProposeBlock(
-                    keyA, CreateBlockCommit(chainA.Tip));
+                    keyA,
+                    CreateBlockCommit(chainA.Tip),
+                    CreateZeroRoundProof(chainA.Tip, keyA));
                 chainA.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
@@ -914,14 +945,18 @@ namespace Libplanet.Net.Tests
             foreach (int i in Enumerable.Range(0, 5))
             {
                 Block block = chainB.ProposeBlock(
-                    keyB, CreateBlockCommit(chainB.Tip));
+                    keyB,
+                    CreateBlockCommit(chainB.Tip),
+                    CreateZeroRoundProof(chainB.Tip, keyB));
                 chainB.Append(block, TestUtils.CreateBlockCommit(block));
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
                 Block block = chainC.ProposeBlock(
-                    keyB, CreateBlockCommit(chainC.Tip));
+                    keyB,
+                    CreateBlockCommit(chainC.Tip),
+                    CreateZeroRoundProof(chainC.Tip, keyB));
                 chainC.Append(block, TestUtils.CreateBlockCommit(block));
             }
 

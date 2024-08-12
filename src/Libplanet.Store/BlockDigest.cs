@@ -98,6 +98,9 @@ namespace Libplanet.Store
         /// <inheritdoc cref="IBlockMetadata.LastCommit"/>
         public BlockCommit? LastCommit => _metadata.LastCommit;
 
+        /// <inheritdoc cref="IBlockMetadata.Proof"/>
+        public Proof? Proof => _metadata.Proof;
+
         /// <inheritdoc cref="IBlockMetadata.EvidenceHash"/>
         public HashDigest<SHA256>? EvidenceHash => _metadata.EvidenceHash;
 

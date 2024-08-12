@@ -83,12 +83,48 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
 
-            var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[1]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
+
+            var block = blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[1],
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[1]));
             var blockCommit = TestUtils.CreateBlockCommit(block);
             blockChain.Append(block, blockCommit);
-            block = blockChain.ProposeBlock(TestUtils.PrivateKeys[2], blockCommit);
+
+            lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[2]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
+
+            block = blockChain.ProposeBlock(
+                TestUtils.PrivateKeys[2],
+                blockCommit,
+                TestUtils.CreateZeroRoundProof(blockChain.Tip, TestUtils.PrivateKeys[2]));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(2, blockChain.Tip.Index);
+
+            lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
 
             // Wait for context of height 3 to start.
             await heightThreeStepChangedToPropose.WaitAsync();
@@ -134,6 +170,16 @@ namespace Libplanet.Net.Tests.Consensus
             await onTipChangedToThree.WaitAsync();
             Assert.Equal(3, blockChain.Tip.Index);
 
+            lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            lot = lotSet.GenerateLot(TestUtils.PrivateKeys[3]);
+            foreach (int i in new int[] { 0, 1, 2 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
+
             // Next height starts normally.
             await heightFourStepChangedToPropose.WaitAsync();
             Assert.Equal(4, consensusContext.Height);
@@ -176,9 +222,11 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[1]);
             consensusContext.Start();
-
+            var proposer = new PrivateKey();
             Assert.Equal(1, consensusContext.Height);
-            Block block = blockChain.ProposeBlock(new PrivateKey());
+            Block block = blockChain.ProposeBlock(
+                proposer,
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, proposer));
             blockChain.Append(block, TestUtils.CreateBlockCommit(block));
             Assert.Equal(1, consensusContext.Height);
             await Task.Delay(newHeightDelay + TimeSpan.FromSeconds(1));
@@ -197,7 +245,10 @@ namespace Libplanet.Net.Tests.Consensus
             Assert.True(consensusContext.Height == 1);
             Assert.False(consensusContext.HandleMessage(
                 TestUtils.CreateConsensusPropose(
-                    blockChain.ProposeBlock(TestUtils.PrivateKeys[0]),
+                    blockChain.ProposeBlock(
+                        TestUtils.PrivateKeys[0],
+                        proof: TestUtils.CreateZeroRoundProof(
+                            blockChain.Tip, TestUtils.PrivateKeys[0])),
                     TestUtils.PrivateKeys[0],
                     0)));
         }
@@ -232,6 +283,16 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             consensusContext.Start();
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[1]);
+            foreach (int i in new int[] { 0, 2, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
+
             await heightOneProposalSent.WaitAsync();
             BlockHash proposedblockHash = Assert.IsType<BlockHash>(proposal?.BlockHash);
 
@@ -285,7 +346,19 @@ namespace Libplanet.Net.Tests.Consensus
                 TestUtils.ActionLoader,
                 TestUtils.PrivateKeys[0]);
             consensusContext.Start();
-            var block = blockChain.ProposeBlock(proposer);
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(proposer);
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
+
+            var block = blockChain.ProposeBlock(
+                proposer,
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, proposer));
             var proposal = new ProposalMetadata(
                 1,
                 0,
@@ -371,7 +444,19 @@ namespace Libplanet.Net.Tests.Consensus
             };
 
             consensusContext.Start();
-            var block = blockChain.ProposeBlock(proposer);
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[1]);
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
+
+            var block = blockChain.ProposeBlock(
+                proposer,
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, proposer));
             var proposal = new ProposalMetadata(
                 1,
                 0,
@@ -443,7 +528,19 @@ namespace Libplanet.Net.Tests.Consensus
                 }
             };
             consensusContext.Start();
-            var block = blockChain.ProposeBlock(proposer);
+            var lotSet = new LotSet(
+                blockChain.Tip.Index + 1, 0, blockChain.Tip.Proof, TestUtils.ValidatorSet, 20);
+            var lot = lotSet.GenerateLot(TestUtils.PrivateKeys[1]);
+            foreach (int i in new int[] { 1, 2, 3 })
+            {
+                consensusContext.HandleMessage(
+                    new ConsensusDominantLotMsg(
+                        TestUtils.CreateDominantLot(TestUtils.PrivateKeys[i], lot)));
+            }
+
+            var block = blockChain.ProposeBlock(
+                proposer,
+                proof: TestUtils.CreateZeroRoundProof(blockChain.Tip, proposer));
             var proposal = new ProposalMetadata(
                 1,
                 0,

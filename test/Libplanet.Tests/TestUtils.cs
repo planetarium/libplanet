@@ -25,6 +25,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Blockchain.Renderers.Debug;
 using Libplanet.Common;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
@@ -411,12 +412,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 height, round, blockHash, votes);
         }
 
+        public static Proof CreateZeroRoundProof(
+            IBlockMetadata tip,
+            PrivateKey proposerKey)
+            => new ConsensusInformation((tip?.Index ?? -1) + 1, 0, tip?.Proof).Prove(proposerKey);
+
         public static PreEvaluationBlock ProposeGenesis(
             PublicKey proposer = null,
             IReadOnlyList<Transaction> transactions = null,
             ValidatorSet validatorSet = null,
             DateTimeOffset? timestamp = null,
-            int protocolVersion = Block.CurrentProtocolVersion
+            int protocolVersion = Block.CurrentProtocolVersion,
+            Proof proof = null
         )
         {
             var txs = transactions?.ToList() ?? new List<Transaction>();
@@ -448,6 +455,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: proof,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: Array.Empty<EvidenceBase>());
@@ -488,6 +496,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             TimeSpan? blockInterval = null,
             int protocolVersion = Block.CurrentProtocolVersion,
             BlockCommit lastCommit = null,
+            Proof proof = null,
             ImmutableArray<EvidenceBase>? evidence = null)
         {
             var txs = transactions is null
@@ -513,6 +522,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     previousHash: previousBlock.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: lastCommit,
+                    proof: proof,
                     evidenceHash: evidenceHash),
                 transactions: txs,
                 evidence: Array.Empty<EvidenceBase>());
@@ -529,6 +539,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             int protocolVersion = Block.CurrentProtocolVersion,
             HashDigest<SHA256> stateRootHash = default,
             BlockCommit lastCommit = null,
+            Proof proof = null,
             ImmutableArray<EvidenceBase>? evidence = null)
         {
             Skip.IfNot(
@@ -543,6 +554,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 blockInterval,
                 protocolVersion,
                 lastCommit,
+                proof,
                 evidence);
             return preEval.Sign(miner, stateRootHash);
         }
@@ -641,7 +653,8 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     txs,
                     validatorSet,
                     timestamp,
-                    protocolVersion);
+                    protocolVersion,
+                    new ConsensusInformation(0, 0, null).Prove(GenesisProposer));
                 var evaluatedSrh = actionEvaluator.Evaluate(preEval, null).Last().OutputState;
                 genesisBlock = protocolVersion < BlockMetadata.SignatureProtocolVersion
                     ? new Block(

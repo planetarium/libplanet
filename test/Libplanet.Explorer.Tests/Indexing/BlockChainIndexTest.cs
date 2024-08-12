@@ -11,6 +11,7 @@ using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Libplanet.Explorer.Indexing;
 using Xunit;
+using Libplanet.Consensus;
 
 namespace Libplanet.Explorer.Tests.Indexing;
 
@@ -43,7 +44,9 @@ public abstract class BlockChainIndexTest
         var forkedChain = ChainFx.Chain.Fork(ChainFx.Chain.Tip.PreviousHash!.Value);
         var divergentBlock = forkedChain.ProposeBlock(
             ChainFx.PrivateKeys[0],
-            forkedChain.GetBlockCommit(forkedChain.Tip.Hash));
+            forkedChain.GetBlockCommit(forkedChain.Tip.Hash),
+            new ConsensusInformation(forkedChain.Tip.Index + 1, 0, forkedChain.Tip.Proof)
+                .Prove(ChainFx.PrivateKeys[0]));
         forkedChain.Append(
             divergentBlock,
             new BlockCommit(

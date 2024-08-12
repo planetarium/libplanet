@@ -1026,11 +1026,19 @@ namespace Libplanet.Tests.Store
 
                 // FIXME: Need to add more complex blocks/transactions.
                 var key = new PrivateKey();
-                var block = blocks.ProposeBlock(key);
+                var block = blocks.ProposeBlock(
+                    key,
+                    proof: TestUtils.CreateZeroRoundProof(blocks.Tip, key));
                 blocks.Append(block, CreateBlockCommit(block));
-                block = blocks.ProposeBlock(key, CreateBlockCommit(blocks.Tip));
+                block = blocks.ProposeBlock(
+                    key,
+                    CreateBlockCommit(blocks.Tip),
+                    TestUtils.CreateZeroRoundProof(blocks.Tip, key));
                 blocks.Append(block, CreateBlockCommit(block));
-                block = blocks.ProposeBlock(key, CreateBlockCommit(blocks.Tip));
+                block = blocks.ProposeBlock(
+                    key,
+                    CreateBlockCommit(blocks.Tip),
+                    TestUtils.CreateZeroRoundProof(blocks.Tip, key));
                 blocks.Append(block, CreateBlockCommit(block));
 
                 s1.Copy(to: Fx.Store);

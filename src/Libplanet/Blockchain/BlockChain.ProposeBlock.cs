@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
@@ -62,6 +63,7 @@ namespace Libplanet.Blockchain
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(transactions),
                     lastCommit: null,
+                    proof: new ConsensusInformation(0L, 0, null).Prove(privateKey),
                     evidenceHash: null),
                 transactions: transactions,
                 evidence: Array.Empty<EvidenceBase>());
@@ -84,6 +86,7 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block"/>.</param>
+        /// <param name="proof">The <see cref="Proof"/> proved from proposer candidate.</param>
         /// <param name="evidence">The pending <see cref="EvidenceBase"/>s to be committed on the
         /// <see cref="Block"/>.</param>
         /// <param name="txPriority">An optional comparer for give certain transactions to
@@ -94,6 +97,7 @@ namespace Libplanet.Blockchain
         public Block ProposeBlock(
             PrivateKey proposer,
             BlockCommit lastCommit = null,
+            Proof proof = null,
             ImmutableArray<EvidenceBase>? evidence = null,
             IComparer<Transaction> txPriority = null)
         {
@@ -116,6 +120,7 @@ namespace Libplanet.Blockchain
                 proposer,
                 transactions,
                 lastCommit,
+                proof,
                 evidence ?? ImmutableArray<EvidenceBase>.Empty);
             _logger.Debug(
                 "Proposed block #{Index} {Hash} with previous hash {PreviousHash}",
@@ -132,8 +137,8 @@ namespace Libplanet.Blockchain
         /// list of <see cref="Transaction"/>s.
         /// </para>
         /// <para>
-        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, ImmutableArray{EvidenceBase}?,
-        /// IComparer{Transaction})"/>,
+        /// Unlike <see cref="ProposeBlock(PrivateKey, BlockCommit, Proof?,
+        /// ImmutableArray{EvidenceBase}?, IComparer{Transaction})"/>,
         /// this may result in a <see cref="Block"/> that does not conform to the
         /// <see cref="Policy"/>.
         /// </para>
@@ -143,12 +148,14 @@ namespace Libplanet.Blockchain
         /// <param name="transactions">The list of <see cref="Transaction"/>s to include.</param>
         /// <param name="lastCommit">The <see cref="BlockCommit"/> evidence of the previous
         /// <see cref="Block"/>.</param>
+        /// <param name="proof">The <see cref="Proof"/> proved from proposer candidate.</param>
         /// <param name="evidence">The <see cref="EvidenceBase"/>s to be committed.</param>
         /// <returns>A <see cref="Block"/> that is proposed.</returns>
         internal Block ProposeBlock(
             PrivateKey proposer,
             ImmutableList<Transaction> transactions,
             BlockCommit lastCommit,
+            Proof proof,
             ImmutableArray<EvidenceBase> evidence)
         {
             long index = Count;
@@ -174,6 +181,7 @@ namespace Libplanet.Blockchain
                     previousHash: prevHash,
                     txHash: BlockContent.DeriveTxHash(orderedTransactions),
                     lastCommit: lastCommit,
+                    proof: proof,
                     evidenceHash: BlockContent.DeriveEvidenceHash(orderedEvidence)),
                 transactions: orderedTransactions,
                 evidence: orderedEvidence);

@@ -120,11 +120,6 @@ namespace Libplanet.Net.Consensus
 
                 PublicKey validatorKey = vote.ValidatorPublicKey;
 
-                if (validatorKey is null)
-                {
-                    throw new InvalidVoteException("ValidatorKey of the vote cannot be null", vote);
-                }
-
                 if (!_validatorSet.ContainsPublicKey(validatorKey))
                 {
                     throw new InvalidVoteException(

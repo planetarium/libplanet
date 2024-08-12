@@ -10,6 +10,7 @@ using Libplanet.Action.Loader;
 using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Consensus;
 using Libplanet.Crypto;
 using Libplanet.Mocks;
 using Libplanet.Store;
@@ -95,7 +96,7 @@ namespace Libplanet.Tests.Action
             };
             var evs = Array.Empty<EvidenceBase>();
             var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var noStateRootBlock = new BlockContent(
+            var noStateRootBlockWithoutProof = new BlockContent(
                 new BlockMetadata(
                     protocolVersion: Block.CurrentProtocolVersion,
                     index: 0,
@@ -105,6 +106,7 @@ namespace Libplanet.Tests.Action
                     previousHash: null,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: null,
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
@@ -112,32 +114,90 @@ namespace Libplanet.Tests.Action
                 new PolicyActionsRegistry(),
                 stateStore,
                 new SingleActionLoader(typeof(ContextRecordingAction)));
-            Block stateRootBlock = noStateRootBlock.Sign(
+            Block stateRootBlockWithoutProof = noStateRootBlockWithoutProof.Sign(
                 GenesisProposer,
                 MerkleTrie.EmptyRootHash);
-            var generatedRandomNumbers = new List<int>();
+            var generatedRandomNumbersWithoutProof = new List<int>();
 
-            AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
+            AssertPreEvaluationBlocksEqual(
+                stateRootBlockWithoutProof, noStateRootBlockWithoutProof);
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null);
-                generatedRandomNumbers.Add(
+                var actionEvaluations = actionEvaluator.Evaluate(
+                    noStateRootBlockWithoutProof, null);
+                generatedRandomNumbersWithoutProof.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(ContextRecordingAction.RandomRecordAddress));
-                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
-                generatedRandomNumbers.Add(
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlockWithoutProof, null);
+                generatedRandomNumbersWithoutProof.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(ContextRecordingAction.RandomRecordAddress));
             }
 
-            for (int i = 1; i < generatedRandomNumbers.Count; ++i)
+            for (int i = 1; i < generatedRandomNumbersWithoutProof.Count; ++i)
             {
-                Assert.Equal(generatedRandomNumbers[0], generatedRandomNumbers[i]);
+                Assert.Equal(
+                    generatedRandomNumbersWithoutProof[0],
+                    generatedRandomNumbersWithoutProof[i]);
+            }
+
+            var noStateRootBlockWithProof = new BlockContent(
+               new BlockMetadata(
+                   protocolVersion: Block.CurrentProtocolVersion,
+                   index: 0,
+                   timestamp: timestamp,
+                   miner: GenesisProposer.Address,
+                   publicKey: GenesisProposer.PublicKey,
+                   previousHash: null,
+                   txHash: BlockContent.DeriveTxHash(txs),
+                   lastCommit: null,
+                   proof: new ConsensusInformation(0, 0, null).Prove(GenesisProposer),
+                   evidenceHash: null),
+               transactions: txs,
+               evidence: evs).Propose();
+
+            // Since there is no static method determine state root hash of common block,
+            // used method for genesis block instead.
+            var stateRootBlockWithProof = noStateRootBlockWithProof.Sign(
+                GenesisProposer,
+                MerkleTrie.EmptyRootHash);
+            var generatedRandomNumbersWithProof = new List<int>();
+
+            AssertPreEvaluationBlocksEqual(stateRootBlockWithProof, noStateRootBlockWithProof);
+
+            for (int i = 0; i < repeatCount; ++i)
+            {
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlockWithProof, null);
+                generatedRandomNumbersWithProof.Add(
+                    (Integer)new WorldBaseState(
+                        stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
+                            .GetAccountState(ReservedAddresses.LegacyAccount)
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlockWithProof, null);
+                generatedRandomNumbersWithProof.Add(
+                    (Integer)new WorldBaseState(
+                        stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
+                            .GetAccountState(ReservedAddresses.LegacyAccount)
+                            .GetState(ContextRecordingAction.RandomRecordAddress));
+            }
+
+            for (int i = 1; i < generatedRandomNumbersWithProof.Count; ++i)
+            {
+                Assert.Equal(
+                    generatedRandomNumbersWithProof[0],
+                    generatedRandomNumbersWithProof[i]);
+            }
+
+            for (int i = 0; i < repeatCount * 2; i++)
+            {
+                Assert.NotEqual(
+                    generatedRandomNumbersWithoutProof[i],
+                    generatedRandomNumbersWithProof[i]);
             }
         }
 
@@ -164,11 +224,13 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
             chain.Append(block, CreateBlockCommit(block));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.Hash));
 
             Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
@@ -247,6 +309,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
             var evaluations = actionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(chain.Tip.Hash)).ToArray();
@@ -305,10 +368,13 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action }.ToPlainValues());
 
             chain.StageTransaction(tx);
-            Block block = chain.ProposeBlock(new PrivateKey());
+            var proposer = new PrivateKey();
+            Block block = chain.ProposeBlock(
+                proposer,
+                proof: CreateZeroRoundProof(chain.Tip, proposer));
             chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
-                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.PreviousHash));
+                chain.Tip, chain.Store.GetStateRootHash(chain.Tip.Hash));
 
             Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
@@ -349,18 +415,20 @@ namespace Libplanet.Tests.Action
                 actions: new[] { action }.ToPlainValues());
             var txs = new Transaction[] { tx };
             var evs = Array.Empty<EvidenceBase>();
+            var proposer = new PrivateKey();
             PreEvaluationBlock block = new BlockContent(
                 new BlockMetadata(
                     index: 1L,
                     timestamp: DateTimeOffset.UtcNow,
-                    publicKey: new PrivateKey().PublicKey,
+                    publicKey: proposer.PublicKey,
                     previousHash: genesis.Hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: CreateZeroRoundProof(genesis, proposer),
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
-            IWorld previousState = stateStore.GetWorld(genesis.StateRootHash);
+            IWorld previousState = new World(chain.GetNextWorldState());
 
             Assert.Throws<OutOfMemoryException>(
                 () => actionEvaluator.EvaluateTx(
@@ -369,7 +437,7 @@ namespace Libplanet.Tests.Action
                     previousState: previousState).ToList());
             Assert.Throws<OutOfMemoryException>(
                 () => chain.ActionEvaluator.Evaluate(
-                    block, chain.Store.GetStateRootHash(block.PreviousHash)).ToList());
+                    block, previousState.Trie.Hash).ToList());
         }
 
         [Fact]
@@ -463,21 +531,45 @@ namespace Libplanet.Tests.Action
                 _logger.Debug("{0}[{1}] = {2}", nameof(block1Txs), i, tx.Id);
             }
 
+            var block1Srh = actionEvaluator.Evaluate(
+                genesis, genesis.StateRootHash).Last().OutputState;
+
             Block block1 = ProposeNextBlock(
                 genesis,
                 GenesisProposer,
-                block1Txs);
-            IWorld previousState = stateStore.GetWorld(genesis.StateRootHash);
+                block1Txs,
+                stateRootHash: block1Srh,
+                proof: CreateZeroRoundProof(genesis, GenesisProposer));
+            IWorld previousState = stateStore.GetWorld(block1.StateRootHash);
             var evals = actionEvaluator.EvaluateBlock(
                 block1,
                 previousState).ToImmutableArray();
+
+            // Logging for fixing test expectations.
+            foreach (var eval in evals)
+            {
+                int txIdx = block1Txs.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Id.Equals(eval.InputContext.TxId)).idx;
+                int actionIdx = block1Txs[txIdx].Actions.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.Action.PlainValue)).idx;
+                string updatedStates = "new[] { " + string.Join(", ", addresses.Select(
+                    eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                    .Select(x => x is Text t ? '"' + t.Value + '"' : "null")) + " }";
+                string signerIdx = "_txFx.Address" + (addresses.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.InputContext.Signer)).idx + 1);
+                _logger.Information($"({txIdx}, {actionIdx}, {updatedStates}, {signerIdx})");
+            }
+
             // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),  // Adds "C"
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),   // Adds "A"
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),    // Adds "B"
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),  // Adds "C"
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),   // Adds "A"
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),    // Adds "B"
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -496,10 +588,7 @@ namespace Libplanet.Tests.Action
                 Assert.Equal(block1.Index, eval.InputContext.BlockIndex);
             }
 
-            previousState = stateStore.GetWorld(genesis.StateRootHash);
-            ActionEvaluation[] evals1 =
-                actionEvaluator.EvaluateBlock(block1, previousState).ToArray();
-            var output1 = new WorldBaseState(evals1.Last().OutputState.Trie, stateStore);
+            var output1 = new WorldBaseState(evals.Last().OutputState.Trie, stateStore);
             Assert.Equal(
                 (Text)"A",
                 output1.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[0]));
@@ -584,21 +673,40 @@ namespace Libplanet.Tests.Action
                 block1,
                 GenesisProposer,
                 block2Txs,
+                stateRootHash: evals.Last().OutputState.Trie.Hash,
                 lastCommit: CreateBlockCommit(block1, true));
 
             // Forcefully reset to null delta
-            previousState = evals1.Last().OutputState;
+            previousState = evals.Last().OutputState;
             evals = actionEvaluator.EvaluateBlock(
                 block2,
                 previousState).ToImmutableArray();
+
+            // Logging for fixing test expectations.
+            foreach (var eval in evals)
+            {
+                int txIdx = block2Txs.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Id.Equals(eval.InputContext.TxId)).idx;
+                int actionIdx = block2Txs[txIdx].Actions.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.Action.PlainValue)).idx;
+                string updatedStates = "new[] { " + string.Join(", ", addresses.Select(
+                    eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                    .Select(x => x is Text t ? '"' + t.Value + '"' : "null")) + " }";
+                string signerIdx = "_txFx.Address" + (addresses.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.InputContext.Signer)).idx + 1);
+                _logger.Information($"({txIdx}, {actionIdx}, {updatedStates}, {signerIdx})");
+            }
 
             // Once the BlockMetadata.CurrentProtocolVersion gets bumped, expectations may also
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),
-                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
+                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
@@ -618,9 +726,7 @@ namespace Libplanet.Tests.Action
                 Assert.Null(eval.Exception);
             }
 
-            previousState = evals1.Last().OutputState;
-            var evals2 = actionEvaluator.EvaluateBlock(block2, previousState).ToArray();
-            var output2 = new WorldBaseState(evals2.Last().OutputState.Trie, stateStore);
+            var output2 = new WorldBaseState(evals.Last().OutputState.Trie, stateStore);
             Assert.Equal(
                 (Text)"A,D",
                 output2.GetAccountState(ReservedAddresses.LegacyAccount).GetState(addresses[0]));
@@ -662,6 +768,7 @@ namespace Libplanet.Tests.Action
                     previousHash: default(BlockHash),
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
+                    proof: new ConsensusInformation(1L, 0, null).Prove(GenesisProposer),
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
@@ -779,6 +886,7 @@ namespace Libplanet.Tests.Action
                     previousHash: hash,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: CreateBlockCommit(hash, 122, 0),
+                    proof: new ConsensusInformation(123L, 0, null).Prove(GenesisProposer),
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
@@ -936,6 +1044,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
@@ -987,6 +1096,7 @@ namespace Libplanet.Tests.Action
                 GenesisProposer,
                 txs.ToImmutableList(),
                 CreateBlockCommit(chain.Tip),
+                CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
@@ -1039,6 +1149,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
@@ -1094,6 +1205,7 @@ namespace Libplanet.Tests.Action
                 proposer: GenesisProposer,
                 transactions: txs.ToImmutableList(),
                 lastCommit: CreateBlockCommit(chain.Tip),
+                proof: CreateZeroRoundProof(chain.Tip, GenesisProposer),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
             IWorld previousState = _storeFx.StateStore.GetWorld(null);
@@ -1279,7 +1391,9 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
@@ -1348,7 +1462,9 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
@@ -1420,7 +1536,9 @@ namespace Libplanet.Tests.Action
 
             chain.StageTransaction(tx);
             var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
+            Block block = chain.ProposeBlock(
+                miner,
+                proof: CreateZeroRoundProof(chain.Tip, miner));
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block, chain.Store.GetStateRootHash(block.PreviousHash));
@@ -1437,6 +1555,29 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void GenerateRandomSeed()
         {
+            byte[] proofBytes =
+            {
+                0x03, 0x47, 0xfc, 0xcb, 0x9f, 0x8b, 0x62, 0x8c, 0x00, 0x92,
+                0x62, 0x7a, 0x7b, 0x91, 0x1a, 0x8e, 0x5b, 0xfb, 0xb4, 0x0b,
+                0x5a, 0x25, 0xc1, 0x83, 0xf3, 0x4e, 0x91, 0x51, 0x3b, 0xaa,
+                0xbd, 0x11, 0xfd, 0x9f, 0x72, 0xcd, 0x88, 0xac, 0x09, 0xab,
+                0xe4, 0x97, 0xdb, 0x2b, 0x5e, 0x05, 0xb2, 0x52, 0x2c, 0x02,
+                0xab, 0xd9, 0xb8, 0x5c, 0x62, 0x37, 0xcb, 0x48, 0x54, 0x08,
+                0xd4, 0x6a, 0x13, 0x1e, 0xc1, 0xcd, 0xa7, 0xbc, 0xe3, 0x6c,
+                0xce, 0x94, 0xaa, 0xd4, 0xca, 0x00, 0xcb, 0x3a, 0x3f, 0x24,
+                0x9d, 0x4f, 0xaf, 0x76, 0x22, 0xa7, 0x28, 0x67, 0x2b, 0x08,
+                0xa9, 0x8c, 0xa0, 0x63, 0xda, 0x27, 0xfa,
+            };
+
+            Proof proof = new Proof(proofBytes);
+
+            int seed = proof.Seed;
+            Assert.Equal(-713621093, seed);
+        }
+
+        [Fact]
+        public void GenerateLegacyRandomSeed()
+        {
             byte[] preEvaluationHashBytes =
             {
                 0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
@@ -1452,9 +1593,11 @@ namespace Libplanet.Tests.Action
                 0x7d, 0x37, 0x67, 0xe1, 0xe9,
             };
 
-            int seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 0);
+            int seed = ActionEvaluator.GenerateLegacyRandomSeed(
+                preEvaluationHashBytes, signature, 0);
             Assert.Equal(353767086, seed);
-            seed = ActionEvaluator.GenerateRandomSeed(preEvaluationHashBytes, signature, 1);
+            seed = ActionEvaluator.GenerateLegacyRandomSeed(
+                preEvaluationHashBytes, signature, 1);
             Assert.Equal(353767087, seed);
         }
 
@@ -1481,13 +1624,11 @@ namespace Libplanet.Tests.Action
                 stateStore: fx.StateStore,
                 isPolicyAction: false).ToArray();
 
-            byte[] preEvaluationHashBytes = blockA.PreEvaluationHash.ToByteArray();
+            Assert.NotNull(blockA.Proof);
+            Proof proof = blockA.Proof;
             int[] randomSeeds = Enumerable
                 .Range(0, txA.Actions.Count)
-                .Select(offset => ActionEvaluator.GenerateRandomSeed(
-                    preEvaluationHashBytes,
-                    txA.Signature,
-                    offset))
+                .Select(offset => proof.Seed + offset)
                 .ToArray();
 
             for (int i = 0; i < evalsA.Length; i++)

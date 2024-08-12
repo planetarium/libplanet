@@ -314,6 +314,20 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            if (block.Proof is { }
+                    && block.ProtocolVersion < BlockMetadata.VRFProtocolVersion)
+            {
+                throw new InvalidBlockProofException(
+                    "Block of protocol version lower than 9 does not support proof.");
+            }
+
+            if (block.Proof is null
+                && block.ProtocolVersion >= BlockMetadata.VRFProtocolVersion)
+            {
+                throw new InvalidBlockProofException(
+                    "Block of protocol version higher than 9 must contain proof.");
+            }
+
             foreach (var ev in block.Evidence)
             {
                 var stateRootHash = GetNextStateRootHash(ev.Height);
