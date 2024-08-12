@@ -70,7 +70,7 @@ commands:
     steps:
     - checkout
     - concat_files:
-        glob: "{src,test,tools}/*/*.csproj"
+        glob: "{src,test,tools,sdk/*}/*/*.csproj"
         to: .combined-package-files.txt
     - restore_cache:
         keys:
@@ -117,6 +117,8 @@ commands:
         - "test/*/obj/"
         - "tools/*/bin/"
         - "tools/*/obj/"
+        - "sdk/node/*/bin/"
+        - "sdk/node/*/obj/"
 
   netcore_test_base:
     parameters:
@@ -284,6 +286,11 @@ commands:
             echo export PATH="$HOME/.dotnet:$PATH"
             echo export DOTNET_ROOT="$HOME/.dotnet"
           } >> $BASH_ENV
+    - run:
+        name: Install .NET 6.0 SDK
+        shell: bash
+        command: |
+          curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 6.0
     - run:
         name: Install .NET 8.0 SDK for Libplanet-SDK
         shell: bash
