@@ -1,18 +1,16 @@
 using System.Reflection;
 using Libplanet.Node.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 
-namespace Libplanet.Node.Extensions;
+namespace Libplanet.Node.API.Extensions;
 
-public static class IEndpointRouteBuilderExtensions
+internal static class IApplicationBuilderExtensions
 {
-    public static IEndpointRouteBuilder MapGrpcServiceFromDomain(
-        this IEndpointRouteBuilder @this)
+    public static IApplicationBuilder MapGrpcServiceFromDomain(
+        this IApplicationBuilder @this)
         => @this.MapGrpcServiceFromDomain(scope: string.Empty);
 
-    public static IEndpointRouteBuilder MapGrpcServiceFromDomain(
-        this IEndpointRouteBuilder @this, string scope)
+    public static IApplicationBuilder MapGrpcServiceFromDomain(
+        this IApplicationBuilder @this, string scope)
     {
         var types = ServiceUtility.GetTypes(typeof(GrpcAttribute), inherit: true);
         var methodType = typeof(GrpcEndpointRouteBuilderExtensions);
@@ -38,8 +36,8 @@ public static class IEndpointRouteBuilderExtensions
         return @this;
     }
 
-    public static IEndpointRouteBuilder MapGrpcServiceFromDomain(
-        this IEndpointRouteBuilder @this, string[] scopes)
+    public static IApplicationBuilder MapGrpcServiceFromDomain(
+        this IApplicationBuilder @this, string[] scopes)
     {
         foreach (var scope in scopes)
         {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-[Singleton<IConfigureOptions<NodeOptions>>(Scope = "Node")]
+[Singleton<IConfigureOptions<NodeOptions>>]
 internal sealed class NodeOptionsConfigurator(
     ILogger<NodeOptionsConfigurator> logger)
     : OptionsConfiguratorBase<NodeOptions>

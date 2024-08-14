@@ -4,10 +4,13 @@ using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 
-[Options(Position, Scope = "Node")]
+[Options(Position)]
 public sealed class NodeOptions : OptionsBase<NodeOptions>
 {
     public const string Position = "Node";
+
+    [DefaultValue(true)]
+    public bool IsEnabled { get; set; }
 
     [PrivateKey]
     [Description("The private key of the node.")]
