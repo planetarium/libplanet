@@ -1,5 +1,6 @@
 using Libplanet.Node.DependencyInjection;
 using Libplanet.Node.Options.Schema;
+using Libplanet.Node.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace Libplanet.Node.API.EntryPoints;
@@ -33,7 +34,10 @@ internal sealed class DefaultEntryPoint
     {
         var serviceProvider = app.Services;
         var schema = await OptionsSchemaBuilder.GetSchemaAsync(cancellationToken);
+        var actionEvaluationService
+            = serviceProvider.GetRequiredService<IActionEvaluationService>();
         app.MapGet("/", () => HandlerMessage);
         app.MapGet("/schema", () => schema);
+        app.MapGet("/actions", () => JsonUtility.Serialize(actionEvaluationService.Actions));
     }
 }

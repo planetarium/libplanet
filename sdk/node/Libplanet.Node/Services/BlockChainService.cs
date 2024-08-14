@@ -36,19 +36,20 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
 
     public BlockChainService(
         IOptions<GenesisOptions> genesisOptions,
-        IOptions<StoreOptions> storeOptions,
+        StoreService storeService,
         PolicyService policyService,
-        IEnumerable<IActionLoaderProvider> actionLoaderProviders,
+        IActionEvaluationService actionEvaluationService,
         ILogger<BlockChainService> logger)
     {
         _synchronizationContext = SynchronizationContext.Current ?? new();
         _logger = logger;
         _blockChain = CreateBlockChain(
             genesisOptions: genesisOptions.Value.Verify(),
-            storeOptions: storeOptions.Value.Verify(),
+            store: storeService.Store,
+            stateStore: storeService.Statestore,
             stagePolicy: policyService.StagePolicy,
             renderers: [this],
-            actionLoaders: [.. actionLoaderProviders.Select(item => item.GetActionLoader())]);
+            actionEvaluationService.ActionEvaluator);
     }
 
     public event EventHandler<BlockEventArgs>? BlockAppended;
@@ -91,18 +92,19 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
 
     private static BlockChain CreateBlockChain(
         GenesisOptions genesisOptions,
-        StoreOptions storeOptions,
+        IStore store,
+        IStateStore stateStore,
         IStagePolicy stagePolicy,
         IRenderer[] renderers,
-        IActionLoader[] actionLoaders)
+        IActionEvaluator actionEvaluator)
     {
         var genesisKey = PrivateKey.FromString(genesisOptions.GenesisKey);
-        var (store, stateStore) = CreateStore(storeOptions);
-        var actionLoader = new AggregateTypedActionLoader(actionLoaders);
-        var actionEvaluator = new ActionEvaluator(
-            policyActionsRegistry: new(),
-            stateStore,
-            actionLoader);
+        // var (store, stateStore) = CreateStore(storeOptions);
+        // var actionLoader = new AggregateTypedActionLoader(actionLoaders);
+        // var actionEvaluator = new ActionEvaluator(
+        //     policyActionsRegistry: new(),
+        //     stateStore,
+        //     actionLoader);
         var validators = genesisOptions.Validators.Select(PublicKey.FromHex)
                             .Select(item => new Validator(item, new BigInteger(1000)))
                             .ToArray();
@@ -155,28 +157,28 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
             renderers: renderers);
     }
 
-    private static (IStore, IStateStore) CreateStore(StoreOptions storeOptions)
-    {
-        return storeOptions.Type switch
-        {
-            StoreType.Disk => CreateDiskStore(),
-            StoreType.Memory => CreateMemoryStore(),
-            _ => throw new NotSupportedException($"Unsupported store type: {storeOptions.Type}"),
-        };
+    // private static (IStore, IStateStore) CreateStore(StoreOptions storeOptions)
+    // {
+    //     return storeOptions.Type switch
+    //     {
+    //         StoreType.Disk => CreateDiskStore(),
+    //         StoreType.Memory => CreateMemoryStore(),
+    //         _ => throw new NotSupportedException($"Unsupported store type: {storeOptions.Type}"),
+    //     };
 
-        (MemoryStore, TrieStateStore) CreateMemoryStore()
-        {
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            return (store, stateStore);
-        }
+    //     (MemoryStore, TrieStateStore) CreateMemoryStore()
+    //     {
+    //         var store = new MemoryStore();
+    //         var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+    //         return (store, stateStore);
+    //     }
 
-        (RocksDBStore.RocksDBStore, TrieStateStore) CreateDiskStore()
-        {
-            var store = new RocksDBStore.RocksDBStore(storeOptions.StoreName);
-            var keyValueStore = new RocksDBKeyValueStore(storeOptions.StateStoreName);
-            var stateStore = new TrieStateStore(keyValueStore);
-            return (store, stateStore);
-        }
-    }
+    //     (RocksDBStore.RocksDBStore, TrieStateStore) CreateDiskStore()
+    //     {
+    //         var store = new RocksDBStore.RocksDBStore(storeOptions.StoreName);
+    //         var keyValueStore = new RocksDBKeyValueStore(storeOptions.StateStoreName);
+    //         var stateStore = new TrieStateStore(keyValueStore);
+    //         return (store, stateStore);
+    //     }
+    // }
 }
