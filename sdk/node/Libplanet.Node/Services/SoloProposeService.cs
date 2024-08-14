@@ -1,14 +1,13 @@
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Node.Options;
-using Libplanet.Types.Blocks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
-public class SoloProposeService : BackgroundService
+internal sealed class SoloProposeService : BackgroundService
 {
     private readonly BlockChain _blockChain;
     private readonly PrivateKey _privateKey;
@@ -20,7 +19,7 @@ public class SoloProposeService : BackgroundService
         ILogger<SoloProposeService> logger,
         IOptions<SoloProposeOption> soloProposeOption)
     {
-        _blockChain = blockChainService.GetBlockChain();
+        _blockChain = blockChainService.BlockChain;
         var options = soloProposeOption.Value;
         _privateKey = options.PrivateKey is null
             ? new PrivateKey()

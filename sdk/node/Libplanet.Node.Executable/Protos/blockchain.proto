@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option csharp_namespace = "Libplanet.Node.API";
+
+package node;
+
+service BlockChain {
+  rpc GetGenesisBlock (GetGenesisBlockRequest) returns (GetGenesisBlockReply);
+  rpc GetTip(Empty) returns (GetTipReply);
+  rpc GetBlock(GetBlockRequest) returns (GetBlockReply);
+}
+
+message Empty {
+}
+
+message GetGenesisBlockRequest {
+}
+
+message GetGenesisBlockReply {
+  string hash = 1;
+}
+
+message GetTipReply {
+  string hash = 1;
+  int64 height = 2;
+}
+
+message GetBlockRequest {
+  oneof block_identifier {
+    int64 height = 1;
+    string hash = 2;
+  }
+}
+
+message GetBlockReply {
+  string hash = 1;
+  int64 height = 2;
+  string miner = 3;
+  string public_key = 4;
+  string previous_hash = 5;
+  string state_root_hash = 6;
+  string signature = 7;
+  int64 protocol_version = 8;
+}

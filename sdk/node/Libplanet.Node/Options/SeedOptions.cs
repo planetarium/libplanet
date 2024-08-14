@@ -1,16 +1,20 @@
 using System.ComponentModel.DataAnnotations;
+using Libplanet.Node.DataAnnotations;
+using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 
-public sealed class SeedOptions
+[Options(BlocksyncSeed, Scope = "Seed")]
+[Options(ConsensusSeed, Scope = "Seed")]
+public sealed class SeedOptions : OptionsBase<SeedOptions>
 {
     public const string BlocksyncSeed = nameof(BlocksyncSeed);
     public const string ConsensusSeed = nameof(ConsensusSeed);
 
-    [RegularExpression("^(?:[0-9a-fA-F]{32})$")]
+    [PrivateKey]
     public string PrivateKey { get; set; } = string.Empty;
 
-    [RegularExpression(@"^((([a-zA-Z0-9\-\.]+)|(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})):\d{1,5})$")]
+    [DnsEndPoint]
     public string EndPoint { get; set; } = string.Empty;
 
     [Range(0, int.MaxValue)]

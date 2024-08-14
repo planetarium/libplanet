@@ -2,6 +2,7 @@ using Libplanet.Node.API.Services;
 using Libplanet.Node.Extensions;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
+SynchronizationContext.SetSynchronizationContext(new());
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
@@ -23,8 +24,9 @@ if (builder.Environment.IsDevelopment())
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
-builder.Services.AddLibplanetNode(builder.Configuration.GetSection("Libplanet"))
-    .WithSeed();
+var libplanetBuilder = builder.Services.AddLibplanetNode(builder.Configuration)
+    .WithSeed()
+    .WithNode();
 
 var app = builder.Build();
 var handlerMessage = """
@@ -33,7 +35,7 @@ var handlerMessage = """
     """;
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
+app.MapGrpcServiceFromDomain(libplanetBuilder.Scopes);
 app.MapGet("/", () => handlerMessage);
 
 if (builder.Environment.IsDevelopment())

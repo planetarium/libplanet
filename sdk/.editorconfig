@@ -1,3 +1,6 @@
+[*.proto]
+indent_size = 2
+
 [*.cs]
 
 # S3903: Types should be defined in named namespaces
