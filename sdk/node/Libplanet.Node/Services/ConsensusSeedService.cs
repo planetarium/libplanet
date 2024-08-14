@@ -6,8 +6,8 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
-[Singleton<IConsensusSeedService>(Scope = "Seed")]
-[Singleton<IHostedService>(Scope = "Seed")]
+[Singleton<IConsensusSeedService>(Scope = SeedOptions.ConsensusSeed)]
+[Singleton<IHostedService>(Scope = SeedOptions.ConsensusSeed)]
 internal sealed class ConsensusSeedService(
     IOptionsMonitor<SeedOptions> seedOptionsMonitor,
     ILogger<ConsensusSeedService> logger)

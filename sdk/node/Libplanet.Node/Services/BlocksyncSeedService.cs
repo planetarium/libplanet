@@ -6,8 +6,8 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
-[Singleton<IBlocksyncSeedService>(Scope = "Seed")]
-[Singleton<IHostedService>(Scope = "Seed")]
+[Singleton<IBlocksyncSeedService>(Scope = SeedOptions.BlocksyncSeed)]
+[Singleton<IHostedService>(Scope = SeedOptions.BlocksyncSeed)]
 internal sealed class BlocksyncSeedService(
     IOptionsMonitor<SeedOptions> seedOptionsMonitor,
     ILogger<BlocksyncSeedService> logger)

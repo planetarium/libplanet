@@ -1,4 +1,3 @@
-using Libplanet.Node.Extensions.NodeBuilder;
 using Libplanet.Node.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +6,7 @@ namespace Libplanet.Node.Extensions;
 
 public static class LibplanetServicesExtensions
 {
-    public static ILibplanetNodeBuilder AddLibplanetNode(
+    public static INodeApplicationBuilder AddLibplanetNode(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -16,6 +15,9 @@ public static class LibplanetServicesExtensions
         services.Configure<SoloProposeOption>(configuration.GetSection(SoloProposeOption.Position));
         services.AddOptionsFromDomain(configuration);
 
-        return new LibplanetNodeBuilder(services, configuration);
+        var builder = new NodeApplicationBuilder(services, configuration);
+        services.AddSingleton<INodeApplicationBuilder>(builder);
+
+        return builder;
     }
 }

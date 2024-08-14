@@ -6,8 +6,8 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-[Singleton<IConfigureNamedOptions<SeedOptions>>(Scope = "Seed")]
-[Singleton<IConfigureOptions<SeedOptions>>(Scope = "Seed")]
+[Singleton<IConfigureNamedOptions<SeedOptions>>]
+[Singleton<IConfigureOptions<SeedOptions>>]
 public sealed class SeedOptionsConfigurator(
     ILogger<SeedOptionsConfigurator> logger)
     : ConfigureNamedOptionsBase<SeedOptions>

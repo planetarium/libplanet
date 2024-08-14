@@ -5,12 +5,14 @@ using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 
-[Options(BlocksyncSeed, Scope = "Seed")]
-[Options(ConsensusSeed, Scope = "Seed")]
+[Options(BlocksyncSeed)]
+[Options(ConsensusSeed)]
 public sealed class SeedOptions : OptionsBase<SeedOptions>
 {
     public const string BlocksyncSeed = nameof(BlocksyncSeed);
     public const string ConsensusSeed = nameof(ConsensusSeed);
+
+    public bool IsEnabled { get; set; }
 
     [PrivateKey]
     [Description("The private key of the seed node.")]
