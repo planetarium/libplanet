@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
     <PackageReference Include="NJsonSchema" Version="11.0.2" />
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.0.2" />
+    <PackageReference Include="R3" Version="1.2.6" />
   </ItemGroup>
 
   <ItemGroup>
