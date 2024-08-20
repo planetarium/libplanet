@@ -3400,12 +3400,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.GetBlockCommit
   nameWithType: BlockChain.GetBlockCommit
-- uid: Libplanet.Blockchain.BlockChain.GetBlockLocator(System.Int32)
-  name: GetBlockLocator(Int32)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockLocator_System_Int32_
-  commentId: M:Libplanet.Blockchain.BlockChain.GetBlockLocator(System.Int32)
-  fullName: Libplanet.Blockchain.BlockChain.GetBlockLocator(System.Int32)
-  nameWithType: BlockChain.GetBlockLocator(Int32)
+- uid: Libplanet.Blockchain.BlockChain.GetBlockLocator
+  name: GetBlockLocator()
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockLocator
+  commentId: M:Libplanet.Blockchain.BlockChain.GetBlockLocator
+  fullName: Libplanet.Blockchain.BlockChain.GetBlockLocator()
+  nameWithType: BlockChain.GetBlockLocator()
 - uid: Libplanet.Blockchain.BlockChain.GetBlockLocator*
   name: GetBlockLocator
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_GetBlockLocator_
@@ -3813,15 +3813,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockLocator.BlockLocator
   nameWithType: BlockLocator.BlockLocator
-- uid: Libplanet.Blockchain.BlockLocator.Create(System.Int64,Func{System.Int64,System.Nullable{Libplanet.Types.Blocks.BlockHash}},System.Int64)
-  name: Create(Int64, Func<Int64, Nullable<BlockHash>>, Int64)
-  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64_
-  commentId: M:Libplanet.Blockchain.BlockLocator.Create(System.Int64,Func{System.Int64,System.Nullable{Libplanet.Types.Blocks.BlockHash}},System.Int64)
-  name.vb: Create(Int64, Func(Of Int64, Nullable(Of BlockHash)), Int64)
-  fullName: Libplanet.Blockchain.BlockLocator.Create(System.Int64, Func<System.Int64, System.Nullable<Libplanet.Types.Blocks.BlockHash>>, System.Int64)
-  fullName.vb: Libplanet.Blockchain.BlockLocator.Create(System.Int64, Func(Of System.Int64, System.Nullable(Of Libplanet.Types.Blocks.BlockHash)), System.Int64)
-  nameWithType: BlockLocator.Create(Int64, Func<Int64, Nullable<BlockHash>>, Int64)
-  nameWithType.vb: BlockLocator.Create(Int64, Func(Of Int64, Nullable(Of BlockHash)), Int64)
+- uid: Libplanet.Blockchain.BlockLocator.Create(Libplanet.Types.Blocks.BlockHash)
+  name: Create(BlockHash)
+  href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_Create_Libplanet_Types_Blocks_BlockHash_
+  commentId: M:Libplanet.Blockchain.BlockLocator.Create(Libplanet.Types.Blocks.BlockHash)
+  fullName: Libplanet.Blockchain.BlockLocator.Create(Libplanet.Types.Blocks.BlockHash)
+  nameWithType: BlockLocator.Create(BlockHash)
 - uid: Libplanet.Blockchain.BlockLocator.Create*
   name: Create
   href: api/Libplanet.Blockchain.BlockLocator.html#Libplanet_Blockchain_BlockLocator_Create_
@@ -16953,19 +16950,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Options.SwarmOptions.BootstrapOptions
   nameWithType: SwarmOptions.BootstrapOptions
-- uid: Libplanet.Net.Options.SwarmOptions.BranchpointThreshold
-  name: BranchpointThreshold
-  href: api/Libplanet.Net.Options.SwarmOptions.html#Libplanet_Net_Options_SwarmOptions_BranchpointThreshold
-  commentId: P:Libplanet.Net.Options.SwarmOptions.BranchpointThreshold
-  fullName: Libplanet.Net.Options.SwarmOptions.BranchpointThreshold
-  nameWithType: SwarmOptions.BranchpointThreshold
-- uid: Libplanet.Net.Options.SwarmOptions.BranchpointThreshold*
-  name: BranchpointThreshold
-  href: api/Libplanet.Net.Options.SwarmOptions.html#Libplanet_Net_Options_SwarmOptions_BranchpointThreshold_
-  commentId: Overload:Libplanet.Net.Options.SwarmOptions.BranchpointThreshold
-  isSpec: "True"
-  fullName: Libplanet.Net.Options.SwarmOptions.BranchpointThreshold
-  nameWithType: SwarmOptions.BranchpointThreshold
 - uid: Libplanet.Net.Options.SwarmOptions.BucketSize
   name: BucketSize
   href: api/Libplanet.Net.Options.SwarmOptions.html#Libplanet_Net_Options_SwarmOptions_BucketSize

@@ -66,6 +66,13 @@
 <h3 id="deprecated-apis">Deprecated APIs</h3>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Changed <code>BlockLocator.Create()</code> to take a single <code>BlockHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
+<li>Changed <code>BlockLocator()</code> to throw an <code>ArgumentException</code> when
+the number of given <code>BlockHash</code>es is not 1.  [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
+<li>Removed <code>threshold</code> parameter from <code>BlockChain.GetBlockLocator()</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
+<li>(Libplanet.Net) Removed <code>SwarmOptions.BranchpointThreshold</code> property.
+[<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
 <li>(Libplanet.Store) Removed unused <code>HashNode.Serialize()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/3922">#3922</a>, <a href="https://github.com/planetarium/libplanet/pull/3924">#3924</a>]</li>
 </ul>
@@ -74,6 +81,8 @@
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li>Changed <code>BlockChain.FindBranchPoint()</code> to only check for the first
+<code>BlockHash</code> in a given <code>BlockLocator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
 <li>(Libplanet.Store) Optimized <code>HashNode.ToBencodex()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/3922">#3922</a>, <a href="https://github.com/planetarium/libplanet/pull/3924">#3924</a>]</li>
 </ul>

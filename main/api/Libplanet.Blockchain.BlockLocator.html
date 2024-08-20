@@ -93,7 +93,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator__ctor_IEnumerable_Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.%23ctor(IEnumerable%7BLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L23">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockLocator__ctor_" data-uid="Libplanet.Blockchain.BlockLocator.#ctor*"></a>
   <h4 id="Libplanet_Blockchain_BlockLocator__ctor_IEnumerable_Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Blockchain.BlockLocator.#ctor(IEnumerable{Libplanet.Types.Blocks.BlockHash})">BlockLocator(IEnumerable&lt;BlockHash&gt;)</h4>
@@ -126,41 +126,21 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.Create(System.Int64%2CFunc%7BSystem.Int64%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%7D%2CSystem.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator_Create_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.Create(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L78">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L41">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockLocator_Create_" data-uid="Libplanet.Blockchain.BlockLocator.Create*"></a>
-  <h4 id="Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64_" data-uid="Libplanet.Blockchain.BlockLocator.Create(System.Int64,Func{System.Int64,System.Nullable{Libplanet.Types.Blocks.BlockHash}},System.Int64)">Create(Int64, Func&lt;Int64, Nullable&lt;BlockHash&gt;&gt;, Int64)</h4>
+  <h4 id="Libplanet_Blockchain_BlockLocator_Create_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockLocator.Create(Libplanet.Types.Blocks.BlockHash)">Create(BlockHash)</h4>
   <div class="markdown level1 summary"><p>
-Creates a new instance of <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a> with an indexer
-function, sampling after <code data-dev-comment-type="paramref" class="paramref">sampleAfter</code> number of
-<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s.
+Creates a new instance of <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a>.
 </p>
-<p>
-This collects all <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es corresponding to indices inductively
-defined by:
-<ul><li>
-<code>i_0 = startIndex</code>
-</li><li>
-<code>i_k = max(i_(k - 1) - 1, 0)</code> for <code>0 &lt; k</code> and  <code>k &lt;= s</code>
-</li><li>
-<code>i_k = max(i_(k - 1) - 2^(k - 1 - s), 0)</code> for <code>0 &lt; k</code>
-and <code>s &lt; k</code>
-</li></ul>
-where <code>s = max(sampleAfter, 0)</code> and the sequence terminates after index <code>i_k</code>
-reaches zero or the <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> returned by
-<code data-dev-comment-type="paramref" class="paramref">indexToBlockHash</code> for <code>i_k</code> is <span class="xref">null</span>,
-in which case the <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> corresponding to index <code>0</code>
-(presumably a <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the genesis <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>)
-is added at the end.
-
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static BlockLocator Create(long startIndex, Func&lt;long, BlockHash?&gt; indexToBlockHash, long sampleAfter = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static BlockLocator Create(BlockHash tipHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,24 +153,9 @@ is added at the end.
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int64</span></td>
-        <td><span class="parametername">startIndex</span></td>
-        <td><p>The starting index.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Func</span>&lt;<span class="xref">System.Int64</span>, <span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;&gt;</td>
-        <td><span class="parametername">indexToBlockHash</span></td>
-        <td><p>The function that converts an index to a
-<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>.  This can be <span class="xref">null</span> which indicates
-a missing <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> at the index.  Any value from <code>0</code> to
-<code data-dev-comment-type="paramref" class="paramref">startIndex</code> may be used as an argument to call this function.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int64</span></td>
-        <td><span class="parametername">sampleAfter</span></td>
-        <td><p>The number of consecutive blocks to include before sampling.</p>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td><span class="parametername">tipHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> of the tip.</p>
 </td>
       </tr>
     </tbody>
@@ -211,16 +176,12 @@ a missing <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> at 
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockLocator_Create_System_Int64_Func_System_Int64_System_Nullable_Libplanet_Types_Blocks_BlockHash___System_Int64__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Returned <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a> created by this factory method is guaranteed
-to have the <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> corresponding to index <code>0</code>.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockLocator_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockLocator.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L116">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockLocator.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockLocator_GetEnumerator_" data-uid="Libplanet.Blockchain.BlockLocator.GetEnumerator*"></a>
   <h4 id="Libplanet_Blockchain_BlockLocator_GetEnumerator" data-uid="Libplanet.Blockchain.BlockLocator.GetEnumerator">GetEnumerator()</h4>
