@@ -25672,19 +25672,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.Trie.Nodes.HashNode.Inequality
   nameWithType: HashNode.Inequality
-- uid: Libplanet.Store.Trie.Nodes.HashNode.Serialize
-  name: Serialize()
-  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_Serialize
-  commentId: M:Libplanet.Store.Trie.Nodes.HashNode.Serialize
-  fullName: Libplanet.Store.Trie.Nodes.HashNode.Serialize()
-  nameWithType: HashNode.Serialize()
-- uid: Libplanet.Store.Trie.Nodes.HashNode.Serialize*
-  name: Serialize
-  href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_Serialize_
-  commentId: Overload:Libplanet.Store.Trie.Nodes.HashNode.Serialize
-  isSpec: "True"
-  fullName: Libplanet.Store.Trie.Nodes.HashNode.Serialize
-  nameWithType: HashNode.Serialize
 - uid: Libplanet.Store.Trie.Nodes.HashNode.ToBencodex
   name: ToBencodex()
   href: api/Libplanet.Store.Trie.Nodes.HashNode.html#Libplanet_Store_Trie_Nodes_HashNode_ToBencodex
