@@ -10,6 +10,9 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Store) Removed unused `HashNode.Serialize()` method.
+    [[#3922], [#3924]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -18,11 +21,17 @@ To be released.
 
 ### Behavioral changes
 
+ -  (Libplanet.Store) Optimized `HashNode.ToBencodex()` method.
+    [[#3922], [#3924]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+[#3922]: https://github.com/planetarium/libplanet/issues/3922
+[#3924]: https://github.com/planetarium/libplanet/pull/3924
 
 
 Version 5.2.2

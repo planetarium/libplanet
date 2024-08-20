@@ -27,14 +27,8 @@ namespace Libplanet.Store.Trie.Nodes
 
         public override bool Equals(object? obj) => obj is HashNode other && Equals(other);
 
-        public byte[] Serialize()
-        {
-            return HashDigest.ToByteArray();
-        }
-
         /// <inheritdoc cref="INode.ToBencodex()"/>
-        public IValue ToBencodex() =>
-            new Binary(HashDigest.ToByteArray());
+        public IValue ToBencodex() => HashDigest.Bencoded;
 
         public override int GetHashCode() => HashDigest.GetHashCode();
     }
