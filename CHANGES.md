@@ -10,6 +10,13 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed `BlockLocator.Create()` to take a single `BlockHash`.  [[#3913]]
+ -  Changed `BlockLocator()` to throw an `ArgumentException` when
+    the number of given `BlockHash`es is not 1.  [[#3913]]
+ -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`.
+    [[#3913]]
+ -  (Libplanet.Net) Removed `SwarmOptions.BranchpointThreshold` property.
+    [[#3913]]
  -  (Libplanet.Store) Removed unused `HashNode.Serialize()` method.
     [[#3922], [#3924]]
 
@@ -21,6 +28,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed `BlockChain.FindBranchPoint()` to only check for the first
+    `BlockHash` in a given `BlockLocator`.  [[#3913]]
  -  (Libplanet.Store) Optimized `HashNode.ToBencodex()` method.
     [[#3922], [#3924]]
 
@@ -30,6 +39,7 @@ To be released.
 
 ### CLI tools
 
+[#3913]: https://github.com/planetarium/libplanet/pull/3913
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
 [#3924]: https://github.com/planetarium/libplanet/pull/3924
 

@@ -461,7 +461,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(0, offsetIndex);
             Assert.Equal(new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash }, hashes);
 
-            _blockChain.FindNextHashes(new BlockLocator(new[] { block1.Hash, block0.Hash }))
+            _blockChain.FindNextHashes(new BlockLocator(new[] { block1.Hash }))
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Equal(1, offsetIndex);
             Assert.Equal(new[] { block1.Hash, block2.Hash, block3.Hash }, hashes);
@@ -499,8 +499,8 @@ namespace Libplanet.Tests.Blockchain
             forked.FindNextHashes(locator)
                 .Deconstruct(out long? offset, out IReadOnlyList<BlockHash> hashes);
 
-            Assert.Equal(forked[0].Index, offset);
-            Assert.Equal(new[] { forked[0].Hash, forked[1].Hash }, hashes);
+            Assert.Null(offset);
+            Assert.Empty(hashes);
         }
 
         [SkippableFact]
@@ -803,17 +803,8 @@ namespace Libplanet.Tests.Blockchain
                 blocks.Add(block);
             }
 
-            BlockLocator actual = _blockChain.GetBlockLocator(threshold: 3);
-            BlockLocator expected = new BlockLocator(new[]
-            {
-                blocks[9].Hash,
-                blocks[8].Hash,
-                blocks[7].Hash,
-                blocks[6].Hash,
-                blocks[5].Hash,
-                blocks[3].Hash,
-                _blockChain.Genesis.Hash,
-            });
+            BlockLocator actual = _blockChain.GetBlockLocator();
+            BlockLocator expected = new BlockLocator(new[] { blocks[9].Hash });
 
             Assert.Equal(expected, actual);
         }
@@ -1107,7 +1098,7 @@ namespace Libplanet.Tests.Blockchain
         [SkippableTheory]
         [InlineData(true)]
         [InlineData(false)]
-        public void ReorgIsUnableToHeterogenousChain(bool render)
+        public void CannotSwapToChainWithDifferentGenesis(bool render)
         {
             using (var fx2 = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
             {
@@ -1462,8 +1453,7 @@ namespace Libplanet.Tests.Blockchain
             var emptyLocator = new BlockLocator(new[] { _blockChain.Genesis.Hash });
             var invalidLocator = new BlockLocator(
                 new[] { new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)) });
-            var locator = new BlockLocator(
-                new[] { b4.Hash, b3.Hash, b1.Hash, _blockChain.Genesis.Hash });
+            var locator = new BlockLocator(new[] { b4.Hash });
 
             using (var emptyFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
             using (var forkFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
@@ -1496,18 +1486,18 @@ namespace Libplanet.Tests.Blockchain
 
                 // Testing emptyChain
                 Assert.Equal(_blockChain.Genesis.Hash, emptyChain.FindBranchpoint(emptyLocator));
-                Assert.Equal(_blockChain.Genesis.Hash, emptyChain.FindBranchpoint(locator));
                 Assert.Null(emptyChain.FindBranchpoint(invalidLocator));
+                Assert.Null(emptyChain.FindBranchpoint(locator));
 
                 // Testing _blockChain
                 Assert.Equal(_blockChain.Genesis.Hash, _blockChain.FindBranchpoint(emptyLocator));
-                Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(locator));
                 Assert.Null(_blockChain.FindBranchpoint(invalidLocator));
+                Assert.Equal(b4.Hash, _blockChain.FindBranchpoint(locator));
 
                 // Testing fork
                 Assert.Equal(_blockChain.Genesis.Hash, fork.FindBranchpoint(emptyLocator));
-                Assert.Equal(b1.Hash, fork.FindBranchpoint(locator));
-                Assert.Null(_blockChain.FindBranchpoint(invalidLocator));
+                Assert.Null(fork.FindBranchpoint(invalidLocator));
+                Assert.Null(fork.FindBranchpoint(locator));
             }
         }
 
