@@ -8,7 +8,7 @@ namespace Libplanet.Node.Options;
 
 [Singleton<IConfigureOptions<GenesisOptions>>]
 internal sealed class GenesisOptionsConfigurator(
-    IOptions<NodeOptions> nodeOptions, ILogger<GenesisOptionsConfigurator> logger)
+    IOptions<SwarmOptions> nodeOptions, ILogger<GenesisOptionsConfigurator> logger)
     : OptionsConfiguratorBase<GenesisOptions>
 {
     protected override void OnConfigure(GenesisOptions options)
