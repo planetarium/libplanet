@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using Libplanet.Crypto;
 using Libplanet.Store.Trie;
 using Libplanet.Types.Assets;
@@ -43,7 +45,7 @@ namespace Libplanet.Action.State
                 buffer[i * 2 + 1] = _conversionTable[addressBytes[i] & 0xf];
             }
 
-            return new KeyBytes(buffer);
+            return new KeyBytes(Unsafe.As<byte[], ImmutableArray<byte>>(ref buffer));
         }
 
         // $"_{ByteUtil.Hex(address.ByteArray)}_{ByteUtil.Hex(currency.Hash.ByteArray)}"
@@ -68,7 +70,7 @@ namespace Libplanet.Action.State
                 buffer[offset + 2 + i * 2 + 1] = _conversionTable[currencyBytes[i] & 0xf];
             }
 
-            return new KeyBytes(buffer);
+            return new KeyBytes(Unsafe.As<byte[], ImmutableArray<byte>>(ref buffer));
         }
 
         public static KeyBytes ToFungibleAssetKey(
@@ -90,7 +92,7 @@ namespace Libplanet.Action.State
                 buffer[2 + i * 2 + 1] = _conversionTable[currencyBytes[i] & 0xf];
             }
 
-            return new KeyBytes(buffer);
+            return new KeyBytes(Unsafe.As<byte[], ImmutableArray<byte>>(ref buffer));
         }
     }
 }
