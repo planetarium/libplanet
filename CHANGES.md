@@ -32,6 +32,7 @@ To be released.
     `BlockHash` in a given `BlockLocator`.  [[#3913]]
  -  (Libplanet.Store) Optimized `HashNode.ToBencodex()` method.
     [[#3922], [#3924]]
+ -  (Libplanet.Store) Optimized internal conversions to `KeyBytes`.  [[#3926]]
 
 ### Bug fixes
 
@@ -42,6 +43,7 @@ To be released.
 [#3913]: https://github.com/planetarium/libplanet/pull/3913
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
 [#3924]: https://github.com/planetarium/libplanet/pull/3924
+[#3926]: https://github.com/planetarium/libplanet/pull/3926
 
 
 Version 5.2.2
