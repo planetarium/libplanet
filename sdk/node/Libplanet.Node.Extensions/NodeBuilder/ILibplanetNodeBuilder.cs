@@ -10,9 +10,9 @@ public interface ILibplanetNodeBuilder
 
     ILibplanetNodeBuilder WithSolo();
 
-    ILibplanetNodeBuilder WithNode();
+    ILibplanetNodeBuilder WithSwarm();
 
-    ILibplanetNodeBuilder WithValidate();
+    ILibplanetNodeBuilder WithValidator();
 
     ILibplanetNodeBuilder WithSeed();
 }

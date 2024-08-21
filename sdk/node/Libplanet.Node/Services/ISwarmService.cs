@@ -1,6 +1,6 @@
 namespace Libplanet.Node.Services;
 
-public interface INodeService
+public interface ISwarmService
 {
     public event EventHandler? Started;
 

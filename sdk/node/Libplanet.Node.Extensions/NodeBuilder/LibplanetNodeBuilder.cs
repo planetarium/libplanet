@@ -26,16 +26,21 @@ public class LibplanetNodeBuilder : ILibplanetNodeBuilder
         return this;
     }
 
-    public ILibplanetNodeBuilder WithNode()
+    public ILibplanetNodeBuilder WithSwarm()
     {
-        Services.AddSingletonsFromDomain(scope: "Node");
-        Services.AddOptionsFromDomain(_configuration, scope: "Node");
-        _scopeList.Add("Node");
+        Services.AddSingletonsFromDomain(scope: "Swarm");
+        Services.AddOptionsFromDomain(_configuration, scope: "Swarm");
+        _scopeList.Add("Swarm");
         return this;
     }
 
-    public ILibplanetNodeBuilder WithValidate() =>
-        this;
+    public ILibplanetNodeBuilder WithValidator()
+    {
+        Services.AddSingletonsFromDomain(scope: "Validator");
+        Services.AddOptionsFromDomain(_configuration, scope: "Validator");
+        _scopeList.Add("Validator");
+        return this;
+    }
 
     public ILibplanetNodeBuilder WithSeed()
     {
