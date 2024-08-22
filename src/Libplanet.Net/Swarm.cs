@@ -737,14 +737,13 @@ namespace Libplanet.Net
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
-        internal async IAsyncEnumerable<Tuple<long, BlockHash>> GetBlockHashes(
+        internal async Task<List<(long, BlockHash)>> GetBlockHashes(
             BoundPeer peer,
             BlockLocator locator,
             BlockHash? stop,
             TimeSpan? timeout = null,
             (int, int)? logSessionIds = null,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default
-        )
+            CancellationToken cancellationToken = default)
         {
             var sessionRandom = new System.Random();
             int logSessionId = logSessionIds is(int i, _) ? i : sessionRandom.Next();
@@ -762,7 +761,7 @@ namespace Libplanet.Net
                 sendMsg,
                 logSessionId,
                 subSessionId,
-                nameof(Messages.GetBlockHashesMsg),
+                nameof(GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
 
@@ -773,46 +772,46 @@ namespace Libplanet.Net
                     peer,
                     request,
                     timeout: transportTimeout,
-                    cancellationToken: cancellationToken
-                ).ConfigureAwait(false);
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
-                yield break;
+                return new List<(long, BlockHash)>();
             }
 
             if (parsedMessage.Content is BlockHashesMsg blockHashes)
             {
                 if (blockHashes.StartIndex is long idx)
                 {
-                    BlockHash[] hashes = blockHashes.Hashes.ToArray();
+                    List<(long, BlockHash)> hashes = blockHashes.Hashes
+                        .Select((hash, i) => (idx + i, hash))
+                        .ToList();
                     const string msg =
                         "{SessionId}/{SubSessionId}: Received a " +
-                        nameof(Messages.BlockHashesMsg) +
+                        nameof(BlockHashesMsg) +
                         " message with an offset index {OffsetIndex} (total {Length} hashes)";
-                    _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongLength);
-                    foreach (BlockHash hash in hashes)
-                    {
-                        yield return new Tuple<long, BlockHash>(idx, hash);
-                        idx++;
-                    }
+                    _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongCount());
+                    return hashes;
                 }
                 else
                 {
                     const string msg =
                         "{SessionId}/{SubSessionId}: Received a " +
-                        nameof(Messages.BlockHashesMsg) +
+                        nameof(BlockHashesMsg) +
                         " message, but it has zero hashes";
                     _logger.Debug(msg, logSessionId, subSessionId);
+                    return new List<(long, BlockHash)>();
                 }
-
-                yield break;
             }
-
-            string errorMessage =
-                $"The response of {nameof(GetBlockHashes)} is expected to be " +
-                $"{nameof(BlockHashesMsg)}, not {parsedMessage.GetType().Name}: {parsedMessage}";
-            throw new InvalidMessageContentException(errorMessage, parsedMessage.Content);
+            else
+            {
+                _logger.Debug(
+                    "A response for " + nameof(GetBlockHashesMsg) + " is expected to be " +
+                    "{ExpectedType}: {ReceivedType}",
+                    nameof(BlockHashesMsg),
+                    parsedMessage.GetType());
+                return new List<(long, BlockHash)>();
+            }
         }
 
         internal async IAsyncEnumerable<(Block, BlockCommit)> GetBlocksAsync(
@@ -828,7 +827,7 @@ namespace Libplanet.Net
                 peer);
 
             var request = new GetBlocksMsg(blockHashesAsArray);
-            int hashCount = blockHashesAsArray.Count();
+            int hashCount = blockHashesAsArray.Length;
 
             if (hashCount < 1)
             {
@@ -980,8 +979,8 @@ namespace Libplanet.Net
         /// <paramref name="peersWithExcerpts"/> whether to make a query in the first place.
         /// </para>
         /// <para>
-        /// Returned list of tuples are simply concatenation of query results from different
-        /// <see cref="BoundPeer"/>s with possible duplicates.
+        /// Returned list of tuples is simply the first successful query result from a
+        /// <see cref="BoundPeer"/> among <paramref name="peersWithExcerpts"/>.
         /// </para>
         /// <para>
         /// This implicitly assumes returned <see cref="BlockHashesMsg"/> is properly
@@ -991,22 +990,16 @@ namespace Libplanet.Net
         /// to download.
         /// </para>
         /// </remarks>
-        internal async IAsyncEnumerable<(long, BlockHash)> GetDemandBlockHashes(
+        internal async Task<List<(long, BlockHash)>> GetDemandBlockHashes(
             BlockChain blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
             int chunkSize = int.MaxValue,
             IProgress<BlockSyncState> progress = null,
-            [EnumeratorCancellation] CancellationToken cancellationToken = default
-        )
+            CancellationToken cancellationToken = default)
         {
-            BlockLocator locator = blockChain.GetBlockLocator();
             var exceptions = new List<Exception>();
             foreach ((BoundPeer peer, IBlockExcerpt excerpt) in peersWithExcerpts)
             {
-                long peerIndex = excerpt.Index;
-                long branchingIndex = -1;
-                BlockHash branchingBlock = default;
-
                 if (!IsBlockNeeded(excerpt))
                 {
                     _logger.Verbose(
@@ -1015,136 +1008,25 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                int totalBlockHashesToDownload = -1;
-                int chunkBlockHashesToDownload = -1;
-                var pairsToYield = new List<Tuple<long, BlockHash>>();
-                Exception error = null;
                 try
                 {
-                    var downloaded = new List<BlockHash>();
-                    int previousDownloadedCount = -1;
-                    int stagnant = 0;
-                    const int stagnationLimit = 3;
-                    do
-                    {
-                        if (previousDownloadedCount == downloaded.Count &&
-                            ++stagnant > stagnationLimit)
-                        {
-                            const string stagnationMessage =
-                                "Stagnation limit of {StagnationLimit} reached while " +
-                                "fetching hashes from {Peer}. Continuing operation with " +
-                                "{DownloadCount} hashes downloaded so far";
-                            _logger.Information(
-                                stagnationMessage,
-                                stagnationLimit,
-                                peer,
-                                downloaded.Count);
-                            break;
-                        }
-
-                        previousDownloadedCount = downloaded.Count;
-
-                        // FIXME: First value of totalBlocksToDownload is -1.
-                        _logger.Verbose(
-                            "Request block hashes to {Peer} (height: {PeerHeight}) using " +
-                            "locator [{LocatorHead}, ...] ({CurrentIndex}/{EstimatedTotalCount})",
-                            peer,
-                            peerIndex,
-                            locator.FirstOrDefault(),
-                            downloaded.Count,
-                            totalBlockHashesToDownload
-                        );
-
-                        List<Tuple<long, BlockHash>> blockHashes =
-                            await GetBlockHashes(
-                                peer: peer,
-                                locator: locator,
-                                stop: null,
-                                timeout: null,
-                                logSessionIds: null,
-                                cancellationToken: cancellationToken)
-                                .ToListAsync(cancellationToken);
-
-                        if (branchingIndex == -1 &&
-                            blockHashes.FirstOrDefault() is { } t)
-                        {
-                            t.Deconstruct(out branchingIndex, out branchingBlock);
-                            try
-                            {
-                                totalBlockHashesToDownload = Convert.ToInt32(
-                                    peerIndex - branchingIndex);
-                            }
-                            catch (OverflowException)
-                            {
-                                totalBlockHashesToDownload = int.MaxValue;
-                            }
-
-                            chunkBlockHashesToDownload = Math.Min(
-                                totalBlockHashesToDownload, chunkSize);
-                        }
-
-                        foreach (Tuple<long, BlockHash> pair in blockHashes)
-                        {
-                            pair.Deconstruct(out long dlIndex, out BlockHash dlHash);
-                            _logger.Verbose(
-                                "Received a block hash from {Peer}: #{BlockIndex} {BlockHash}",
-                                peer,
-                                dlIndex,
-                                dlHash
-                            );
-
-                            // FIXME: Probably should check if dlIndex and dlHash is
-                            // a valid hash of possible branching block by checking whether
-                            // it is already stored locally.
-                            if (downloaded.Contains(dlHash) || dlHash.Equals(branchingBlock))
-                            {
-                                continue;
-                            }
-
-                            downloaded.Add(dlHash);
-
-                            // As C# disallows to yield return inside try-catch block,
-                            // we need to work around the limitation by having this buffer.
-                            pairsToYield.Add(pair);
-                            progress?.Report(
-                                new BlockHashDownloadState
-                                {
-                                    EstimatedTotalBlockHashCount = Math.Max(
-                                        totalBlockHashesToDownload,
-                                        downloaded.Count),
-                                    ReceivedBlockHashCount = downloaded.Count,
-                                    SourcePeer = peer,
-                                }
-                            );
-                        }
-
-                        locator = downloaded.Count > 0
-                            ? BlockLocator.Create(tipHash: downloaded.Last())
-                            : locator;
-                    }
-                    while (downloaded.Count < chunkBlockHashesToDownload);
+                    List<(long, BlockHash)> downloadedHashes = await GetDemandBlockHashesFromPeer(
+                        blockChain,
+                        peer,
+                        excerpt,
+                        chunkSize,
+                        progress,
+                        cancellationToken);
+                    return downloadedHashes;
                 }
                 catch (Exception e)
-                {
-                    error = e;
-                }
-
-                foreach (Tuple<long, BlockHash> pair in pairsToYield)
-                {
-                    yield return pair.ToValueTuple();
-                }
-
-                if (error is null)
-                {
-                    yield break;
-                }
-                else
                 {
                     const string message =
                         "Failed to fetch demand block hashes from {Peer}; " +
                         "retry with another peer...";
-                    _logger.Debug(error, message, peer);
-                    exceptions.Add(error);
+                    _logger.Debug(e, message, peer);
+                    exceptions.Add(e);
+                    continue;
                 }
             }
 
@@ -1156,6 +1038,142 @@ namespace Libplanet.Net
                 "Failed to fetch demand block hashes from peers: " +
                 string.Join(", ", peers.Select(p => p.ToString())),
                 exceptions);
+        }
+
+        internal async Task<List<(long, BlockHash)>> GetDemandBlockHashesFromPeer(
+            BlockChain blockChain,
+            BoundPeer peer,
+            IBlockExcerpt excerpt,
+            int chunkSize = int.MaxValue,
+            IProgress<BlockSyncState> progress = null,
+            CancellationToken cancellationToken = default)
+        {
+            BlockLocator locator = blockChain.GetBlockLocator();
+            long peerIndex = excerpt.Index;
+            long branchingIndex = -1;
+            BlockHash branchingBlock = default;
+
+            int totalBlockHashesToDownload = -1;
+            int chunkBlockHashesToDownload = -1;
+            var pairsToYield = new List<(long, BlockHash)>();
+
+            try
+            {
+                var downloaded = new List<BlockHash>();
+                int previousDownloadedCount = -1;
+                int stagnant = 0;
+                const int stagnationLimit = 3;
+
+                do
+                {
+                    if (previousDownloadedCount == downloaded.Count &&
+                        ++stagnant > stagnationLimit)
+                    {
+                        const string stagnationMessage =
+                            "Stagnation limit of {StagnationLimit} reached while " +
+                            "fetching hashes from {Peer}. Continuing operation with " +
+                            "{DownloadCount} hashes downloaded so far";
+                        _logger.Information(
+                            stagnationMessage,
+                            stagnationLimit,
+                            peer,
+                            downloaded.Count);
+                        break;
+                    }
+
+                    previousDownloadedCount = downloaded.Count;
+
+                    // FIXME: First value of totalBlocksToDownload is -1.
+                    _logger.Verbose(
+                        "Request block hashes to {Peer} (height: {PeerHeight}) using " +
+                        "locator [{LocatorHead}, ...] ({CurrentIndex}/{EstimatedTotalCount})",
+                        peer,
+                        peerIndex,
+                        locator.FirstOrDefault(),
+                        downloaded.Count,
+                        totalBlockHashesToDownload
+                    );
+
+                    List<(long, BlockHash)> blockHashes = await GetBlockHashes(
+                        peer: peer,
+                        locator: locator,
+                        stop: null,
+                        timeout: null,
+                        logSessionIds: null,
+                        cancellationToken: cancellationToken);
+
+                    // NOTE: Runs only on the first iteration when
+                    // downloading block hashes was successful.
+                    if (branchingIndex == -1 &&
+                        blockHashes.Any())
+                    {
+                        branchingIndex = blockHashes.First().Item1;
+                        branchingBlock = blockHashes.First().Item2;
+                        try
+                        {
+                            totalBlockHashesToDownload = Convert.ToInt32(
+                                peerIndex - branchingIndex);
+                        }
+                        catch (OverflowException)
+                        {
+                            totalBlockHashesToDownload = int.MaxValue;
+                        }
+
+                        chunkBlockHashesToDownload = Math.Min(
+                            totalBlockHashesToDownload, chunkSize);
+                    }
+
+                    foreach (var pair in blockHashes)
+                    {
+                        long dlIndex = pair.Item1;
+                        BlockHash dlHash = pair.Item2;
+                        _logger.Verbose(
+                            "Received a block hash from {Peer}: #{BlockIndex} {BlockHash}",
+                            peer,
+                            dlIndex,
+                            dlHash);
+
+                        // FIXME: Probably should check if dlIndex and dlHash is
+                        // a valid hash of possible branching block by checking whether
+                        // it is already stored locally.
+                        if (downloaded.Contains(dlHash) || dlHash.Equals(branchingBlock))
+                        {
+                            continue;
+                        }
+
+                        downloaded.Add(dlHash);
+
+                        // As C# disallows to yield return inside try-catch block,
+                        // we need to work around the limitation by having this buffer.
+                        pairsToYield.Add(pair);
+                        progress?.Report(
+                            new BlockHashDownloadState
+                            {
+                                EstimatedTotalBlockHashCount = Math.Max(
+                                    totalBlockHashesToDownload,
+                                    downloaded.Count),
+                                ReceivedBlockHashCount = downloaded.Count,
+                                SourcePeer = peer,
+                            }
+                        );
+                    }
+
+                    locator = downloaded.Count > 0
+                        ? BlockLocator.Create(downloaded.Last())
+                        : locator;
+                }
+                while (downloaded.Count < chunkBlockHashesToDownload);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    "Failed to fetch demand block hashes from {Peer}",
+                    peer);
+                throw new Exception("Failed");
+            }
+
+            return pairsToYield;
         }
 
         private void BroadcastBlock(Address? except, Block block)

@@ -525,13 +525,10 @@ namespace Libplanet.Net.Tests
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
 
-                (long, BlockHash)[] inventories1 = (
-                    await swarmB.GetBlockHashes(
-                        swarmA.AsPeer,
-                        new BlockLocator(new[] { genesis.Hash }),
-                        null
-                    ).ToArrayAsync()
-                ).Select(p => p.ToValueTuple()).ToArray();
+                List<(long, BlockHash)> inventories1 = await swarmB.GetBlockHashes(
+                    swarmA.AsPeer,
+                    new BlockLocator(new[] { genesis.Hash }),
+                    null);
                 Assert.Equal(
                     new[]
                     {
@@ -541,13 +538,10 @@ namespace Libplanet.Net.Tests
                     },
                     inventories1);
 
-                (long, BlockHash)[] inventories2 = (
-                    await swarmB.GetBlockHashes(
-                        swarmA.AsPeer,
-                        new BlockLocator(new[] { genesis.Hash }),
-                        block1.Hash
-                    ).ToArrayAsync()
-                ).Select(p => p.ToValueTuple()).ToArray();
+                List<(long, BlockHash)> inventories2 = await swarmB.GetBlockHashes(
+                    swarmA.AsPeer,
+                    new BlockLocator(new[] { genesis.Hash }),
+                    block1.Hash);
                 Assert.Equal(
                     new[] { (genesis.Index, genesis.Hash), (block1.Index, block1.Hash) },
                     inventories2);
@@ -598,11 +592,10 @@ namespace Libplanet.Net.Tests
 
                 await swarmB.AddPeersAsync(new[] { peer }, null);
 
-                Tuple<long, BlockHash>[] hashes = await swarmB.GetBlockHashes(
+                List<(long, BlockHash)> hashes = await swarmB.GetBlockHashes(
                     peer,
                     new BlockLocator(new[] { genesis.Hash }),
-                    null
-                ).ToArrayAsync();
+                    null);
 
                 ITransport transport = swarmB.Transport;
 

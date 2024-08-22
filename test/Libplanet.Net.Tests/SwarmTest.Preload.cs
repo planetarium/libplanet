@@ -812,13 +812,13 @@ namespace Libplanet.Net.Tests
                 (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
-            (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
+            List<(long, BlockHash)> demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithExcerpt,
                 chunkSize: int.MaxValue,
                 progress: null,
                 cancellationToken: CancellationToken.None
-            ).ToArrayAsync();
+            );
 
             IEnumerable<(long, BlockHash)> expectedBlocks = minerChain.IterateBlocks()
                 .Where(b => b.Index >= receiverChain.Count)
@@ -918,7 +918,7 @@ namespace Libplanet.Net.Tests
             };
 
             long receivedCount = 0;
-            (long, BlockHash)[] demands = await receiverSwarm.GetDemandBlockHashes(
+            List<(long, BlockHash)> demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithBlockExcerpt,
                 chunkSize: int.MaxValue,
@@ -934,10 +934,9 @@ namespace Libplanet.Net.Tests
                         }
                     }
                 }),
-                cancellationToken: CancellationToken.None
-            ).ToArrayAsync();
+                cancellationToken: CancellationToken.None);
 
-            Assert.Equal(receivedCount, demands.LongLength);
+            Assert.Equal(receivedCount, demands.LongCount());
 
             CleaningSwarm(minerSwarm);
             CleaningSwarm(receiverSwarm);
