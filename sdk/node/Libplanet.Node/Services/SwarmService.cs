@@ -33,6 +33,8 @@ internal sealed class SwarmService(
 
     public bool IsRunning => _swarm is not null;
 
+    public Swarm Swarm => _swarm ?? throw new InvalidOperationException("Node is not running.");
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         if (_swarm is not null)

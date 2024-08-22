@@ -23,6 +23,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Libplanet.Node.Extensions\Libplanet.Node.Extensions.csproj" />
     <ProjectReference Include="..\Libplanet.Node\Libplanet.Node.csproj" />
+    <ProjectReference Include="..\Libplanet.Node.Swagger\Libplanet.Node.Swagger.csproj" />
+    <ProjectReference Include="..\Libplanet.Node.Explorer\Libplanet.Node.Explorer.csproj" />
   </ItemGroup>
 
 </Project>

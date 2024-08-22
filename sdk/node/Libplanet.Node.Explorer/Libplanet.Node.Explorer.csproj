@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Node\Libplanet.Node.csproj" />
+    <ProjectReference Include="..\..\..\tools\Libplanet.Explorer.Executable\Libplanet.Explorer.Executable.csproj" />
+  </ItemGroup>
+
+</Project>

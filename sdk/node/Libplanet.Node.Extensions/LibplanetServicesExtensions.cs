@@ -1,4 +1,3 @@
-using Libplanet.Blockchain;
 using Libplanet.Node.Extensions.NodeBuilder;
 using Libplanet.Node.Options;
 using Libplanet.Node.Services;
