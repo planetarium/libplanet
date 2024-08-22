@@ -40,14 +40,6 @@ dotnet tool install -g Libplanet.Tools
 
 [.NET Core tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 
-### Homebrew Cask
-
-Install as a Homebrew cask if you use Homebrew on macOS:
-
-~~~~ bash
-brew install planetarium/brew/planet
-~~~~
-
 ### Manual installation [![GitHub Releases][releases-badge]][releases page]
 
 Or you could just download an executable binary for your platform from
@@ -96,6 +88,3 @@ For zsh:
 ~~~~ zsh
 planet --completion zsh > ~/.zsh/functions
 ~~~~
-
-Note you don't configure it by yourself when you installed `planet` using
-Homebrew Cask.
