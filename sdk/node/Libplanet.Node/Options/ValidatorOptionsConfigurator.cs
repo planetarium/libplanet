@@ -1,10 +1,8 @@
-using Libplanet.Node.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-[Singleton<IConfigureOptions<ValidatorOptions>>(Scope = "Validator")]
 internal sealed class ValidatorOptionsConfigurator(
     ILogger<ValidatorOptionsConfigurator> logger)
     : OptionsConfiguratorBase<ValidatorOptions>

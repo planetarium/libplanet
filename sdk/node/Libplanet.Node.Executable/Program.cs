@@ -1,3 +1,4 @@
+using Libplanet.Node.API.Services;
 using Libplanet.Node.Extensions;
 using Libplanet.Node.Options.Schema;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -36,7 +37,8 @@ var handlerMessage = """
 var schema = await OptionsSchemaBuilder.GetSchemaAsync(default);
 
 // Configure the HTTP request pipeline.
-app.MapGrpcServiceFromDomain(libplanetBuilder.Scopes);
+app.MapGrpcService<BlockChainGrpcService>();
+app.MapGrpcService<SchemaGrpcService>();
 app.MapGet("/", () => handlerMessage);
 app.MapGet("/schema", () => schema);
 

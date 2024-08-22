@@ -1,12 +1,10 @@
 using Libplanet.Common;
 using Libplanet.Crypto;
-using Libplanet.Node.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-[Singleton<IConfigureOptions<GenesisOptions>>]
 internal sealed class GenesisOptionsConfigurator(
     IOptions<SwarmOptions> nodeOptions, ILogger<GenesisOptionsConfigurator> logger)
     : OptionsConfiguratorBase<GenesisOptions>

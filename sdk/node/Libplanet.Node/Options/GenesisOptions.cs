@@ -2,7 +2,6 @@ using System.ComponentModel;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Node.DataAnnotations;
-using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 

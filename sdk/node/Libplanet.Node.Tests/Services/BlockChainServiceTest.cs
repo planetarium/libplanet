@@ -1,6 +1,5 @@
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
-using Libplanet.Node.Extensions;
 using Libplanet.Node.Options;
 using Libplanet.Node.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,36 +12,17 @@ namespace Libplanet.Node.Tests.Services;
 public class BlockChainServiceTest
 {
     [Fact]
-    public void CreateWithInvalidOptions_ThrowTest()
-    {
-        Assert.Throws<InvalidOperationException>(CreateBlockChainService);
-
-        static BlockChainService CreateBlockChainService()
-        {
-            var genesisOptions = new OptionsWrapper<GenesisOptions>(new GenesisOptions());
-            var storeOptions = new OptionsWrapper<StoreOptions>(new StoreOptions());
-            var policyService = new PolicyService();
-            var logger = new NullLoggerFactory().CreateLogger<BlockChainService>();
-            return new BlockChainService(
-                genesisOptions: genesisOptions,
-                storeOptions: storeOptions,
-                policyService: policyService,
-                actionLoaderProviders: [],
-                logger: logger);
-        }
-    }
-
-    [Fact]
     public void Create_Test()
     {
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddProvider(NullLoggerProvider.Instance));
-        services.AddOptionsConfigurator<SwarmOptions, SwarmOptionsConfigurator>();
-        services.AddOptionsConfigurator<GenesisOptions, GenesisOptionsConfigurator>();
-        services.AddOptionsConfigurator<StoreOptions, StoreOptionsConfigurator>();
-        services.AddOptionsValidator<SwarmOptions, SwarmOptionsValidator>();
-        services.AddOptionsValidator<GenesisOptions, GenesisOptionsValidator>();
-        services.AddOptionsValidator<StoreOptions, StoreOptionsValidator>();
+        services.AddOptions<GenesisOptions>();
+        services.AddSingleton<IConfigureOptions<GenesisOptions>, GenesisOptionsConfigurator>();
+        services.AddOptions<StoreOptions>();
+        services.AddSingleton<IConfigureOptions<StoreOptions>, StoreOptionsConfigurator>();
+        services.AddOptions<SwarmOptions>();
+        services.AddSingleton<IConfigureOptions<SwarmOptions>, SwarmOptionsConfigurator>();
+
         var serviceProvider = services.BuildServiceProvider();
         var policyService = new PolicyService();
         var logger = new NullLoggerFactory().CreateLogger<BlockChainService>();
@@ -64,12 +44,12 @@ public class BlockChainServiceTest
     {
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddProvider(NullLoggerProvider.Instance));
-        services.AddOptionsConfigurator<SwarmOptions, SwarmOptionsConfigurator>();
-        services.AddOptionsConfigurator<GenesisOptions, GenesisOptionsConfigurator>();
-        services.AddOptionsConfigurator<StoreOptions, StoreOptionsConfigurator>();
-        services.AddOptionsValidator<SwarmOptions, SwarmOptionsValidator>();
-        services.AddOptionsValidator<GenesisOptions, GenesisOptionsValidator>();
-        services.AddOptionsValidator<StoreOptions, StoreOptionsValidator>();
+        services.AddOptions<GenesisOptions>();
+        services.AddSingleton<IConfigureOptions<GenesisOptions>, GenesisOptionsConfigurator>();
+        services.AddOptions<StoreOptions>();
+        services.AddSingleton<IConfigureOptions<StoreOptions>, StoreOptionsConfigurator>();
+        services.AddOptions<SwarmOptions>();
+        services.AddSingleton<IConfigureOptions<SwarmOptions>, SwarmOptionsConfigurator>();
         services.AddSingleton<PolicyService>();
         services.AddSingleton<BlockChainService>();
         var serviceProvider = services.BuildServiceProvider();

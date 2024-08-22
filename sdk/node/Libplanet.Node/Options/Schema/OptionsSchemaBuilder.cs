@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Reflection;
-using Libplanet.Node.DependencyInjection;
 using NJsonSchema;
 using NJsonSchema.Generation;
 
