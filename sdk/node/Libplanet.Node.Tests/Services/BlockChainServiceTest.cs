@@ -37,10 +37,10 @@ public class BlockChainServiceTest
     {
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddProvider(NullLoggerProvider.Instance));
-        services.AddOptionsConfigurator<NodeOptions, NodeOptionsConfigurator>();
+        services.AddOptionsConfigurator<SwarmOptions, SwarmOptionsConfigurator>();
         services.AddOptionsConfigurator<GenesisOptions, GenesisOptionsConfigurator>();
         services.AddOptionsConfigurator<StoreOptions, StoreOptionsConfigurator>();
-        services.AddOptionsValidator<NodeOptions, NodeOptionsValidator>();
+        services.AddOptionsValidator<SwarmOptions, SwarmOptionsValidator>();
         services.AddOptionsValidator<GenesisOptions, GenesisOptionsValidator>();
         services.AddOptionsValidator<StoreOptions, StoreOptionsValidator>();
         var serviceProvider = services.BuildServiceProvider();
@@ -64,10 +64,10 @@ public class BlockChainServiceTest
     {
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddProvider(NullLoggerProvider.Instance));
-        services.AddOptionsConfigurator<NodeOptions, NodeOptionsConfigurator>();
+        services.AddOptionsConfigurator<SwarmOptions, SwarmOptionsConfigurator>();
         services.AddOptionsConfigurator<GenesisOptions, GenesisOptionsConfigurator>();
         services.AddOptionsConfigurator<StoreOptions, StoreOptionsConfigurator>();
-        services.AddOptionsValidator<NodeOptions, NodeOptionsValidator>();
+        services.AddOptionsValidator<SwarmOptions, SwarmOptionsValidator>();
         services.AddOptionsValidator<GenesisOptions, GenesisOptionsValidator>();
         services.AddOptionsValidator<StoreOptions, StoreOptionsValidator>();
         services.AddSingleton<PolicyService>();

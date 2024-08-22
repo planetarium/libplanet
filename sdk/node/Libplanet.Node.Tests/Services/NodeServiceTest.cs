@@ -14,7 +14,7 @@ public class NodeServiceTest
     {
         var services = CreateServices();
         var serviceProvider = services.BuildServiceProvider();
-        var nodeService = serviceProvider.GetRequiredService<NodeService>();
+        var nodeService = serviceProvider.GetRequiredService<SwarmService>();
 
         Assert.False(nodeService.IsRunning);
     }
@@ -24,7 +24,7 @@ public class NodeServiceTest
     {
         var services = CreateServices();
         var serviceProvider = services.BuildServiceProvider();
-        var nodeService = serviceProvider.GetRequiredService<NodeService>();
+        var nodeService = serviceProvider.GetRequiredService<SwarmService>();
 
         await Assert.RaisesAnyAsync(
             handler => nodeService.Started += handler,
@@ -38,7 +38,7 @@ public class NodeServiceTest
     {
         var services = CreateServices();
         var serviceProvider = services.BuildServiceProvider();
-        var nodeService = serviceProvider.GetRequiredService<NodeService>();
+        var nodeService = serviceProvider.GetRequiredService<SwarmService>();
         await nodeService.StartAsync(default);
         await Assert.ThrowsAsync<InvalidOperationException>(
             async () => await nodeService.StartAsync(default));
@@ -49,7 +49,7 @@ public class NodeServiceTest
     {
         var services = CreateServices();
         var serviceProvider = services.BuildServiceProvider();
-        var nodeService = serviceProvider.GetRequiredService<NodeService>();
+        var nodeService = serviceProvider.GetRequiredService<SwarmService>();
         await nodeService.StartAsync(default);
 
         await Assert.RaisesAnyAsync(
@@ -64,7 +64,7 @@ public class NodeServiceTest
     {
         var services = CreateServices();
         var serviceProvider = services.BuildServiceProvider();
-        var nodeService = serviceProvider.GetRequiredService<NodeService>();
+        var nodeService = serviceProvider.GetRequiredService<SwarmService>();
         await Assert.ThrowsAsync<InvalidOperationException>(
             async () => await nodeService.StopAsync(default));
     }
@@ -73,15 +73,15 @@ public class NodeServiceTest
     {
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddProvider(NullLoggerProvider.Instance));
-        services.AddOptionsConfigurator<NodeOptions, NodeOptionsConfigurator>();
+        services.AddOptionsConfigurator<SwarmOptions, SwarmOptionsConfigurator>();
         services.AddOptionsConfigurator<GenesisOptions, GenesisOptionsConfigurator>();
         services.AddOptionsConfigurator<StoreOptions, StoreOptionsConfigurator>();
-        services.AddOptionsValidator<NodeOptions, NodeOptionsValidator>();
+        services.AddOptionsValidator<SwarmOptions, SwarmOptionsValidator>();
         services.AddOptionsValidator<GenesisOptions, GenesisOptionsValidator>();
         services.AddOptionsValidator<StoreOptions, StoreOptionsValidator>();
         services.AddSingleton<PolicyService>();
         services.AddSingleton<IBlockChainService, BlockChainService>();
-        services.AddSingleton<NodeService>();
+        services.AddSingleton<SwarmService>();
         return services;
     }
 }
