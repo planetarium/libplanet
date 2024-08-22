@@ -761,7 +761,7 @@ namespace Libplanet.Net
                 sendMsg,
                 logSessionId,
                 subSessionId,
-                nameof(Messages.GetBlockHashesMsg),
+                nameof(GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
 
@@ -772,8 +772,7 @@ namespace Libplanet.Net
                     peer,
                     request,
                     timeout: transportTimeout,
-                    cancellationToken: cancellationToken
-                ).ConfigureAwait(false);
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
             }
             catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
             {
@@ -789,7 +788,7 @@ namespace Libplanet.Net
                         .ToList();
                     const string msg =
                         "{SessionId}/{SubSessionId}: Received a " +
-                        nameof(Messages.BlockHashesMsg) +
+                        nameof(BlockHashesMsg) +
                         " message with an offset index {OffsetIndex} (total {Length} hashes)";
                     _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongCount());
                     return hashes;
@@ -798,17 +797,21 @@ namespace Libplanet.Net
                 {
                     const string msg =
                         "{SessionId}/{SubSessionId}: Received a " +
-                        nameof(Messages.BlockHashesMsg) +
+                        nameof(BlockHashesMsg) +
                         " message, but it has zero hashes";
                     _logger.Debug(msg, logSessionId, subSessionId);
                     return new List<(long, BlockHash)>();
                 }
             }
-
-            string errorMessage =
-                $"The response of {nameof(GetBlockHashes)} is expected to be " +
-                $"{nameof(BlockHashesMsg)}, not {parsedMessage.GetType().Name}: {parsedMessage}";
-            throw new InvalidMessageContentException(errorMessage, parsedMessage.Content);
+            else
+            {
+                _logger.Debug(
+                    "A response for " + nameof(GetBlockHashesMsg) + " is expected to be " +
+                    "{ExpectedType}: {ReceivedType}",
+                    nameof(BlockHashesMsg),
+                    parsedMessage.GetType());
+                return new List<(long, BlockHash)>();
+            }
         }
 
         internal async IAsyncEnumerable<(Block, BlockCommit)> GetBlocksAsync(
@@ -824,7 +827,7 @@ namespace Libplanet.Net
                 peer);
 
             var request = new GetBlocksMsg(blockHashesAsArray);
-            int hashCount = blockHashesAsArray.Count();
+            int hashCount = blockHashesAsArray.Length;
 
             if (hashCount < 1)
             {
