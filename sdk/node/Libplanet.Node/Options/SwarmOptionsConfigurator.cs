@@ -1,12 +1,9 @@
 using Libplanet.Common;
 using Libplanet.Crypto;
-using Libplanet.Node.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-[Singleton<IConfigureOptions<SwarmOptions>>(Scope = "Swarm")]
 internal sealed class SwarmOptionsConfigurator(
     ILogger<SwarmOptionsConfigurator> logger)
     : OptionsConfiguratorBase<SwarmOptions>

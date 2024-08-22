@@ -1,10 +1,9 @@
 using Grpc.Core;
-using Libplanet.Node.DependencyInjection;
+using Libplanet.Node.Options;
 using Libplanet.Node.Options.Schema;
 
 namespace Libplanet.Node.API.Services;
 
-[Grpc]
 public class SchemaGrpcService : Schema.SchemaBase
 {
     private string[]? _list;

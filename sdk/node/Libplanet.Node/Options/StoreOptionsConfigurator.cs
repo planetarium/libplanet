@@ -1,10 +1,7 @@
-using Libplanet.Node.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-[Singleton<IConfigureOptions<StoreOptions>>]
 internal sealed class StoreOptionsConfigurator(ILogger<StoreOptionsConfigurator> logger)
     : OptionsConfiguratorBase<StoreOptions>
 {

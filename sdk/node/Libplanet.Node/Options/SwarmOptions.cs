@@ -1,10 +1,9 @@
 using System.ComponentModel;
 using Libplanet.Node.DataAnnotations;
-using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 
-[Options(Position, Scope = "Swarm")]
+[Options(Position)]
 public sealed class SwarmOptions : OptionsBase<SwarmOptions>
 {
     public const string Position = "Swarm";

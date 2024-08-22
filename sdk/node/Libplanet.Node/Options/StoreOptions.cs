@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 

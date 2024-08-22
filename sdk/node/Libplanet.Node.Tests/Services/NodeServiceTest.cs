@@ -1,9 +1,9 @@
-using Libplanet.Node.Extensions;
 using Libplanet.Node.Options;
 using Libplanet.Node.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Tests.Services;
 
@@ -73,12 +73,12 @@ public class NodeServiceTest
     {
         var services = new ServiceCollection();
         services.AddLogging(configure => configure.AddProvider(NullLoggerProvider.Instance));
-        services.AddOptionsConfigurator<SwarmOptions, SwarmOptionsConfigurator>();
-        services.AddOptionsConfigurator<GenesisOptions, GenesisOptionsConfigurator>();
-        services.AddOptionsConfigurator<StoreOptions, StoreOptionsConfigurator>();
-        services.AddOptionsValidator<SwarmOptions, SwarmOptionsValidator>();
-        services.AddOptionsValidator<GenesisOptions, GenesisOptionsValidator>();
-        services.AddOptionsValidator<StoreOptions, StoreOptionsValidator>();
+        services.AddOptions<GenesisOptions>();
+        services.AddSingleton<IConfigureOptions<GenesisOptions>, GenesisOptionsConfigurator>();
+        services.AddOptions<StoreOptions>();
+        services.AddSingleton<IConfigureOptions<StoreOptions>, StoreOptionsConfigurator>();
+        services.AddOptions<SwarmOptions>();
+        services.AddSingleton<IConfigureOptions<SwarmOptions>, SwarmOptionsConfigurator>();
         services.AddSingleton<PolicyService>();
         services.AddSingleton<IBlockChainService, BlockChainService>();
         services.AddSingleton<SwarmService>();

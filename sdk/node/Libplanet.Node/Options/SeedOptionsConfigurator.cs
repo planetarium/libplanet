@@ -1,13 +1,9 @@
 using Libplanet.Common;
 using Libplanet.Crypto;
-using Libplanet.Node.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Options;
 
-[Singleton<IConfigureNamedOptions<SeedOptions>>(Scope = "Seed")]
-[Singleton<IConfigureOptions<SeedOptions>>(Scope = "Seed")]
 public sealed class SeedOptionsConfigurator(
     ILogger<SeedOptionsConfigurator> logger)
     : ConfigureNamedOptionsBase<SeedOptions>

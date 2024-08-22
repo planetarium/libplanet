@@ -1,10 +1,8 @@
 using Grpc.Core;
-using Libplanet.Node.DependencyInjection;
 using Libplanet.Node.Services;
 
 namespace Libplanet.Node.API.Services;
 
-[Grpc(Scope = "Seed")]
 public class SeedGrpcService(
     IServiceProvider serviceProvider)
     : Seed.SeedBase
