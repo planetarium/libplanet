@@ -8,6 +8,9 @@ public sealed class ValidatorOptions : OptionsBase<ValidatorOptions>
 {
     public const string Position = "Validator";
 
+    [DefaultValue(true)]
+    public bool IsEnabled { get; set; }
+
     [DnsEndPoint]
     public string EndPoint { get; set; } = string.Empty;
 

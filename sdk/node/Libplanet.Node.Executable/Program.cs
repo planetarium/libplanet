@@ -25,9 +25,7 @@ if (builder.Environment.IsDevelopment())
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
-var libplanetBuilder = builder.Services.AddLibplanetNode(builder.Configuration)
-    .WithSwarm()
-    .WithValidator();
+var libplanetBuilder = builder.Services.AddLibplanetNode(builder.Configuration);
 
 var app = builder.Build();
 var handlerMessage = """

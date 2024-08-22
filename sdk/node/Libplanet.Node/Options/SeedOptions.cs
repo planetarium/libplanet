@@ -4,8 +4,6 @@ using Libplanet.Node.DataAnnotations;
 
 namespace Libplanet.Node.Options;
 
-// [Options(BlocksyncSeed, Scope = "Seed")]
-// [Options(ConsensusSeed, Scope = "Seed")]
 public sealed class SeedOptions : OptionsBase<SeedOptions>
 {
     public const string BlocksyncSeed = nameof(BlocksyncSeed);

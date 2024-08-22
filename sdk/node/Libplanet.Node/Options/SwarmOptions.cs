@@ -8,6 +8,8 @@ public sealed class SwarmOptions : OptionsBase<SwarmOptions>
 {
     public const string Position = "Swarm";
 
+    public bool IsEnabled { get; set; }
+
     [PrivateKey]
     [Description("The private key of the node.")]
     public string PrivateKey { get; set; } = string.Empty;
