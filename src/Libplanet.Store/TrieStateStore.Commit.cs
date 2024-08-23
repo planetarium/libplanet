@@ -28,7 +28,7 @@ namespace Libplanet.Store
             }
             else
             {
-                var writeBatch = new WriteBatch(StateKeyValueStore, 4096);
+                var writeBatch = new WriteBatch(StateKeyValueStore, 1024);
                 INode newRoot = Commit(root, writeBatch, _cache);
 
                 // It assumes embedded node if it's not HashNode.
@@ -41,8 +41,6 @@ namespace Libplanet.Store
                     writeBatch.Add(new KeyBytes(hashDigest.ByteArray), serialized);
                     newRoot = new HashNode(hashDigest);
                 }
-
-                writeBatch.Flush();
 
                 return new MerkleTrie(StateKeyValueStore, newRoot, _cache);
             }
@@ -138,32 +136,15 @@ namespace Libplanet.Store
         private class WriteBatch
         {
             private readonly IKeyValueStore _store;
-            private readonly int _batchSize;
-            private readonly Dictionary<KeyBytes, byte[]> _batch;
 
             public WriteBatch(IKeyValueStore store, int batchSize)
             {
                 _store = store;
-                _batchSize = batchSize;
-                _batch = new Dictionary<KeyBytes, byte[]>(_batchSize);
             }
-
-            public bool ContainsKey(KeyBytes key) => _batch.ContainsKey(key);
 
             public void Add(KeyBytes key, byte[] value)
             {
-                _batch[key] = value;
-
-                if (_batch.Count == _batchSize)
-                {
-                    Flush();
-                }
-            }
-
-            public void Flush()
-            {
-                _store.Set(_batch);
-                _batch.Clear();
+                _store.Set(key, value);
             }
         }
     }

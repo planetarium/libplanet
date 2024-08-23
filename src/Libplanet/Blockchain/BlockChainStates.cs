@@ -15,21 +15,22 @@ namespace Libplanet.Blockchain
     /// </summary>
     public class BlockChainStates : IBlockChainStates
     {
+        private static readonly ActivitySource Tracer
+            = new ActivitySource("Libplanet.Blockchain.BlockChainStates");
+
         private readonly IStore _store;
         private readonly IStateStore _stateStore;
-        private readonly ActivitySource _activitySource;
 
         public BlockChainStates(IStore store, IStateStore stateStore)
         {
             _store = store;
             _stateStore = stateStore;
-            _activitySource = new ActivitySource("Libplanet.Blockchain.BlockChainStates");
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(BlockHash)"/>
         public IWorldState GetWorldState(BlockHash offset)
         {
-            using Activity? a = _activitySource
+            using Activity? a = Tracer
                 .StartActivity(ActivityKind.Internal)?
                 .AddTag("BlockHash", offset.ToString());
             return new WorldBaseState(GetTrie(offset), _stateStore);
@@ -65,7 +66,7 @@ namespace Libplanet.Blockchain
         /// </remarks>
         private ITrie GetTrie(BlockHash offset)
         {
-            using Activity? a = _activitySource
+            using Activity? a = Tracer
                 .StartActivity(ActivityKind.Internal)?
                 .AddTag("BlockHash", offset.ToString());
             if (_store.GetStateRootHash(offset) is { } stateRootHash)

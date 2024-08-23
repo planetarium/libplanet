@@ -15,13 +15,14 @@ namespace Libplanet.Action.State
     /// </summary>
     public class AccountState : IAccountState
     {
+        private static readonly ActivitySource Tracer
+            = new ActivitySource("Libplanet.Action.State");
+
         private readonly ITrie _trie;
-        private readonly ActivitySource _activitySource;
 
         public AccountState(ITrie trie)
         {
             _trie = trie;
-            _activitySource = new ActivitySource("Libplanet.Action.State");
         }
 
         /// <inheritdoc cref="IAccountState.Trie"/>
@@ -30,15 +31,20 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetState"/>
         public IValue? GetState(Address address)
         {
-            using Activity? a = _activitySource
+            using Activity? a = Tracer
                 .StartActivity(ActivityKind.Internal)?
                 .AddTag("Address", address.ToString());
             return Trie.Get(ToStateKey(address));
         }
 
         /// <inheritdoc cref="IAccountState.GetStates"/>
-        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses) =>
-            addresses.Select(address => GetState(address)).ToList();
+        public IReadOnlyList<IValue?> GetStates(IReadOnlyList<Address> addresses)
+        {
+            using Activity? a = Tracer
+                .StartActivity(ActivityKind.Internal)?
+                .AddTag("Count", addresses.Count);
+            return Trie.Get(addresses.Select(ToStateKey).ToList());
+        }
 
         /// <inheritdoc cref="IAccountState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()

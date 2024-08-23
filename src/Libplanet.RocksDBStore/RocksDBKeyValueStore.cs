@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Store.Trie;
 using RocksDbSharp;
 
@@ -98,6 +99,15 @@ namespace Libplanet.RocksDBStore
         public byte[] Get(in KeyBytes key) => _keyValueDb.Get(key.ToByteArray())
             ?? throw new KeyNotFoundException($"No such key: ${key}.");
 
+        public IDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys) =>
+            _keyValueDb
+                .MultiGet(keys.Select(key => key.ToByteArray()).ToArray())
+                .ToDictionary(
+                    pair => pair.Key != null
+                        ? new KeyBytes(pair.Key)
+                        : default, pair => pair.Value
+                    );
+
         /// <inheritdoc/>
         public void Set(in KeyBytes key, byte[] value)
         {
@@ -107,14 +117,10 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public void Set(IDictionary<KeyBytes, byte[]> values)
         {
-            using var writeBatch = new WriteBatch();
-
             foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
-                writeBatch.Put(kv.Key.ToByteArray(), kv.Value);
+                _keyValueDb.Put(kv.Key.ToByteArray(), kv.Value);
             }
-
-            _keyValueDb.Write(writeBatch);
         }
 
         /// <inheritdoc/>

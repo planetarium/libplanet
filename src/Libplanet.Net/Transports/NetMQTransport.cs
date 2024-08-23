@@ -27,6 +27,9 @@ namespace Libplanet.Net.Transports
     /// </summary>
     public class NetMQTransport : ITransport
     {
+        private static readonly ActivitySource Tracer =
+            new ActivitySource("Libplanet.Net.Transports.NetMQTransport");
+
         private readonly PrivateKey _privateKey;
         private readonly ILogger _logger;
         private readonly AppProtocolVersionOptions _appProtocolVersionOptions;
@@ -36,7 +39,6 @@ namespace Libplanet.Net.Transports
         private readonly Channel<MessageRequest> _requests;
         private readonly Task _runtimeProcessor;
         private readonly AsyncManualResetEvent _runningEvent;
-        private readonly ActivitySource _activitySource;
 
         private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>? _replyQueue;
 
@@ -94,7 +96,6 @@ namespace Libplanet.Net.Transports
             _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
-            _activitySource = new ActivitySource("Libplanet.Net.Transports.NetMQTransport");
             _requestCount = 0;
             CancellationToken runtimeCt = _runtimeCancellationTokenSource.Token;
             _runtimeProcessor = Task.Factory.StartNew(
@@ -323,7 +324,7 @@ namespace Libplanet.Net.Transports
                 throw new ObjectDisposedException(nameof(NetMQTransport));
             }
 
-            using Activity? a = _activitySource
+            using Activity? a = Tracer
                 .StartActivity(ActivityKind.Producer)?
                 .AddTag("Message", content.Type)
                 .AddTag("Peer", peer.PeerString);
@@ -508,7 +509,7 @@ namespace Libplanet.Net.Transports
             Task.Run(
                 async () =>
                 {
-                    using Activity? a = _activitySource
+                    using Activity? a = Tracer
                         .StartActivity(ActivityKind.Producer)?
                         .AddTag("Message", content.Type)
                         .AddTag("Peers", boundPeers.Select(x => x.PeerString));

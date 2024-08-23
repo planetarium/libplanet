@@ -57,6 +57,9 @@ namespace Libplanet.Store.Remote.Client
             return value.Data.ToByteArray();
         }
 
+        public IDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys) =>
+            throw new NotSupportedException();
+
         /// <inheritdoc/>
         public void Set(in KeyBytes key, byte[] value) =>
             _client.SetValue(new SetValueRequest

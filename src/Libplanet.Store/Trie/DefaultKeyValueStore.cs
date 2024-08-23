@@ -104,6 +104,9 @@ namespace Libplanet.Store.Trie
                 : throw new KeyNotFoundException($"No such key: {key}.");
         }
 
+        public IDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys) =>
+            throw new NotSupportedException();
+
         /// <inheritdoc/>
         public void Set(in KeyBytes key, byte[] value)
         {

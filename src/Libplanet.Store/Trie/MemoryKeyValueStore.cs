@@ -24,6 +24,9 @@ namespace Libplanet.Store.Trie
         byte[] IKeyValueStore.Get(in KeyBytes key) =>
             _dictionary[key];
 
+        public IDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys) =>
+            throw new NotSupportedException();
+
         /// <inheritdoc/>
         void IKeyValueStore.Set(in KeyBytes key, byte[] value) =>
             _dictionary[key] = value;

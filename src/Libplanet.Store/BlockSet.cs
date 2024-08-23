@@ -2,7 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using Bencodex.Types;
+using BitFaster.Caching;
+using BitFaster.Caching.Lru;
 using Caching;
+using Libplanet.Common;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Store
@@ -10,12 +15,12 @@ namespace Libplanet.Store
     public class BlockSet : IReadOnlyDictionary<BlockHash, Block>
     {
         private readonly IStore _store;
-        private readonly LRUCache<BlockHash, Block> _cache;
+        private readonly ICache<BlockHash, Block> _cache;
 
         public BlockSet(IStore store, int cacheSize = 4096)
         {
             _store = store;
-            _cache = new LRUCache<BlockHash, Block>(cacheSize, Math.Max(cacheSize / 64, 8));
+            _cache = new FastConcurrentLru<BlockHash, Block>(cacheSize);
         }
 
         public IEnumerable<BlockHash> Keys =>
@@ -68,7 +73,7 @@ namespace Libplanet.Store
 
                 value.ValidateTimestamp();
                 _store.PutBlock(value);
-                _cache.AddReplace(value.Hash, value);
+                _cache.AddOrUpdate(value.Hash, value);
             }
         }
 
@@ -82,7 +87,7 @@ namespace Libplanet.Store
         {
             bool deleted = _store.DeleteBlock(key);
 
-            _cache.Remove(key);
+            _cache.TryRemove(key);
 
             return deleted;
         }
@@ -153,23 +158,15 @@ namespace Libplanet.Store
 
         private Block? GetBlock(BlockHash key)
         {
-            if (_cache.TryGet(key, out Block cached))
+            if (_cache.TryGet(key, out Block? cached))
             {
-                if (_store.ContainsBlock(key))
-                {
-                    return cached;
-                }
-                else
-                {
-                    // The cached block had been deleted on _store...
-                    _cache.Remove(key);
-                }
+                return cached;
             }
 
             Block? fetched = _store.GetBlock(key);
             if (fetched is { })
             {
-                _cache.AddReplace(key, fetched);
+                _cache.AddOrUpdate(key, fetched);
             }
 
             return fetched;

@@ -8,6 +8,8 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Web;
 using Bencodex;
+using BitFaster.Caching;
+using BitFaster.Caching.Lru;
 using Libplanet.Common;
 using Libplanet.Crypto;
 using Libplanet.Store;
@@ -124,9 +126,9 @@ namespace Libplanet.RocksDBStore
 
         private readonly ILogger _logger;
 
-        private readonly LruCache<TxId, object> _txCache;
-        private readonly LruCache<BlockHash, BlockDigest> _blockCache;
-        private readonly LruCache<EvidenceId, EvidenceBase> _evidenceCache;
+        private readonly ICache<TxId, Transaction> _txCache;
+        private readonly ICache<BlockHash, BlockDigest> _blockCache;
+        private readonly ICache<EvidenceId, EvidenceBase> _evidenceCache;
 
         private readonly DbOptions _options;
         private readonly ColumnFamilyOptions _colOptions;
@@ -207,9 +209,9 @@ namespace Libplanet.RocksDBStore
                 Directory.CreateDirectory(path);
             }
 
-            _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
-            _blockCache = new LruCache<BlockHash, BlockDigest>(capacity: blockCacheSize);
-            _evidenceCache = new LruCache<EvidenceId, EvidenceBase>(capacity: evidenceCacheSize);
+            _txCache = new FastConcurrentLru<TxId, Transaction>(txCacheSize);
+            _blockCache = new FastConcurrentLru<BlockHash, BlockDigest>(blockCacheSize);
+            _evidenceCache = new FastConcurrentLru<EvidenceId, EvidenceBase>(evidenceCacheSize);
             _indexCache = new LruCache<Guid, LruCache<(int, int?), List<BlockHash>>>(64);
 
             _path = path;
@@ -701,9 +703,9 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override Transaction? GetTransaction(TxId txid)
         {
-            if (_txCache.TryGetValue(txid, out object cachedTx))
+            if (_txCache.TryGet(txid, out Transaction? cachedTx))
             {
-                return (Transaction)cachedTx;
+                return cachedTx;
             }
 
             byte[] key = TxKey(txid);
@@ -748,7 +750,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void PutTransaction(Transaction tx)
         {
-            if (_txCache.ContainsKey(tx.Id))
+            if (_txCache.TryGet(tx.Id, out _))
             {
                 return;
             }
@@ -795,7 +797,7 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
-                if (_txCache.ContainsKey(txId))
+                if (_txCache.TryGet(txId, out _))
                 {
                     return true;
                 }
@@ -828,7 +830,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc cref="BaseStore.GetBlockDigest(BlockHash)"/>
         public override BlockDigest? GetBlockDigest(BlockHash blockHash)
         {
-            if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
+            if (_blockCache.TryGet(blockHash, out BlockDigest cachedDigest))
             {
                 return cachedDigest;
             }
@@ -879,7 +881,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void PutBlock(Block block)
         {
-            if (_blockCache.ContainsKey(block.Hash))
+            if (_blockCache.TryGet(block.Hash, out _))
             {
                 return;
             }
@@ -955,7 +957,7 @@ namespace Libplanet.RocksDBStore
                     }
                 }
 
-                _blockCache.Remove(blockHash);
+                _blockCache.TryRemove(blockHash);
                 _blockIndexDb.Remove(key);
                 blockDb.Remove(key);
                 return true;
@@ -976,7 +978,7 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
-                if (_blockCache.ContainsKey(blockHash))
+                if (_blockCache.TryGet(blockHash, out _))
                 {
                     return true;
                 }
@@ -1515,7 +1517,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void PutPendingEvidence(EvidenceBase evidence)
         {
-            if (_evidenceCache.ContainsKey(evidence.Id))
+            if (_evidenceCache.TryGet(evidence.Id, out _))
             {
                 return;
             }
@@ -1579,7 +1581,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override EvidenceBase? GetCommittedEvidence(EvidenceId evidenceId)
         {
-            if (_evidenceCache.TryGetValue(evidenceId, out EvidenceBase cachedEvidence))
+            if (_evidenceCache.TryGet(evidenceId, out EvidenceBase? cachedEvidence))
             {
                 return cachedEvidence;
             }
@@ -1612,7 +1614,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void PutCommittedEvidence(EvidenceBase evidence)
         {
-            if (_evidenceCache.ContainsKey(evidence.Id))
+            if (_evidenceCache.TryGet(evidence.Id, out _))
             {
                 return;
             }
@@ -1645,7 +1647,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteCommittedEvidence(EvidenceId evidenceId)
         {
-            _evidenceCache.Remove(evidenceId);
+            _evidenceCache.TryRemove(evidenceId);
 
             byte[] key = CommittedEvidenceKey(evidenceId);
 
@@ -1673,7 +1675,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override bool ContainsCommittedEvidence(EvidenceId evidenceId)
         {
-            if (_evidenceCache.ContainsKey(evidenceId))
+            if (_evidenceCache.TryGet(evidenceId, out _))
             {
                 return true;
             }

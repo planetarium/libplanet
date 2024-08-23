@@ -17,6 +17,17 @@ namespace Libplanet.Store.Trie
         public byte[] Get(in KeyBytes key);
 
         /// <summary>
+        /// Gets the values associated with the specified keys.
+        /// </summary>
+        /// <param name="keys">
+        /// The keys whose values to get.  The order of keys does not matter.
+        /// </param>
+        /// <returns>
+        /// A dictionary that maps each key to its associated value.
+        /// </returns>
+        public IDictionary<KeyBytes, byte[]> Get(IEnumerable<KeyBytes> keys);
+
+        /// <summary>
         /// Sets the value to the key.  If the key already exists, the value is overwritten.
         /// </summary>
         /// <param name="key">The key of the value to set.</param>

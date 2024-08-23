@@ -17,8 +17,10 @@ namespace Libplanet.Action.State
     /// </summary>
     public class WorldBaseState : IWorldState
     {
+        private static readonly ActivitySource Tracer
+            = new ActivitySource("Libplanet.Action.WorldBaseState");
+
         private readonly IStateStore _stateStore;
-        private readonly ActivitySource _activitySource;
 
         public WorldBaseState(ITrie trie, IStateStore stateStore)
         {
@@ -27,7 +29,6 @@ namespace Libplanet.Action.State
             Version = trie.GetMetadata() is { } value
                 ? value.Version
                 : 0;
-            _activitySource = new ActivitySource("Libplanet.Action.WorldBaseState");
         }
 
         /// <inheritdoc cref="IWorldState.Trie"/>
@@ -42,7 +43,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IWorldState.GetAccountState"/>
         public IAccountState GetAccountState(Address address)
         {
-            using Activity? a = _activitySource
+            using Activity? a = Tracer
                 .StartActivity(ActivityKind.Internal)?
                 .AddTag("Address", address.ToString());
             if (Legacy)
