@@ -427,8 +427,6 @@ namespace Libplanet.Net
             int logSessionId,
             CancellationToken cancellationToken)
         {
-            var sessionRandom = new Random();
-            int subSessionId = sessionRandom.Next();
             BlockLocator locator = blockChain.GetBlockLocator();
             Block tip = blockChain.Tip;
 
@@ -437,7 +435,6 @@ namespace Libplanet.Net
                 locator: locator,
                 stop: stop.Hash,
                 timeout: null,
-                logSessionIds: (logSessionId, subSessionId),
                 cancellationToken: cancellationToken);
 
             if (!hashes.Any())

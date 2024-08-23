@@ -741,12 +741,9 @@ namespace Libplanet.Net
             BlockLocator locator,
             BlockHash? stop,
             TimeSpan? timeout = null,
-            (int, int)? logSessionIds = null,
             CancellationToken cancellationToken = default)
         {
             var sessionRandom = new System.Random();
-            int logSessionId = logSessionIds is(int i, _) ? i : sessionRandom.Next();
-            int subSessionId = logSessionIds is(_, int j) ? j : sessionRandom.Next();
             var request = new GetBlockHashesMsg(locator, stop);
 
             TimeSpan transportTimeout = timeout is { } t
@@ -754,12 +751,10 @@ namespace Libplanet.Net
                     ? t
                     : Options.TimeoutOptions.GetBlockHashesTimeout;
             const string sendMsg =
-                "{SessionId}/{SubSessionId}: Sending a {MessageType} " +
-                "message with locator [{LocatorHead}, ...] (stop: {Stop})...";
+                "Sending a {MessageType} " +
+                "message with locator [{LocatorHead}] (stop: {Stop})...";
             _logger.Debug(
                 sendMsg,
-                logSessionId,
-                subSessionId,
                 nameof(GetBlockHashesMsg),
                 locator.FirstOrDefault(),
                 stop);
@@ -773,8 +768,11 @@ namespace Libplanet.Net
                     timeout: transportTimeout,
                     cancellationToken: cancellationToken).ConfigureAwait(false);
             }
-            catch (CommunicationFailException e) when (e.InnerException is TimeoutException)
+            catch (CommunicationFailException)
             {
+                _logger.Debug(
+                    "Failed to get a response for " + nameof(GetBlockHashesMsg) +
+                    " due to a communication failure");
                 return new List<(long, BlockHash)>();
             }
 
@@ -786,27 +784,25 @@ namespace Libplanet.Net
                         .Select((hash, i) => (idx + i, hash))
                         .ToList();
                     const string msg =
-                        "{SessionId}/{SubSessionId}: Received a " +
-                        nameof(BlockHashesMsg) +
+                        "Received a " + nameof(BlockHashesMsg) +
                         " message with an offset index {OffsetIndex} (total {Length} hashes)";
-                    _logger.Debug(msg, logSessionId, subSessionId, idx, hashes.LongCount());
+                    _logger.Debug(msg, idx, hashes.LongCount());
                     return hashes;
                 }
                 else
                 {
                     const string msg =
-                        "{SessionId}/{SubSessionId}: Received a " +
-                        nameof(BlockHashesMsg) +
+                        "Received a " + nameof(BlockHashesMsg) +
                         " message, but it has zero hashes";
-                    _logger.Debug(msg, logSessionId, subSessionId);
+                    _logger.Debug(msg);
                     return new List<(long, BlockHash)>();
                 }
             }
             else
             {
                 _logger.Debug(
-                    "A response for " + nameof(GetBlockHashesMsg) + " is expected to be " +
-                    "{ExpectedType}: {ReceivedType}",
+                    "A response for " + nameof(GetBlockHashesMsg) +
+                    " is expected to be {ExpectedType}: {ReceivedType}",
                     nameof(BlockHashesMsg),
                     parsedMessage.GetType());
                 return new List<(long, BlockHash)>();
@@ -1061,7 +1057,6 @@ namespace Libplanet.Net
                     locator: locator,
                     stop: null,
                     timeout: null,
-                    logSessionIds: null,
                     cancellationToken: cancellationToken);
 
                 foreach (var pair in blockHashes)

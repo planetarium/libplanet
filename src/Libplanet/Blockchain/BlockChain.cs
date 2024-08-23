@@ -1296,7 +1296,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 _logger.Debug(
-                    "Finding a branchpoint with locator [{LocatorHead}, ...]",
+                    "Finding a branchpoint with locator [{LocatorHead}]",
                     locator.FirstOrDefault());
                 BlockHash hash = locator.FirstOrDefault();
                 if (_blocks.ContainsKey(hash)
@@ -1304,14 +1304,14 @@ namespace Libplanet.Blockchain
                     && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                 {
                     _logger.Debug(
-                        "Found a branchpoint with locator [{LocatorHead}, ...]: {Hash}",
+                        "Found a branchpoint with locator [{LocatorHead}]: {Hash}",
                         locator.FirstOrDefault(),
                         hash);
                     return hash;
                 }
 
                 _logger.Debug(
-                    "Failed to find a branchpoint locator [{LocatorHead}, ...]",
+                    "Failed to find a branchpoint locator [{LocatorHead}]",
                     locator.FirstOrDefault());
                 return null;
             }
