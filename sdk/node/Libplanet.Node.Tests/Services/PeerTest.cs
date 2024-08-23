@@ -43,7 +43,7 @@ public class PeerTest
     public async Task PingAsync_TestAsync()
     {
         var pongMsg = new PongMsg();
-        var apv = GenesisOptions.AppProtocolVersion;
+        var apv = AppProtocolVersion.Sign(new(), 0);
         using var messageBoundPeer = new RandomBoundPeer();
         var message = new Message(pongMsg, apv, messageBoundPeer, DateTimeOffset.Now, []);
         var transportMock = new Mock<ITransport>();
@@ -69,7 +69,7 @@ public class PeerTest
     public async Task PingAsync_Cancel_TestAsync()
     {
         var pongMsg = new PongMsg();
-        var apv = GenesisOptions.AppProtocolVersion;
+        var apv = AppProtocolVersion.Sign(new(), 0);
         using var messageBoundPeer = new RandomBoundPeer();
         var message = new Message(pongMsg, apv, messageBoundPeer, DateTimeOffset.Now, []);
         var transportMock = new Mock<ITransport>();

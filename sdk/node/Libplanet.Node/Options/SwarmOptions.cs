@@ -17,6 +17,10 @@ public sealed class SwarmOptions : OptionsBase<SwarmOptions>, IEnabledOptions
     [DnsEndPoint]
     public string EndPoint { get; set; } = string.Empty;
 
+    [AppProtocolVersion]
+    [Description("The version of the application protocol.")]
+    public string AppProtocolVersion { get; set; } = string.Empty;
+
     [BoundPeer]
     [Description("The endpoint of the node to block sync.")]
     public string BlocksyncSeedPeer { get; set; } = string.Empty;
