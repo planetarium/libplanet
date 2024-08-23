@@ -642,7 +642,6 @@ namespace Libplanet.Net
                 BlockCandidateTable.Cleanup((_) => true);
                 await PullBlocksAsync(
                     peersWithExcerpts,
-                    500,
                     progress,
                     cancellationToken);
 
@@ -963,7 +962,6 @@ namespace Libplanet.Net
         /// by this <see cref="Swarm"/> instance.</param>
         /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
         /// to query with their tips known.</param>
-        /// <param name="chunkSize">The chunk size of returned <see cref="BlockHash"/>es.</param>
         /// <param name="progress">The <see cref="IProgress{T}"/> to report to.</param>
         /// <param name="cancellationToken">The cancellation token that should be used to propagate
         /// a notification that this operation should be canceled.</param>
@@ -993,7 +991,6 @@ namespace Libplanet.Net
         internal async Task<List<(long, BlockHash)>> GetDemandBlockHashes(
             BlockChain blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
-            int chunkSize = int.MaxValue,
             IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
@@ -1014,7 +1011,6 @@ namespace Libplanet.Net
                         blockChain,
                         peer,
                         excerpt,
-                        chunkSize,
                         progress,
                         cancellationToken);
                     return downloadedHashes;
@@ -1044,7 +1040,6 @@ namespace Libplanet.Net
             BlockChain blockChain,
             BoundPeer peer,
             IBlockExcerpt excerpt,
-            int chunkSize = int.MaxValue,
             IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {

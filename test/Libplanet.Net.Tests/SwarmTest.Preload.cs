@@ -858,7 +858,6 @@ namespace Libplanet.Net.Tests
             List<(long, BlockHash)> demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithExcerpt,
-                chunkSize: int.MaxValue,
                 progress: null,
                 cancellationToken: CancellationToken.None
             );
