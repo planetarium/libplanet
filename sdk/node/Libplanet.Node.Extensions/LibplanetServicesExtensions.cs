@@ -20,6 +20,7 @@ public static class LibplanetServicesExtensions
         services.AddOptions<GenesisOptions>()
                 .Bind(configuration.GetSection(GenesisOptions.Position));
         services.AddSingleton<IConfigureOptions<GenesisOptions>, GenesisOptionsConfigurator>();
+        services.AddSingleton<IValidateOptions<GenesisOptions>, GenesisOptionsValidator>();
 
         services.AddOptions<StoreOptions>()
                 .Bind(configuration.GetSection(StoreOptions.Position));
