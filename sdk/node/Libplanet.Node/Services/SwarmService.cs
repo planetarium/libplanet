@@ -52,7 +52,7 @@ internal sealed class SwarmService(
                 PrivateKey = ByteUtil.Hex(seedPrivateKey.ByteArray),
                 EndPoint = EndPointUtility.ToString(EndPointUtility.Next()),
             });
-            _options.BlocksyncSeedPeer = BoundPeerUtility.ToString(_blocksyncSeed.BoundPeer);
+            _options.BlocksyncSeedPeer = _blocksyncSeed.BoundPeer.PeerString;
             await _blocksyncSeed.StartAsync(cancellationToken);
         }
 
@@ -63,8 +63,7 @@ internal sealed class SwarmService(
                 PrivateKey = ByteUtil.Hex(seedPrivateKey.ByteArray),
                 EndPoint = EndPointUtility.ToString(EndPointUtility.Next()),
             });
-            validatorOptions.ConsensusSeedPeer
-                = BoundPeerUtility.ToString(_consensusSeed.BoundPeer);
+            validatorOptions.ConsensusSeedPeer = _consensusSeed.BoundPeer.PeerString;
             await _consensusSeed.StartAsync(cancellationToken);
         }
 
@@ -74,7 +73,7 @@ internal sealed class SwarmService(
         var swarmTransport = await CreateTransport(
             privateKey: privateKey,
             endPoint: swarmEndPoint);
-        var blocksyncSeedPeer = BoundPeerUtility.Parse(nodeOptions.BlocksyncSeedPeer);
+        var blocksyncSeedPeer = BoundPeer.ParsePeer(nodeOptions.BlocksyncSeedPeer);
         var swarmOptions = new Net.Options.SwarmOptions
         {
             StaticPeers = [blocksyncSeedPeer],
@@ -185,7 +184,7 @@ internal sealed class SwarmService(
     private static ConsensusReactorOption CreateConsensusReactorOption(
         PrivateKey privateKey, ValidatorOptions options)
     {
-        var consensusSeedPeer = BoundPeerUtility.Parse(options.ConsensusSeedPeer);
+        var consensusSeedPeer = BoundPeer.ParsePeer(options.ConsensusSeedPeer);
         var consensusEndPoint = (DnsEndPoint)EndPointUtility.Parse(options.EndPoint);
         return new ConsensusReactorOption
         {
