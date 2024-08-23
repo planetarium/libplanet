@@ -100,7 +100,7 @@ internal class Seed(SeedOptions seedOptions) : IAsyncDisposable
     private async Task<NetMQTransport> CreateTransport()
     {
         var privateKey = PrivateKey.FromString(seedOptions.PrivateKey);
-        var appProtocolVersion = GenesisOptions.AppProtocolVersion;
+        var appProtocolVersion = AppProtocolVersion.FromToken(seedOptions.AppProtocolVersion);
         var appProtocolVersionOptions = new AppProtocolVersionOptions
         {
             AppProtocolVersion = appProtocolVersion,

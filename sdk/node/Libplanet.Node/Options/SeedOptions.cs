@@ -13,6 +13,10 @@ public sealed class SeedOptions : OptionsBase<SeedOptions>
     [Description("The private key of the seed node.")]
     public string PrivateKey { get; set; } = string.Empty;
 
+    [AppProtocolVersion]
+    [Description("The version of the application protocol.")]
+    public string AppProtocolVersion { get; set; } = string.Empty;
+
     [DnsEndPoint]
     [Description("The endpoint of the seed node.")]
     public string EndPoint { get; set; } = string.Empty;

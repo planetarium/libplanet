@@ -53,6 +53,7 @@ internal sealed class SwarmService(
             {
                 PrivateKey = ByteUtil.Hex(seedPrivateKey.ByteArray),
                 EndPoint = EndPointUtility.ToString(EndPointUtility.Next()),
+                AppProtocolVersion = _options.AppProtocolVersion,
             });
             _options.BlocksyncSeedPeer = _blocksyncSeed.BoundPeer.PeerString;
             await _blocksyncSeed.StartAsync(cancellationToken);
@@ -64,6 +65,7 @@ internal sealed class SwarmService(
             {
                 PrivateKey = ByteUtil.Hex(seedPrivateKey.ByteArray),
                 EndPoint = EndPointUtility.ToString(EndPointUtility.Next()),
+                AppProtocolVersion = _options.AppProtocolVersion,
             });
             validatorOptions.ConsensusSeedPeer = _consensusSeed.BoundPeer.PeerString;
             await _consensusSeed.StartAsync(cancellationToken);
@@ -71,10 +73,12 @@ internal sealed class SwarmService(
 
         var nodeOptions = _options;
         var privateKey = PrivateKey.FromString(nodeOptions.PrivateKey);
+        var appProtocolVersion = AppProtocolVersion.FromToken(nodeOptions.AppProtocolVersion);
         var swarmEndPoint = (DnsEndPoint)EndPointUtility.Parse(nodeOptions.EndPoint);
         var swarmTransport = await CreateTransport(
             privateKey: privateKey,
-            endPoint: swarmEndPoint);
+            endPoint: swarmEndPoint,
+            appProtocolVersion: appProtocolVersion);
         var blocksyncSeedPeer = BoundPeer.ParsePeer(nodeOptions.BlocksyncSeedPeer);
         var swarmOptions = new Net.Options.SwarmOptions
         {
@@ -86,7 +90,8 @@ internal sealed class SwarmService(
         };
 
         var consensusTransport = validatorOptions is not null
-            ? await CreateConsensusTransportAsync(privateKey, validatorOptions, cancellationToken)
+            ? await CreateConsensusTransportAsync(
+                privateKey, appProtocolVersion, validatorOptions, cancellationToken)
             : null;
         var consensusReactorOption = validatorOptions is not null
             ? CreateConsensusReactorOption(privateKey, validatorOptions)
@@ -173,11 +178,11 @@ internal sealed class SwarmService(
     }
 
     private static async Task<NetMQTransport> CreateTransport(
-        PrivateKey privateKey, DnsEndPoint endPoint)
+        PrivateKey privateKey, DnsEndPoint endPoint, AppProtocolVersion appProtocolVersion)
     {
         var appProtocolVersionOptions = new Net.Options.AppProtocolVersionOptions
         {
-            AppProtocolVersion = GenesisOptions.AppProtocolVersion,
+            AppProtocolVersion = appProtocolVersion,
         };
         var hostOptions = new Net.Options.HostOptions(endPoint.Host, [], endPoint.Port);
         return await NetMQTransport.Create(privateKey, appProtocolVersionOptions, hostOptions);
@@ -199,12 +204,16 @@ internal sealed class SwarmService(
     }
 
     private static async Task<NetMQTransport> CreateConsensusTransportAsync(
-        PrivateKey privateKey, ValidatorOptions options, CancellationToken cancellationToken)
+        PrivateKey privateKey,
+        AppProtocolVersion appProtocolVersion,
+        ValidatorOptions options,
+        CancellationToken cancellationToken)
     {
         var consensusEndPoint = (DnsEndPoint)EndPointUtility.Parse(options.EndPoint);
         await Task.Delay(1, cancellationToken);
         return await CreateTransport(
             privateKey: privateKey,
-            endPoint: consensusEndPoint);
+            endPoint: consensusEndPoint,
+            appProtocolVersion: appProtocolVersion);
     }
 }
