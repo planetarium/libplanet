@@ -365,8 +365,8 @@ namespace Libplanet.Net
                 "to fetch the block #{BlockIndex} {BlockHash} at {MethodName}()",
                 sessionId,
                 peer,
-                demand.Header.Index,
-                demand.Header.Hash,
+                demand.Index,
+                demand.Hash,
                 nameof(ProcessBlockDemandAsync));
 
             try
@@ -375,7 +375,7 @@ namespace Libplanet.Net
                 var result = await BlockCandidateDownload(
                     peer: peer,
                     blockChain: BlockChain,
-                    stop: demand.Header,
+                    stop: demand.BlockExcerpt,
                     logSessionId: sessionId,
                     cancellationToken: cancellationToken);
 
@@ -431,7 +431,7 @@ namespace Libplanet.Net
         private async Task<bool> BlockCandidateDownload(
             BoundPeer peer,
             BlockChain blockChain,
-            BlockHeader stop,
+            IBlockExcerpt stop,
             int logSessionId,
             CancellationToken cancellationToken)
         {

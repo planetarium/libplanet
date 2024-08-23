@@ -33,7 +33,7 @@ namespace Libplanet.Net
             {
                 _blockDemands[demand.Peer] = demand;
                 Log.Debug(
-                    "BlockDemand #{Index} {BlockHash} from peer {Peer} added",
+                    "BlockDemand #{Index} {BlockHash} from peer {Peer} updated",
                     demand.Index,
                     demand.Hash,
                     demand.Peer);
