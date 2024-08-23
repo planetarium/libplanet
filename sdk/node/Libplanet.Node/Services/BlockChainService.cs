@@ -1,7 +1,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Numerics;
 using System.Security.Cryptography;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -25,6 +27,7 @@ namespace Libplanet.Node.Services;
 
 internal sealed class BlockChainService : IBlockChainService, IActionRenderer
 {
+    private static readonly Codec _codec = new();
     private readonly SynchronizationContext _synchronizationContext;
     private readonly ILogger<BlockChainService> _logger;
     private readonly BlockChain _blockChain;
@@ -93,36 +96,14 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
         IRenderer[] renderers,
         IActionLoader[] actionLoaders)
     {
-        var genesisKey = PrivateKey.FromString(genesisOptions.GenesisKey);
         var (store, stateStore) = CreateStore(storeOptions);
         var actionLoader = new AggregateTypedActionLoader(actionLoaders);
         var actionEvaluator = new ActionEvaluator(
             policyActionsRegistry: new(),
             stateStore,
             actionLoader);
-        var validators = genesisOptions.Validators.Select(PublicKey.FromHex)
-                            .Select(item => new Validator(item, new BigInteger(1000)))
-                            .ToArray();
-        var validatorSet = new ValidatorSet(validators: [.. validators]);
-        var nonce = 0L;
-        IAction[] actions =
-        [
-            new Initialize(
-                validatorSet: validatorSet,
-                states: ImmutableDictionary.Create<Address, IValue>()),
-        ];
 
-        var transaction = Transaction.Create(
-            nonce: nonce,
-            privateKey: genesisKey,
-            genesisHash: null,
-            actions: [.. actions.Select(item => item.PlainValue)],
-            timestamp: DateTimeOffset.MinValue);
-        var transactions = ImmutableList.Create(transaction);
-        var genesisBlock = BlockChain.ProposeGenesisBlock(
-            privateKey: genesisKey,
-            transactions: transactions,
-            timestamp: DateTimeOffset.MinValue);
+        var genesisBlock = CreateGenesisBlock(genesisOptions);
         var policy = new BlockPolicy(
             blockInterval: TimeSpan.FromSeconds(10),
             getMaxTransactionsPerBlock: _ => int.MaxValue,
@@ -175,5 +156,70 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
             var stateStore = new TrieStateStore(keyValueStore);
             return (store, stateStore);
         }
+    }
+
+    private static Block CreateGenesisBlock(GenesisOptions genesisOptions)
+    {
+        if (genesisOptions.GenesisKey != string.Empty)
+        {
+            var genesisKey = PrivateKey.FromString(genesisOptions.GenesisKey);
+            var validatorKeys = genesisOptions.Validators.Select(PublicKey.FromHex).ToArray();
+            return CreateGenesisBlock(genesisKey, validatorKeys);
+        }
+
+        if (genesisOptions.GenesisBlockPath != string.Empty)
+        {
+            return genesisOptions.GenesisBlockPath switch
+            {
+                { } path when Uri.TryCreate(path, UriKind.Absolute, out var uri)
+                    => LoadGenesisBlockFromUrl(uri),
+                { } path => LoadGenesisBlock(path),
+                _ => throw new NotSupportedException(),
+            };
+        }
+
+        throw new UnreachableException("Genesis block path is not set.");
+    }
+
+    private static Block CreateGenesisBlock(PrivateKey genesisKey, PublicKey[] validatorKeys)
+    {
+        var validators = validatorKeys
+            .Select(item => new Validator(item, new BigInteger(1000)))
+            .ToArray();
+        var validatorSet = new ValidatorSet(validators: [.. validators]);
+        var nonce = 0L;
+        IAction[] actions =
+        [
+            new Initialize(
+                validatorSet: validatorSet,
+                states: ImmutableDictionary.Create<Address, IValue>()),
+        ];
+
+        var transaction = Transaction.Create(
+            nonce: nonce,
+            privateKey: genesisKey,
+            genesisHash: null,
+            actions: [.. actions.Select(item => item.PlainValue)],
+            timestamp: DateTimeOffset.MinValue);
+        var transactions = ImmutableList.Create(transaction);
+        return BlockChain.ProposeGenesisBlock(
+            privateKey: genesisKey,
+            transactions: transactions,
+            timestamp: DateTimeOffset.MinValue);
+    }
+
+    private static Block LoadGenesisBlock(string genesisBlockPath)
+    {
+        var rawBlock = File.ReadAllBytes(Path.GetFullPath(genesisBlockPath));
+        var blockDict = (Dictionary)new Codec().Decode(rawBlock);
+        return BlockMarshaler.UnmarshalBlock(blockDict);
+    }
+
+    private static Block LoadGenesisBlockFromUrl(Uri genesisBlockUri)
+    {
+        using var client = new HttpClient();
+        var rawBlock = client.GetByteArrayAsync(genesisBlockUri).Result;
+        var blockDict = (Dictionary)_codec.Decode(rawBlock);
+        return BlockMarshaler.UnmarshalBlock(blockDict);
     }
 }
