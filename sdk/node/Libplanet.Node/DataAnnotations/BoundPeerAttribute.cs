@@ -7,9 +7,20 @@ namespace Libplanet.Node.DataAnnotations;
 public sealed class BoundPeerAttribute : RegularExpressionAttribute
 {
     public BoundPeerAttribute()
-        : base(
-            @$"^$|^{PublicKeyAttribute.OriginPattern},\s*{DnsEndPointAttribute.OriginPattern}$")
+        : base(GetPattern())
     {
+    }
+
+    private static string GetPattern()
+    {
+        var items = new string[]
+        {
+            PublicKeyAttribute.OriginPattern,
+            DnsEndPointAttribute.HostPattern,
+            DnsEndPointAttribute.PortPattern,
+        };
+        var pattern = string.Join(",", items);
+        return @$"^$|^{pattern}$";
     }
 }
 
