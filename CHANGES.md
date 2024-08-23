@@ -19,6 +19,8 @@ To be released.
     [[#3913]]
  -  (Libplanet.Store) Removed unused `HashNode.Serialize()` method.
     [[#3922], [#3924]]
+ -  (Libplanet.Net) Removed `Header` property and added `BlockExcerpt` property
+    to `BlockDemand`.  [[#3934]]
 
 ### Backward-incompatible network protocol changes
 
@@ -44,6 +46,7 @@ To be released.
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
 [#3924]: https://github.com/planetarium/libplanet/pull/3924
 [#3926]: https://github.com/planetarium/libplanet/pull/3926
+[#3934]: https://github.com/planetarium/libplanet/pull/3934
 
 
 Version 5.2.2

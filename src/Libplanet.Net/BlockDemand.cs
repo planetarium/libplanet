@@ -9,9 +9,9 @@ namespace Libplanet.Net
     public readonly struct BlockDemand : IBlockExcerpt
     {
         /// <summary>
-        /// The <see cref="BlockHeader"/> of the block to request.
+        /// The <see cref="IBlockExcerpt"/> of the block to request.
         /// </summary>
-        public readonly BlockHeader Header;
+        public readonly IBlockExcerpt BlockExcerpt;
 
         /// <summary>
         /// The <see cref="BoundPeer"/> to request block hash from.
@@ -24,17 +24,20 @@ namespace Libplanet.Net
         /// </summary>
         public readonly DateTimeOffset Timestamp;
 
-        public BlockDemand(BlockHeader header, BoundPeer peer, DateTimeOffset timestamp)
+        public BlockDemand(IBlockExcerpt blockExcerpt, BoundPeer peer, DateTimeOffset timestamp)
         {
-            Header = header;
+            BlockExcerpt = blockExcerpt;
             Peer = peer;
             Timestamp = timestamp;
         }
 
-        public int ProtocolVersion => Header.ProtocolVersion;
+        /// <inheritdoc cref="IBlockExcerpt.ProtocolVersion"/>
+        public int ProtocolVersion => BlockExcerpt.ProtocolVersion;
 
-        public long Index => Header.Index;
+        /// <inheritdoc cref="IBlockExcerpt.Index"/>
+        public long Index => BlockExcerpt.Index;
 
-        public BlockHash Hash => ((IBlockExcerpt)Header).Hash;
+        /// <inheritdoc cref="IBlockExcerpt.Hash"/>
+        public BlockHash Hash => BlockExcerpt.Hash;
     }
 }
