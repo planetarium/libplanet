@@ -11887,12 +11887,12 @@ references:
   commentId: T:Libplanet.Net.BlockDemand
   fullName: Libplanet.Net.BlockDemand
   nameWithType: BlockDemand
-- uid: Libplanet.Net.BlockDemand.#ctor(BlockHeader,Libplanet.Net.BoundPeer,DateTimeOffset)
-  name: BlockDemand(BlockHeader, BoundPeer, DateTimeOffset)
-  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_BlockHeader_Libplanet_Net_BoundPeer_DateTimeOffset_
-  commentId: M:Libplanet.Net.BlockDemand.#ctor(BlockHeader,Libplanet.Net.BoundPeer,DateTimeOffset)
-  fullName: Libplanet.Net.BlockDemand.BlockDemand(BlockHeader, Libplanet.Net.BoundPeer, DateTimeOffset)
-  nameWithType: BlockDemand.BlockDemand(BlockHeader, BoundPeer, DateTimeOffset)
+- uid: Libplanet.Net.BlockDemand.#ctor(IBlockExcerpt,Libplanet.Net.BoundPeer,DateTimeOffset)
+  name: BlockDemand(IBlockExcerpt, BoundPeer, DateTimeOffset)
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_IBlockExcerpt_Libplanet_Net_BoundPeer_DateTimeOffset_
+  commentId: M:Libplanet.Net.BlockDemand.#ctor(IBlockExcerpt,Libplanet.Net.BoundPeer,DateTimeOffset)
+  fullName: Libplanet.Net.BlockDemand.BlockDemand(IBlockExcerpt, Libplanet.Net.BoundPeer, DateTimeOffset)
+  nameWithType: BlockDemand.BlockDemand(IBlockExcerpt, BoundPeer, DateTimeOffset)
 - uid: Libplanet.Net.BlockDemand.#ctor*
   name: BlockDemand
   href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand__ctor_
@@ -11900,6 +11900,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockDemand.BlockDemand
   nameWithType: BlockDemand.BlockDemand
+- uid: Libplanet.Net.BlockDemand.BlockExcerpt
+  name: BlockExcerpt
+  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_BlockExcerpt
+  commentId: F:Libplanet.Net.BlockDemand.BlockExcerpt
+  fullName: Libplanet.Net.BlockDemand.BlockExcerpt
+  nameWithType: BlockDemand.BlockExcerpt
 - uid: Libplanet.Net.BlockDemand.Hash
   name: Hash
   href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Hash
@@ -11913,12 +11919,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockDemand.Hash
   nameWithType: BlockDemand.Hash
-- uid: Libplanet.Net.BlockDemand.Header
-  name: Header
-  href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Header
-  commentId: F:Libplanet.Net.BlockDemand.Header
-  fullName: Libplanet.Net.BlockDemand.Header
-  nameWithType: BlockDemand.Header
 - uid: Libplanet.Net.BlockDemand.Index
   name: Index
   href: api/Libplanet.Net.BlockDemand.html#Libplanet_Net_BlockDemand_Index
