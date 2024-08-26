@@ -24,7 +24,7 @@ namespace Libplanet.Blockchain.Policies
         /// <summary>
         /// A set of policy <see cref="IAction"/>s to evaluate at each situation.
         /// </summary>
-        PolicyActionsRegistry PolicyActionsRegistry { get; }
+        IPolicyActionsRegistry PolicyActionsRegistry { get; }
 
         /// <summary>
         /// Checks if a <see cref="Transaction"/> can be included in a yet to be mined

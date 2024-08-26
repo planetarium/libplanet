@@ -24,7 +24,7 @@ namespace Libplanet.Action
     public class ActionEvaluator : IActionEvaluator
     {
         private readonly ILogger _logger;
-        private readonly PolicyActionsRegistry _policyActionsRegistry;
+        private readonly IPolicyActionsRegistry _policyActionsRegistry;
         private readonly IStateStore _stateStore;
         private readonly IActionLoader _actionLoader;
 
@@ -40,7 +40,7 @@ namespace Libplanet.Action
         /// <param name="actionTypeLoader"> A <see cref="IActionLoader"/> implementation using
         /// action type lookup.</param>
         public ActionEvaluator(
-            PolicyActionsRegistry policyActionsRegistry,
+            IPolicyActionsRegistry policyActionsRegistry,
             IStateStore stateStore,
             IActionLoader actionTypeLoader)
         {

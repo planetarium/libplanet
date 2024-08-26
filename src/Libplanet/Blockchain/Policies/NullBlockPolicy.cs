@@ -21,7 +21,7 @@ namespace Libplanet.Blockchain.Policies
 
         public ISet<Address> BlockedMiners { get; } = new HashSet<Address>();
 
-        public PolicyActionsRegistry PolicyActionsRegistry => new PolicyActionsRegistry();
+        public IPolicyActionsRegistry PolicyActionsRegistry => new PolicyActionsRegistry();
 
         public ImmutableArray<IAction> BeginBlockActions => ImmutableArray<IAction>.Empty;
 

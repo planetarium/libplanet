@@ -1942,7 +1942,7 @@ namespace Libplanet.Tests.Blockchain
         /// <param name="policyActionsRegistry">The policy block actions to use.</param>
         /// <returns>The store fixture that every test in this class depends on.</returns>
         protected virtual StoreFixture GetStoreFixture(
-            PolicyActionsRegistry policyActionsRegistry = null)
+            IPolicyActionsRegistry policyActionsRegistry = null)
             => new MemoryStoreFixture(policyActionsRegistry);
 
         private (Address[], Transaction[]) MakeFixturesForAppendTests(
