@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Net;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -72,11 +73,14 @@ internal sealed class SwarmService(
         var nodeOptions = _options;
         var privateKey = PrivateKey.FromString(nodeOptions.PrivateKey);
         var appProtocolVersion = AppProtocolVersion.FromToken(nodeOptions.AppProtocolVersion);
+        var trustedAppProtocolVersionSigners = nodeOptions.TrustedAppProtocolVersionSigners
+            .Select(PublicKey.FromHex).ToArray();
         var swarmEndPoint = (DnsEndPoint)EndPointUtility.Parse(nodeOptions.EndPoint);
         var swarmTransport = await CreateTransport(
             privateKey: privateKey,
             endPoint: swarmEndPoint,
-            appProtocolVersion: appProtocolVersion);
+            appProtocolVersion: appProtocolVersion,
+            trustedAppProtocolVersionSigners);
         var blocksyncSeedPeer = BoundPeer.ParsePeer(nodeOptions.BlocksyncSeedPeer);
         var swarmOptions = new Net.Options.SwarmOptions
         {
@@ -89,7 +93,11 @@ internal sealed class SwarmService(
 
         var consensusTransport = _validatorOptions.IsEnabled
             ? await CreateConsensusTransportAsync(
-                privateKey, appProtocolVersion, _validatorOptions, cancellationToken)
+                privateKey,
+                appProtocolVersion,
+                trustedAppProtocolVersionSigners,
+                _validatorOptions,
+                cancellationToken)
             : null;
         var consensusReactorOption = _validatorOptions.IsEnabled
             ? CreateConsensusReactorOption(privateKey, _validatorOptions)
@@ -165,14 +173,22 @@ internal sealed class SwarmService(
     }
 
     private static async Task<NetMQTransport> CreateTransport(
-        PrivateKey privateKey, DnsEndPoint endPoint, AppProtocolVersion appProtocolVersion)
+        PrivateKey privateKey,
+        DnsEndPoint endPoint,
+        AppProtocolVersion appProtocolVersion,
+        PublicKey[] trustedAppProtocolVersionSigners)
     {
         var appProtocolVersionOptions = new Net.Options.AppProtocolVersionOptions
         {
             AppProtocolVersion = appProtocolVersion,
+            TrustedAppProtocolVersionSigners = [.. trustedAppProtocolVersionSigners],
         };
         var hostOptions = new Net.Options.HostOptions(endPoint.Host, [], endPoint.Port);
-        return await NetMQTransport.Create(privateKey, appProtocolVersionOptions, hostOptions);
+        return await NetMQTransport.Create(
+            privateKey,
+            appProtocolVersionOptions,
+            hostOptions,
+            TimeSpan.FromSeconds(60));
     }
 
     private static ConsensusReactorOption CreateConsensusReactorOption(
@@ -193,6 +209,7 @@ internal sealed class SwarmService(
     private static async Task<NetMQTransport> CreateConsensusTransportAsync(
         PrivateKey privateKey,
         AppProtocolVersion appProtocolVersion,
+        PublicKey[] trustedAppProtocolVersionSigners,
         ValidatorOptions options,
         CancellationToken cancellationToken)
     {
@@ -201,6 +218,7 @@ internal sealed class SwarmService(
         return await CreateTransport(
             privateKey: privateKey,
             endPoint: consensusEndPoint,
-            appProtocolVersion: appProtocolVersion);
+            appProtocolVersion: appProtocolVersion,
+            trustedAppProtocolVersionSigners);
     }
 }
