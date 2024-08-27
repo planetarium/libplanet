@@ -35,6 +35,10 @@ To be released.
  -  (Libplanet.Store) Optimized `HashNode.ToBencodex()` method.
     [[#3922], [#3924]]
  -  (Libplanet.Store) Optimized internal conversions to `KeyBytes`.  [[#3926]]
+ -  (Libplanet.Net) Changed the reporting behavior for `BlockHashDownloadState`
+    and `BlockDownloadState` during preloading.  These no longer report
+    meaningful data and it is strongly advised not to rely on these to track
+    the progress of preloading.  [[#3931]]
 
 ### Bug fixes
 
@@ -46,6 +50,7 @@ To be released.
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
 [#3924]: https://github.com/planetarium/libplanet/pull/3924
 [#3926]: https://github.com/planetarium/libplanet/pull/3926
+[#3931]: https://github.com/planetarium/libplanet/pull/3931
 [#3934]: https://github.com/planetarium/libplanet/pull/3934
 
 

@@ -40,8 +40,6 @@ namespace Libplanet.Net
         /// The timeout value for the request to get the tip of the block.
         /// </param>
         /// <param name="maximumPollPeers">The maximum targets to send request to.</param>
-        /// <param name="chunkSize">The chunk size of <see cref="Block"/>s to be
-        /// added on the <see cref="BlockCandidateTable"/>.</param>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
@@ -52,7 +50,6 @@ namespace Libplanet.Net
         internal async Task PullBlocksAsync(
             TimeSpan? timeout,
             int maximumPollPeers,
-            int chunkSize,
             IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
@@ -64,14 +61,11 @@ namespace Libplanet.Net
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt =
                 await GetPeersWithExcerpts(
                     timeout, maximumPollPeers, cancellationToken);
-            peersWithBlockExcerpt = peersWithBlockExcerpt
-                .Where(pair => IsBlockNeeded(pair.Item2)).ToList();
-            await PullBlocksAsync(peersWithBlockExcerpt, chunkSize, progress, cancellationToken);
+            await PullBlocksAsync(peersWithBlockExcerpt, progress, cancellationToken);
         }
 
         private async Task PullBlocksAsync(
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt,
-            int chunkSize,
             IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
@@ -95,7 +89,6 @@ namespace Libplanet.Net
                 var demandBlockHashes = await GetDemandBlockHashes(
                     BlockChain,
                     peersWithBlockExcerpt,
-                    chunkSize,
                     progress,
                     cancellationToken);
                 foreach ((long index, BlockHash hash) in demandBlockHashes)
@@ -313,7 +306,7 @@ namespace Libplanet.Net
                         lastUpdated
                     );
                     await PullBlocksAsync(
-                        timeout, int.MaxValue, maximumPollPeers, null, cancellationToken);
+                        timeout, maximumPollPeers, null, cancellationToken);
                 }
 
                 await Task.Delay(1000, cancellationToken);

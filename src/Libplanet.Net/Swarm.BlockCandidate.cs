@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Tx;
 
 namespace Libplanet.Net
 {
@@ -202,12 +200,6 @@ namespace Libplanet.Net
 
             try
             {
-                var actionExecutionState = new ActionExecutionState()
-                {
-                    TotalBlockCount = blocks.Count,
-                    ExecutedBlockCount = 0,
-                };
-                long txsCount = 0, actionsCount = 0;
                 long verifiedBlockCount = 0;
 
                 foreach (var (block, commit) in blocks)
@@ -222,14 +214,14 @@ namespace Libplanet.Net
                         workspace.Append(block, commit, render: render && !forked);
                     }
 
-                    actionExecutionState.ExecutedBlockCount += 1;
-                    actionExecutionState.ExecutedBlockHash = block.Hash;
-                    IEnumerable<Transaction>
-                        transactions = block.Transactions.ToImmutableArray();
-                    txsCount += transactions.Count();
-                    actionsCount += transactions.Sum(
-                        tx => tx.Actions is { } actions ? actions.Count : 1L);
-                    progress?.Report(actionExecutionState);
+                    verifiedBlockCount++;
+                    progress?.Report(
+                        new ActionExecutionState()
+                        {
+                            TotalBlockCount = blocks.Count,
+                            ExecutedBlockCount = (int)verifiedBlockCount,
+                            ExecutedBlockHash = block.Hash,
+                        });
                     progress?.Report(
                         new BlockVerificationState
                         {
@@ -435,8 +427,6 @@ namespace Libplanet.Net
             int logSessionId,
             CancellationToken cancellationToken)
         {
-            var sessionRandom = new Random();
-            int subSessionId = sessionRandom.Next();
             BlockLocator locator = blockChain.GetBlockLocator();
             Block tip = blockChain.Tip;
 
@@ -445,7 +435,6 @@ namespace Libplanet.Net
                 locator: locator,
                 stop: stop.Hash,
                 timeout: null,
-                logSessionIds: (logSessionId, subSessionId),
                 cancellationToken: cancellationToken);
 
             if (!hashes.Any())

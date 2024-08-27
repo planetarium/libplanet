@@ -177,7 +177,10 @@ namespace Libplanet.Net.Tests
                 );
 
                 minerSwarm.FindNextHashesChunkSize = 3;
-                await receiverSwarm.PreloadAsync(progress);
+                await receiverSwarm.PreloadAsync(
+                    TimeSpan.FromSeconds(1),
+                    0,
+                    progress);
 
                 // Await 1 second to make sure all progresses is reported.
                 await Task.Delay(1000);
@@ -193,7 +196,7 @@ namespace Libplanet.Net.Tests
                     receiverChain
                 );
 
-                Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
+                Assert.Equal(minerChain.Tip.Hash, receiverChain.Tip.Hash);
 
                 var expectedStates = new List<BlockSyncState>();
 
@@ -245,11 +248,27 @@ namespace Libplanet.Net.Tests
                 _logger.Debug("Expected preload states: {@expectedStates}", expectedStates);
                 _logger.Debug("Actual preload states: {@actualStates}", actualStates);
 
-                Assert.Equal(expectedStates.Count, actualStates.Count);
-                foreach (var states in expectedStates.Zip(actualStates, ValueTuple.Create))
-                {
-                    Assert.Equal(states.Item1, states.Item2);
-                }
+                Assert.Equal(
+                    expectedStates
+                        .OfType<BlockDownloadState>()
+                        .Select(state => state.ReceivedBlockHash),
+                    actualStates
+                        .OfType<BlockDownloadState>()
+                        .Select(state => state.ReceivedBlockHash));
+                Assert.Equal(
+                    expectedStates
+                        .OfType<ActionExecutionState>()
+                        .Select(state => state.ExecutedBlockHash),
+                    actualStates
+                        .OfType<ActionExecutionState>()
+                        .Select(state => state.ExecutedBlockHash));
+                Assert.Equal(
+                    expectedStates
+                        .OfType<BlockVerificationState>()
+                        .Select(state => state.VerifiedBlockHash),
+                    actualStates
+                        .OfType<BlockVerificationState>()
+                        .Select(state => state.VerifiedBlockHash));
             }
             finally
             {
@@ -558,11 +577,11 @@ namespace Libplanet.Net.Tests
                 nominerSwarm1.FindNextHashesChunkSize = 2;
 
                 await nominerSwarm0.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                await nominerSwarm0.PreloadAsync();
+                await nominerSwarm0.PreloadAsync(TimeSpan.FromSeconds(1), 0);
                 await nominerSwarm1.AddPeersAsync(new[] { nominerSwarm0.AsPeer }, null);
-                await nominerSwarm1.PreloadAsync();
+                await nominerSwarm1.PreloadAsync(TimeSpan.FromSeconds(1), 0);
                 await receiverSwarm.AddPeersAsync(new[] { nominerSwarm1.AsPeer }, null);
-                await receiverSwarm.PreloadAsync(progress);
+                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1), 0, progress);
 
                 // Await 1 second to make sure all progresses is reported.
                 await Task.Delay(1000);
@@ -614,7 +633,27 @@ namespace Libplanet.Net.Tests
                 }
 
                 // FIXME: this test does not ensures block download in order
-                Assert.True(expectedStates.SequenceEqual(actualStates));
+                Assert.Equal(
+                    expectedStates
+                        .OfType<BlockDownloadState>()
+                        .Select(state => state.ReceivedBlockHash),
+                    actualStates
+                        .OfType<BlockDownloadState>()
+                        .Select(state => state.ReceivedBlockHash));
+                Assert.Equal(
+                    expectedStates
+                        .OfType<ActionExecutionState>()
+                        .Select(state => state.ExecutedBlockHash),
+                    actualStates
+                        .OfType<ActionExecutionState>()
+                        .Select(state => state.ExecutedBlockHash));
+                Assert.Equal(
+                    expectedStates
+                        .OfType<BlockVerificationState>()
+                        .Select(state => state.VerifiedBlockHash),
+                    actualStates
+                        .OfType<BlockVerificationState>()
+                        .Select(state => state.VerifiedBlockHash));
             }
             finally
             {
@@ -678,7 +717,10 @@ namespace Libplanet.Net.Tests
                 }
             }
 
-            await receiverSwarm.PreloadAsync(progress: new ActionProgress<BlockSyncState>(Action));
+            await receiverSwarm.PreloadAsync(
+                TimeSpan.FromSeconds(1),
+                0,
+                progress: new ActionProgress<BlockSyncState>(Action));
 
             Assert.Equal(swarm1.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
             Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
@@ -730,7 +772,10 @@ namespace Libplanet.Net.Tests
             bool canceled = true;
             try
             {
-                await receiverSwarm.PreloadAsync(cancellationToken: cts.Token);
+                await receiverSwarm.PreloadAsync(
+                    TimeSpan.FromSeconds(1),
+                    0,
+                    cancellationToken: cts.Token);
                 canceled = false;
                 Log.Logger.Debug(
                     "{MethodName}() normally finished", nameof(receiverSwarm.PreloadAsync));
@@ -751,18 +796,17 @@ namespace Libplanet.Net.Tests
             if (canceled)
             {
                 Assert.Equal(receiverChainId, receiverChain.Id);
+                Assert.Contains(receiverChain.Tip, blockArray);
+                Assert.NotEqual(blockArray.Last(), receiverChain.Tip);
                 Assert.Equal(
-                    (blockArray[0].Index, blockArray[0].Hash),
-                    (receiverChain.Tip.Index, receiverChain.Tip.Hash)
-                );
-                Assert.Equal(blockArray[0], receiverChain.Tip);
-                Assert.Equal(
-                    (Text)string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item0.{j}")),
+                    (Text)string.Join(
+                        ",",
+                        Enumerable.Range(0, (int)receiverChain.Tip.Index).Select(i =>
+                            string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}")))),
                     receiverChain
                         .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
-                        .GetState(address)
-                );
+                        .GetState(address));
             }
             else
             {
@@ -771,9 +815,7 @@ namespace Libplanet.Net.Tests
                     (Text)string.Join(
                         ",",
                         Enumerable.Range(0, 20).Select(i =>
-                            string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}"))
-                        )
-                    ),
+                            string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}")))),
                     receiverChain
                         .GetNextWorldState()
                         .GetAccountState(ReservedAddresses.LegacyAccount)
@@ -804,7 +846,8 @@ namespace Libplanet.Net.Tests
                 minerChain.Append(block, CreateBlockCommit(block));
             }
 
-            minerSwarm.FindNextHashesChunkSize = 2;
+            const int FindNextHashesChunkSize = 3;
+            minerSwarm.FindNextHashesChunkSize = FindNextHashesChunkSize;
             await StartAsync(minerSwarm);
 
             (BoundPeer, IBlockExcerpt)[] peersWithExcerpt =
@@ -815,13 +858,13 @@ namespace Libplanet.Net.Tests
             List<(long, BlockHash)> demands = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithExcerpt,
-                chunkSize: int.MaxValue,
                 progress: null,
                 cancellationToken: CancellationToken.None
             );
 
             IEnumerable<(long, BlockHash)> expectedBlocks = minerChain.IterateBlocks()
-                .Where(b => b.Index >= receiverChain.Count)
+                .Where(b => b.Index >= receiverChain.Tip.Index)
+                .Take(FindNextHashesChunkSize)
                 .Select(b => (b.Index, b.Hash));
             Assert.Equal(expectedBlocks, demands);
 
@@ -882,67 +925,6 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task GetDemandBlockHashesDuringReorg()
-        {
-            var minerKey = new PrivateKey();
-            Swarm minerSwarm = await CreateSwarm(minerKey).ConfigureAwait(false);
-            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
-            Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
-            Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
-
-            BlockChain minerChain = minerSwarm.BlockChain;
-            BlockChain receiverChain = receiverSwarm.BlockChain;
-
-            Block[] blocks =
-                MakeFixtureBlocksForPreloadAsyncCancellationTest().Item2;
-
-            foreach (Block block in blocks)
-            {
-                minerChain.Append(block, CreateBlockCommit(block));
-            }
-
-            BlockChain forked = minerChain.Fork(minerChain.Genesis.Hash);
-            while (forked.Count <= minerChain.Count + 1)
-            {
-                Block block = forked.ProposeBlock(
-                    minerKey, CreateBlockCommit(forked.Tip));
-                forked.Append(block, CreateBlockCommit(block));
-            }
-
-            minerSwarm.FindNextHashesChunkSize = 2;
-            await StartAsync(minerSwarm);
-
-            (BoundPeer, IBlockExcerpt)[] peersWithBlockExcerpt =
-            {
-                (minerSwarm.AsPeer, minerChain.Tip.Header),
-            };
-
-            long receivedCount = 0;
-            List<(long, BlockHash)> demands = await receiverSwarm.GetDemandBlockHashes(
-                receiverChain,
-                peersWithBlockExcerpt,
-                chunkSize: int.MaxValue,
-                progress: new ActionProgress<BlockSyncState>(state =>
-                {
-                    if (state is BlockHashDownloadState s &&
-                        s.ReceivedBlockHashCount > minerChain.Count / 2)
-                    {
-                        receivedCount = s.ReceivedBlockHashCount;
-                        if (minerChain.Count < forked.Count)
-                        {
-                            minerChain.Swap(forked, render: false);
-                        }
-                    }
-                }),
-                cancellationToken: CancellationToken.None);
-
-            Assert.Equal(receivedCount, demands.LongCount());
-
-            CleaningSwarm(minerSwarm);
-            CleaningSwarm(receiverSwarm);
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task PreloadDeleteOnlyTempChain()
         {
             Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
@@ -976,7 +958,7 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreloadFromTheHighestTipIndexChain()
+        public async Task PreloadToTheHighestTipIndexChain()
         {
             var minerKey1 = new PrivateKey();
             Swarm minerSwarm1 = await CreateSwarm(minerKey1).ConfigureAwait(false);
@@ -989,13 +971,10 @@ namespace Libplanet.Net.Tests
             Block block1 = minerChain1.ProposeBlock(
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block1, CreateBlockCommit(block1));
+            minerChain2.Append(block1, CreateBlockCommit(block1));
             Block block2 = minerChain1.ProposeBlock(
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block2, CreateBlockCommit(block2));
-
-            Block block = minerChain2.ProposeBlock(
-                ChainPrivateKey, CreateBlockCommit(minerChain2.Tip));
-            minerChain2.Append(block, CreateBlockCommit(block));
 
             Assert.True(minerChain1.Count > minerChain2.Count);
 
@@ -1006,7 +985,7 @@ namespace Libplanet.Net.Tests
                 await receiverSwarm.AddPeersAsync(
                     new[] { minerSwarm1.AsPeer, minerSwarm2.AsPeer },
                     null);
-                await receiverSwarm.PreloadAsync();
+                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1), 0);
             }
             finally
             {
