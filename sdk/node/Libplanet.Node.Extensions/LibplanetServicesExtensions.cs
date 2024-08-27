@@ -26,6 +26,9 @@ public static class LibplanetServicesExtensions
                 .Bind(configuration.GetSection(StoreOptions.Position));
         services.AddSingleton<IConfigureOptions<StoreOptions>, StoreOptionsConfigurator>();
 
+        services.AddOptions<ActionOptions>()
+                .Bind(configuration.GetSection(ActionOptions.Position));
+
         services.AddOptions<SwarmOptions>()
                 .Bind(configuration.GetSection(SwarmOptions.Position));
         services.AddSingleton<IConfigureOptions<SwarmOptions>, SwarmOptionsConfigurator>();
@@ -43,6 +46,8 @@ public static class LibplanetServicesExtensions
         services.AddSingleton<PolicyService>();
         services.AddSingleton<StoreService>();
         services.AddSingleton(s => (IStoreService)s.GetRequiredService<StoreService>());
+        services.AddSingleton<ActionService>();
+        services.AddSingleton(s => (IActionService)s.GetRequiredService<ActionService>());
         services.AddSingleton<IBlockChainService, BlockChainService>();
         services.AddSingleton<IReadChainService, ReadChainService>();
         services.AddSingleton<TransactionService>();
