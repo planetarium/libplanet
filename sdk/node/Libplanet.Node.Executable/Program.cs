@@ -3,6 +3,8 @@ using Libplanet.Node.Extensions;
 using Libplanet.Node.Options.Schema;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebHost.CreateDefaultBuilder(args);
 var assemblies = new string[]
@@ -14,6 +16,16 @@ builder.UseSetting(WebHostDefaults.HostingStartupAssembliesKey, string.Join(';',
 builder.ConfigureLogging(logging =>
 {
     logging.AddConsole();
+
+    // Logging setting
+    var loggerConfig = new LoggerConfiguration();
+    loggerConfig = loggerConfig.MinimumLevel.Information();
+    loggerConfig = loggerConfig
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+        .Enrich.FromLogContext()
+        .WriteTo.Console();
+
+    Log.Logger = loggerConfig.CreateLogger();
 });
 builder.ConfigureKestrel((context, options) =>
 {
@@ -26,6 +38,19 @@ builder.ConfigureKestrel((context, options) =>
 });
 builder.ConfigureServices((context, services) =>
 {
+//     string pluginPath = "/Users/bin_bash_shell/Workspaces/planetarium/NineChronicles/" +
+//     "lib9c/Lib9c.NCActionLoader/bin/Debug/net6.0/Lib9c.NCActionLoader.dll";
+// string actionLoaderType = "Lib9c.NCActionLoader.NineChroniclesActionLoader";
+// string blockPolicyType = "Lib9c.NCActionLoader.NineChroniclesPolicyActionRegistry";
+// IActionLoader actionLoader = PluginLoader.LoadActionLoader(pluginPath, actionLoaderType);
+// IPolicyActionsRegistry policyActionRegistry =
+//     PluginLoader.LoadPolicyActionRegistry(pluginPath, blockPolicyType);
+
+// Libplanet.Crypto.CryptoConfig.CryptoBackend = new Secp256k1CryptoBackend<SHA256>();
+
+// builder.Services.AddSingleton<IActionLoader>(actionLoader);
+// builder.Services.AddSingleton<IPolicyActionsRegistry>(policyActionRegistry);
+
     services.AddGrpc();
     services.AddGrpcReflection();
     services.AddLibplanetNode(context.Configuration);

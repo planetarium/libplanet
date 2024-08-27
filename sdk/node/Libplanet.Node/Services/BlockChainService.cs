@@ -13,6 +13,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Node.Actions;
 using Libplanet.Node.Options;
 using Libplanet.RocksDBStore;
 using Libplanet.Store;
@@ -37,8 +38,8 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
     public BlockChainService(
         IOptions<GenesisOptions> genesisOptions,
         IOptions<StoreOptions> storeOptions,
+        IOptions<ActionOptions> actionOptions,
         PolicyService policyService,
-        IEnumerable<IActionLoaderProvider> actionLoaderProviders,
         ILogger<BlockChainService> logger)
     {
         _synchronizationContext = SynchronizationContext.Current ?? new();
@@ -46,9 +47,9 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
         _blockChain = CreateBlockChain(
             genesisOptions: genesisOptions.Value,
             storeOptions: storeOptions.Value,
+            actionOptions: actionOptions.Value,
             stagePolicy: policyService.StagePolicy,
-            renderers: [this],
-            actionLoaders: [.. actionLoaderProviders.Select(item => item.GetActionLoader())]);
+            renderers: [this]);
     }
 
     public event EventHandler<BlockEventArgs>? BlockAppended;
@@ -84,7 +85,7 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
                 }
             }
 
-            _logger.LogInformation("#{Height}: Block appended.", newTip.Index);
+            _logger.LogInformation("#{Height}: Block appended", newTip.Index);
             BlockAppended?.Invoke(this, new(newTip));
         }
     }
@@ -92,22 +93,33 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
     private static BlockChain CreateBlockChain(
         GenesisOptions genesisOptions,
         StoreOptions storeOptions,
+        ActionOptions actionOptions,
         IStagePolicy stagePolicy,
-        IRenderer[] renderers,
-        IActionLoader[] actionLoaders)
+        IRenderer[] renderers)
     {
-        var (store, stateStore) = CreateStore(storeOptions);
-        var actionLoader = new AggregateTypedActionLoader(actionLoaders);
-        var actionEvaluator = new ActionEvaluator(
-            policyActionsRegistry: new(),
-            stateStore,
-            actionLoader);
+        // var actionLoader = actionOptions.GetActionLoader();
+        var policyActions = new PolicyActionsRegistry();
+
+        var (store, stateStore, keyValueStore) = CreateStore(storeOptions);
+
+        var actionEvaluator = new PluggedActionEvaluator("/Users/jeesu/Downloads/osx-arm64 (2)/Lib9c.Plugin.dll", "Lib9c.Plugin.PluginActionEvaluator", keyValueStore, new AggregateTypedActionLoader());
+        // var actionEvaluator = new ActionEvaluator(
+        //     policyActionsRegistry: policyActions,
+        //     stateStore,
+        //     actionLoader);
 
         var genesisBlock = CreateGenesisBlock(genesisOptions);
         var policy = new BlockPolicy(
-            blockInterval: TimeSpan.FromSeconds(10),
-            getMaxTransactionsPerBlock: _ => int.MaxValue,
-            getMaxTransactionsBytes: _ => long.MaxValue);
+            policyActionsRegistry: policyActions,
+            blockInterval: TimeSpan.FromSeconds(8),
+            validateNextBlockTx: (chain, transaction) => null,
+            validateNextBlock: (chain, block) => null,
+            getMaxTransactionsBytes: l => long.MaxValue,
+            getMinTransactionsPerBlock: l => 0,
+            getMaxTransactionsPerBlock: l => int.MaxValue,
+            getMaxTransactionsPerSignerPerBlock: l => int.MaxValue
+        );
+
         var blockChainStates = new BlockChainStates(store, stateStore);
         if (store.GetCanonicalChainId() is null)
         {
@@ -133,7 +145,7 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
             renderers: renderers);
     }
 
-    private static (IStore, IStateStore) CreateStore(StoreOptions storeOptions)
+    private static (IStore, IStateStore, IKeyValueStore) CreateStore(StoreOptions storeOptions)
     {
         return storeOptions.Type switch
         {
@@ -142,19 +154,20 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
             _ => throw new NotSupportedException($"Unsupported store type: {storeOptions.Type}"),
         };
 
-        (MemoryStore, TrieStateStore) CreateMemoryStore()
+        (MemoryStore, TrieStateStore, MemoryKeyValueStore) CreateMemoryStore()
         {
             var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            return (store, stateStore);
+            var keyValueStore = new MemoryKeyValueStore();
+            var stateStore = new TrieStateStore(keyValueStore);
+            return (store, stateStore, keyValueStore);
         }
 
-        (RocksDBStore.RocksDBStore, TrieStateStore) CreateDiskStore()
+        (RocksDBStore.RocksDBStore, TrieStateStore, RocksDBKeyValueStore) CreateDiskStore()
         {
             var store = new RocksDBStore.RocksDBStore(storeOptions.StoreName);
             var keyValueStore = new RocksDBKeyValueStore(storeOptions.StateStoreName);
             var stateStore = new TrieStateStore(keyValueStore);
-            return (store, stateStore);
+            return (store, stateStore, keyValueStore);
         }
     }
 

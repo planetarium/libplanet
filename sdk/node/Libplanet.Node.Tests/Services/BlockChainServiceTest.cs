@@ -1,3 +1,5 @@
+using Libplanet.Action;
+using Libplanet.Action.Loader;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
 using Libplanet.Node.Options;
@@ -20,6 +22,7 @@ public class BlockChainServiceTest
         services.AddSingleton<IConfigureOptions<GenesisOptions>, GenesisOptionsConfigurator>();
         services.AddOptions<StoreOptions>();
         services.AddSingleton<IConfigureOptions<StoreOptions>, StoreOptionsConfigurator>();
+        services.AddOptions<ActionOptions>();
         services.AddOptions<SwarmOptions>();
         services.AddSingleton<IConfigureOptions<SwarmOptions>, SwarmOptionsConfigurator>();
 
@@ -28,11 +31,12 @@ public class BlockChainServiceTest
         var logger = new NullLoggerFactory().CreateLogger<BlockChainService>();
         var genesisOptions = serviceProvider.GetRequiredService<IOptions<GenesisOptions>>();
         var storeOptions = serviceProvider.GetRequiredService<IOptions<StoreOptions>>();
+        var actionOptions = serviceProvider.GetRequiredService<IOptions<ActionOptions>>();
         var blockChainService = new BlockChainService(
             genesisOptions: genesisOptions,
             storeOptions: storeOptions,
+            actionOptions: actionOptions,
             policyService: policyService,
-            actionLoaderProviders: [],
             logger: logger);
         var blockChain = blockChainService.BlockChain;
 

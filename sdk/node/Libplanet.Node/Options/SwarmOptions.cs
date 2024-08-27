@@ -24,4 +24,8 @@ public sealed class SwarmOptions : OptionsBase<SwarmOptions>
     [BoundPeer]
     [Description("The endpoint of the node to block sync.")]
     public string BlocksyncSeedPeer { get; set; } = string.Empty;
+
+    // 030ffa9bd579ee1503ce008394f687c182279da913bfaec12baca34e79698a7cd1
+    [PublicKeyArray]
+    public string[] TrustedAppProtocolVersionSigners { get; set; } = [];
 }

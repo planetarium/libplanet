@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0"/>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
     <ProjectReference Include="..\..\..\src\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\..\..\src\Libplanet.Net\Libplanet.Net.csproj" />
+    <ProjectReference Include="..\..\..\..\..\suho\suho-lib9c\.Lib9c.Plugin.Shared\Lib9c.Plugin.Shared.csproj" />
   </ItemGroup>
 
 </Project>
