@@ -1,13 +1,15 @@
 using System.ComponentModel;
 using Libplanet.Node.DataAnnotations;
-using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 
-[Options(Position, Scope = "Validator")]
+[Options(Position)]
 public sealed class ValidatorOptions : OptionsBase<ValidatorOptions>
 {
     public const string Position = "Validator";
+
+    [DefaultValue(true)]
+    public bool IsEnabled { get; set; }
 
     [DnsEndPoint]
     public string EndPoint { get; set; } = string.Empty;

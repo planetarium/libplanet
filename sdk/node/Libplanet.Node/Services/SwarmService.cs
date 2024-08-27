@@ -4,7 +4,6 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Transports;
-using Libplanet.Node.DependencyInjection;
 using Libplanet.Node.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,8 +12,6 @@ using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
-[Singleton<ISwarmService>(Scope = "Swarm")]
-[Singleton<IHostedService>(Scope = "Swarm")]
 internal sealed class SwarmService(
     IServiceProvider serviceProvider,
     IOptions<SwarmOptions> options,

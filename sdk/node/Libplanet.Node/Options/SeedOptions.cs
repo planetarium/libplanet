@@ -1,12 +1,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Libplanet.Node.DataAnnotations;
-using Libplanet.Node.DependencyInjection;
 
 namespace Libplanet.Node.Options;
 
-[Options(BlocksyncSeed, Scope = "Seed")]
-[Options(ConsensusSeed, Scope = "Seed")]
 public sealed class SeedOptions : OptionsBase<SeedOptions>
 {
     public const string BlocksyncSeed = nameof(BlocksyncSeed);

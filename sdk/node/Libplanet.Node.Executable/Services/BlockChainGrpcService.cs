@@ -1,12 +1,10 @@
 using Grpc.Core;
 using Libplanet.Common;
-using Libplanet.Node.DependencyInjection;
 using Libplanet.Node.Services;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Node.API.Services;
 
-[Grpc]
 public class BlockChainGrpcService(
     IReadChainService blockChain)
     : BlockChain.BlockChainBase

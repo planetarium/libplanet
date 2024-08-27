@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Libplanet.Node.DependencyInjection;
+namespace Libplanet.Node;
 
 public static class ServiceUtility
 {

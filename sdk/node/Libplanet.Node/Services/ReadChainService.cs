@@ -1,10 +1,8 @@
-using Libplanet.Node.DependencyInjection;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Node.Services;
 
-[Singleton<IReadChainService>]
-internal sealed class ReadChainService(BlockChainService blockChainService) : IReadChainService
+internal sealed class ReadChainService(IBlockChainService blockChainService) : IReadChainService
 {
     public Block Tip => blockChainService.BlockChain.Tip;
 

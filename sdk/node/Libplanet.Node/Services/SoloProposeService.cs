@@ -15,9 +15,9 @@ internal sealed class SoloProposeService : BackgroundService
     private readonly ILogger<SoloProposeService> _logger;
 
     public SoloProposeService(
-        BlockChainService blockChainService,
+        IBlockChainService blockChainService,
         ILogger<SoloProposeService> logger,
-        IOptions<SoloProposeOption> soloProposeOption)
+        IOptions<SoloOptions> soloProposeOption)
     {
         _blockChain = blockChainService.BlockChain;
         var options = soloProposeOption.Value;

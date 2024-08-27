@@ -1,3 +1,4 @@
+using Libplanet.Node.API.Services;
 using Libplanet.Node.Extensions;
 using Libplanet.Node.Options.Schema;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -24,9 +25,7 @@ if (builder.Environment.IsDevelopment())
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
-var libplanetBuilder = builder.Services.AddLibplanetNode(builder.Configuration)
-    .WithSwarm()
-    .WithValidator();
+var libplanetBuilder = builder.Services.AddLibplanetNode(builder.Configuration);
 
 var app = builder.Build();
 var handlerMessage = """
@@ -36,7 +35,8 @@ var handlerMessage = """
 var schema = await OptionsSchemaBuilder.GetSchemaAsync(default);
 
 // Configure the HTTP request pipeline.
-app.MapGrpcServiceFromDomain(libplanetBuilder.Scopes);
+app.MapGrpcService<BlockChainGrpcService>();
+app.MapGrpcService<SchemaGrpcService>();
 app.MapGet("/", () => handlerMessage);
 app.MapGet("/schema", () => schema);
 
