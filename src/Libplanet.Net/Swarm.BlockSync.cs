@@ -61,8 +61,6 @@ namespace Libplanet.Net
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt =
                 await GetPeersWithExcerpts(
                     timeout, maximumPollPeers, cancellationToken);
-            peersWithBlockExcerpt = peersWithBlockExcerpt
-                .Where(pair => IsBlockNeeded(pair.Item2)).ToList();
             await PullBlocksAsync(peersWithBlockExcerpt, progress, cancellationToken);
         }
 

@@ -1009,7 +1009,14 @@ namespace Libplanet.Net
                         excerpt,
                         progress,
                         cancellationToken);
-                    return downloadedHashes;
+                    if (downloadedHashes.Any())
+                    {
+                        return downloadedHashes;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -1124,13 +1131,13 @@ namespace Libplanet.Net
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task with a <see cref="List{T}"/> of tuples
-        /// of <see cref="BoundPeer"/> and <see cref="IBlockExcerpt"/> ordered by
-        /// <see cref="IBlockExcerpt.Index"/> in descending order.</returns>
+        /// of <see cref="BoundPeer"/> and <see cref="IBlockExcerpt"/> ordered randomly.</returns>
         private async Task<List<(BoundPeer, IBlockExcerpt)>> GetPeersWithExcerpts(
             TimeSpan? dialTimeout,
             int maxPeersToDial,
             CancellationToken cancellationToken)
         {
+            Random random = new Random();
             Block tip = BlockChain.Tip;
             BlockHash genesisHash = BlockChain.Genesis.Hash;
             return (await DialExistingPeers(dialTimeout, maxPeersToDial, cancellationToken))
@@ -1139,7 +1146,7 @@ namespace Libplanet.Net
                         genesisHash.Equals(chainStatus.GenesisHash) &&
                         chainStatus.TipIndex > tip.Index)
                 .Select(pair => (pair.Item1, (IBlockExcerpt)pair.Item2))
-                .OrderByDescending(pair => pair.Item2.Index)
+                .OrderBy(_ => random.Next())
                 .ToList();
         }
 
