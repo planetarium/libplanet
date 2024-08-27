@@ -809,7 +809,7 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                return BlockLocator.Create(tipHash: Tip.Hash);
+                return new BlockLocator(Tip.Hash);
             }
             finally
             {
@@ -1288,22 +1288,22 @@ namespace Libplanet.Blockchain
 
                 _logger.Debug(
                     "Finding a branchpoint with locator [{LocatorHead}]",
-                    locator.FirstOrDefault());
-                BlockHash hash = locator.FirstOrDefault();
+                    locator.Hash);
+                BlockHash hash = locator.Hash;
                 if (_blocks.ContainsKey(hash)
                     && _blocks[hash] is Block block
                     && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                 {
                     _logger.Debug(
                         "Found a branchpoint with locator [{LocatorHead}]: {Hash}",
-                        locator.FirstOrDefault(),
+                        locator.Hash,
                         hash);
                     return hash;
                 }
 
                 _logger.Debug(
                     "Failed to find a branchpoint locator [{LocatorHead}]",
-                    locator.FirstOrDefault());
+                    locator.Hash);
                 return null;
             }
             finally

@@ -49,7 +49,7 @@ namespace Libplanet.Net
                     _logger.Debug(
                         "Received a {MessageType} message locator [{LocatorHead}]",
                         nameof(GetBlockHashesMsg),
-                        getBlockHashes.Locator.FirstOrDefault());
+                        getBlockHashes.Locator.Hash);
                     BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
                         FindNextHashesChunkSize
@@ -62,7 +62,7 @@ namespace Libplanet.Net
                         "with locator [{LocatorHead}]",
                         hashes.Count,
                         offset,
-                        getBlockHashes.Locator.FirstOrDefault());
+                        getBlockHashes.Locator.Hash);
                     var reply = new BlockHashesMsg(offset, hashes);
 
                     return Transport.ReplyMessageAsync(reply, message.Identity, default);

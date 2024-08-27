@@ -754,7 +754,7 @@ namespace Libplanet.Net
             _logger.Debug(
                 sendMsg,
                 nameof(GetBlockHashesMsg),
-                locator.FirstOrDefault());
+                locator.Hash);
 
             Message parsedMessage;
             try
@@ -1054,7 +1054,7 @@ namespace Libplanet.Net
                     "locator [{LocatorHead}]",
                     peer,
                     peerIndex,
-                    locator.FirstOrDefault());
+                    locator.Hash);
 
                 List<(long, BlockHash)> blockHashes = await GetBlockHashes(
                     peer: peer,

@@ -1,58 +1,33 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Blockchain
 {
     /// <summary>
-    /// A class that contains <see cref="BlockHash"/>es for a series of blocks.
+    /// A class that thinly wraps a <see cref="BlockHash"/> for the purpose of syncing blocks.
     /// </summary>
-    public class BlockLocator : IEnumerable<BlockHash>
+    public class BlockLocator : IEquatable<BlockLocator>
     {
-        private readonly List<BlockHash> _impl;
-
         /// <summary>
-        /// Initializes a new instance of <see cref="BlockLocator"/> from <paramref name="hashes"/>.
+        /// Initializes a new instance of <see cref="BlockLocator"/> from <paramref name="hash"/>.
         /// </summary>
-        /// <param name="hashes">Enumerable of <see cref="BlockHash"/>es to convert from.</param>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="hashes"/>
-        /// does not consist of a single element.
-        /// </exception>
-        public BlockLocator(IEnumerable<BlockHash> hashes)
+        /// <param name="hash">The <see cref="BlockHash"/> value to hold.</param>
+        public BlockLocator(BlockHash hash)
         {
-            _impl = hashes.Count() == 1
-                ? hashes.ToList()
-                : throw new ArgumentException(
-                    $"Given {nameof(hashes)} must have exactly one element: {hashes.Count()}",
-                    nameof(hashes));
+            Hash = hash;
         }
 
-        /// <summary>
-        /// <para>
-        /// Creates a new instance of <see cref="BlockLocator"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="tipHash">The <see cref="BlockHash"/> of the tip.</param>
-        /// <returns>
-        /// An instance of <see cref="BlockLocator"/> created with given arguments.
-        /// </returns>
-        public static BlockLocator Create(BlockHash tipHash) =>
-            new BlockLocator(new[] { tipHash });
+        public BlockHash Hash { get; }
 
-        /// <summary>
-        /// Gets the enumerator.
-        /// </summary>
-        /// <returns>The enumerator.</returns>
-        public IEnumerator<BlockHash> GetEnumerator()
-        {
-            return _impl.GetEnumerator();
-        }
+        /// <inheritdoc/>
+        public bool Equals(BlockLocator? other) =>
+            other is { } locator && Hash.Equals(locator.Hash);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _impl.GetEnumerator();
-        }
+        /// <inheritdoc/>
+        public override bool Equals(object? obj) =>
+            obj is BlockLocator other && Equals(other);
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => Hash.GetHashCode();
     }
 }
