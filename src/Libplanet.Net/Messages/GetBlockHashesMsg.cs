@@ -8,10 +8,9 @@ namespace Libplanet.Net.Messages
 {
     internal class GetBlockHashesMsg : MessageContent
     {
-        public GetBlockHashesMsg(BlockLocator locator, BlockHash? stop)
+        public GetBlockHashesMsg(BlockLocator locator)
         {
             Locator = locator;
-            Stop = stop;
         }
 
         public GetBlockHashesMsg(byte[][] dataFrames)
@@ -20,14 +19,9 @@ namespace Libplanet.Net.Messages
             Locator = new BlockLocator(
                 dataFrames.Skip(1).Take(requestedHashCount)
                 .Select(frame => new BlockHash(frame)));
-            Stop = dataFrames[1 + requestedHashCount].Length == 0
-                ? default(BlockHash?)
-                : new BlockHash(dataFrames[1 + requestedHashCount]);
         }
 
         public BlockLocator Locator { get; }
-
-        public BlockHash? Stop { get; }
 
         public override MessageType Type => MessageType.GetBlockHashes;
 
@@ -38,9 +32,6 @@ namespace Libplanet.Net.Messages
                 var frames = new List<byte[]>();
                 frames.Add(BitConverter.GetBytes(Locator.Count()));
                 frames.AddRange(Locator.Select(hash => hash.ToByteArray()));
-                frames.Add(Stop is { } s
-                    ? s.ToByteArray()
-                    : new byte[] { });
                 return frames;
             }
         }

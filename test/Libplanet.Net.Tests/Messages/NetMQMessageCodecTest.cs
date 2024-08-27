@@ -96,7 +96,7 @@ namespace Libplanet.Net.Tests.Messages
                 case MessageContent.MessageType.Pong:
                     return new PongMsg();
                 case MessageContent.MessageType.GetBlockHashes:
-                    return new GetBlockHashesMsg(chain.GetBlockLocator(), genesis.Hash);
+                    return new GetBlockHashesMsg(chain.GetBlockLocator());
                 case MessageContent.MessageType.TxIds:
                     return new TxIdsMsg(new[] { transaction.Id });
                 case MessageContent.MessageType.GetBlocks:

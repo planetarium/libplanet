@@ -466,11 +466,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, offsetIndex);
             Assert.Equal(new[] { block1.Hash, block2.Hash, block3.Hash }, hashes);
 
-            _blockChain.FindNextHashes(new BlockLocator(new[] { block0.Hash }), stop: block2.Hash)
-                .Deconstruct(out offsetIndex, out hashes);
-            Assert.Equal(0, offsetIndex);
-            Assert.Equal(new[] { block0.Hash, block1.Hash, block2.Hash }, hashes);
-
             _blockChain.FindNextHashes(new BlockLocator(new[] { block0.Hash }), count: 2)
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Equal(0, offsetIndex);
