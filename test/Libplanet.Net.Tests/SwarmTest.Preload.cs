@@ -958,7 +958,7 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreloadFromTheHighestTipIndexChain()
+        public async Task PreloadToTheHighestTipIndexChain()
         {
             var minerKey1 = new PrivateKey();
             Swarm minerSwarm1 = await CreateSwarm(minerKey1).ConfigureAwait(false);
@@ -971,13 +971,10 @@ namespace Libplanet.Net.Tests
             Block block1 = minerChain1.ProposeBlock(
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block1, CreateBlockCommit(block1));
+            minerChain2.Append(block1, CreateBlockCommit(block1));
             Block block2 = minerChain1.ProposeBlock(
                 minerKey1, CreateBlockCommit(minerChain1.Tip));
             minerChain1.Append(block2, CreateBlockCommit(block2));
-
-            Block block = minerChain2.ProposeBlock(
-                ChainPrivateKey, CreateBlockCommit(minerChain2.Tip));
-            minerChain2.Append(block, CreateBlockCommit(block));
 
             Assert.True(minerChain1.Count > minerChain2.Count);
 
@@ -988,7 +985,7 @@ namespace Libplanet.Net.Tests
                 await receiverSwarm.AddPeersAsync(
                     new[] { minerSwarm1.AsPeer, minerSwarm2.AsPeer },
                     null);
-                await receiverSwarm.PreloadAsync();
+                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1), 0);
             }
             finally
             {
