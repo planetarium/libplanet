@@ -88,6 +88,10 @@ to <code>BlockDemand</code>.  [<a href="https://github.com/planetarium/libplanet
 <li>(Libplanet.Store) Optimized <code>HashNode.ToBencodex()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/3922">#3922</a>, <a href="https://github.com/planetarium/libplanet/pull/3924">#3924</a>]</li>
 <li>(Libplanet.Store) Optimized internal conversions to <code>KeyBytes</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3926">#3926</a>]</li>
+<li>(Libplanet.Net) Changed the reporting behavior for <code>BlockHashDownloadState</code>
+and <code>BlockDownloadState</code> during preloading.  These no longer report
+meaningful data and it is strongly advised not to rely on these to track
+the progress of preloading.  [<a href="https://github.com/planetarium/libplanet/pull/3931">#3931</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
