@@ -62,7 +62,8 @@ public sealed class OptionsSchemaBuilder
             {
                 ExcludedTypeNames = [optionsType.FullName!],
             };
-            var typeSchema = JsonSchema.FromType(type, settings);
+            var schemaGenerator = new OptionsSchemaGenerator(settings);
+            var typeSchema = schemaGenerator.Generate(type);
             schema.Definitions[name] = typeSchema;
             optionsSchema.Properties.Add(name, new JsonSchemaProperty()
             {
