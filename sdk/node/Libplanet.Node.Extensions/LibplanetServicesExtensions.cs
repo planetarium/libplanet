@@ -1,7 +1,8 @@
-using Libplanet.Blockchain;
 using Libplanet.Node.Extensions.NodeBuilder;
 using Libplanet.Node.Options;
+using Libplanet.Node.Options.Schema;
 using Libplanet.Node.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -43,27 +44,50 @@ public static class LibplanetServicesExtensions
         services.AddSingleton<IReadChainService, ReadChainService>();
         services.AddSingleton<TransactionService>();
 
-        var serviceProvider = services.BuildServiceProvider();
-        var soloOptions = serviceProvider.GetRequiredService<IOptions<SoloOptions>>();
-        var swarmOptions = serviceProvider.GetRequiredService<IOptions<SwarmOptions>>();
-        var validatorOptions = serviceProvider.GetRequiredService<IOptions<ValidatorOptions>>();
         var nodeBuilder = new LibplanetNodeBuilder(services);
 
-        if (soloOptions.Value.IsEnabled)
+        if (configuration.IsOptionsEnabled(SoloOptions.Position))
         {
             nodeBuilder.WithSolo();
         }
 
-        if (swarmOptions.Value.IsEnabled)
+        if (configuration.IsOptionsEnabled(SwarmOptions.Position))
         {
             nodeBuilder.WithSwarm();
         }
 
-        if (validatorOptions.Value.IsEnabled)
+        if (configuration.IsOptionsEnabled(ValidatorOptions.Position))
         {
             nodeBuilder.WithValidator();
         }
 
         return nodeBuilder;
+    }
+
+    public static IApplicationBuilder MapSchemaBuilder(this IApplicationBuilder app, string pattern)
+    {
+        app.UseRouting();
+        app.UseEndpoints(endPoint =>
+        {
+            string? schema = null;
+            endPoint.MapGet(pattern, async () =>
+            {
+                schema ??= await OptionsSchemaBuilder.GetSchemaAsync(default);
+                return schema;
+            });
+        });
+
+        return app;
+    }
+
+    public static bool IsOptionsEnabled(
+        this IConfiguration configuration, string name)
+        => configuration.GetValue<bool>($"{name}:IsEnabled");
+
+    public static bool IsOptionsEnabled(
+        this IConfiguration configuration, string name, string propertyName)
+    {
+        var key = $"{name}:{propertyName}";
+        return configuration.GetValue<bool>(key);
     }
 }
