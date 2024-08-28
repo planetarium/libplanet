@@ -20,6 +20,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         var seed = new Seed(options);
         Assert.Equal(endPoint.Host, seed.BoundPeer.EndPoint.Host);
@@ -38,6 +39,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -53,6 +55,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -71,6 +74,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -87,6 +91,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -118,6 +123,7 @@ public class SeedTest
         {
             PrivateKey = seedPrivateKey.ToString(),
             EndPoint = seedEndPoint.ToString(),
+            AppProtocolVersion = apv.Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -177,6 +183,7 @@ public class SeedTest
         {
             PrivateKey = seedPrivateKey.ToString(),
             EndPoint = seedEndPoint.ToString(),
+            AppProtocolVersion = apv.Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
