@@ -1,5 +1,6 @@
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Net;
 
 namespace Libplanet.Node.Tests;
 
@@ -15,4 +16,7 @@ internal sealed class RandomPrivateKey
         => randomPrivateKey._privateKey;
 
     public override string ToString() => ByteUtil.Hex(_privateKey.ByteArray);
+
+    public AppProtocolVersion ToAppProtocolVersion(int version)
+        => AppProtocolVersion.Sign(_privateKey, version);
 }
