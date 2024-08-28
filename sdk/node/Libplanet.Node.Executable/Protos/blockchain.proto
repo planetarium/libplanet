@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option csharp_namespace = "Libplanet.Node.API";
 
-package node;
+package node.blockchain.v1;
 
 service BlockChain {
   rpc GetGenesisBlock (GetGenesisBlockRequest) returns (GetGenesisBlockReply);

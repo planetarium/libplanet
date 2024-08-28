@@ -5,9 +5,7 @@ using Libplanet.Types.Blocks;
 
 namespace Libplanet.Node.API.Services;
 
-public class BlockChainGrpcService(
-    IReadChainService blockChain)
-    : BlockChain.BlockChainBase
+public class BlockChainGrpcServiceV1(IReadChainService blockChain) : BlockChain.BlockChainBase
 {
     private readonly IReadChainService _blockChain = blockChain;
 

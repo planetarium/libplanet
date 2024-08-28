@@ -4,7 +4,7 @@ using Libplanet.Node.Options.Schema;
 
 namespace Libplanet.Node.API.Services;
 
-public class SchemaGrpcService : Schema.SchemaBase
+internal sealed class SchemaGrpcServiceV1 : Schema.SchemaBase
 {
     private string[]? _list;
     private string? _schema;
