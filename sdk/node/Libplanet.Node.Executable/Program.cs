@@ -1,13 +1,10 @@
+using Libplanet.Node.API.Explorer;
 using Libplanet.Node.API.Services;
 using Libplanet.Node.Extensions;
-using Libplanet.Node.Options.Schema;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-SynchronizationContext.SetSynchronizationContext(new());
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Logging.AddConsole();
-
 if (builder.Environment.IsDevelopment())
 {
     builder.WebHost.ConfigureKestrel(options =>
@@ -15,34 +12,48 @@ if (builder.Environment.IsDevelopment())
         // Setup a HTTP/2 endpoint without TLS.
         options.ListenLocalhost(5259, o => o.Protocols =
             HttpProtocols.Http1AndHttp2);
+        options.ListenLocalhost(5260, o => o.Protocols =
+            HttpProtocols.Http2);
     });
+
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+    builder.Services.AddAuthorization();
+    builder.Services.AddAuthentication("Bearer").AddJwtBearer();
 }
 
-// Additional configuration is required to successfully run gRPC on macOS.
-// For instructions on how to configure Kestrel and gRPC clients on macOS,
-// visit https://go.microsoft.com/fwlink/?linkid=2099682
-
-// Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
-var libplanetBuilder = builder.Services.AddLibplanetNode(builder.Configuration);
+builder.Services.AddLibplanetNode(builder.Configuration);
 
-var app = builder.Build();
+if (builder.IsExplorerEnabled())
+{
+    builder.Services.AddNodeExplorer();
+}
+
 var handlerMessage = """
     Communication with gRPC endpoints must be made through a gRPC client. To learn how to
     create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909
     """;
-var schema = await OptionsSchemaBuilder.GetSchemaAsync(default);
+using var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.MapGrpcService<BlockChainGrpcService>();
-app.MapGrpcService<SchemaGrpcService>();
+app.MapGrpcService<BlockChainGrpcServiceV1>();
+app.MapGrpcService<SchemaGrpcServiceV1>();
 app.MapGet("/", () => handlerMessage);
-app.MapGet("/schema", () => schema);
-
 if (builder.Environment.IsDevelopment())
 {
     app.MapGrpcReflectionService().AllowAnonymous();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapSchemaBuilder("/v1/schema");
+app.MapGet("/schema", context => Task.Run(() => context.Response.Redirect("/v1/schema")));
+
+if (builder.IsExplorerEnabled())
+{
+    app.UseNodeExplorer();
 }
 
 await app.RunAsync();

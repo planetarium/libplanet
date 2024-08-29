@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option csharp_namespace = "Libplanet.Node.API";
 
-package node;
+package node.schema.v1;
 
 service Schema {
   rpc GetList(GetListRequest) returns (GetListReply);
