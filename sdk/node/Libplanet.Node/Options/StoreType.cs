@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Libplanet.Node.Options;
 
 public enum StoreType
