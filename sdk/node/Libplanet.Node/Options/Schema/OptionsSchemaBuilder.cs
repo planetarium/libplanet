@@ -61,6 +61,7 @@ public sealed class OptionsSchemaBuilder
             var settings = new SystemTextJsonSchemaGeneratorSettings
             {
                 ExcludedTypeNames = [optionsType.FullName!],
+                FlattenInheritanceHierarchy = true,
             };
             var schemaGenerator = new OptionsSchemaGenerator(settings);
             var typeSchema = schemaGenerator.Generate(type);

@@ -4,22 +4,18 @@ using Libplanet.Node.DataAnnotations;
 
 namespace Libplanet.Node.Options;
 
-public sealed class SeedOptions : OptionsBase<SeedOptions>
+public sealed class SeedOptions : AppProtocolOptionsBase<SeedOptions>
 {
     public const string BlocksyncSeed = nameof(BlocksyncSeed);
     public const string ConsensusSeed = nameof(ConsensusSeed);
 
-    [PrivateKey]
-    [Description("The private key of the seed node.")]
-    public string PrivateKey { get; set; } = string.Empty;
-
-    [AppProtocolVersion]
-    [Description("The version of the application protocol.")]
-    public string AppProtocolVersion { get; set; } = string.Empty;
-
     [DnsEndPoint]
     [Description("The endpoint of the seed node.")]
     public string EndPoint { get; set; } = string.Empty;
+
+    [PrivateKey]
+    [Description("The private key of Seed.")]
+    public string PrivateKey { get; set; } = string.Empty;
 
     [Range(0, int.MaxValue)]
     [Description("The interval to refresh the peer list.")]
