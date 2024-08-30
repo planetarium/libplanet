@@ -1,5 +1,6 @@
 using Libplanet.Node.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Libplanet.Node.Extensions.NodeBuilder;
 
@@ -25,8 +26,9 @@ public class LibplanetNodeBuilder : ILibplanetNodeBuilder
 
     public ILibplanetNodeBuilder WithSwarm()
     {
-        Services.AddSingleton<ISwarmService, SwarmService>();
-        Services.AddHostedService<SwarmService>();
+        Services.AddSingleton<SwarmService>();
+        Services.AddSingleton(s => (ISwarmService)s.GetRequiredService<SwarmService>());
+        Services.AddSingleton(s => (IHostedService)s.GetRequiredService<SwarmService>());
         _scopeList.Add("Swarm");
         return this;
     }
