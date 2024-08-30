@@ -4,7 +4,7 @@ using Libplanet.Node.DataAnnotations;
 namespace Libplanet.Node.Options;
 
 [Options(Position)]
-public sealed class ValidatorOptions : OptionsBase<ValidatorOptions>, IEnabledOptions
+public sealed class ValidatorOptions : NodeOptionsBase<ValidatorOptions>, IEnabledOptions
 {
     public const string Position = "Validator";
 
