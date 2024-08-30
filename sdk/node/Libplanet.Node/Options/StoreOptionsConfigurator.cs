@@ -7,27 +7,27 @@ internal sealed class StoreOptionsConfigurator(ILogger<StoreOptionsConfigurator>
 {
     protected override void OnConfigure(StoreOptions options)
     {
-        if (options.Type == StoreType.Memory)
+        if (options.Type == StoreType.InMemory)
         {
             if (options.RootPath != string.Empty)
             {
                 options.RootPath = string.Empty;
                 logger.LogWarning(
-                    "RootPath is ignored because StoreType is {Memory}.", StoreType.Memory);
+                    "RootPath is ignored because StoreType is {Memory}.", StoreType.InMemory);
             }
 
             if (options.StoreName != string.Empty)
             {
                 options.StoreName = string.Empty;
                 logger.LogWarning(
-                    "StorePath is ignored because StoreType is {Memory}.", StoreType.Memory);
+                    "StorePath is ignored because StoreType is {Memory}.", StoreType.InMemory);
             }
 
             if (options.StateStoreName != string.Empty)
             {
                 options.StateStoreName = string.Empty;
                 logger.LogWarning(
-                    "StateStorePath is ignored because StoreType is {Memory}.", StoreType.Memory);
+                    "StateStorePath is ignored because StoreType is {Memory}.", StoreType.InMemory);
             }
         }
         else

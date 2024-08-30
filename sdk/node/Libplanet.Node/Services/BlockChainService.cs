@@ -137,8 +137,8 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
     {
         return storeOptions.Type switch
         {
-            StoreType.Disk => CreateDiskStore(),
-            StoreType.Memory => CreateMemoryStore(),
+            StoreType.RocksDB => CreateDiskStore(),
+            StoreType.InMemory => CreateMemoryStore(),
             _ => throw new NotSupportedException($"Unsupported store type: {storeOptions.Type}"),
         };
 
