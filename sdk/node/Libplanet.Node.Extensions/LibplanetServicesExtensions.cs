@@ -41,6 +41,8 @@ public static class LibplanetServicesExtensions
         services.AddSingleton<IConfigureOptions<SoloOptions>, SoloOptionsConfigurator>();
 
         services.AddSingleton<PolicyService>();
+        services.AddSingleton<StoreService>();
+        services.AddSingleton(s => (IStoreService)s.GetRequiredService<StoreService>());
         services.AddSingleton<IBlockChainService, BlockChainService>();
         services.AddSingleton<IReadChainService, ReadChainService>();
         services.AddSingleton<TransactionService>();
