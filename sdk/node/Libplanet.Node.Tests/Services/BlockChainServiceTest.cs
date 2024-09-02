@@ -25,12 +25,14 @@ public class BlockChainServiceTest
 
         var serviceProvider = services.BuildServiceProvider();
         var policyService = new PolicyService();
-        var logger = new NullLoggerFactory().CreateLogger<BlockChainService>();
+        var loggerFactory = new NullLoggerFactory();
+        var logger = loggerFactory.CreateLogger<BlockChainService>();
         var genesisOptions = serviceProvider.GetRequiredService<IOptions<GenesisOptions>>();
         var storeOptions = serviceProvider.GetRequiredService<IOptions<StoreOptions>>();
+        var storeService = new StoreService(storeOptions);
         var blockChainService = new BlockChainService(
             genesisOptions: genesisOptions,
-            storeOptions: storeOptions,
+            storeService: storeService,
             policyService: policyService,
             actionLoaderProviders: [],
             logger: logger);
@@ -52,6 +54,8 @@ public class BlockChainServiceTest
         services.AddSingleton<IConfigureOptions<SwarmOptions>, SwarmOptionsConfigurator>();
         services.AddSingleton<PolicyService>();
         services.AddSingleton<BlockChainService>();
+        services.AddSingleton<StoreService>();
+        services.AddSingleton(s => (IStoreService)s.GetRequiredService<StoreService>());
         var serviceProvider = services.BuildServiceProvider();
         var blockChainService = serviceProvider.GetRequiredService<BlockChainService>();
         var blockChain = blockChainService.BlockChain;
