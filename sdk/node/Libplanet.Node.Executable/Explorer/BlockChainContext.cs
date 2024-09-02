@@ -1,4 +1,5 @@
 using System.Reflection;
+using Libplanet.Blockchain;
 using Libplanet.Explorer.Indexing;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Net;
@@ -12,7 +13,7 @@ internal sealed class BlockChainContext(
 {
     public bool Preloaded => false;
 
-    public Blockchain.BlockChain BlockChain => blockChainService.BlockChain;
+    public BlockChain BlockChain => blockChainService.BlockChain;
 
 #pragma warning disable S3011 // Reflection should not be used to increase accessibility ...
     public IStore Store
