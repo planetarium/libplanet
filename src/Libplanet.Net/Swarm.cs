@@ -1070,13 +1070,6 @@ namespace Libplanet.Net
                         pair.Item1,
                         pair.Item2);
                     downloaded.Add(pair);
-                    progress?.Report(
-                        new BlockHashDownloadState
-                        {
-                            EstimatedTotalBlockHashCount = blockHashes.Count,
-                            ReceivedBlockHashCount = downloaded.Count,
-                            SourcePeer = peer,
-                        });
                 }
 
                 return downloaded;

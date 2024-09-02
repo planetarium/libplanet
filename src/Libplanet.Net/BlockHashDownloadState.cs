@@ -5,6 +5,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of downloading block hashes.
     /// </summary>
+    [Obsolete("This is no longer compatible with the current preloading scheme.")]
     public class BlockHashDownloadState : BlockSyncState, IEquatable<BlockHashDownloadState>
     {
         /// <summary>

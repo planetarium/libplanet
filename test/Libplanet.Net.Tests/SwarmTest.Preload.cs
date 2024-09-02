@@ -203,18 +203,6 @@ namespace Libplanet.Net.Tests
                 for (var i = 1; i < minerChain.Count; i++)
                 {
                     var b = minerChain[i];
-                    var state = new BlockHashDownloadState
-                    {
-                        EstimatedTotalBlockHashCount = 10,
-                        ReceivedBlockHashCount = 1,
-                        SourcePeer = minerSwarm.AsPeer,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var b = minerChain[i];
                     var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
@@ -572,17 +560,6 @@ namespace Libplanet.Net.Tests
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var state = new BlockHashDownloadState
-                    {
-                        EstimatedTotalBlockHashCount = 10,
-                        ReceivedBlockHashCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
                     var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = minerChain[i].Hash,
@@ -669,9 +646,10 @@ namespace Libplanet.Net.Tests
             var shouldStopSwarm =
                 swarm0.AsPeer.Equals(receiverSwarm.Peers.First()) ? swarm0 : swarm1;
 
+            // FIXME: This relies on progress report to artificially stop preloading.
             async void Action(BlockSyncState state)
             {
-                if (!startedStop && state is BlockDownloadState)
+                if (!startedStop)
                 {
                     startedStop = true;
                     await shouldStopSwarm.StopAsync(TimeSpan.Zero);

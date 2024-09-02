@@ -76,7 +76,6 @@ namespace Libplanet.Net
             }
 
             long totalBlocksToDownload = 0L;
-            long receivedBlockCount = 0L;
             Block tempTip = BlockChain.Tip;
             var blocks = new List<(Block, BlockCommit)>();
 
@@ -177,16 +176,6 @@ namespace Libplanet.Net
                     {
                         tempTip = block;
                     }
-
-                    progress?.Report(new BlockDownloadState
-                    {
-                        TotalBlockCount = Math.Max(
-                            totalBlocksToDownload,
-                            ++receivedBlockCount),
-                        ReceivedBlockCount = receivedBlockCount,
-                        ReceivedBlockHash = block.Hash,
-                        SourcePeer = peer,
-                    });
                 }
             }
             catch (Exception e)
