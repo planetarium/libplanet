@@ -25,9 +25,6 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
- -  (Libplanet.Net) Changed the internal structure and encoding
-    of `GetBlockHashesMsg`.  [[#3942]]
-
 ### Backward-incompatible storage format changes
 
 ### Added APIs
