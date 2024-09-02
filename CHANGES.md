@@ -10,9 +10,6 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Changed `BlockLocator.Create()` to take a single `BlockHash`.  [[#3913]]
- -  Changed `BlockLocator()` to throw an `ArgumentException` when
-    the number of given `BlockHash`es is not 1.  [[#3913]]
  -  Removed `threshold` parameter from `BlockChain.GetBlockLocator()`.
     [[#3913]]
  -  (Libplanet.Net) Removed `SwarmOptions.BranchpointThreshold` property.
@@ -21,8 +18,15 @@ To be released.
     [[#3922], [#3924]]
  -  (Libplanet.Net) Removed `Header` property and added `BlockExcerpt` property
     to `BlockDemand`.  [[#3934]]
+ -  Removed `BlockLocator.Create()`.  [[#3942]]
+ -  Changed `BlockLocator()` to take a single `BlockHash`.  [[#3942]]
+ -  Changed `BlockLocator()` to no longer implemnet `IEnumerable<BlockHash>`.
+    [[#3942]]
 
 ### Backward-incompatible network protocol changes
+
+ -  (Libplanet.Net) Changed the internal structure and encoding
+    of `GetBlockHashesMsg`.  [[#3942]]
 
 ### Backward-incompatible storage format changes
 
@@ -52,6 +56,7 @@ To be released.
 [#3926]: https://github.com/planetarium/libplanet/pull/3926
 [#3931]: https://github.com/planetarium/libplanet/pull/3931
 [#3934]: https://github.com/planetarium/libplanet/pull/3934
+[#3942]: https://github.com/planetarium/libplanet/pull/3942
 
 
 Version 5.2.2
