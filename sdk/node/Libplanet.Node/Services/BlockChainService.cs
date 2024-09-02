@@ -36,7 +36,7 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
 
     public BlockChainService(
         IOptions<GenesisOptions> genesisOptions,
-        IOptions<StoreOptions> storeOptions,
+        IStoreService storeService,
         PolicyService policyService,
         IEnumerable<IActionLoaderProvider> actionLoaderProviders,
         ILogger<BlockChainService> logger)
@@ -45,7 +45,8 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
         _logger = logger;
         _blockChain = CreateBlockChain(
             genesisOptions: genesisOptions.Value,
-            storeOptions: storeOptions.Value,
+            store: storeService.Store,
+            stateStore: storeService.StateStore,
             stagePolicy: policyService.StagePolicy,
             renderers: [this],
             actionLoaders: [.. actionLoaderProviders.Select(item => item.GetActionLoader())]);
@@ -91,12 +92,12 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
 
     private static BlockChain CreateBlockChain(
         GenesisOptions genesisOptions,
-        StoreOptions storeOptions,
+        IStore store,
+        IStateStore stateStore,
         IStagePolicy stagePolicy,
         IRenderer[] renderers,
         IActionLoader[] actionLoaders)
     {
-        var (store, stateStore) = CreateStore(storeOptions);
         var actionLoader = new AggregateTypedActionLoader(actionLoaders);
         var actionEvaluator = new ActionEvaluator(
             policyActionsRegistry: new(),
@@ -131,31 +132,6 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
             blockChainStates: blockChainStates,
             actionEvaluator: actionEvaluator,
             renderers: renderers);
-    }
-
-    private static (IStore, IStateStore) CreateStore(StoreOptions storeOptions)
-    {
-        return storeOptions.Type switch
-        {
-            StoreType.RocksDB => CreateDiskStore(),
-            StoreType.InMemory => CreateMemoryStore(),
-            _ => throw new NotSupportedException($"Unsupported store type: {storeOptions.Type}"),
-        };
-
-        (MemoryStore, TrieStateStore) CreateMemoryStore()
-        {
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            return (store, stateStore);
-        }
-
-        (RocksDBStore.RocksDBStore, TrieStateStore) CreateDiskStore()
-        {
-            var store = new RocksDBStore.RocksDBStore(storeOptions.StoreName);
-            var keyValueStore = new RocksDBKeyValueStore(storeOptions.StateStoreName);
-            var stateStore = new TrieStateStore(keyValueStore);
-            return (store, stateStore);
-        }
     }
 
     private static Block CreateGenesisBlock(GenesisOptions genesisOptions)
