@@ -82,6 +82,8 @@ public class NodeServiceTest
         services.AddSingleton<PolicyService>();
         services.AddSingleton<IBlockChainService, BlockChainService>();
         services.AddSingleton<SwarmService>();
+        services.AddSingleton<StoreService>();
+        services.AddSingleton(s => (IStoreService)s.GetRequiredService<StoreService>());
         return services;
     }
 }
