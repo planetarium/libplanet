@@ -1306,13 +1306,13 @@ block when it's instantiated.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.FindNextHashes(Libplanet.Blockchain.BlockLocator%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.FindNextHashes(Libplanet.Blockchain.BlockLocator%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L672">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L669">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_FindNextHashes_" data-uid="Libplanet.Blockchain.BlockChain.FindNextHashes*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Int32_" data-uid="Libplanet.Blockchain.BlockChain.FindNextHashes(Libplanet.Blockchain.BlockLocator,System.Nullable{Libplanet.Types.Blocks.BlockHash},System.Int32)">FindNextHashes(BlockLocator, Nullable&lt;BlockHash&gt;, Int32)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Int32_" data-uid="Libplanet.Blockchain.BlockChain.FindNextHashes(Libplanet.Blockchain.BlockLocator,System.Int32)">FindNextHashes(BlockLocator, Int32)</h4>
   <div class="markdown level1 summary"><p>Finds the branch point <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> between this <a class="xref" href="Libplanet.Blockchain.BlockChain.html">BlockChain</a>
 and <code data-dev-comment-type="paramref" class="paramref">locator</code> and returns the list of <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>es of
 successive <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s starting from the branch point
@@ -1321,7 +1321,7 @@ successive <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s s
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Tuple&lt;long?, IReadOnlyList&lt;BlockHash&gt;&gt; FindNextHashes(BlockLocator locator, BlockHash? stop = null, int count = 500)</code></pre>
+    <pre><code class="lang-csharp hljs">public Tuple&lt;long?, IReadOnlyList&lt;BlockHash&gt;&gt; FindNextHashes(BlockLocator locator, int count = 500)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1338,13 +1338,6 @@ successive <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s s
         <td><span class="parametername">locator</span></td>
         <td><p>The <a class="xref" href="Libplanet.Blockchain.BlockLocator.html">BlockLocator</a> to find the branching point
 from.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
-        <td><span class="parametername">stop</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> to stop looking for subsequent blocks
-once encountered.</p>
 </td>
       </tr>
       <tr>
@@ -1374,7 +1367,7 @@ returns a tuple of <span class="xref">null</span> and an empty array of
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_BlockChain_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Nullable_Libplanet_Types_Blocks_BlockHash__System_Int32__remarks">Remarks</h5>
+  <h5 id="Libplanet_Blockchain_BlockChain_FindNextHashes_Libplanet_Blockchain_BlockLocator_System_Int32__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This object is guaranteed that it has at least one block, since it takes a genesis
 block when it's instantiated.</p>
 </div>
@@ -1383,7 +1376,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_Fork_Libplanet_Types_Blocks_BlockHash_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.Fork(Libplanet.Types.Blocks.BlockHash%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L729">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L720">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_Fork_" data-uid="Libplanet.Blockchain.BlockChain.Fork*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_Fork_Libplanet_Types_Blocks_BlockHash_System_Boolean_" data-uid="Libplanet.Blockchain.BlockChain.Fork(Libplanet.Types.Blocks.BlockHash,System.Boolean)">Fork(BlockHash, Boolean)</h4>
@@ -1443,7 +1436,7 @@ block when it's instantiated.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L878">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L869">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_GetBlockCommit_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockCommit*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_GetBlockCommit_Libplanet_Types_Blocks_BlockHash_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockCommit(Libplanet.Types.Blocks.BlockHash)">GetBlockCommit(BlockHash)</h4>
@@ -1499,7 +1492,7 @@ then returns <span class="xref">null</span>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetBlockCommit_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetBlockCommit(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L851">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L842">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_GetBlockCommit_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockCommit*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_GetBlockCommit_System_Int64_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockCommit(System.Int64)">GetBlockCommit(Int64)</h4>
@@ -1560,7 +1553,7 @@ Following conditions will return <span class="xref">null</span>:</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_GetBlockLocator.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain.GetBlockLocator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L816">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet/Blockchain/BlockChain.cs/#L807">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_GetBlockLocator_" data-uid="Libplanet.Blockchain.BlockChain.GetBlockLocator*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_GetBlockLocator" data-uid="Libplanet.Blockchain.BlockChain.GetBlockLocator">GetBlockLocator()</h4>
