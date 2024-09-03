@@ -442,7 +442,7 @@ namespace Libplanet.Tests.Blockchain
             IReadOnlyList<BlockHash> hashes;
 
             _blockChain.FindNextHashes(
-                new BlockLocator(new BlockHash[] { _blockChain.Genesis.Hash }))
+                new BlockLocator(_blockChain.Genesis.Hash))
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Single(hashes);
             Assert.Equal(_blockChain.Genesis.Hash, hashes.First());
@@ -456,22 +456,17 @@ namespace Libplanet.Tests.Blockchain
                 key, lastCommit: CreateBlockCommit(_blockChain.Tip));
             _blockChain.Append(block3, CreateBlockCommit(block3));
 
-            _blockChain.FindNextHashes(new BlockLocator(new[] { block0.Hash }))
+            _blockChain.FindNextHashes(new BlockLocator(block0.Hash))
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Equal(0, offsetIndex);
             Assert.Equal(new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash }, hashes);
 
-            _blockChain.FindNextHashes(new BlockLocator(new[] { block1.Hash }))
+            _blockChain.FindNextHashes(new BlockLocator(block1.Hash))
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Equal(1, offsetIndex);
             Assert.Equal(new[] { block1.Hash, block2.Hash, block3.Hash }, hashes);
 
-            _blockChain.FindNextHashes(new BlockLocator(new[] { block0.Hash }), stop: block2.Hash)
-                .Deconstruct(out offsetIndex, out hashes);
-            Assert.Equal(0, offsetIndex);
-            Assert.Equal(new[] { block0.Hash, block1.Hash, block2.Hash }, hashes);
-
-            _blockChain.FindNextHashes(new BlockLocator(new[] { block0.Hash }), count: 2)
+            _blockChain.FindNextHashes(new BlockLocator(block0.Hash), count: 2)
                 .Deconstruct(out offsetIndex, out hashes);
             Assert.Equal(0, offsetIndex);
             Assert.Equal(new[] { block0.Hash, block1.Hash }, hashes);
@@ -804,7 +799,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             BlockLocator actual = _blockChain.GetBlockLocator();
-            BlockLocator expected = new BlockLocator(new[] { blocks[9].Hash });
+            BlockLocator expected = new BlockLocator(blocks[9].Hash);
 
             Assert.Equal(expected, actual);
         }
@@ -1450,10 +1445,10 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(b1.PreviousHash, _blockChain.Genesis.Hash);
 
-            var emptyLocator = new BlockLocator(new[] { _blockChain.Genesis.Hash });
+            var emptyLocator = new BlockLocator(_blockChain.Genesis.Hash);
             var invalidLocator = new BlockLocator(
-                new[] { new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)) });
-            var locator = new BlockLocator(new[] { b4.Hash });
+                new BlockHash(TestUtils.GetRandomBytes(BlockHash.Size)));
+            var locator = new BlockLocator(b4.Hash);
 
             using (var emptyFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
             using (var forkFx = new MemoryStoreFixture(_policy.PolicyActionsRegistry))

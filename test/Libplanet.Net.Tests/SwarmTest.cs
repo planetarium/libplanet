@@ -525,10 +525,9 @@ namespace Libplanet.Net.Tests
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
 
-                List<(long, BlockHash)> inventories1 = await swarmB.GetBlockHashes(
+                List<(long, BlockHash)> inventories = await swarmB.GetBlockHashes(
                     swarmA.AsPeer,
-                    new BlockLocator(new[] { genesis.Hash }),
-                    null);
+                    new BlockLocator(genesis.Hash));
                 Assert.Equal(
                     new[]
                     {
@@ -536,20 +535,12 @@ namespace Libplanet.Net.Tests
                         (block1.Index, block1.Hash),
                         (block2.Index, block2.Hash),
                     },
-                    inventories1);
-
-                List<(long, BlockHash)> inventories2 = await swarmB.GetBlockHashes(
-                    swarmA.AsPeer,
-                    new BlockLocator(new[] { genesis.Hash }),
-                    block1.Hash);
-                Assert.Equal(
-                    new[] { (genesis.Index, genesis.Hash), (block1.Index, block1.Hash) },
-                    inventories2);
+                    inventories);
 
                 (Block, BlockCommit)[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
                         swarmA.AsPeer,
-                        inventories1.Select(pair => pair.Item2),
+                        inventories.Select(pair => pair.Item2),
                         cancellationToken: default
                     ).ToArrayAsync();
                 Assert.Equal(
@@ -594,7 +585,7 @@ namespace Libplanet.Net.Tests
 
                 List<(long, BlockHash)> hashes = await swarmB.GetBlockHashes(
                     peer,
-                    new BlockLocator(new[] { genesis.Hash }),
+                    new BlockLocator(genesis.Hash),
                     null);
 
                 ITransport transport = swarmB.Transport;

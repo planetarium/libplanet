@@ -739,25 +739,22 @@ namespace Libplanet.Net
         internal async Task<List<(long, BlockHash)>> GetBlockHashes(
             BoundPeer peer,
             BlockLocator locator,
-            BlockHash? stop,
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default)
         {
             var sessionRandom = new System.Random();
-            var request = new GetBlockHashesMsg(locator, stop);
+            var request = new GetBlockHashesMsg(locator);
 
             TimeSpan transportTimeout = timeout is { } t
                 && t > Options.TimeoutOptions.GetBlockHashesTimeout
                     ? t
                     : Options.TimeoutOptions.GetBlockHashesTimeout;
             const string sendMsg =
-                "Sending a {MessageType} " +
-                "message with locator [{LocatorHead}] (stop: {Stop})...";
+                "Sending a {MessageType} message with locator [{LocatorHead}]";
             _logger.Debug(
                 sendMsg,
                 nameof(GetBlockHashesMsg),
-                locator.FirstOrDefault(),
-                stop);
+                locator.Hash);
 
             Message parsedMessage;
             try
@@ -1057,12 +1054,11 @@ namespace Libplanet.Net
                     "locator [{LocatorHead}]",
                     peer,
                     peerIndex,
-                    locator.FirstOrDefault());
+                    locator.Hash);
 
                 List<(long, BlockHash)> blockHashes = await GetBlockHashes(
                     peer: peer,
                     locator: locator,
-                    stop: null,
                     timeout: null,
                     cancellationToken: cancellationToken);
 

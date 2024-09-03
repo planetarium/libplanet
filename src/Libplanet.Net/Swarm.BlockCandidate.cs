@@ -433,7 +433,6 @@ namespace Libplanet.Net
             List<(long, BlockHash)> hashes = await GetBlockHashes(
                 peer: peer,
                 locator: locator,
-                stop: stop.Hash,
                 timeout: null,
                 cancellationToken: cancellationToken);
 

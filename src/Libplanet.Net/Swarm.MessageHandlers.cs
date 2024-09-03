@@ -47,12 +47,11 @@ namespace Libplanet.Net
                 case GetBlockHashesMsg getBlockHashes:
                 {
                     _logger.Debug(
-                        "Received a {MessageType} message (stop: {Stop})",
+                        "Received a {MessageType} message locator [{LocatorHead}]",
                         nameof(GetBlockHashesMsg),
-                        getBlockHashes.Stop);
+                        getBlockHashes.Locator.Hash);
                     BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
-                        getBlockHashes.Stop,
                         FindNextHashesChunkSize
                     ).Deconstruct(
                         out long? offset,
@@ -60,11 +59,10 @@ namespace Libplanet.Net
                     );
                     _logger.Debug(
                         "Found {HashCount} hashes after the branchpoint (offset: {Offset}) " +
-                        "with locator [{LocatorHead}] (stop: {Stop})",
+                        "with locator [{LocatorHead}]",
                         hashes.Count,
                         offset,
-                        getBlockHashes.Locator.FirstOrDefault(),
-                        getBlockHashes.Stop);
+                        getBlockHashes.Locator.Hash);
                     var reply = new BlockHashesMsg(offset, hashes);
 
                     return Transport.ReplyMessageAsync(reply, message.Identity, default);
