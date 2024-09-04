@@ -76,17 +76,12 @@ namespace Libplanet.Net
             }
 
             long totalBlocksToDownload = 0L;
-            long receivedBlockCount = 0L;
             Block tempTip = BlockChain.Tip;
             var blocks = new List<(Block, BlockCommit)>();
 
             try
             {
-                var blockCompletion = new BlockCompletion<BoundPeer>(
-                    completionPredicate: BlockChain.ContainsBlock,
-                    window: InitialBlockDownloadWindow
-                );
-                var demandBlockHashes = await GetDemandBlockHashes(
+                (var peer, var demandBlockHashes) = await GetDemandBlockHashes(
                     BlockChain,
                     peersWithBlockExcerpt,
                     progress,
@@ -122,10 +117,7 @@ namespace Libplanet.Net
                         index,
                         hash
                     );
-                    if (blockCompletion.Demand(hash))
-                    {
-                        totalBlocksToDownload++;
-                    }
+                    totalBlocksToDownload++;
                 }
 
                 if (totalBlocksToDownload == 0)
@@ -134,23 +126,20 @@ namespace Libplanet.Net
                     return;
                 }
 
-                IAsyncEnumerable<Tuple<Block, BlockCommit, BoundPeer>> completedBlocks =
-                    blockCompletion.Complete(
-                        peers: peersWithBlockExcerpt.Select(pair => pair.Item1).ToList(),
-                        blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken
-                    );
+                var downloadedBlocks = GetBlocksAsync(
+                    peer,
+                    demandBlockHashes.Select(pair => pair.Item2),
+                    cancellationToken);
 
                 await foreach (
-                    (Block block, BlockCommit commit, BoundPeer sourcePeer)
-                    in completedBlocks.WithCancellation(cancellationToken))
+                    (Block block, BlockCommit commit)
+                    in downloadedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
                         "Got #{BlockIndex} {BlockHash} from {Peer}",
                         block.Index,
                         block.Hash,
-                        sourcePeer
-                    );
+                        peer);
                     cancellationToken.ThrowIfCancellationRequested();
 
                     if (block.Index == 0 && !block.Hash.Equals(BlockChain.Genesis.Hash))
@@ -187,34 +176,7 @@ namespace Libplanet.Net
                     {
                         tempTip = block;
                     }
-
-                    progress?.Report(new BlockDownloadState
-                    {
-                        TotalBlockCount = Math.Max(
-                            totalBlocksToDownload,
-                            ++receivedBlockCount),
-                        ReceivedBlockCount = receivedBlockCount,
-                        ReceivedBlockHash = block.Hash,
-                        SourcePeer = sourcePeer,
-                    });
                 }
-
-                BlockHash? previousHash = blocks.First().Item1.PreviousHash;
-                Block branchpoint;
-                BlockCommit branchpointCommit;
-                if (previousHash != null)
-                {
-                    branchpoint = BlockChain.Store.GetBlock(
-                        (BlockHash)previousHash);
-                    branchpointCommit = BlockChain.GetBlockCommit(branchpoint.Hash);
-                }
-                else
-                {
-                    branchpoint = BlockChain.Genesis;
-                    branchpointCommit = null;
-                }
-
-                blocks.Insert(0, (branchpoint, branchpointCommit));
             }
             catch (Exception e)
             {

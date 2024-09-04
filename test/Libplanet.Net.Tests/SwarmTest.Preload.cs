@@ -203,31 +203,6 @@ namespace Libplanet.Net.Tests
                 for (var i = 1; i < minerChain.Count; i++)
                 {
                     var b = minerChain[i];
-                    var state = new BlockHashDownloadState
-                    {
-                        EstimatedTotalBlockHashCount = 10,
-                        ReceivedBlockHashCount = 1,
-                        SourcePeer = minerSwarm.AsPeer,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var b = minerChain[i];
-                    var state = new BlockDownloadState
-                    {
-                        ReceivedBlockHash = b.Hash,
-                        TotalBlockCount = i == 10 || i == 11 ? 12 : 11,
-                        ReceivedBlockCount = i,
-                        SourcePeer = minerSwarm.AsPeer,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var b = minerChain[i];
                     var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
@@ -248,13 +223,6 @@ namespace Libplanet.Net.Tests
                 _logger.Debug("Expected preload states: {@expectedStates}", expectedStates);
                 _logger.Debug("Actual preload states: {@actualStates}", actualStates);
 
-                Assert.Equal(
-                    expectedStates
-                        .OfType<BlockDownloadState>()
-                        .Select(state => state.ReceivedBlockHash),
-                    actualStates
-                        .OfType<BlockDownloadState>()
-                        .Select(state => state.ReceivedBlockHash));
                 Assert.Equal(
                     expectedStates
                         .OfType<ActionExecutionState>()
@@ -592,29 +560,6 @@ namespace Libplanet.Net.Tests
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var state = new BlockHashDownloadState
-                    {
-                        EstimatedTotalBlockHashCount = 10,
-                        ReceivedBlockHashCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var state = new BlockDownloadState
-                    {
-                        ReceivedBlockHash = minerChain[i].Hash,
-                        TotalBlockCount = 10,
-                        ReceivedBlockCount = i,
-                        SourcePeer = nominerSwarm1.AsPeer,
-                    };
-                    expectedStates.Add(state);
-                }
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
                     var state1 = new ActionExecutionState
                     {
                         ExecutedBlockHash = minerChain[i].Hash,
@@ -633,13 +578,6 @@ namespace Libplanet.Net.Tests
                 }
 
                 // FIXME: this test does not ensures block download in order
-                Assert.Equal(
-                    expectedStates
-                        .OfType<BlockDownloadState>()
-                        .Select(state => state.ReceivedBlockHash),
-                    actualStates
-                        .OfType<BlockDownloadState>()
-                        .Select(state => state.ReceivedBlockHash));
                 Assert.Equal(
                     expectedStates
                         .OfType<ActionExecutionState>()
@@ -708,9 +646,10 @@ namespace Libplanet.Net.Tests
             var shouldStopSwarm =
                 swarm0.AsPeer.Equals(receiverSwarm.Peers.First()) ? swarm0 : swarm1;
 
+            // FIXME: This relies on progress report to artificially stop preloading.
             async void Action(BlockSyncState state)
             {
-                if (!startedStop && state is BlockDownloadState)
+                if (!startedStop)
                 {
                     startedStop = true;
                     await shouldStopSwarm.StopAsync(TimeSpan.Zero);
@@ -855,7 +794,7 @@ namespace Libplanet.Net.Tests
                 (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
-            List<(long, BlockHash)> demands = await receiverSwarm.GetDemandBlockHashes(
+            (var _, List<(long, BlockHash)> demands) = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithExcerpt,
                 progress: null,

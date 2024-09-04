@@ -981,7 +981,7 @@ namespace Libplanet.Net
         /// to download.
         /// </para>
         /// </remarks>
-        internal async Task<List<(long, BlockHash)>> GetDemandBlockHashes(
+        internal async Task<(BoundPeer, List<(long, BlockHash)>)> GetDemandBlockHashes(
             BlockChain blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
             IProgress<BlockSyncState> progress = null,
@@ -1008,7 +1008,7 @@ namespace Libplanet.Net
                         cancellationToken);
                     if (downloadedHashes.Any())
                     {
-                        return downloadedHashes;
+                        return (peer, downloadedHashes);
                     }
                     else
                     {
@@ -1070,13 +1070,6 @@ namespace Libplanet.Net
                         pair.Item1,
                         pair.Item2);
                     downloaded.Add(pair);
-                    progress?.Report(
-                        new BlockHashDownloadState
-                        {
-                            EstimatedTotalBlockHashCount = blockHashes.Count,
-                            ReceivedBlockHashCount = downloaded.Count,
-                            SourcePeer = peer,
-                        });
                 }
 
                 return downloaded;

@@ -6,6 +6,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of downloading blocks.
     /// </summary>
+    [Obsolete("This is no longer compatible with the current preloading scheme.")]
     public class BlockDownloadState : BlockSyncState, IEquatable<BlockDownloadState>
     {
         /// <summary>
