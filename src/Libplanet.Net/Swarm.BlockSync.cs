@@ -99,50 +99,16 @@ namespace Libplanet.Net
                     cancellationToken);
 
                 await foreach (
-                    (Block block, BlockCommit commit)
-                    in downloadedBlocks.WithCancellation(cancellationToken))
+                    (Block block, BlockCommit commit) in
+                        downloadedBlocks.WithCancellation(cancellationToken))
                 {
                     _logger.Verbose(
-                        "Got #{BlockIndex} {BlockHash} from {Peer}",
+                        "Got block #{BlockIndex} {BlockHash} from {Peer}",
                         block.Index,
                         block.Hash,
                         peer);
                     cancellationToken.ThrowIfCancellationRequested();
-
-                    if (block.Index == 0 && !block.Hash.Equals(BlockChain.Genesis.Hash))
-                    {
-                        // FIXME: This behavior can unexpectedly terminate the swarm
-                        // (and the game app) if it encounters a peer having a different
-                        // blockchain, and therefore can be exploited to remotely shut
-                        // down other nodes as well.
-                        // Since the intention of this behavior is to prevent mistakes
-                        // to try to connect incorrect seeds (by a user),
-                        // this behavior should be limited for only seed peers.
-                        var msg =
-                            $"Since the genesis block is fixed to {BlockChain.Genesis} " +
-                            "protocol-wise, the blockchain which does not share " +
-                            "any mutual block is not acceptable.";
-
-                        // Although it's actually not aggregated, but to be consistent with
-                        // above code throwing InvalidGenesisBlockException, makes this
-                        // to wrap an exception with AggregateException... Not sure if
-                        // it show be wrapped from the very beginning.
-                        throw new AggregateException(
-                            msg,
-                            new InvalidGenesisBlockException(
-                                msg,
-                                block.Hash,
-                                BlockChain.Genesis.Hash
-                            )
-                        );
-                    }
-
-                    block.ValidateTimestamp();
                     blocks.Add((block, commit));
-                    if (block.Index > tempTip.Index)
-                    {
-                        tempTip = block;
-                    }
                 }
             }
             catch (Exception e)

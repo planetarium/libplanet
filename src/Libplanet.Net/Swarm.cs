@@ -815,18 +815,17 @@ namespace Libplanet.Net
 
         internal async IAsyncEnumerable<(Block, BlockCommit)> GetBlocksAsync(
             BoundPeer peer,
-            IEnumerable<BlockHash> blockHashes,
+            List<BlockHash> blockHashes,
             [EnumeratorCancellation] CancellationToken cancellationToken
         )
         {
-            var blockHashesAsArray = blockHashes as BlockHash[] ?? blockHashes.ToArray();
             _logger.Information(
-                "Trying to download {BlockHashes} block(s) from {Peer}...",
-                blockHashesAsArray.Length,
+                "Trying to download {BlockHashesCount} block(s) from {Peer}...",
+                blockHashes.Count,
                 peer);
 
-            var request = new GetBlocksMsg(blockHashesAsArray);
-            int hashCount = blockHashesAsArray.Length;
+            var request = new GetBlocksMsg(blockHashes);
+            int hashCount = blockHashes.Count;
 
             if (hashCount < 1)
             {
@@ -873,17 +872,40 @@ namespace Libplanet.Net
                         message.Remote);
                     for (int i = 0; i < payloads.Count; i += 2)
                     {
+                        cancellationToken.ThrowIfCancellationRequested();
                         byte[] blockPayload = payloads[i];
                         byte[] commitPayload = payloads[i + 1];
-                        cancellationToken.ThrowIfCancellationRequested();
                         Block block = BlockMarshaler.UnmarshalBlock(
                             (Bencodex.Types.Dictionary)Codec.Decode(blockPayload));
                         BlockCommit commit = commitPayload.Length == 0
                             ? null
                             : new BlockCommit(Codec.Decode(commitPayload));
 
-                        yield return (block, commit);
-                        count++;
+                        if (count < blockHashes.Count)
+                        {
+                            if (blockHashes[count].Equals(block.Hash))
+                            {
+                                yield return (block, commit);
+                                count++;
+                            }
+                            else
+                            {
+                                _logger.Debug(
+                                    "Expected a block with hash {ExpectedBlockHash} but " +
+                                    "received a block with hash {ActualBlockHash}",
+                                    blockHashes[count],
+                                    block.Hash);
+                                yield break;
+                            }
+                        }
+                        else
+                        {
+                            _logger.Debug(
+                                "Expected to receive {BlockCount} blocks but " +
+                                "received more blocks than expected",
+                                blockHashes.Count);
+                            yield break;
+                        }
                     }
                 }
                 else
