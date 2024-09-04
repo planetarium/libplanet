@@ -776,16 +776,28 @@ namespace Libplanet.Net
             {
                 if (blockHashes.Hashes.Any())
                 {
-                    List<BlockHash> hashes = blockHashes.Hashes.ToList();
-                    _logger.Debug(
-                        "Received a " + nameof(BlockHashesMsg) + " with {Length} hashes",
-                        hashes.Count);
-                    return hashes;
+                    if (locator.Hash.Equals(blockHashes.Hashes.First()))
+                    {
+                        List<BlockHash> hashes = blockHashes.Hashes.ToList();
+                        _logger.Debug(
+                            "Received a " + nameof(BlockHashesMsg) + " with {Length} hashes",
+                            hashes.Count);
+                        return hashes;
+                    }
+                    else
+                    {
+                        const string msg =
+                            "Received a " + nameof(BlockHashesMsg) + " but its " +
+                            "first hash {ActualBlockHash} does not match " +
+                            "the locator hash {ExpectedBlockHash}";
+                        _logger.Debug(msg, blockHashes.Hashes.First(), locator.Hash);
+                        return new List<BlockHash>();
+                    }
                 }
                 else
                 {
                     const string msg =
-                        "Received a " + nameof(BlockHashesMsg) + ", but it has zero hashes";
+                        "Received a " + nameof(BlockHashesMsg) + " with zero hashes";
                     _logger.Debug(msg);
                     return new List<BlockHash>();
                 }

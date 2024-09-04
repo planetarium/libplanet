@@ -88,23 +88,6 @@ namespace Libplanet.Net
                     progress,
                     cancellationToken);
                 totalBlocksToDownload = demandBlockHashes.Count;
-                if (!BlockChain.ContainsBlock(demandBlockHashes.First()))
-                {
-                    // FIXME: This behavior can unexpectedly terminate the swarm
-                    // (and the game app) if it encounters a peer returning a
-                    // bad response.
-                    // FIXME: ChainStatus message became to contain hash value of
-                    // the genesis block, so this exception will not happen.
-                    // FIXME: This should be removed once additional message
-                    // validation is added.
-                    var msg =
-                        $"The {nameof(BlockChain)} does not contain a {nameof(Block)} " +
-                        $"corresponding to the first {nameof(BlockHash)} from " +
-                        $"a list of {nameof(BlockHash)}es from {peer} invalid: " +
-                        $"{demandBlockHashes.First()}";
-                    var e = new InvalidBlockHashException(msg);
-                    throw new AggregateException(msg, e);
-                }
 
                 _logger.Verbose(
                     "Enqueue {BlockHashes} to demands queue...",
