@@ -78,6 +78,8 @@ to <code>BlockDemand</code>.  [<a href="https://github.com/planetarium/libplanet
 <li>Changed <code>BlockLocator()</code> to take a single <code>BlockHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3942">#3942</a>]</li>
 <li>Changed <code>BlockLocator()</code> to no longer implemnet <code>IEnumerable&lt;BlockHash&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3942">#3942</a>]</li>
+<li>(Libplanet.Net) Changed <code>BlockHashDownloadState</code> and <code>BlockDownloadState</code>
+to be <code>Obsolete</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3943">#3943</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -89,10 +91,9 @@ to <code>BlockDemand</code>.  [<a href="https://github.com/planetarium/libplanet
 <li>(Libplanet.Store) Optimized <code>HashNode.ToBencodex()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/3922">#3922</a>, <a href="https://github.com/planetarium/libplanet/pull/3924">#3924</a>]</li>
 <li>(Libplanet.Store) Optimized internal conversions to <code>KeyBytes</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3926">#3926</a>]</li>
-<li>(Libplanet.Net) Changed the reporting behavior for <code>BlockHashDownloadState</code>
-and <code>BlockDownloadState</code> during preloading.  These no longer report
-meaningful data and it is strongly advised not to rely on these to track
-the progress of preloading.  [<a href="https://github.com/planetarium/libplanet/pull/3931">#3931</a>]</li>
+<li>(Libplanet.Net) Changed to no longer report <code>BlockHashDownloadState</code>
+and <code>BlockDownloadState</code> during preloading.  It is strongly advised
+not to rely on these to track the progress of preloading.  [<a href="https://github.com/planetarium/libplanet/pull/3943">#3943</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="dependencies">Dependencies</h3>
