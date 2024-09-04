@@ -20,6 +20,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         var seed = new Seed(options);
         Assert.Equal(endPoint.Host, seed.BoundPeer.EndPoint.Host);
@@ -38,6 +39,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -53,6 +55,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -71,6 +74,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -87,6 +91,7 @@ public class SeedTest
         {
             PrivateKey = privateKey.ToString(),
             EndPoint = endPoint.ToString(),
+            AppProtocolVersion = privateKey.ToAppProtocolVersion(0).Token,
         };
         await using var seed = new Seed(options);
         await Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -99,7 +104,7 @@ public class SeedTest
     public async Task MessageReceived_TestAsync()
     {
         // Given
-        var apv = GenesisOptions.AppProtocolVersion;
+        var apv = AppProtocolVersion.Sign(new(), 0);
         var remotePrivateKey = new RandomPrivateKey();
         using var remoteEndPoint = new RandomEndPoint();
         var remoteBoundPeer = new BoundPeer(remotePrivateKey.PublicKey, remoteEndPoint);
@@ -118,6 +123,7 @@ public class SeedTest
         {
             PrivateKey = seedPrivateKey.ToString(),
             EndPoint = seedEndPoint.ToString(),
+            AppProtocolVersion = apv.Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);
@@ -146,7 +152,7 @@ public class SeedTest
     public async Task GetNeighborsMsg_TestAsync()
     {
         // Given
-        var apv = GenesisOptions.AppProtocolVersion;
+        var apv = AppProtocolVersion.Sign(new(), 0);
         var length = Random.Shared.Next(3, 10);
         var remotePrivateKeys = new RandomPrivateKey[length];
         var remoteEndPoints = new RandomEndPoint[length];
@@ -177,6 +183,7 @@ public class SeedTest
         {
             PrivateKey = seedPrivateKey.ToString(),
             EndPoint = seedEndPoint.ToString(),
+            AppProtocolVersion = apv.Token,
         };
         await using var seed = new Seed(options);
         await seed.StartAsync(cancellationToken: default);

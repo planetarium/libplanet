@@ -1,6 +1,4 @@
 using System.ComponentModel;
-using Libplanet.Crypto;
-using Libplanet.Net;
 using Libplanet.Node.DataAnnotations;
 
 namespace Libplanet.Node.Options;
@@ -11,20 +9,23 @@ public sealed class GenesisOptions : OptionsBase<GenesisOptions>
 {
     public const string Position = "Genesis";
 
-    public static readonly PrivateKey AppProtocolKey
-        = PrivateKey.FromString("2a15e7deaac09ce631e1faa184efadb175b6b90989cf1faed9dfc321ad1db5ac");
-
-    public static readonly AppProtocolVersion AppProtocolVersion = AppProtocolVersion.Sign(
-        AppProtocolKey, 1);
-
     [PrivateKey]
-    [Description("The key of the genesis block.")]
+    [Description(
+        $"The PrivateKey used to generate the genesis block. " +
+        $"This property cannot be used with {nameof(GenesisBlockPath)}.")]
     public string GenesisKey { get; set; } = string.Empty;
 
     [PublicKeyArray]
-    [Description("Public keys of the validators.")]
+    [Description(
+        $"Public keys of the validators. This property cannot be used with " +
+        $"{nameof(GenesisBlockPath)}.")]
     public string[] Validators { get; set; } = [];
 
     [Description("The timestamp of the genesis block.")]
     public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.MinValue;
+
+    [Description(
+        $"The path of the genesis block, which can be a file path or a URI." +
+        $"This property cannot be used with {nameof(GenesisKey)}.")]
+    public string GenesisBlockPath { get; set; } = string.Empty;
 }
