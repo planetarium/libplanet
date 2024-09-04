@@ -808,6 +808,24 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Download <see cref="Block"/>s corresponding to <paramref name="blockHashes"/>
+        /// from <paramref name="peer"/>.
+        /// </summary>
+        /// <param name="peer">A <see cref="BoundPeer"/> to request <see cref="Block"/>s from.
+        /// </param>
+        /// <param name="blockHashes">A <see cref="List{T}"/> of <see cref="BlockHash"/>es
+        /// of <see cref="Block"/>s to be downloaded from <paramref name="peer"/>.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An <see cref="IAsyncEnumerable{T}"/> of <see cref="Block"/> and
+        /// <see cref="BlockCommit"/> pairs corresponding to <paramref name="blockHashes"/>.
+        /// Returned <see cref="Block"/>s are guaranteed to correspond to the initial part of
+        /// <paramref name="blockHashes"/>, including the empty list and the full list in order.
+        /// </returns>
+        /// <exception cref="InvalidMessageContentException">Thrown when
+        /// a message other than <see cref="BlocksMsg"/> is received while
+        /// trying to get <see cref="Block"/>s from <paramref name="peer"/>.</exception>
         internal async IAsyncEnumerable<(Block, BlockCommit)> GetBlocksAsync(
             BoundPeer peer,
             List<BlockHash> blockHashes,
