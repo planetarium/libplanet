@@ -580,8 +580,7 @@ namespace Libplanet.Net.Tests
 
                 List<BlockHash> hashes = await swarmB.GetBlockHashes(
                     peer,
-                    new BlockLocator(genesis.Hash),
-                    null);
+                    new BlockLocator(genesis.Hash));
 
                 ITransport transport = swarmB.Transport;
 

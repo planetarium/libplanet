@@ -739,15 +739,10 @@ namespace Libplanet.Net
         internal async Task<List<BlockHash>> GetBlockHashes(
             BoundPeer peer,
             BlockLocator locator,
-            TimeSpan? timeout = null,
             CancellationToken cancellationToken = default)
         {
             var request = new GetBlockHashesMsg(locator);
 
-            TimeSpan transportTimeout = timeout is { } t
-                && t > Options.TimeoutOptions.GetBlockHashesTimeout
-                    ? t
-                    : Options.TimeoutOptions.GetBlockHashesTimeout;
             const string sendMsg =
                 "Sending a {MessageType} message with locator [{LocatorHead}]";
             _logger.Debug(
@@ -761,7 +756,7 @@ namespace Libplanet.Net
                 parsedMessage = await Transport.SendMessageAsync(
                     peer,
                     request,
-                    timeout: transportTimeout,
+                    timeout: Options.TimeoutOptions.GetBlockHashesTimeout,
                     cancellationToken: cancellationToken).ConfigureAwait(false);
             }
             catch (CommunicationFailException)
@@ -1087,7 +1082,6 @@ namespace Libplanet.Net
                 List<BlockHash> blockHashes = await GetBlockHashes(
                     peer: peer,
                     locator: locator,
-                    timeout: null,
                     cancellationToken: cancellationToken);
 
                 foreach (var blockHash in blockHashes)
