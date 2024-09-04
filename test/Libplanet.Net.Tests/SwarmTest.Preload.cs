@@ -794,17 +794,17 @@ namespace Libplanet.Net.Tests
                 (minerSwarm.AsPeer, minerChain.Tip.Header),
             };
 
-            (var _, List<(long, BlockHash)> demands) = await receiverSwarm.GetDemandBlockHashes(
+            (var _, List<BlockHash> demands) = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithExcerpt,
                 progress: null,
-                cancellationToken: CancellationToken.None
-            );
+                cancellationToken: CancellationToken.None);
 
-            IEnumerable<(long, BlockHash)> expectedBlocks = minerChain.IterateBlocks()
+            IEnumerable<BlockHash> expectedBlocks = minerChain
+                .IterateBlocks()
                 .Where(b => b.Index >= receiverChain.Tip.Index)
                 .Take(FindNextHashesChunkSize)
-                .Select(b => (b.Index, b.Hash));
+                .Select(b => b.Hash);
             Assert.Equal(expectedBlocks, demands);
 
             CleaningSwarm(minerSwarm);

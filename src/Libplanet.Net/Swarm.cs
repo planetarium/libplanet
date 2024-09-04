@@ -736,13 +736,12 @@ namespace Libplanet.Net
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
-        internal async Task<List<(long, BlockHash)>> GetBlockHashes(
+        internal async Task<List<BlockHash>> GetBlockHashes(
             BoundPeer peer,
             BlockLocator locator,
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default)
         {
-            var sessionRandom = new System.Random();
             var request = new GetBlockHashesMsg(locator);
 
             TimeSpan transportTimeout = timeout is { } t
@@ -770,29 +769,25 @@ namespace Libplanet.Net
                 _logger.Debug(
                     "Failed to get a response for " + nameof(GetBlockHashesMsg) +
                     " due to a communication failure");
-                return new List<(long, BlockHash)>();
+                return new List<BlockHash>();
             }
 
             if (parsedMessage.Content is BlockHashesMsg blockHashes)
             {
-                if (blockHashes.StartIndex is long idx)
+                if (blockHashes.Hashes.Any())
                 {
-                    List<(long, BlockHash)> hashes = blockHashes.Hashes
-                        .Select((hash, i) => (idx + i, hash))
-                        .ToList();
-                    const string msg =
-                        "Received a " + nameof(BlockHashesMsg) +
-                        " message with an offset index {OffsetIndex} (total {Length} hashes)";
-                    _logger.Debug(msg, idx, hashes.LongCount());
+                    List<BlockHash> hashes = blockHashes.Hashes.ToList();
+                    _logger.Debug(
+                        "Received a " + nameof(BlockHashesMsg) + " with {Length} hashes",
+                        hashes.Count);
                     return hashes;
                 }
                 else
                 {
                     const string msg =
-                        "Received a " + nameof(BlockHashesMsg) +
-                        " message, but it has zero hashes";
+                        "Received a " + nameof(BlockHashesMsg) + ", but it has zero hashes";
                     _logger.Debug(msg);
-                    return new List<(long, BlockHash)>();
+                    return new List<BlockHash>();
                 }
             }
             else
@@ -802,7 +797,7 @@ namespace Libplanet.Net
                     " is expected to be {ExpectedType}: {ReceivedType}",
                     nameof(BlockHashesMsg),
                     parsedMessage.GetType());
-                return new List<(long, BlockHash)>();
+                return new List<BlockHash>();
             }
         }
 
@@ -958,10 +953,9 @@ namespace Libplanet.Net
         /// <param name="progress">The <see cref="IProgress{T}"/> to report to.</param>
         /// <param name="cancellationToken">The cancellation token that should be used to propagate
         /// a notification that this operation should be canceled.</param>
-        /// <returns>An <see cref="IAsyncEnumerable{T}"/> of <see langword="long"/> and
-        /// <see cref="BlockHash"/> pairs, where the <see langword="long"/> value is the
-        /// <see cref="Block.Index"/> of the <see cref="Block"/> associated with the
-        /// <see cref="BlockHash"/> value.</returns>
+        /// <returns>An <see cref="List{T}"/> of <see cref="BlockHash"/>es together with
+        /// its source <see cref="BoundPeer"/>.  This is guaranteed to always return a non-empty
+        /// <see cref="List{T}"/> unless an <see cref="Exception"/> is thrown.</returns>
         /// <exception cref="AggregateException">Thrown when failed to download
         /// <see cref="BlockHash"/>es from a <see cref="BoundPeer"/>.</exception>
         /// <remarks>
@@ -981,7 +975,7 @@ namespace Libplanet.Net
         /// to download.
         /// </para>
         /// </remarks>
-        internal async Task<(BoundPeer, List<(long, BlockHash)>)> GetDemandBlockHashes(
+        internal async Task<(BoundPeer, List<BlockHash>)> GetDemandBlockHashes(
             BlockChain blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
             IProgress<BlockSyncState> progress = null,
@@ -1000,7 +994,7 @@ namespace Libplanet.Net
 
                 try
                 {
-                    List<(long, BlockHash)> downloadedHashes = await GetDemandBlockHashesFromPeer(
+                    List<BlockHash> downloadedHashes = await GetDemandBlockHashesFromPeer(
                         blockChain,
                         peer,
                         excerpt,
@@ -1036,7 +1030,7 @@ namespace Libplanet.Net
                 exceptions);
         }
 
-        internal async Task<List<(long, BlockHash)>> GetDemandBlockHashesFromPeer(
+        internal async Task<List<BlockHash>> GetDemandBlockHashesFromPeer(
             BlockChain blockChain,
             BoundPeer peer,
             IBlockExcerpt excerpt,
@@ -1045,7 +1039,7 @@ namespace Libplanet.Net
         {
             BlockLocator locator = blockChain.GetBlockLocator();
             long peerIndex = excerpt.Index;
-            var downloaded = new List<(long, BlockHash)>();
+            var downloaded = new List<BlockHash>();
 
             try
             {
@@ -1056,20 +1050,19 @@ namespace Libplanet.Net
                     peerIndex,
                     locator.Hash);
 
-                List<(long, BlockHash)> blockHashes = await GetBlockHashes(
+                List<BlockHash> blockHashes = await GetBlockHashes(
                     peer: peer,
                     locator: locator,
                     timeout: null,
                     cancellationToken: cancellationToken);
 
-                foreach (var pair in blockHashes)
+                foreach (var blockHash in blockHashes)
                 {
                     _logger.Verbose(
-                        "Received a block hash from {Peer}: #{BlockIndex} {BlockHash}",
+                        "Received a block hash from {Peer}: {BlockHash}",
                         peer,
-                        pair.Item1,
-                        pair.Item2);
-                    downloaded.Add(pair);
+                        blockHash);
+                    downloaded.Add(blockHash);
                 }
 
                 return downloaded;

@@ -81,54 +81,38 @@ namespace Libplanet.Net
 
             try
             {
+                // NOTE: demandBlockHashes is always non-empty.
                 (var peer, var demandBlockHashes) = await GetDemandBlockHashes(
                     BlockChain,
                     peersWithBlockExcerpt,
                     progress,
                     cancellationToken);
-                foreach ((long index, BlockHash hash) in demandBlockHashes)
+                totalBlocksToDownload = demandBlockHashes.Count;
+                if (!BlockChain.ContainsBlock(demandBlockHashes.First()))
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    if (index == 0 && !hash.Equals(BlockChain.Genesis.Hash))
-                    {
-                        // FIXME: This behavior can unexpectedly terminate the swarm
-                        // (and the game app) if it encounters a peer having a different
-                        // blockchain, and therefore can be exploited to remotely shut
-                        // down other nodes as well.
-                        // Since the intention of this behavior is to prevent mistakes
-                        // to try to connect incorrect seeds (by a user),
-                        // this behavior should be limited for only seed peers.
-                        // FIXME: ChainStatus message became to contain hash value of
-                        // the genesis block, so this exception will not be happened.
-                        var msg =
-                            $"Since the genesis block is fixed to {BlockChain.Genesis} " +
-                            "protocol-wise, the blockchain which does not share " +
-                            "any mutual block is not acceptable.";
-                        var e = new InvalidGenesisBlockException(
-                            msg,
-                            hash,
-                            BlockChain.Genesis.Hash);
-                        throw new AggregateException(msg, e);
-                    }
-
-                    _logger.Verbose(
-                        "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
-                        index,
-                        hash
-                    );
-                    totalBlocksToDownload++;
+                    // FIXME: This behavior can unexpectedly terminate the swarm
+                    // (and the game app) if it encounters a peer returning a
+                    // bad response.
+                    // FIXME: ChainStatus message became to contain hash value of
+                    // the genesis block, so this exception will not happen.
+                    // FIXME: This should be removed once additional message
+                    // validation is added.
+                    var msg =
+                        $"The {nameof(BlockChain)} does not contain a {nameof(Block)} " +
+                        $"corresponding to the first {nameof(BlockHash)} from " +
+                        $"a list of {nameof(BlockHash)}es from {peer} invalid: " +
+                        $"{demandBlockHashes.First()}";
+                    var e = new InvalidBlockHashException(msg);
+                    throw new AggregateException(msg, e);
                 }
 
-                if (totalBlocksToDownload == 0)
-                {
-                    _logger.Debug("No any blocks to fetch");
-                    return;
-                }
+                _logger.Verbose(
+                    "Enqueue {BlockHashes} to demands queue...",
+                    demandBlockHashes);
 
                 var downloadedBlocks = GetBlocksAsync(
                     peer,
-                    demandBlockHashes.Select(pair => pair.Item2),
+                    demandBlockHashes,
                     cancellationToken);
 
                 await foreach (

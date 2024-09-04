@@ -430,7 +430,7 @@ namespace Libplanet.Net
             BlockLocator locator = blockChain.GetBlockLocator();
             Block tip = blockChain.Tip;
 
-            List<(long, BlockHash)> hashes = await GetBlockHashes(
+            List<BlockHash> hashes = await GetBlockHashes(
                 peer: peer,
                 locator: locator,
                 timeout: null,
@@ -444,7 +444,7 @@ namespace Libplanet.Net
 
             IAsyncEnumerable<(Block, BlockCommit)> blocksAsync = GetBlocksAsync(
                 peer,
-                hashes.Select(pair => pair.Item2),
+                hashes,
                 cancellationToken);
             try
             {
