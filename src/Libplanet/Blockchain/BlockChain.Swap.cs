@@ -5,118 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Store;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Tx;
 
 namespace Libplanet.Blockchain
 {
     public partial class BlockChain
     {
-        // FIXME it's very dangerous because replacing Id means
-        // ALL blocks (referenced by MineBlock(), etc.) will be changed.
-        internal void Swap(BlockChain other)
-        {
-            if (!IsCanonical)
-            {
-                throw new InvalidOperationException(
-                    $"Cannot perform {nameof(Swap)} on a non canonical chain.");
-            }
-            else if (other is null)
-            {
-                throw new ArgumentNullException(nameof(other));
-            }
-            else if (other.Tip.Index <= Tip.Index)
-            {
-                throw new ArgumentException(
-                    $"Given {nameof(other)}'s tip index ({other.Tip.Index}) must be " +
-                    $"greater than the current one ({Tip.Index}) for {nameof(Swap)}.",
-                    nameof(other));
-            }
-
-            _logger.Debug(
-                "The blockchain was reorged from " +
-                "{OldChainId} (#{OldTipIndex} {OldTipHash}) " +
-                "to {NewChainId} (#{NewTipIndex} {NewTipHash})",
-                Id,
-                Tip.Index,
-                Tip.Hash,
-                other.Id,
-                other.Tip.Index,
-                other.Tip.Hash);
-
-            _rwlock.EnterUpgradeableReadLock();
-            try
-            {
-                // Finds the branch point.
-                Block branchpoint = FindTopCommon(this, other);
-
-                if (branchpoint is null)
-                {
-                    const string msg =
-                        "A chain cannot be reorged into a heterogeneous chain with a " +
-                        "different genesis.";
-                    throw new InvalidGenesisBlockException(msg, Genesis.Hash, other.Genesis.Hash);
-                }
-
-                _logger.Debug(
-                    "The branchpoint is #{BranchpointIndex} {BranchpointHash}",
-                    branchpoint.Index,
-                    branchpoint
-                );
-
-                Block oldTip = Tip, newTip = other.Tip;
-
-                IReadOnlyList<BlockHash> rewindPath =
-                    GetRewindPath(this, branchpoint.Hash);
-                IReadOnlyList<BlockHash> fastForwardPath =
-                    GetFastForwardPath(other, branchpoint.Hash);
-
-                // If there is no rewind, it is not considered as a reorg.
-                bool reorg = rewindPath.Count > 0;
-
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    HashSet<TxId> GetTxIdsWithRange(
-                        BlockChain chain, IReadOnlyList<BlockHash> hashes) =>
-                            new HashSet<TxId>(hashes.SelectMany(
-                                hash => chain[hash].Transactions.Select(tx => tx.Id)));
-
-                    // It assumes reorg is small size.  If it is big, this may be heavy task.
-                    HashSet<TxId> txIdsToStage = GetTxIdsWithRange(this, rewindPath);
-                    HashSet<TxId> txIdsToUnstage = GetTxIdsWithRange(other, fastForwardPath);
-                    foreach (TxId txId in txIdsToStage)
-                    {
-                        StagePolicy.Stage(this, Store.GetTransaction(txId));
-                    }
-
-                    Store.SetCanonicalChainId(other.Id);
-                    Guid obsoleteId = Id;
-                    Id = other.Id;
-
-                    _blocks = new BlockSet(Store);
-                    foreach (TxId txId in txIdsToUnstage)
-                    {
-                        StagePolicy.Unstage(this, txId);
-                    }
-
-                    TipChanged?.Invoke(this, (oldTip, newTip));
-
-                    Store.DeleteChainId(obsoleteId);
-                    _nextStateRootHash = other._nextStateRootHash;
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
-            }
-            finally
-            {
-                _rwlock.ExitUpgradeableReadLock();
-            }
-        }
-
         /// <summary>
         /// Render actions of the given <paramref name="block"/>.
         /// </summary>

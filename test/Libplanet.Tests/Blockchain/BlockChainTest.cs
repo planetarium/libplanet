@@ -26,7 +26,6 @@ using Libplanet.Types.Consensus;
 using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Serilog;
-using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
@@ -528,24 +527,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void ForkAndSwapCanonicity()
-        {
-            // Fork is not canonical.
-            var workspace = _blockChain.Fork(_blockChain.Genesis.Hash);
-            var b = workspace.ProposeBlock(
-                new PrivateKey(),
-                lastCommit: CreateBlockCommit(workspace.Tip));
-            workspace.Append(b, CreateBlockCommit(b));
-            Assert.True(_blockChain.IsCanonical);
-            Assert.False(workspace.IsCanonical);
-
-            // Both are canonical after swap.
-            _blockChain.Swap(workspace);
-            Assert.True(_blockChain.IsCanonical);
-            Assert.True(workspace.IsCanonical);
-        }
-
-        [SkippableFact]
         public void ForkWithBlockNotExistInChain()
         {
             var key = new PrivateKey();
@@ -871,67 +852,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Null(_blockChain.Store.GetBlockCommit(blockCommit1.BlockHash));
             Assert.Null(_blockChain.Store.GetBlockCommit(blockCommit2.BlockHash));
             Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(blockCommit3.BlockHash));
-        }
-
-        [SkippableFact]
-        public void CannotSwapForSameHeightTip()
-        {
-            BlockChain fork = _blockChain.Fork(_blockChain.Tip.Hash);
-            IReadOnlyList<RenderRecord> prevRecords = _renderer.Records;
-            Assert.Throws<ArgumentException>(() => _blockChain.Swap(fork));
-
-            // Render methods should be invoked if and only if the tip changes
-            Assert.Equal(prevRecords, _renderer.Records);
-        }
-
-        [SkippableFact]
-        public void CannotSwapToChainWithDifferentGenesis()
-        {
-            using (var fx2 = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
-            {
-                var actionEvaluator = new ActionEvaluator(
-                    _policy.PolicyActionsRegistry,
-                    stateStore: fx2.StateStore,
-                    actionTypeLoader: new SingleActionLoader(typeof(DumbAction)));
-                Block genesis2 = ProposeGenesisBlock(
-                    ProposeGenesis(
-                        timestamp: DateTimeOffset.UtcNow,
-                        proposer: GenesisProposer.PublicKey),
-                    privateKey: GenesisProposer);
-                var chain2 = BlockChain.Create(
-                    _policy,
-                    _stagePolicy,
-                    fx2.Store,
-                    fx2.StateStore,
-                    genesis2,
-                    actionEvaluator);
-                var key = new PrivateKey();
-                for (int i = 0; i < 5; i++)
-                {
-                    Block block1 = _blockChain.ProposeBlock(
-                        key, lastCommit: CreateBlockCommit(_blockChain.Tip));
-                    _blockChain.Append(block1, CreateBlockCommit(block1));
-
-                    Block block2 = chain2.ProposeBlock(
-                        key, lastCommit: CreateBlockCommit(chain2.Tip));
-                    chain2.Append(block2, CreateBlockCommit(block2));
-                }
-
-                Block extraBlock2 = chain2.ProposeBlock(
-                    key, lastCommit: CreateBlockCommit(chain2.Tip));
-                chain2.Append(extraBlock2, CreateBlockCommit(extraBlock2));
-
-                Log.Logger.CompareBothChains(
-                    LogEventLevel.Debug,
-                    nameof(_blockChain),
-                    _blockChain,
-                    nameof(chain2),
-                    chain2
-                );
-
-                Assert.Throws<InvalidGenesisBlockException>(() =>
-                    _blockChain.Swap(chain2));
-            }
         }
 
         [SkippableFact]
