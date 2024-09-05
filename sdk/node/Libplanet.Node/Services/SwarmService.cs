@@ -5,7 +5,6 @@ using Libplanet.Net;
 using Libplanet.Net.Consensus;
 using Libplanet.Net.Transports;
 using Libplanet.Node.Options;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,13 +12,14 @@ using Microsoft.Extensions.Options;
 namespace Libplanet.Node.Services;
 
 internal sealed class SwarmService(
-    IServiceProvider serviceProvider,
+    IBlockChainService blockChainService,
     IOptions<SwarmOptions> options,
+    IOptions<ValidatorOptions> validatorOptions,
     ILogger<SwarmService> logger)
     : IHostedService, ISwarmService, IAsyncDisposable
 {
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
     private readonly SwarmOptions _options = options.Value;
+    private readonly ValidatorOptions _validatorOptions = validatorOptions.Value;
     private readonly ILogger<SwarmService> _logger = logger;
 
     private Swarm? _swarm;
@@ -43,8 +43,6 @@ internal sealed class SwarmService(
         }
 
         var seedPrivateKey = new PrivateKey();
-        var blockChainService = _serviceProvider.GetRequiredService<IBlockChainService>();
-        var validatorOptions = GetValidatorOptions(_serviceProvider);
         var blockChain = blockChainService.BlockChain;
 
         if (_options.BlocksyncSeedPeer == string.Empty)
@@ -59,7 +57,7 @@ internal sealed class SwarmService(
             await _blocksyncSeed.StartAsync(cancellationToken);
         }
 
-        if (validatorOptions is not null && validatorOptions.ConsensusSeedPeer == string.Empty)
+        if (_validatorOptions.ConsensusSeedPeer == string.Empty)
         {
             _consensusSeed = new Seed(new()
             {
@@ -67,7 +65,7 @@ internal sealed class SwarmService(
                 EndPoint = EndPointUtility.ToString(EndPointUtility.Next()),
                 AppProtocolVersion = _options.AppProtocolVersion,
             });
-            validatorOptions.ConsensusSeedPeer = _consensusSeed.BoundPeer.PeerString;
+            _validatorOptions.ConsensusSeedPeer = _consensusSeed.BoundPeer.PeerString;
             await _consensusSeed.StartAsync(cancellationToken);
         }
 
@@ -89,12 +87,12 @@ internal sealed class SwarmService(
             },
         };
 
-        var consensusTransport = validatorOptions is not null
+        var consensusTransport = _validatorOptions.IsEnabled
             ? await CreateConsensusTransportAsync(
-                privateKey, appProtocolVersion, validatorOptions, cancellationToken)
+                privateKey, appProtocolVersion, _validatorOptions, cancellationToken)
             : null;
-        var consensusReactorOption = validatorOptions is not null
-            ? CreateConsensusReactorOption(privateKey, validatorOptions)
+        var consensusReactorOption = _validatorOptions.IsEnabled
+            ? CreateConsensusReactorOption(privateKey, _validatorOptions)
             : (ConsensusReactorOption?)null;
 
         _swarm = new Swarm(
@@ -164,17 +162,6 @@ internal sealed class SwarmService(
             await _blocksyncSeed.StopAsync(cancellationToken: default);
             _blocksyncSeed = null;
         }
-    }
-
-    private static ValidatorOptions? GetValidatorOptions(IServiceProvider serviceProvider)
-    {
-        var validatorService = serviceProvider.GetService<IValidatorService>();
-        if (validatorService is not null)
-        {
-            return serviceProvider.GetRequiredService<IOptions<ValidatorOptions>>().Value;
-        }
-
-        return null;
     }
 
     private static async Task<NetMQTransport> CreateTransport(
