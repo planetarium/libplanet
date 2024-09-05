@@ -72,11 +72,12 @@ namespace Libplanet.Net
                     nameof(BlockCandidateProcess),
                     BlockChain.Tip.Index,
                     BlockChain.Tip.Hash);
-                _ = AppendBranch(
+                AppendBranch(
                     blockChain: BlockChain,
                     candidate: candidate,
                     render: render,
-                    progress: progress);
+                    progress: progress,
+                    cancellationToken: cancellationToken);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
                     "{MethodName}() finished appending blocks; current tip is #{Index} {Hash}",
@@ -96,11 +97,12 @@ namespace Libplanet.Net
             }
         }
 
-        private BlockChain AppendBranch(
+        private void AppendBranch(
             BlockChain blockChain,
             Branch candidate,
             bool render,
-            IProgress<BlockSyncState> progress)
+            IProgress<BlockSyncState> progress,
+            CancellationToken cancellationToken = default)
         {
             Block oldTip = blockChain.Tip;
             Block branchpoint = oldTip;
@@ -111,7 +113,6 @@ namespace Libplanet.Net
                 _logger.Debug(
                     "There are no blocks to append to block {BlockHash}",
                     branchpoint.Hash);
-                return blockChain;
             }
 
             try
@@ -120,6 +121,7 @@ namespace Libplanet.Net
 
                 foreach (var (block, commit) in blocks)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
                     {
                         blockChain.AppendStateRootHashPreceded(block, commit, render: render);
@@ -152,8 +154,6 @@ namespace Libplanet.Net
                 _logger.Error(e, dbgMsg);
                 throw;
             }
-
-            return blockChain;
         }
 
         private List<(Block, BlockCommit)> ExtractBlocksToAppend(Block branchpoint, Branch branch)
