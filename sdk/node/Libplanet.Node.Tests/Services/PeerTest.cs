@@ -1,7 +1,6 @@
 using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Transports;
-using Libplanet.Node.Options;
 using Libplanet.Node.Services;
 using Moq;
 
