@@ -540,7 +540,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.False(workspace.IsCanonical);
 
             // Both are canonical after swap.
-            _blockChain.Swap(workspace, false);
+            _blockChain.Swap(workspace);
             Assert.True(_blockChain.IsCanonical);
             Assert.True(workspace.IsCanonical);
         }
@@ -873,23 +873,19 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(blockCommit3, _blockChain.Store.GetBlockCommit(blockCommit3.BlockHash));
         }
 
-        [SkippableTheory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void CannotSwapForSameHeightTip(bool render)
+        [SkippableFact]
+        public void CannotSwapForSameHeightTip()
         {
             BlockChain fork = _blockChain.Fork(_blockChain.Tip.Hash);
             IReadOnlyList<RenderRecord> prevRecords = _renderer.Records;
-            Assert.Throws<ArgumentException>(() => _blockChain.Swap(fork, render: render)());
+            Assert.Throws<ArgumentException>(() => _blockChain.Swap(fork));
 
             // Render methods should be invoked if and only if the tip changes
             Assert.Equal(prevRecords, _renderer.Records);
         }
 
-        [SkippableTheory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void CannotSwapToChainWithDifferentGenesis(bool render)
+        [SkippableFact]
+        public void CannotSwapToChainWithDifferentGenesis()
         {
             using (var fx2 = new MemoryStoreFixture(_policy.PolicyActionsRegistry))
             {
@@ -934,8 +930,7 @@ namespace Libplanet.Tests.Blockchain
                 );
 
                 Assert.Throws<InvalidGenesisBlockException>(() =>
-                    _blockChain.Swap(chain2, render)()
-                );
+                    _blockChain.Swap(chain2));
             }
         }
 

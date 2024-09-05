@@ -3,10 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain.Renderers;
-using Libplanet.Common;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -17,9 +15,7 @@ namespace Libplanet.Blockchain
     {
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
-        internal System.Action Swap(
-            BlockChain other,
-            bool render)
+        internal void Swap(BlockChain other)
         {
             if (!IsCanonical)
             {
@@ -49,7 +45,6 @@ namespace Libplanet.Blockchain
                 other.Tip.Index,
                 other.Tip.Hash);
 
-            System.Action renderSwap = () => { };
             _rwlock.EnterUpgradeableReadLock();
             try
             {
@@ -115,80 +110,10 @@ namespace Libplanet.Blockchain
                 {
                     _rwlock.ExitWriteLock();
                 }
-
-                renderSwap = () => RenderSwap(
-                    render: render,
-                    oldTip: oldTip,
-                    newTip: newTip,
-                    branchpoint: branchpoint,
-                    fastForwardPath: fastForwardPath);
             }
             finally
             {
                 _rwlock.ExitUpgradeableReadLock();
-            }
-
-            return renderSwap;
-        }
-
-        internal void RenderSwap(
-            bool render,
-            Block oldTip,
-            Block newTip,
-            Block branchpoint,
-            IReadOnlyList<BlockHash> fastForwardPath)
-        {
-            if (render)
-            {
-                foreach (IRenderer renderer in Renderers)
-                {
-                    renderer.RenderBlock(
-                        oldTip: oldTip,
-                        newTip: newTip);
-                }
-            }
-
-            RenderFastForward(
-                render: render,
-                oldTip: oldTip,
-                newTip: newTip,
-                branchpoint: branchpoint,
-                fastForwardPath: fastForwardPath);
-        }
-
-        internal void RenderFastForward(
-            bool render,
-            Block oldTip,
-            Block newTip,
-            Block branchpoint,
-            IReadOnlyList<BlockHash> fastForwardPath)
-        {
-            if (render && ActionRenderers.Any())
-            {
-                _logger.Debug("Rendering actions in new chain");
-
-                foreach (BlockHash hash in fastForwardPath)
-                {
-                    Block block = Store.GetBlock(hash);
-                    HashDigest<SHA256>? baseStateRootHash =
-                        Store.GetStateRootHash(block.PreviousHash);
-                    IReadOnlyList<ICommittedActionEvaluation> evaluations =
-                        ActionEvaluator.Evaluate(block, baseStateRootHash);
-
-                    RenderActions(
-                        evaluations: evaluations,
-                        block: block);
-                }
-
-                _logger.Debug(
-                    "{MethodName}() completed rendering actions in {Count} blocks",
-                    nameof(Swap),
-                    fastForwardPath.Count);
-
-                foreach (IActionRenderer renderer in ActionRenderers)
-                {
-                    renderer.RenderBlockEnd(oldTip, newTip);
-                }
             }
         }
 

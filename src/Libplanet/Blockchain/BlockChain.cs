@@ -712,12 +712,10 @@ namespace Libplanet.Blockchain
         /// Forks the chain at <paramref name="point"/> and returns the newly forked chain.
         /// </summary>
         /// <param name="point">The hash in which to fork from.</param>
-        /// <param name="inheritRenderers">Whether to inherit the renderers from the existing chain.
-        /// </param>
         /// <returns>An instance of the newly forked chain.</returns>
         /// <exception cref="ArgumentException">Throws when the provided <paramref name="point"/>
         /// does not exist in the current chain.</exception>
-        public BlockChain Fork(BlockHash point, bool inheritRenderers = true)
+        public BlockChain Fork(BlockHash point)
         {
             if (!ContainsBlock(point))
             {
@@ -736,9 +734,6 @@ namespace Libplanet.Blockchain
             }
 
             var forkedId = Guid.NewGuid();
-            IEnumerable<IRenderer> renderers = inheritRenderers
-                ? Renderers
-                : Enumerable.Empty<IRenderer>();
             try
             {
                 _rwlock.EnterReadLock();
@@ -775,7 +770,7 @@ namespace Libplanet.Blockchain
                     Genesis,
                     _blockChainStates,
                     ActionEvaluator,
-                    renderers);
+                    Enumerable.Empty<IRenderer>());
 
                 _logger.Information(
                     "Forked chain at #{Index} {Hash} from id {PreviousId} to id {ForkedId}",
