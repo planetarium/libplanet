@@ -811,58 +811,6 @@ namespace Libplanet.Net.Tests
             CleaningSwarm(receiverSwarm);
         }
 
-        [Fact(Timeout = Timeout, Skip = "No Reorganization in PBFT")]
-        public async Task PreloadAfterReorg()
-        {
-            var minerKey = new PrivateKey();
-
-            Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
-            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
-
-            BlockChain minerChain = minerSwarm.BlockChain;
-            BlockChain receiverChain = receiverSwarm.BlockChain;
-
-            foreach (int i in Enumerable.Range(0, 25))
-            {
-                Block block = minerChain.ProposeBlock(
-                    minerKey, CreateBlockCommit(minerChain.Tip));
-                minerChain.Append(block, CreateBlockCommit(block));
-                receiverChain.Append(block, CreateBlockCommit(block));
-            }
-
-            var receiverForked = receiverChain.Fork(receiverChain[5].Hash);
-            foreach (int i in Enumerable.Range(0, 20))
-            {
-                Block block = receiverForked.ProposeBlock(
-                    minerKey, CreateBlockCommit(receiverForked.Tip));
-                receiverForked.Append(block, CreateBlockCommit(block));
-            }
-
-            receiverChain.Swap(receiverForked, false);
-
-            foreach (int i in Enumerable.Range(0, 1))
-            {
-                Block block = minerChain.ProposeBlock(
-                    minerKey, CreateBlockCommit(minerChain.Tip));
-                minerChain.Append(block, CreateBlockCommit(block));
-            }
-
-            minerSwarm.FindNextHashesChunkSize = 2;
-            try
-            {
-                await StartAsync(minerSwarm);
-                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                await receiverSwarm.PreloadAsync();
-            }
-            finally
-            {
-                CleaningSwarm(minerSwarm);
-                CleaningSwarm(receiverSwarm);
-            }
-
-            Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
-        }
-
         [Fact(Timeout = Timeout)]
         public async Task PreloadDeleteOnlyTempChain()
         {
