@@ -62,10 +62,10 @@ Version 5.2.2
 
 Released on August 8, 2024.
 
- - Ported changes from [Libplanet 5.2.2] release.  [[#3915]]
+ - (Libplanet.Explorer) Fix an issue with high CPU usage
+   when querying blocks [[#3897]]
 
-[#3915]: https://github.com/planetarium/libplanet/pull/3915
-[Libplanet 5.2.2]: https://www.nuget.org/packages/Libplanet/5.2.2
+[#3897]: https://github.com/planetarium/libplanet/pull/3897
 
 
 Version 5.2.1
