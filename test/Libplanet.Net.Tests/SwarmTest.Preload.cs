@@ -812,39 +812,6 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreloadDeleteOnlyTempChain()
-        {
-            Swarm minerSwarm = await CreateSwarm().ConfigureAwait(false);
-            Swarm receiverSwarm = await CreateSwarm().ConfigureAwait(false);
-            BlockChain minerChain = minerSwarm.BlockChain;
-            BlockChain receiverChain = minerSwarm.BlockChain;
-
-            receiverChain = receiverChain.Fork(receiverChain.Genesis.Hash);
-            Block[] blocks =
-                MakeFixtureBlocksForPreloadAsyncCancellationTest().Item2;
-
-            foreach (Block block in blocks)
-            {
-                minerChain.Append(block, CreateBlockCommit(block));
-            }
-
-            try
-            {
-                await StartAsync(minerSwarm);
-                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
-                await receiverSwarm.PreloadAsync();
-            }
-            finally
-            {
-                CleaningSwarm(minerSwarm);
-                CleaningSwarm(receiverSwarm);
-            }
-
-            // Check PreloadAsync() preserves chain that forked before preloading.
-            Assert.Equal(2, receiverChain.Store.ListChainIds().Count());
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task PreloadToTheHighestTipIndexChain()
         {
             var minerKey1 = new PrivateKey();

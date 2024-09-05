@@ -1,4 +1,3 @@
-#pragma warning disable MEN005
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -93,30 +92,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void ValidatorSet()
-        {
-            var validatorSet = _blockChain
-                .GetNextWorldState()
-                .GetValidatorSet();
-            _logger.Debug(
-                "GenesisBlock is {Hash}, Transactions: {Txs}",
-                _blockChain.Genesis,
-                _blockChain.Genesis.Transactions);
-            Assert.Equal(TestUtils.ValidatorSet.TotalCount, validatorSet.TotalCount);
-        }
-
-        [SkippableFact]
-        public void CanFindBlockByIndex()
-        {
-            var genesis = _blockChain.Genesis;
-            Assert.Equal(genesis, _blockChain[0]);
-
-            Block block = _blockChain.ProposeBlock(new PrivateKey());
-            _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
-            Assert.Equal(block, _blockChain[1]);
-        }
-
-        [SkippableFact]
         public void CanonicalId()
         {
             var chain1 = _blockChain;
@@ -126,9 +101,6 @@ namespace Libplanet.Tests.Blockchain
             Block block2 = chain1.ProposeBlock(key, CreateBlockCommit(chain1.Tip));
             chain1.Append(block2, CreateBlockCommit(block2));
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
-            var chain2 = chain1.Fork(chain1.Tip.Hash);
-            Block block3 = chain2.ProposeBlock(key, CreateBlockCommit(chain1.Tip));
-            chain2.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(chain1.Id, _fx.Store.GetCanonicalChainId());
 
             var beginActions = ImmutableArray.Create<IAction>(
@@ -155,6 +127,30 @@ namespace Libplanet.Tests.Blockchain
                     new SingleActionLoader(typeof(DumbAction))));
 
             Assert.Equal(chain1.Id, z.Id);
+        }
+
+        [SkippableFact]
+        public void ValidatorSet()
+        {
+            var validatorSet = _blockChain
+                .GetNextWorldState()
+                .GetValidatorSet();
+            _logger.Debug(
+                "GenesisBlock is {Hash}, Transactions: {Txs}",
+                _blockChain.Genesis,
+                _blockChain.Genesis.Transactions);
+            Assert.Equal(TestUtils.ValidatorSet.TotalCount, validatorSet.TotalCount);
+        }
+
+        [SkippableFact]
+        public void CanFindBlockByIndex()
+        {
+            var genesis = _blockChain.Genesis;
+            Assert.Equal(genesis, _blockChain[0]);
+
+            Block block = _blockChain.ProposeBlock(new PrivateKey());
+            _blockChain.Append(block, TestUtils.CreateBlockCommit(block));
+            Assert.Equal(block, _blockChain[1]);
         }
 
         [SkippableFact]
@@ -472,203 +468,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void FindNextHashesAfterFork()
-        {
-            var key = new PrivateKey();
-
-            Block block = _blockChain.ProposeBlock(key);
-            _blockChain.Append(block, CreateBlockCommit(block));
-            Block block2 = _blockChain.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(_blockChain.Tip));
-            _blockChain.Append(block2, CreateBlockCommit(block2));
-            Block block3 = _blockChain.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(_blockChain.Tip));
-            _blockChain.Append(block3, CreateBlockCommit(block3));
-
-            BlockChain forked = _blockChain.Fork(_blockChain.Genesis.Hash);
-            Block forkedBlock = forked.ProposeBlock(key);
-            forked.Append(forkedBlock, CreateBlockCommit(forkedBlock));
-
-            BlockLocator locator = _blockChain.GetBlockLocator();
-            forked.FindNextHashes(locator)
-                .Deconstruct(out long? offset, out IReadOnlyList<BlockHash> hashes);
-
-            Assert.Null(offset);
-            Assert.Empty(hashes);
-        }
-
-        [SkippableFact]
-        public void Fork()
-        {
-            var key = new PrivateKey();
-
-            Block block1 = _blockChain.ProposeBlock(key);
-            _blockChain.Append(block1, CreateBlockCommit(block1));
-            Block block2 = _blockChain.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(_blockChain.Tip));
-            _blockChain.Append(block2, CreateBlockCommit(block2));
-            Block block3 = _blockChain.ProposeBlock(
-                key, lastCommit: CreateBlockCommit(_blockChain.Tip));
-            _blockChain.Append(block3, CreateBlockCommit(block3));
-
-            BlockChain forked = _blockChain.Fork(block2.Hash);
-
-            Assert.Equal(
-                new[] { block1, block2, block3 },
-                new[] { _blockChain[1], _blockChain[2], _blockChain[3] }
-            );
-            Assert.Equal(4, _blockChain.Count);
-
-            Assert.Equal(
-                new[] { block1, block2 },
-                new[] { forked[1], forked[2] }
-            );
-            Assert.Equal(3, forked.Count);
-        }
-
-        [SkippableFact]
-        public void ForkWithBlockNotExistInChain()
-        {
-            var key = new PrivateKey();
-            var genesis = _blockChain.Genesis;
-
-            for (var i = 0; i < 2; i++)
-            {
-                Block block = _blockChain.ProposeBlock(
-                    key, lastCommit: CreateBlockCommit(_blockChain.Tip));
-                _blockChain.Append(block, CreateBlockCommit(block));
-            }
-
-            Block newBlock = _blockChain.EvaluateAndSign(
-                ProposeNext(genesis, miner: key.PublicKey), key);
-
-            Assert.Throws<ArgumentException>(() =>
-                _blockChain.Fork(newBlock.Hash));
-
-            _blockChain.Store.PutBlock(newBlock);
-            Assert.Throws<ArgumentException>(() =>
-                _blockChain.Fork(newBlock.Hash));
-        }
-
-        [SkippableFact]
-        public void ForkChainWithIncompleteBlockStates()
-        {
-            var fx = new MemoryStoreFixture(
-                _policy.PolicyActionsRegistry);
-            (_, _, BlockChain chain) =
-                MakeIncompleteBlockStates(fx.Store, fx.StateStore);
-            BlockChain forked = chain.Fork(chain[5].Hash);
-            Assert.Equal(chain[5], forked.Tip);
-            Assert.Equal(6, forked.Count);
-        }
-
-        [SkippableFact]
-        public void StateAfterForkingAndAddingExistingBlock()
-        {
-            var miner = new PrivateKey();
-            var signer = new PrivateKey();
-            var address = signer.Address;
-            var actions1 = new[] { DumbAction.Create((address, "foo")) };
-            var actions2 = new[] { DumbAction.Create((address, "bar")) };
-
-            _blockChain.MakeTransaction(signer, actions1);
-            var b1 = _blockChain.ProposeBlock(miner);
-            _blockChain.Append(b1, CreateBlockCommit(b1));
-
-            _blockChain.MakeTransaction(signer, actions2);
-            var b2 = _blockChain.ProposeBlock(
-                miner, lastCommit: CreateBlockCommit(_blockChain.Tip));
-            _blockChain.Append(b2, CreateBlockCommit(b2));
-            var state = _blockChain
-                .GetNextWorldState()
-                .GetAccountState(ReservedAddresses.LegacyAccount)
-                .GetState(address);
-
-            Assert.Equal((Text)"foo,bar", state);
-
-            var forked = _blockChain.Fork(b1.Hash);
-            state = forked
-                .GetNextWorldState()
-                .GetAccountState(ReservedAddresses.LegacyAccount)
-                .GetState(address);
-            Assert.Equal((Text)"foo", state);
-
-            forked.Append(b2, CreateBlockCommit(b2));
-            state = forked
-                .GetNextWorldState()
-                .GetAccountState(ReservedAddresses.LegacyAccount)
-                .GetState(address);
-            Assert.Equal((Text)"foo,bar", state);
-        }
-
-        [SkippableFact]
-        public void ForkShouldSkipExecuteAndRenderGenesis()
-        {
-            var miner = new PrivateKey();
-            var action = DumbAction.Create((_fx.Address1, "genesis"));
-
-            using (IStore store = new MemoryStore())
-            using (var stateStore = new TrieStateStore(new MemoryKeyValueStore()))
-            {
-                var actionEvaluator = new ActionEvaluator(
-                    _policy.PolicyActionsRegistry,
-                    stateStore,
-                    new SingleActionLoader(typeof(DumbAction)));
-                var privateKey = new PrivateKey();
-                var genesis = ProposeGenesisBlock(
-                    ProposeGenesis(
-                        GenesisProposer.PublicKey,
-                        transactions: new[]
-                        {
-                            new Transaction(
-                                new UnsignedTx(
-                                    new TxInvoice(
-                                        genesisHash: null,
-                                        updatedAddresses: ImmutableHashSet.Create(_fx.Address1),
-                                        timestamp: DateTimeOffset.UtcNow,
-                                        actions: new TxActionList(new[] { action }.ToPlainValues()),
-                                        maxGasPrice: null,
-                                        gasLimit: null),
-                                    new TxSigningMetadata(privateKey.PublicKey, 0)),
-                                privateKey),
-                        }),
-                    privateKey: GenesisProposer);
-
-                store.PutBlock(genesis);
-                var renderer = new RecordingActionRenderer();
-                var blockChain = BlockChain.Create(
-                    _policy,
-                    new VolatileStagePolicy(),
-                    store,
-                    stateStore,
-                    genesis,
-                    new ActionEvaluator(
-                        _policy.PolicyActionsRegistry,
-                        stateStore: stateStore,
-                        actionTypeLoader: new SingleActionLoader(typeof(DumbAction))),
-                    renderers: new[] { renderer }
-                );
-
-                // Creation does not render anything
-                Assert.Equal(0, renderer.ActionRecords.Count);
-                Assert.Equal(0, renderer.BlockRecords.Count);
-
-                Block block1 = blockChain.ProposeBlock(miner);
-                blockChain.Append(block1, CreateBlockCommit(block1));
-                Block block2 = blockChain.ProposeBlock(
-                    miner, lastCommit: CreateBlockCommit(blockChain.Tip));
-                blockChain.Append(block2, CreateBlockCommit(block2));
-
-                int blockRecordsBeforeFork = renderer.BlockRecords.Count;
-
-                blockChain.Fork(blockChain.Tip.Hash);
-
-                Assert.Equal(0, renderer.ActionRecords.Count(r => IsDumbAction(r.Action)));
-                Assert.Equal(blockRecordsBeforeFork, renderer.BlockRecords.Count);
-            }
-        }
-
-        [SkippableFact]
         public void DetectInvalidTxNonce()
         {
             var privateKey = new PrivateKey();
@@ -709,60 +508,6 @@ namespace Libplanet.Tests.Blockchain
                 CreateBlockCommit(_blockChain.Tip),
                 ImmutableArray<EvidenceBase>.Empty);
             _blockChain.Append(b2, CreateBlockCommit(b2));
-        }
-
-        [SkippableFact]
-        public void ForkTxNonce()
-        {
-            // An active account, so that its some recent transactions became "stale" due to a fork.
-            var privateKey = new PrivateKey();
-            Address address = privateKey.Address;
-
-            // An inactive account, so that it has no recent transactions but only an old
-            // transaction, so that its all transactions are stale-proof (stale-resistant).
-            var lessActivePrivateKey = new PrivateKey();
-            Address lessActiveAddress = lessActivePrivateKey.Address;
-
-            var actions = new[] { DumbAction.Create((address, "foo")) };
-
-            var genesis = _blockChain.Genesis;
-
-            Transaction[] txsA =
-            {
-                _fx.MakeTransaction(actions, privateKey: privateKey),
-                _fx.MakeTransaction(privateKey: lessActivePrivateKey),
-            };
-
-            Assert.Equal(0, _blockChain.GetNextTxNonce(address));
-
-            Block b1 = _blockChain.ProposeBlock(
-                _fx.Proposer,
-                txsA.ToImmutableList(),
-                CreateBlockCommit(_blockChain.Tip),
-                ImmutableArray<EvidenceBase>.Empty);
-            _blockChain.Append(b1, CreateBlockCommit(b1));
-
-            Assert.Equal(1, _blockChain.GetNextTxNonce(address));
-
-            Transaction[] txsB =
-            {
-                _fx.MakeTransaction(
-                    actions,
-                    nonce: 1,
-                    privateKey: privateKey),
-            };
-            Block b2 = _blockChain.ProposeBlock(
-                _fx.Proposer,
-                txsB.ToImmutableList(),
-                CreateBlockCommit(_blockChain.Tip),
-                ImmutableArray<EvidenceBase>.Empty);
-            _blockChain.Append(b2, CreateBlockCommit(b2));
-
-            Assert.Equal(2, _blockChain.GetNextTxNonce(address));
-
-            BlockChain forked = _blockChain.Fork(b1.Hash);
-            Assert.Equal(1, forked.GetNextTxNonce(address));
-            Assert.Equal(1, forked.GetNextTxNonce(lessActiveAddress));
         }
 
         [SkippableFact]
@@ -811,27 +556,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.NotEqual(blockCommit1, _blockChain.GetBlockCommit(block1.Index));
             Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Index));
             Assert.Equal(block2.LastCommit, _blockChain.GetBlockCommit(block1.Hash));
-        }
-
-        [SkippableFact]
-        public void GetBlockCommitAfterFork()
-        {
-            Block block1 = _blockChain.ProposeBlock(new PrivateKey());
-            _blockChain.Append(block1, CreateBlockCommit(block1));
-            Block block2 = _blockChain.ProposeBlock(
-                new PrivateKey(),
-                lastCommit: CreateBlockCommit(block1));
-            _blockChain.Append(block2, CreateBlockCommit(block2));
-            Block block3 = _blockChain.ProposeBlock(
-                new PrivateKey(),
-                lastCommit: CreateBlockCommit(block2));
-            _blockChain.Append(block3, CreateBlockCommit(block3));
-
-            var forked = _blockChain.Fork(block2.Hash);
-            Assert.NotNull(forked.GetBlockCommit(forked.Tip.Index));
-            Assert.Equal(
-                forked.GetBlockCommit(forked.Tip.Index),
-                block3.LastCommit);
         }
 
         [SkippableFact]
@@ -998,65 +722,6 @@ namespace Libplanet.Tests.Blockchain
                 callCount <= 1,
                 $"GetBlocksStates() was called {callCount} times"
             );
-        }
-
-        [SkippableFact]
-        public void GetStateReturnsValidStateAfterFork()
-        {
-            var privateKey = new PrivateKey();
-            var store = new MemoryStore();
-            var stateStore =
-                new TrieStateStore(new MemoryKeyValueStore());
-            var actionLoader = new SingleActionLoader(typeof(DumbAction));
-            var chain = MakeBlockChain(
-                new NullBlockPolicy(),
-                store,
-                stateStore,
-                actionLoader,
-                new[] { DumbAction.Create((_fx.Address1, "item0.0")) });
-            Assert.Equal(
-                "item0.0",
-                (Text)chain
-                    .GetNextWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetState(_fx.Address1));
-
-            chain.MakeTransaction(
-                privateKey,
-                new[] { DumbAction.Create((_fx.Address1, "item1.0")), }
-            );
-            Block block = chain.ProposeBlock(new PrivateKey());
-
-            chain.Append(block, CreateBlockCommit(block));
-            Assert.Equal(
-                new IValue[] { (Text)"item0.0,item1.0" },
-                chain
-                    .GetNextWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetStates(new[] { _fx.Address1 })
-            );
-            Assert.Equal(
-                "item0.0,item1.0",
-                (Text)chain
-                    .GetNextWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetState(_fx.Address1));
-
-            var forked = chain.Fork(chain.Tip.Hash);
-            Assert.Equal(2, forked.Count);
-            Assert.Equal(
-                new IValue[] { (Text)"item0.0,item1.0" },
-                forked
-                    .GetNextWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetStates(new[] { _fx.Address1 })
-            );
-            Assert.Equal(
-                "item0.0,item1.0",
-                (Text)forked
-                    .GetNextWorldState()
-                    .GetAccountState(ReservedAddresses.LegacyAccount)
-                    .GetState(_fx.Address1));
         }
 
         [SkippableFact]
