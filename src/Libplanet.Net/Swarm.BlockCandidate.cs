@@ -64,8 +64,6 @@ namespace Libplanet.Net
             IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
-            BlockChain synced = null;
-            System.Action renderSwap = () => { };
             try
             {
                 FillBlocksAsyncStarted.Set();
@@ -74,17 +72,18 @@ namespace Libplanet.Net
                     nameof(BlockCandidateProcess),
                     BlockChain.Tip.Index,
                     BlockChain.Tip.Hash);
-                synced = AppendBranch(
+                _ = AppendBranch(
                     blockChain: BlockChain,
                     candidate: candidate,
                     render: render,
                     progress: progress);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
-                    "{MethodName}() finished appending blocks; synced tip is #{Index} {Hash}",
+                    "{MethodName}() finished appending blocks; current tip is #{Index} {Hash}",
                     nameof(BlockCandidateProcess),
-                    synced.Tip.Index,
-                    synced.Tip.Hash);
+                    BlockChain.Tip.Index,
+                    BlockChain.Tip.Hash);
+                return true;
             }
             catch (Exception e)
             {
@@ -93,47 +92,6 @@ namespace Libplanet.Net
                     "{MethodName}() has failed to append blocks",
                     nameof(BlockCandidateProcess));
                 FillBlocksAsyncFailed.Set();
-                return false;
-            }
-
-            try
-            {
-                // Although highly unlikely, current block chain's tip can change.
-                if (synced is { } syncedB
-                    && !syncedB.Id.Equals(BlockChain?.Id)
-                    && BlockChain.Tip.Index < syncedB.Tip.Index)
-                {
-                    _logger.Debug(
-                        "Swapping chain {ChainIdA} with chain {ChainIdB}...",
-                        BlockChain.Id,
-                        synced.Id
-                    );
-                    renderSwap = BlockChain.Swap(
-                        synced,
-                        render: render);
-                    _logger.Debug(
-                        "Swapped chain {ChainIdA} with chain {ChainIdB}",
-                        BlockChain.Id,
-                        synced.Id
-                    );
-
-                    renderSwap();
-                    BroadcastBlock(BlockChain.Tip);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    "{MethodName}() has failed to swap chain {ChainIdA} with chain {ChainIdB}",
-                    nameof(BlockCandidateProcess),
-                    BlockChain.Id,
-                    synced.Id);
                 return false;
             }
         }
