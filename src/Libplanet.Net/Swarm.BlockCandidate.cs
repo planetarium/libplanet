@@ -367,7 +367,6 @@ namespace Libplanet.Net
                 var result = await BlockCandidateDownload(
                     peer: peer,
                     blockChain: BlockChain,
-                    stop: demand.BlockExcerpt,
                     logSessionId: sessionId,
                     cancellationToken: cancellationToken);
 
@@ -423,17 +422,15 @@ namespace Libplanet.Net
         private async Task<bool> BlockCandidateDownload(
             BoundPeer peer,
             BlockChain blockChain,
-            IBlockExcerpt stop,
             int logSessionId,
             CancellationToken cancellationToken)
         {
             BlockLocator locator = blockChain.GetBlockLocator();
             Block tip = blockChain.Tip;
 
-            List<(long, BlockHash)> hashes = await GetBlockHashes(
+            List<BlockHash> hashes = await GetBlockHashes(
                 peer: peer,
                 locator: locator,
-                timeout: null,
                 cancellationToken: cancellationToken);
 
             if (!hashes.Any())
@@ -444,7 +441,7 @@ namespace Libplanet.Net
 
             IAsyncEnumerable<(Block, BlockCommit)> blocksAsync = GetBlocksAsync(
                 peer,
-                hashes.Select(pair => pair.Item2),
+                hashes,
                 cancellationToken);
             try
             {
