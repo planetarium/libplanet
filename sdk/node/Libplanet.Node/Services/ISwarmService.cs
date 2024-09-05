@@ -9,4 +9,6 @@ public interface ISwarmService
     public event EventHandler? Stopped;
 
     Swarm Swarm { get; }
+
+    bool IsRunning { get; }
 }

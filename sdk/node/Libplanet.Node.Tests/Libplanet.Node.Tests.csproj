@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Libplanet.Node\Libplanet.Node.csproj" />
+    <ProjectReference Include="..\Libplanet.Node.Extensions\Libplanet.Node.Extensions.csproj" />
   </ItemGroup>
 
 </Project>
