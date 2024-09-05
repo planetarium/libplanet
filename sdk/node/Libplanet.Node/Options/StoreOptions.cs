@@ -15,7 +15,7 @@ public sealed class StoreOptions : OptionsBase<StoreOptions>
     /// The type of the store.
     /// </summary>
     [Description("The type of the store.")]
-    public StoreType Type { get; set; } = StoreType.Memory;
+    public StoreType Type { get; set; } = StoreType.InMemory;
 
     /// <summary>
     /// The root directory path of the store.

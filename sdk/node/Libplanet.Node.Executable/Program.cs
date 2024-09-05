@@ -37,7 +37,7 @@ var handlerMessage = """
     """;
 using var app = builder.Build();
 
-app.MapGrpcService<BlockChainGrpcServiceV1>();
+app.MapGrpcService<BlockchainGrpcServiceV1>();
 app.MapGrpcService<SchemaGrpcServiceV1>();
 app.MapGet("/", () => handlerMessage);
 if (builder.Environment.IsDevelopment())

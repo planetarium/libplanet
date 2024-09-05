@@ -4,7 +4,7 @@ option csharp_namespace = "Libplanet.Node.API";
 
 package node.blockchain.v1;
 
-service BlockChain {
+service Blockchain {
   rpc GetGenesisBlock (GetGenesisBlockRequest) returns (GetGenesisBlockReply);
   rpc GetTip(Empty) returns (GetTipReply);
   rpc GetBlock(GetBlockRequest) returns (GetBlockReply);
