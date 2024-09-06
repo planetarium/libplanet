@@ -81,8 +81,14 @@ to <code>BlockDemand</code>.  [<a href="https://github.com/planetarium/libplanet
 <li>(Libplanet.Net) Changed <code>BlockHashDownloadState</code> and <code>BlockDownloadState</code>
 to be <code>Obsolete</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3943">#3943</a>]</li>
 <li>Removed <code>Fork()</code> method from <code>BlockChain</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3948">#3948</a>]</li>
+<li>Changed the return type for <code>BlockChain.FindNextHashes()</code>
+to <code>IReadOnlyList&lt;BlockHash&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3949">#3949</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>(Libplanet.Net) Changed the encoding for <code>GetBlockHashesMsg</code> and
+<code>BlockHashesMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3949">#3949</a>]</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
