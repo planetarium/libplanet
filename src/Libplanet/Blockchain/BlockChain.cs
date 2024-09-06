@@ -1189,28 +1189,19 @@ namespace Libplanet.Blockchain
         /// <see langword="null"/>.</returns>
         internal BlockHash? FindBranchpoint(BlockLocator locator)
         {
-            try
+            if (ContainsBlock(locator.Hash))
             {
-                _rwlock.EnterReadLock();
-
-                if (ContainsBlock(locator.Hash))
-                {
-                    _logger.Debug(
-                        "Found a branchpoint with locator [{LocatorHead}]: {Hash}",
-                        locator.Hash,
-                        locator.Hash);
-                    return locator.Hash;
-                }
-
                 _logger.Debug(
-                    "Failed to find a branchpoint locator [{LocatorHead}]",
+                    "Found a branchpoint with locator [{LocatorHead}]: {Hash}",
+                    locator.Hash,
                     locator.Hash);
-                return null;
+                return locator.Hash;
             }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
+
+            _logger.Debug(
+                "Failed to find a branchpoint locator [{LocatorHead}]",
+                locator.Hash);
+            return null;
         }
 
         /// <summary>
