@@ -28,6 +28,9 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  (Libplanet.Net) Changed the encoding for `GetBlockHashesMsg` and
+    `BlockHashesMsg`.  [[#3949]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -57,6 +60,7 @@ To be released.
 [#3942]: https://github.com/planetarium/libplanet/pull/3942
 [#3943]: https://github.com/planetarium/libplanet/pull/3943
 [#3948]: https://github.com/planetarium/libplanet/pull/3948
+[#3949]: https://github.com/planetarium/libplanet/pull/3949
 
 
 Version 5.2.2
