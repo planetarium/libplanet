@@ -3352,19 +3352,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.FindNextHashes
   nameWithType: BlockChain.FindNextHashes
-- uid: Libplanet.Blockchain.BlockChain.Fork(Libplanet.Types.Blocks.BlockHash,System.Boolean)
-  name: Fork(BlockHash, Boolean)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Fork_Libplanet_Types_Blocks_BlockHash_System_Boolean_
-  commentId: M:Libplanet.Blockchain.BlockChain.Fork(Libplanet.Types.Blocks.BlockHash,System.Boolean)
-  fullName: Libplanet.Blockchain.BlockChain.Fork(Libplanet.Types.Blocks.BlockHash, System.Boolean)
-  nameWithType: BlockChain.Fork(BlockHash, Boolean)
-- uid: Libplanet.Blockchain.BlockChain.Fork*
-  name: Fork
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Fork_
-  commentId: Overload:Libplanet.Blockchain.BlockChain.Fork
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain.Fork
-  nameWithType: BlockChain.Fork
 - uid: Libplanet.Blockchain.BlockChain.Genesis
   name: Genesis
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Genesis
