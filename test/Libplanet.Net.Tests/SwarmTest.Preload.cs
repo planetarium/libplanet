@@ -197,46 +197,6 @@ namespace Libplanet.Net.Tests
                 );
 
                 Assert.Equal(minerChain.Tip.Hash, receiverChain.Tip.Hash);
-
-                var expectedStates = new List<BlockSyncState>();
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var b = minerChain[i];
-                    var state1 = new ActionExecutionState
-                    {
-                        ExecutedBlockHash = b.Hash,
-                        TotalBlockCount = 12,
-                        ExecutedBlockCount = i,
-                    };
-                    expectedStates.Add(state1);
-
-                    var state2 = new BlockVerificationState
-                    {
-                        VerifiedBlockHash = b.Hash,
-                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
-                        VerifiedBlockCount = i,
-                    };
-                    expectedStates.Add(state2);
-                }
-
-                _logger.Debug("Expected preload states: {@expectedStates}", expectedStates);
-                _logger.Debug("Actual preload states: {@actualStates}", actualStates);
-
-                Assert.Equal(
-                    expectedStates
-                        .OfType<ActionExecutionState>()
-                        .Select(state => state.ExecutedBlockHash),
-                    actualStates
-                        .OfType<ActionExecutionState>()
-                        .Select(state => state.ExecutedBlockHash));
-                Assert.Equal(
-                    expectedStates
-                        .OfType<BlockVerificationState>()
-                        .Select(state => state.VerifiedBlockHash),
-                    actualStates
-                        .OfType<BlockVerificationState>()
-                        .Select(state => state.VerifiedBlockHash));
             }
             finally
             {
@@ -555,43 +515,6 @@ namespace Libplanet.Net.Tests
                 await Task.Delay(1000);
 
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
-
-                var expectedStates = new List<BlockSyncState>();
-
-                for (var i = 1; i < minerChain.Count; i++)
-                {
-                    var state1 = new ActionExecutionState
-                    {
-                        ExecutedBlockHash = minerChain[i].Hash,
-                        TotalBlockCount = 10,
-                        ExecutedBlockCount = i,
-                    };
-                    expectedStates.Add(state1);
-
-                    var state2 = new BlockVerificationState
-                    {
-                        VerifiedBlockHash = minerChain[i].Hash,
-                        TotalBlockCount = 10,
-                        VerifiedBlockCount = i,
-                    };
-                    expectedStates.Add(state2);
-                }
-
-                // FIXME: this test does not ensures block download in order
-                Assert.Equal(
-                    expectedStates
-                        .OfType<ActionExecutionState>()
-                        .Select(state => state.ExecutedBlockHash),
-                    actualStates
-                        .OfType<ActionExecutionState>()
-                        .Select(state => state.ExecutedBlockHash));
-                Assert.Equal(
-                    expectedStates
-                        .OfType<BlockVerificationState>()
-                        .Select(state => state.VerifiedBlockHash),
-                    actualStates
-                        .OfType<BlockVerificationState>()
-                        .Select(state => state.VerifiedBlockHash));
             }
             finally
             {

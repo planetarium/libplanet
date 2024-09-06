@@ -132,20 +132,6 @@ namespace Libplanet.Net
                     }
 
                     verifiedBlockCount++;
-                    progress?.Report(
-                        new ActionExecutionState()
-                        {
-                            TotalBlockCount = blocks.Count,
-                            ExecutedBlockCount = (int)verifiedBlockCount,
-                            ExecutedBlockHash = block.Hash,
-                        });
-                    progress?.Report(
-                        new BlockVerificationState
-                        {
-                            TotalBlockCount = blocks.Count,
-                            VerifiedBlockCount = ++verifiedBlockCount,
-                            VerifiedBlockHash = block.Hash,
-                        });
                 }
             }
             catch (Exception e)
