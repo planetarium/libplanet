@@ -720,7 +720,6 @@ namespace Libplanet.Net.Tests
             (var _, List<BlockHash> demands) = await receiverSwarm.GetDemandBlockHashes(
                 receiverChain,
                 peersWithExcerpt,
-                progress: null,
                 cancellationToken: CancellationToken.None);
 
             IEnumerable<BlockHash> expectedBlocks = minerChain
