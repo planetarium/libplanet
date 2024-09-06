@@ -24,6 +24,7 @@ To be released.
     [[#3942]]
  -  (Libplanet.Net) Changed `BlockHashDownloadState` and `BlockDownloadState`
     to be `Obsolete`.  [[#3943]]
+ -  Removed `Fork()` method from `BlockChain`.  [[#3948]]
 
 ### Backward-incompatible network protocol changes
 
@@ -55,6 +56,7 @@ To be released.
 [#3934]: https://github.com/planetarium/libplanet/pull/3934
 [#3942]: https://github.com/planetarium/libplanet/pull/3942
 [#3943]: https://github.com/planetarium/libplanet/pull/3943
+[#3948]: https://github.com/planetarium/libplanet/pull/3948
 
 
 Version 5.2.2
