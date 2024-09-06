@@ -119,7 +119,7 @@ namespace Libplanet.Net.Tests.Messages
                 case MessageContent.MessageType.BlockHeaderMessage:
                     return new BlockHeaderMsg(genesis.Hash, genesis.Header);
                 case MessageContent.MessageType.BlockHashes:
-                    return new BlockHashesMsg(0, new[] { genesis.Hash });
+                    return new BlockHashesMsg(new[] { genesis.Hash });
                 case MessageContent.MessageType.GetChainStatus:
                     return new GetChainStatusMsg();
                 case MessageContent.MessageType.ChainStatus:

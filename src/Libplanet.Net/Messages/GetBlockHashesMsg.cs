@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Libplanet.Blockchain;
 using Libplanet.Types.Blocks;
@@ -14,7 +13,7 @@ namespace Libplanet.Net.Messages
 
         public GetBlockHashesMsg(byte[][] dataFrames)
         {
-            Locator = new BlockLocator(new BlockHash(dataFrames[1]));
+            Locator = new BlockLocator(new BlockHash(dataFrames[0]));
         }
 
         public BlockLocator Locator { get; }
@@ -26,9 +25,7 @@ namespace Libplanet.Net.Messages
             get
             {
                 var frames = new List<byte[]>();
-                frames.Add(BitConverter.GetBytes(1));
                 frames.Add(Locator.Hash.ToByteArray());
-                frames.Add(Array.Empty<byte>());
                 return frames;
             }
         }
