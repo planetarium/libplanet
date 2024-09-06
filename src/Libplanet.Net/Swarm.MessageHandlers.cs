@@ -50,18 +50,13 @@ namespace Libplanet.Net
                         "Received a {MessageType} message locator [{LocatorHead}]",
                         nameof(GetBlockHashesMsg),
                         getBlockHashes.Locator.Hash);
-                    BlockChain.FindNextHashes(
+                    IReadOnlyList<BlockHash> hashes = BlockChain.FindNextHashes(
                         getBlockHashes.Locator,
-                        FindNextHashesChunkSize
-                    ).Deconstruct(
-                        out long? offset,
-                        out IReadOnlyList<BlockHash> hashes
-                    );
+                        FindNextHashesChunkSize);
                     _logger.Debug(
-                        "Found {HashCount} hashes after the branchpoint (offset: {Offset}) " +
+                        "Found {HashCount} hashes after the branchpoint " +
                         "with locator [{LocatorHead}]",
                         hashes.Count,
-                        offset,
                         getBlockHashes.Locator.Hash);
                     var reply = new BlockHashesMsg(hashes);
 

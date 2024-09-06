@@ -662,11 +662,10 @@ namespace Libplanet.Blockchain
         /// <param name="locator">The <see cref="BlockLocator"/> to find the branching point
         /// from.</param>
         /// <param name="count">The Maximum number of <see cref="BlockHash"/>es to return.</param>
-        /// <returns>A tuple of the index of the branch point and <see cref="BlockHash"/>es
-        /// including the branch point <see cref="BlockHash"/>.  If no branch point is found,
-        /// returns a tuple of <see langword="null"/> and an empty array of
-        /// <see cref="BlockHash"/>es.</returns>
-        public Tuple<long?, IReadOnlyList<BlockHash>> FindNextHashes(
+        /// <returns>A list of <see cref="BlockHash"/>es including
+        /// the branch point <see cref="BlockHash"/>.  If no branch point is found,
+        /// returns an empty list of <see cref="BlockHash"/>es.</returns>
+        public IReadOnlyList<BlockHash> FindNextHashes(
             BlockLocator locator,
             int count = 500)
         {
@@ -675,12 +674,12 @@ namespace Libplanet.Blockchain
 
             if (!(FindBranchpoint(locator) is { } branchpoint))
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
+                return Array.Empty<BlockHash>();
             }
 
             if (!(Store.GetBlockIndex(branchpoint) is { } branchpointIndex))
             {
-                return new Tuple<long?, IReadOnlyList<BlockHash>>(null, Array.Empty<BlockHash>());
+                return Array.Empty<BlockHash>();
             }
 
             var result = new List<BlockHash>();
@@ -705,7 +704,7 @@ namespace Libplanet.Blockchain
                     Store.ListChainIds().Count(),
                     stopwatch.ElapsedMilliseconds);
 
-            return new Tuple<long?, IReadOnlyList<BlockHash>>(branchpointIndex, result);
+            return result;
         }
 
         /// <summary>
@@ -1194,19 +1193,13 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                _logger.Debug(
-                    "Finding a branchpoint with locator [{LocatorHead}]",
-                    locator.Hash);
-                BlockHash hash = locator.Hash;
-                if (_blocks.ContainsKey(hash)
-                    && _blocks[hash] is Block block
-                    && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
+                if (ContainsBlock(locator.Hash))
                 {
                     _logger.Debug(
                         "Found a branchpoint with locator [{LocatorHead}]: {Hash}",
                         locator.Hash,
-                        hash);
-                    return hash;
+                        locator.Hash);
+                    return locator.Hash;
                 }
 
                 _logger.Debug(

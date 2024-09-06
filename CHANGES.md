@@ -25,6 +25,8 @@ To be released.
  -  (Libplanet.Net) Changed `BlockHashDownloadState` and `BlockDownloadState`
     to be `Obsolete`.  [[#3943]]
  -  Removed `Fork()` method from `BlockChain`.  [[#3948]]
+ -  Changed the return type for `BlockChain.FindNextHashes()`
+    to `IReadOnlyList<BlockHash>`.  [[#3949]]
 
 ### Backward-incompatible network protocol changes
 

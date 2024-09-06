@@ -433,12 +433,9 @@ namespace Libplanet.Tests.Blockchain
         public void FindNextHashes()
         {
             var key = new PrivateKey();
-            long? offsetIndex;
             IReadOnlyList<BlockHash> hashes;
 
-            _blockChain.FindNextHashes(
-                new BlockLocator(_blockChain.Genesis.Hash))
-                .Deconstruct(out offsetIndex, out hashes);
+            hashes = _blockChain.FindNextHashes(new BlockLocator(_blockChain.Genesis.Hash));
             Assert.Single(hashes);
             Assert.Equal(_blockChain.Genesis.Hash, hashes.First());
             var block0 = _blockChain.Genesis;
@@ -451,19 +448,13 @@ namespace Libplanet.Tests.Blockchain
                 key, lastCommit: CreateBlockCommit(_blockChain.Tip));
             _blockChain.Append(block3, CreateBlockCommit(block3));
 
-            _blockChain.FindNextHashes(new BlockLocator(block0.Hash))
-                .Deconstruct(out offsetIndex, out hashes);
-            Assert.Equal(0, offsetIndex);
+            hashes = _blockChain.FindNextHashes(new BlockLocator(block0.Hash));
             Assert.Equal(new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash }, hashes);
 
-            _blockChain.FindNextHashes(new BlockLocator(block1.Hash))
-                .Deconstruct(out offsetIndex, out hashes);
-            Assert.Equal(1, offsetIndex);
+            hashes = _blockChain.FindNextHashes(new BlockLocator(block1.Hash));
             Assert.Equal(new[] { block1.Hash, block2.Hash, block3.Hash }, hashes);
 
-            _blockChain.FindNextHashes(new BlockLocator(block0.Hash), count: 2)
-                .Deconstruct(out offsetIndex, out hashes);
-            Assert.Equal(0, offsetIndex);
+            hashes = _blockChain.FindNextHashes(new BlockLocator(block0.Hash), count: 2);
             Assert.Equal(new[] { block0.Hash, block1.Hash }, hashes);
         }
 
