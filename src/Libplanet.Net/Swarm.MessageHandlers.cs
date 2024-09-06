@@ -63,7 +63,7 @@ namespace Libplanet.Net
                         hashes.Count,
                         offset,
                         getBlockHashes.Locator.Hash);
-                    var reply = new BlockHashesMsg(offset, hashes);
+                    var reply = new BlockHashesMsg(hashes);
 
                     return Transport.ReplyMessageAsync(reply, message.Identity, default);
                 }

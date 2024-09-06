@@ -31,7 +31,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Request to query block hashes.
             /// </summary>
-            GetBlockHashes = 0x04,
+            GetBlockHashes = 0x032,
 
             /// <summary>
             /// Inventory to transfer transactions.
@@ -76,7 +76,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Message containing demand block hashes with their index numbers.
             /// </summary>
-            BlockHashes = 0x0e,
+            BlockHashes = 0x33,
 
             /// <summary>
             /// Request current chain status of the peer.
