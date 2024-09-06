@@ -1,0 +1,1030 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class VoteSet
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class VoteSet
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Consensus.VoteSet">
+
+
+  <h1 id="Libplanet_Net_Consensus_VoteSet" data-uid="Libplanet.Net.Consensus.VoteSet" class="text-break">Class VoteSet
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">VoteSet</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Consensus.html">Libplanet.Net.Consensus</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
+  <h5 id="Libplanet_Net_Consensus_VoteSet_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class VoteSet : object</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet__ctor_System_Int64_System_Int32_VoteFlag_ValidatorSet_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.%23ctor(System.Int64%2CSystem.Int32%2CVoteFlag%2CValidatorSet)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L28">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet__ctor_" data-uid="Libplanet.Net.Consensus.VoteSet.#ctor*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet__ctor_System_Int64_System_Int32_VoteFlag_ValidatorSet_" data-uid="Libplanet.Net.Consensus.VoteSet.#ctor(System.Int64,System.Int32,VoteFlag,ValidatorSet)">VoteSet(Int64, Int32, VoteFlag, ValidatorSet)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VoteSet(long height, int round, VoteFlag voteType, ValidatorSet validatorSet)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">height</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">round</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">VoteFlag</span></td>
+        <td><span class="parametername">voteType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ValidatorSet</span></td>
+        <td><span class="parametername">validatorSet</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_Count.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L57">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_Count_" data-uid="Libplanet.Net.Consensus.VoteSet.Count*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_Count" data-uid="Libplanet.Net.Consensus.VoteSet.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Count of the canonical <see cref="!:Vote"></see>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_Sum.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.Sum%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L51">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_Sum_" data-uid="Libplanet.Net.Consensus.VoteSet.Sum*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_Sum" data-uid="Libplanet.Net.Consensus.VoteSet.Sum">Sum</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BigInteger Sum { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BigInteger</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_TotalCount.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.TotalCount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L62">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_TotalCount_" data-uid="Libplanet.Net.Consensus.VoteSet.TotalCount*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_TotalCount" data-uid="Libplanet.Net.Consensus.VoteSet.TotalCount">TotalCount</h4>
+  <div class="markdown level1 summary"><p>Count of the all <see cref="!:Vote"></see>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TotalCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_Validators.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.Validators%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L49">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_Validators_" data-uid="Libplanet.Net.Consensus.VoteSet.Validators*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_Validators" data-uid="Libplanet.Net.Consensus.VoteSet.Validators">Validators</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Validator&gt; Validators { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Validator</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_BitArray.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.BitArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L194">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_BitArray_" data-uid="Libplanet.Net.Consensus.VoteSet.BitArray*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_BitArray" data-uid="Libplanet.Net.Consensus.VoteSet.BitArray">BitArray()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool[] BitArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L203">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_BitArrayByBlockHash_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.BitArrayByBlockHash(BlockHash)">BitArrayByBlockHash(BlockHash)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool[] BitArrayByBlockHash(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_Contains_PublicKey_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.Contains(PublicKey%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L73">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_Contains_" data-uid="Libplanet.Net.Consensus.VoteSet.Contains*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_Contains_PublicKey_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.Contains(PublicKey,BlockHash)">Contains(PublicKey, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Predicate indicates where the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a> have collected a vote with
+given <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(PublicKey publicKey, BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PublicKey</span></td>
+        <td><span class="parametername">publicKey</span></td>
+        <td><p>A <see cref="!:PublicKey"></see> of the <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>A <see cref="!:BlockHash"></see> of the <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> when a vote with given params exits,
+else <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetAllVotes.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetAllVotes%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L128">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_GetAllVotes_" data-uid="Libplanet.Net.Consensus.VoteSet.GetAllVotes*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_GetAllVotes" data-uid="Libplanet.Net.Consensus.VoteSet.GetAllVotes">GetAllVotes()</h4>
+  <div class="markdown level1 summary"><p>Gets all collected <see cref="!:Vote"></see>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Vote&gt; GetAllVotes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p><see cref="!:IEnumerable&lt;T>"></see> of <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetByPublicKey_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetByPublicKey(PublicKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L257">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_GetByPublicKey_" data-uid="Libplanet.Net.Consensus.VoteSet.GetByPublicKey*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_GetByPublicKey_PublicKey_" data-uid="Libplanet.Net.Consensus.VoteSet.GetByPublicKey(PublicKey)">GetByPublicKey(PublicKey)</h4>
+  <div class="markdown level1 summary"><p>Gets the <see cref="!:Vote"></see> signed by given <code data-dev-comment-type="paramref" class="paramref">publicKey</code>.
+If given validator has conflicting votes, returns &quot;canonical&quot; <see cref="!:Vote"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vote GetByPublicKey(PublicKey publicKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PublicKey</span></td>
+        <td><span class="parametername">publicKey</span></td>
+        <td><p>A <see cref="!:PublicKey"></see> of the validator signed <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vote</span></td>
+        <td><p>A <see cref="!:Vote"></see> signed by given <code data-dev-comment-type="paramref" class="paramref">publicKey</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetVote_PublicKey_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetVote(PublicKey%2CBlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L88">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_GetVote_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVote*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_GetVote_PublicKey_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVote(PublicKey,BlockHash)">GetVote(PublicKey, BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Gets a <see cref="!:Vote"></see> signed by <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and of hash
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vote? GetVote(PublicKey publicKey, BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PublicKey</span></td>
+        <td><span class="parametername">publicKey</span></td>
+        <td><p>A <see cref="!:PublicKey"></see> of the <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>A <see cref="!:BlockHash"></see> of the <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p>A <see cref="!:Vote"></see> signed by <code data-dev-comment-type="paramref" class="paramref">publicKey</code> and of hash
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code> if exists. Else, <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_GetVotes_BlockHash_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.GetVotes(BlockHash)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L121">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_GetVotes_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVotes*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_GetVotes_BlockHash_" data-uid="Libplanet.Net.Consensus.VoteSet.GetVotes(BlockHash)">GetVotes(BlockHash)</h4>
+  <div class="markdown level1 summary"><p>Gets all collected <see cref="!:Vote"></see>s that voted to block with hash
+<code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Vote&gt; GetVotes(BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><see cref="!:BlockHash"></see> of the <see cref="!:Vote"></see>s to collect.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p><see cref="!:IEnumerable&lt;T>"></see> of <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_HasAll.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.HasAll%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L327">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_HasAll_" data-uid="Libplanet.Net.Consensus.VoteSet.HasAll*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_HasAll" data-uid="Libplanet.Net.Consensus.VoteSet.HasAll">HasAll()</h4>
+  <div class="markdown level1 summary"><p>Predicate which returns <span class="xref">true</span> when collected all <see cref="!:Vote"></see>s.
+Else, return <span class="xref">false</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasAll()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> when collected all <see cref="!:Vote"></see>s.
+Else, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_HasOneThirdsAny.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L301">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_HasOneThirdsAny_" data-uid="Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_HasOneThirdsAny" data-uid="Libplanet.Net.Consensus.VoteSet.HasOneThirdsAny">HasOneThirdsAny()</h4>
+  <div class="markdown level1 summary"><p>If there is a +1/3 majority for any <see cref="!:BlockHash"></see>,
+return <span class="xref">true</span>. Else, return <span class="xref">false</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasOneThirdsAny()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if +1/3 majority exists,
+else <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_HasTwoThirdsAny.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L313">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsAny_" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsAny" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsAny">HasTwoThirdsAny()</h4>
+  <div class="markdown level1 summary"><p>If there is a +2/3 majority for any <see cref="!:BlockHash"></see>,
+return <span class="xref">true</span>. Else, return <span class="xref">false</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasTwoThirdsAny()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if +2/3 majority exists,
+else <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_HasTwoThirdsMajority.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L274">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsMajority_" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_HasTwoThirdsMajority" data-uid="Libplanet.Net.Consensus.VoteSet.HasTwoThirdsMajority">HasTwoThirdsMajority()</h4>
+  <div class="markdown level1 summary"><p>If there is a +2/3 majority for certain <see cref="!:BlockHash"></see>,
+return <span class="xref">true</span>. Else, return <span class="xref">false</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasTwoThirdsMajority()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if +2/3 majority exists,
+else <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_IsCommit.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.IsCommit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L287">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_IsCommit_" data-uid="Libplanet.Net.Consensus.VoteSet.IsCommit*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_IsCommit" data-uid="Libplanet.Net.Consensus.VoteSet.IsCommit">IsCommit()</h4>
+  <div class="markdown level1 summary"><p>A predicate indicates whether the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a> collected +2/3 majority commits.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCommit()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a> collected +2/3 majority
+commits, else <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_List.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.List%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L223">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_List_" data-uid="Libplanet.Net.Consensus.VoteSet.List*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_List" data-uid="Libplanet.Net.Consensus.VoteSet.List">List()</h4>
+  <div class="markdown level1 summary"><p>Returns a copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Vote&gt; List()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p>A copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_MappedList.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.MappedList%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L238">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_MappedList_" data-uid="Libplanet.Net.Consensus.VoteSet.MappedList*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_MappedList" data-uid="Libplanet.Net.Consensus.VoteSet.MappedList">MappedList()</h4>
+  <div class="markdown level1 summary"><p>Returns a copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.
+If failed to collect <see cref="!:Vote"></see> from certain peer,
+fill it with nil <see cref="!:Vote"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Vote&gt; MappedList()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">Vote</span>&gt;</td>
+        <td><p>A copy of the list of <see cref="!:Vote"></see>s stored by the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>.
+If failed to collect <see cref="!:Vote"></see> from certain peer,
+fill it with nil <see cref="!:Vote"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_Libplanet_Consensus_Maj23_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L151">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_" data-uid="Libplanet.Net.Consensus.VoteSet.SetPeerMaj23*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_Libplanet_Consensus_Maj23_" data-uid="Libplanet.Net.Consensus.VoteSet.SetPeerMaj23(Libplanet.Consensus.Maj23)">SetPeerMaj23(Maj23)</h4>
+  <div class="markdown level1 summary"><p>If a peer claims that it has 2/3 majority for given <see cref="!:BlockHash"></see>,
+modify state by calling this method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SetPeerMaj23(Maj23 maj23)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Consensus.Maj23.html">Maj23</a></td>
+        <td><span class="parametername">maj23</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Consensus.Maj23.html">Maj23</a> received by other validator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> when given <code data-dev-comment-type="paramref" class="paramref">maj23</code> actually modified
+state of the <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a>, else <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Consensus_VoteSet_SetPeerMaj23_Libplanet_Consensus_Maj23__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>if there are too many peers, or too much peer churn,
+this can cause memory issues.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Consensus.InvalidMaj23Exception.html">InvalidMaj23Exception</a></td>
+        <td><p>Thrown when given <code data-dev-comment-type="paramref" class="paramref">maj23</code> has conflicting <see cref="!:BlockHash"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_ToBlockCommit.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.ToBlockCommit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L364">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_ToBlockCommit_" data-uid="Libplanet.Net.Consensus.VoteSet.ToBlockCommit*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_ToBlockCommit" data-uid="Libplanet.Net.Consensus.VoteSet.ToBlockCommit">ToBlockCommit()</h4>
+  <div class="markdown level1 summary"><p>Create a <see cref="!:BlockCommit"></see> instance if <a class="xref" href="Libplanet.Net.Consensus.VoteSet.html">VoteSet</a> has +2/3 majority
+commits.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockCommit? ToBlockCommit()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">BlockCommit</span>&gt;</td>
+        <td><p>A <see cref="!:BlockCommit"></see> instance made by collected commits. If failed
+to collect +2/3 majority commits, return <span class="xref">null</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(BlockHash%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L343">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_" data-uid="Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority*"></a>
+  <h4 id="Libplanet_Net_Consensus_VoteSet_TwoThirdsMajority_BlockHash__" data-uid="Libplanet.Net.Consensus.VoteSet.TwoThirdsMajority(BlockHash@)">TwoThirdsMajority(out BlockHash)</h4>
+  <div class="markdown level1 summary"><p>If there is a +2/3 majority for certain <see cref="!:BlockHash"></see>,
+return <see cref="!:BlockHash"></see> and <span class="xref">true</span>.
+Else, return the <span class="xref">langword_csharp_default</span> <see cref="!:BlockHash"></see> and
+<span class="xref">false</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TwoThirdsMajority(out BlockHash blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BlockHash</span></td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p><see cref="!:BlockHash"></see> of the +2/3 majority vote.
+If not exists, it will have <span class="xref">langword_csharp_default</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if +2/3 majority exists,
+else <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.3.0-alpha.3/apiSpec/new?filename=Libplanet_Net_Consensus_VoteSet.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.VoteSet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.3.0-alpha.3/src/Libplanet.Net/Consensus/VoteSet.cs/#L15" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
