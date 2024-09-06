@@ -564,54 +564,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void DoesNotUnstageOnAppendForForkedChain()
-        {
-            PrivateKey privateKey = new PrivateKey();
-            (_, Transaction[] txs) =
-                MakeFixturesForAppendTests(privateKey, epoch: DateTimeOffset.UtcNow);
-            Assert.Empty(_blockChain.GetStagedTransactionIds());
-            var workspace = _blockChain.Fork(_blockChain.Genesis.Hash);
-            Assert.Empty(_blockChain.ListStagedTransactions());
-
-            // Forked chain shares stage policy.
-            StageTransactions(txs);
-            Assert.Equal(2, _blockChain.StagePolicy.Iterate(_blockChain, filtered: false).Count());
-            Assert.Equal(2, workspace.StagePolicy.Iterate(workspace, filtered: false).Count());
-
-            // Mine nonce 0 tx.
-            Block block1 = _blockChain.ProposeBlock(
-                privateKey,
-                ImmutableList<Transaction>.Empty.Add(txs[0]),
-                TestUtils.CreateBlockCommit(_blockChain.Tip),
-                ImmutableArray<EvidenceBase>.Empty);
-
-            // Not actually unstaged, but lower nonce is filtered for workspace.
-            workspace.Append(block1, TestUtils.CreateBlockCommit(block1));
-            Assert.Equal(2, _blockChain.ListStagedTransactions().Count);
-            Assert.Single(workspace.ListStagedTransactions());
-            Assert.Equal(2, workspace.StagePolicy.Iterate(workspace, filtered: false).Count());
-
-            // Actually gets unstaged.
-            _blockChain.Append(block1, TestUtils.CreateBlockCommit(block1));
-            Assert.Single(_blockChain.ListStagedTransactions());
-            Assert.Single(workspace.ListStagedTransactions());
-            Assert.Single(workspace.StagePolicy.Iterate(workspace, filtered: false));
-
-            // Mine nonce 1 tx.
-            Block block2 = _blockChain.ProposeBlock(
-                privateKey,
-                ImmutableList<Transaction>.Empty.Add(txs[1]),
-                TestUtils.CreateBlockCommit(_blockChain.Tip),
-                ImmutableArray<EvidenceBase>.Empty);
-
-            // Actually gets unstaged.
-            _blockChain.Append(block2, TestUtils.CreateBlockCommit(block2));
-            Assert.Empty(_blockChain.ListStagedTransactions());
-            Assert.Empty(workspace.ListStagedTransactions());
-            Assert.Empty(workspace.StagePolicy.Iterate(workspace, filtered: false));
-        }
-
-        [SkippableFact]
         public void AppendValidatesBlock()
         {
             var policy = new NullBlockPolicy(

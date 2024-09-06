@@ -64,8 +64,6 @@ namespace Libplanet.Net
             IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
-            BlockChain synced = null;
-            System.Action renderSwap = () => { };
             try
             {
                 FillBlocksAsyncStarted.Set();
@@ -74,17 +72,19 @@ namespace Libplanet.Net
                     nameof(BlockCandidateProcess),
                     BlockChain.Tip.Index,
                     BlockChain.Tip.Hash);
-                synced = AppendPreviousBlocks(
+                AppendBranch(
                     blockChain: BlockChain,
                     candidate: candidate,
                     render: render,
-                    progress: progress);
+                    progress: progress,
+                    cancellationToken: cancellationToken);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
-                    "{MethodName}() finished appending blocks; synced tip is #{Index} {Hash}",
+                    "{MethodName}() finished appending blocks; current tip is #{Index} {Hash}",
                     nameof(BlockCandidateProcess),
-                    synced.Tip.Index,
-                    synced.Tip.Hash);
+                    BlockChain.Tip.Index,
+                    BlockChain.Tip.Hash);
+                return true;
             }
             catch (Exception e)
             {
@@ -95,107 +95,24 @@ namespace Libplanet.Net
                 FillBlocksAsyncFailed.Set();
                 return false;
             }
-
-            try
-            {
-                // Although highly unlikely, current block chain's tip can change.
-                if (synced is { } syncedB
-                    && !syncedB.Id.Equals(BlockChain?.Id)
-                    && BlockChain.Tip.Index < syncedB.Tip.Index)
-                {
-                    _logger.Debug(
-                        "Swapping chain {ChainIdA} with chain {ChainIdB}...",
-                        BlockChain.Id,
-                        synced.Id
-                    );
-                    renderSwap = BlockChain.Swap(
-                        synced,
-                        render: render);
-                    _logger.Debug(
-                        "Swapped chain {ChainIdA} with chain {ChainIdB}",
-                        BlockChain.Id,
-                        synced.Id
-                    );
-
-                    renderSwap();
-                    BroadcastBlock(BlockChain.Tip);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    "{MethodName}() has failed to swap chain {ChainIdA} with chain {ChainIdB}",
-                    nameof(BlockCandidateProcess),
-                    BlockChain.Id,
-                    synced.Id);
-                return false;
-            }
         }
 
-        private BlockChain AppendPreviousBlocks(
+        private void AppendBranch(
             BlockChain blockChain,
             Branch candidate,
             bool render,
-            IProgress<BlockSyncState> progress)
+            IProgress<BlockSyncState> progress,
+            CancellationToken cancellationToken = default)
         {
-            BlockChain workspace;
-            List<Guid> scope = new List<Guid>();
-            bool forked = false;
-
             Block oldTip = blockChain.Tip;
-            List<(Block, BlockCommit)> blocks = candidate.Blocks.ToList();
-            Block branchpoint = FindBranchpoint(
-                 oldTip,
-                 blocks.Select(pair => pair.Item1).ToList());
+            Block branchpoint = oldTip;
+            List<(Block, BlockCommit)> blocks = ExtractBlocksToAppend(branchpoint, candidate);
 
-            if (branchpoint.Equals(oldTip))
+            if (!blocks.Any())
             {
                 _logger.Debug(
-                    "No need to fork. at {MethodName}()",
-                    nameof(AppendPreviousBlocks));
-                workspace = blockChain;
-            }
-            else if (!blockChain.ContainsBlock(branchpoint.Hash))
-            {
-                // FIXME: This behavior can unexpectedly terminate the swarm (and the game
-                // app) if it encounters a peer having a different blockchain, and therefore
-                // can be exploited to remotely shut down other nodes as well.
-                // Since the intention of this behavior is to prevent mistakes to try to
-                // connect incorrect seeds (by a user), this behavior should be limited for
-                // only seed peers.
-                var msg =
-                    $"Since the genesis block is fixed to {BlockChain.Genesis} " +
-                    "protocol-wise, the blockchain which does not share " +
-                    "any mutual block is not acceptable.";
-                throw new InvalidGenesisBlockException(
-                    msg,
-                    branchpoint.Hash,
-                    blockChain.Genesis.Hash);
-            }
-            else
-            {
-                _logger.Debug(
-                    "Trying to fork... at {MethodName}()",
-                    nameof(AppendPreviousBlocks)
-                );
-                workspace = blockChain.Fork(branchpoint.Hash);
-                forked = true;
-                scope.Add(workspace.Id);
-                _logger.Debug(
-                    "Fork finished. at {MethodName}()",
-                    nameof(AppendPreviousBlocks)
-                );
-            }
-
-            if (!workspace.Tip.Hash.Equals(blocks.First().Item1.PreviousHash))
-            {
-                blocks = blocks.Skip(1).ToList();
+                    "There are no blocks to append to block {BlockHash}",
+                    branchpoint.Hash);
             }
 
             try
@@ -204,14 +121,14 @@ namespace Libplanet.Net
 
                 foreach (var (block, commit) in blocks)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     if (block.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
                     {
-                        workspace.AppendStateRootHashPreceded(
-                            block, commit, render: render && !forked);
+                        blockChain.AppendStateRootHashPreceded(block, commit, render: render);
                     }
                     else
                     {
-                        workspace.Append(block, commit, render: render && !forked);
+                        blockChain.Append(block, commit, render: render);
                     }
 
                     verifiedBlockCount++;
@@ -233,102 +150,29 @@ namespace Libplanet.Net
             }
             catch (Exception e)
             {
-                const string dbgMsg =
-                    "An exception occurred while appending a block " +
-                    "to a workspace chain; deleting workspace chain {ChainId}";
-                _logger.Debug(e, dbgMsg, workspace.Id);
-
-                if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
-                {
-                    _store.DeleteChainId(workspaceId);
-                }
-
+                const string dbgMsg = "An exception occurred while appending a block";
+                _logger.Error(e, dbgMsg);
                 throw;
             }
-            finally
-            {
-                foreach (var id in scope.Where(guid => guid != workspace?.Id))
-                {
-                    _store.DeleteChainId(id);
-                }
-
-                _logger.Debug(
-                    "Completed (chain ID: {ChainId}, tip: #{TipIndex} {TipHash}). " +
-                    "at {MethodName}()",
-                    workspace?.Id,
-                    workspace?.Tip?.Index,
-                    workspace?.Tip?.Hash,
-                    nameof(AppendPreviousBlocks)
-                );
-            }
-
-            return workspace;
         }
 
-        private Block FindBranchpoint(Block oldTip, List<Block> newBlocks)
+        private List<(Block, BlockCommit)> ExtractBlocksToAppend(Block branchpoint, Branch branch)
         {
-            var newTip = newBlocks.Last();
-            while (oldTip.Index > newTip.Index &&
-                   oldTip.PreviousHash is { } aPrev)
+            var trimmed = new List<(Block, BlockCommit)>();
+            bool matchFound = false;
+            foreach (var pair in branch.Blocks)
             {
-                oldTip = BlockChain[aPrev];
-            }
-
-            while (newTip.Index > oldTip.Index &&
-                   newTip.PreviousHash is { } bPrev)
-            {
-                try
+                if (matchFound)
                 {
-                    newTip = newBlocks.Single(x => x.Hash.Equals(bPrev));
+                    trimmed.Add(pair);
                 }
-                catch (ArgumentNullException)
+                else
                 {
-                    newTip = BlockChain[bPrev];
-                }
-                catch (InvalidOperationException)
-                {
-                    newTip = BlockChain[bPrev];
+                    matchFound = branchpoint.Hash.Equals(pair.Item1.Hash);
                 }
             }
 
-            if (oldTip.Index != newTip.Index)
-            {
-                throw new ArgumentException(
-                    "Some previous blocks of two blocks are orphan.",
-                    nameof(oldTip)
-                );
-            }
-
-            while (oldTip.Index >= 0)
-            {
-                if (oldTip.Equals(newTip))
-                {
-                    return oldTip;
-                }
-
-                if (oldTip.PreviousHash is { } aPrev &&
-                    newTip.PreviousHash is { } bPrev)
-                {
-                    oldTip = BlockChain[aPrev];
-                    try
-                    {
-                        newTip = newBlocks.Single(x => x.Hash.Equals(bPrev));
-                    }
-                    catch (ArgumentNullException)
-                    {
-                        newTip = BlockChain[bPrev];
-                    }
-
-                    continue;
-                }
-
-                break;
-            }
-
-            throw new ArgumentException(
-                "Two blocks do not have any ancestors in common.",
-                nameof(oldTip)
-            );
+            return trimmed;
         }
 
         private async Task<bool> ProcessBlockDemandAsync(

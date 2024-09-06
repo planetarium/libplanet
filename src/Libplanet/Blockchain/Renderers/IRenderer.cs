@@ -20,7 +20,7 @@ namespace Libplanet.Blockchain.Renderers
         /// a <see cref="BlockChain"/> (so that its <see cref="BlockChain.Tip"/> has changed).
         /// </summary>
         /// <remarks>It is guaranteed to be called only once for a block, and only after applied to
-        /// the blockchain, unless it has been stale due to reorg.</remarks>
+        /// the blockchain.</remarks>
         /// <param name="oldTip">The previous <see cref="BlockChain.Tip"/>.</param>
         /// <param name="newTip">The current <see cref="BlockChain.Tip"/>.</param>
         void RenderBlock(Block oldTip, Block newTip);

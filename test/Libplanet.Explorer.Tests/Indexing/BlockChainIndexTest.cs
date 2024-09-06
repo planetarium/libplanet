@@ -37,40 +37,24 @@ public abstract class BlockChainIndexTest
     public async Task Synchronize()
     {
         var index = Fx.CreateEphemeralIndexInstance();
-        await index.SynchronizeAsync(
-            ChainFx.Chain.Store, CancellationToken.None);
+        await index.SynchronizeAsync(ChainFx.Chain.Store, CancellationToken.None);
 
-        var forkedChain = ChainFx.Chain.Fork(ChainFx.Chain.Tip.PreviousHash!.Value);
-        var divergentBlock = forkedChain.ProposeBlock(
+        var chain = ChainFx.Chain;
+        var block1 = chain.ProposeBlock(
             ChainFx.PrivateKeys[0],
-            forkedChain.GetBlockCommit(forkedChain.Tip.Hash));
-        forkedChain.Append(
-            divergentBlock,
-            new BlockCommit(
-                forkedChain.Tip.Index + 1,
-                0,
-                divergentBlock.Hash,
-                ChainFx.PrivateKeys
-                    .OrderBy(pk => pk.Address.ToHex())
-                    .Select(pk => new VoteMetadata(
-                        forkedChain.Tip.Index + 1,
-                        0,
-                        divergentBlock.Hash,
-                        DateTimeOffset.UtcNow,
-                        pk.PublicKey,
-                        BigInteger.One,
-                        VoteFlag.PreCommit)
-                        .Sign(pk))
-                    .ToImmutableArray()));
+            chain.GetBlockCommit(chain.Tip.Hash));
+        var block2 = chain.ProposeBlock(
+            ChainFx.PrivateKeys[0],
+            chain.GetBlockCommit(chain.Tip.Hash));
         await index.IndexAsync(
-            ChainFx.Chain.Store.GetBlockDigest(ChainFx.Chain.Tip.Hash)!.Value,
-            ChainFx.Chain.Tip.Transactions,
+            new Store.BlockDigest(block1.MarshalBlock()),
+            block1.Transactions,
             CancellationToken.None);
         await Assert.ThrowsAsync<IndexMismatchException>(
             async () => await index.IndexAsync(
-                forkedChain.Store.GetBlockDigest(forkedChain.Tip.Hash)!.Value,
-                forkedChain.Tip.Transactions,
-                CancellationToken.None));
+            new Store.BlockDigest(block2.MarshalBlock()),
+            block2.Transactions,
+            CancellationToken.None));
     }
 
     [Fact]
