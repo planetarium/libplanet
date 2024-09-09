@@ -8,7 +8,7 @@ namespace Libplanet.SDK.Action
 {
     public partial class ActionBase
     {
-        public static IValue GeneratePlainValue<T>(string methodName, IValue args)
+        public static IValue GeneratePlainValue<T>(string methodName, List arguments)
             where T : ActionBase
         {
             ActionTypeAttribute actionType = typeof(T).GetCustomAttribute<ActionTypeAttribute>() ??
@@ -26,10 +26,33 @@ namespace Libplanet.SDK.Action
                     nameof(methodName));
             }
 
+            ParameterInfo[] paramInfos = methodInfo.GetParameters();
+            if (paramInfos.Length != arguments.Count)
+            {
+                throw new ArgumentException(
+                    $"The length of {nameof(arguments)} should be {paramInfos.Length}: " +
+                    $"{arguments.Count}",
+                    nameof(arguments));
+            }
+
+            foreach (((ParameterInfo paramInfo, IValue argument), int index) in
+                paramInfos.Zip(arguments).Select((pair, i) => (pair, i)))
+            {
+                Type expectedType = paramInfo.ParameterType;
+                Type actualType = argument.GetType();
+                if (!paramInfo.ParameterType.Equals(argument.GetType()))
+                {
+                    throw new ArgumentException(
+                        $"The argument at {index} for given {nameof(arguments)} should be " +
+                        $"{expectedType}: {actualType}",
+                        nameof(arguments));
+                }
+            }
+
             return Dictionary.Empty
                 .Add("type_id", actionType.TypeIdentifier)
-                .Add("execute", methodName)
-                .Add("args", args);
+                .Add("exec", methodName)
+                .Add("args", arguments);
         }
 
         protected IValue? GetState(Address address)

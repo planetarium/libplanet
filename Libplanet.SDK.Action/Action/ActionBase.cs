@@ -35,10 +35,32 @@ namespace Libplanet.SDK.Action
 
             MethodInfo method = ExecutableMethods.FirstOrDefault(m => m.Name == _exec) ??
                 throw new InvalidOperationException($"Method {_exec} is not found.");
-            object?[]? args = new object?[] { _args };
+            ParameterInfo[] paramInfos = method.GetParameters();
+            object[] args = GetArgs(paramInfos, _args);
             method.Invoke(this, args);
 
             return World;
+        }
+
+        private static object[] GetArgs(ParameterInfo[] paramInfos, IValue? args)
+        {
+            if (args is List list)
+            {
+                if (paramInfos.Length != list.Count)
+                {
+                    throw new ArgumentException(
+                        $"Given {nameof(args)} must be of " +
+                        $"length {paramInfos.Length}: {list.Count}");
+                }
+
+                return list.ToArray();
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(args)} must be of type {nameof(List)}: {args.GetType()}",
+                    nameof(args));
+            }
         }
     }
 }

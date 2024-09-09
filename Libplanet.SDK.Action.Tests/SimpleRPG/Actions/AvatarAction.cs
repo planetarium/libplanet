@@ -13,9 +13,9 @@ namespace Libplanet.SDK.Action.Tests.SimpleRPG.Actions
         public override Address StorageAddress => default;
 
         [Executable]
-        public void Create(IValue args)
+        public void Create(Text args)
         {
-            string name = (Text)args;
+            string name = args;
             Call<InfoAction, Info>(nameof(InfoAction.Create), new object?[] { name });
             Call<InventoryAction, Inventory>(nameof(InventoryAction.Create));
         }

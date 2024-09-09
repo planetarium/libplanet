@@ -43,7 +43,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
                 .Add("exec", "Add")
-                .Add("args", 5);
+                .Add("args", List.Empty.Add(5));
             NumberAction action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
             IWorld world = _world;
@@ -62,7 +62,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
                 .Add("exec", "Subtract")
-                .Add("args", 8);
+                .Add("args", List.Empty.Add(8));
             action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             world = action.Execute(new MockActionContext(signer, signer, world));
             world = commit ? _stateStore.CommitWorld(world) : world;
@@ -84,7 +84,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Text")
                 .Add("exec", "Append")
-                .Add("args", "Hello");
+                .Add("args", List.Empty.Add("Hello"));
             TextAction action = Assert.IsType<TextAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
             IWorld world = _world;
@@ -98,7 +98,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             plainValue = Dictionary.Empty
                 .Add("type_id", "Text")
                 .Add("exec", "Append")
-                .Add("args", " world");
+                .Add("args", List.Empty.Add(" world"));
             action = Assert.IsType<TextAction>(_loader.LoadAction(0, plainValue));
             world = action.Execute(new MockActionContext(signer, signer, world));
             world = commit ? _stateStore.CommitWorld(world) : world;
@@ -113,17 +113,17 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue plainValue = Dictionary.Empty // Invalid type_id
                 .Add("type_id", "Run")
                 .Add("exec", "Append")
-                .Add("args", "Hello");
+                .Add("args", List.Empty.Add("Hello"));
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
             plainValue = Dictionary.Empty // Missing type_id
                 .Add("exec", "Append")
-                .Add("args", "Hello");
+                .Add("args", List.Empty.Add("Hello"));
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
             plainValue = Dictionary.Empty // Missing call
                 .Add("type_id", "Number")
-                .Add("args", 5);
+                .Add("args", List.Empty.Add(5));
             Assert.Throws<InvalidActionException>(() => _loader.LoadAction(0, plainValue));
 
             plainValue = Dictionary.Empty // Missing args
@@ -138,7 +138,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue plainValue = Dictionary.Empty // Invalid call
                 .Add("type_id", "Number")
                 .Add("exec", "Divide")
-                .Add("args", 5);
+                .Add("args", List.Empty.Add(5));
             IAction action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Address address = new PrivateKey().Address;
             Assert.Throws<InvalidOperationException>(() =>
@@ -147,7 +147,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             plainValue = Dictionary.Empty // Invalid args
                 .Add("type_id", "Number")
                 .Add("exec", "Add")
-                .Add("args", "Hello");
+                .Add("args", List.Empty.Add("Hello"));
             action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Assert.IsType<InvalidCastException>(
                 Assert.Throws<TargetInvocationException>(() =>
@@ -161,7 +161,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
                 .Add("exec", "Multiply")
-                .Add("args", 5);
+                .Add("args", List.Empty.Add(5));
             NumberAction action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
             IWorld world = _world;
@@ -178,31 +178,34 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue expected = Dictionary.Empty
                 .Add("type_id", "Number")
                 .Add("exec", "Add")
-                .Add("args", 5);
+                .Add("args", List.Empty.Add(5));
             IValue generated = ActionBase.GeneratePlainValue<NumberAction>(
-                "Add", new Integer(5));
+                "Add", List.Empty.Add(new Integer(5)));
             Assert.Equal(expected, generated);
 
             expected = Dictionary.Empty
                 .Add("type_id", "Text")
                 .Add("exec", "Append")
-                .Add("args", "Hello");
+                .Add("args", List.Empty.Add("Hello"));
             generated = ActionBase.GeneratePlainValue<TextAction>(
-                "Append", new Text("Hello"));
+                "Append", List.Empty.Add(new Text("Hello")));
             Assert.Equal(expected, generated);
 
             Assert.Contains(
                 $"{nameof(ActionTypeAttribute)}",
                 Assert.Throws<ArgumentException>(() =>
-                    ActionBase.GeneratePlainValue<InvalidAction>("Add", new Integer(5))).Message);
+                    ActionBase.GeneratePlainValue<InvalidAction>(
+                        "Add", List.Empty.Add(new Integer(5)))).Message);
             Assert.Contains(
                 $"cannot be found",
                 Assert.Throws<ArgumentException>(() =>
-                    ActionBase.GeneratePlainValue<NumberAction>("Divide", new Integer(5))).Message);
+                    ActionBase.GeneratePlainValue<NumberAction>(
+                        "Divide", List.Empty.Add(new Integer(5)))).Message);
             Assert.Contains(
                 $"{nameof(ExecutableAttribute)}",
                 Assert.Throws<ArgumentException>(() =>
-                    ActionBase.GeneratePlainValue<NumberAction>("DoNothing", new Integer(5))).Message);
+                    ActionBase.GeneratePlainValue<NumberAction>(
+                        "DoNothing", List.Empty.Add(new Integer(5)))).Message);
         }
     }
 }

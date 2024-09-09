@@ -43,7 +43,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Avatar")
                 .Add("exec", "Create")
-                .Add("args", "Hero");
+                .Add("args", List.Empty.Add("Hero"));
             IAction action = Assert.IsType<AvatarAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
             IWorld world = _world;
@@ -67,7 +67,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
                 plainValue = Dictionary.Empty
                     .Add("type_id", "Farm")
                     .Add("exec", "Farm")
-                    .Add("args", Null.Value);
+                    .Add("args", List.Empty);
                 action = Assert.IsType<FarmAction>(_loader.LoadAction(0, plainValue));
                 world = action.Execute(new MockActionContext(signer, signer, world));
                 world = commit ? _stateStore.CommitWorld(world) : world;
@@ -91,7 +91,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             IValue plainValue = Dictionary.Empty
                 .Add("type_id", "Avatar")
                 .Add("exec", "Create")
-                .Add("args", "Hero");
+                .Add("args", List.Empty.Add("Hero"));
             IAction action = Assert.IsType<AvatarAction>(_loader.LoadAction(0, plainValue));
             Address signer = new PrivateKey().Address;
             IWorld world = _world;
@@ -102,7 +102,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             plainValue = Dictionary.Empty
                 .Add("type_id", "Avatar")
                 .Add("exec", "Create")
-                .Add("args", "Princess");
+                .Add("args", List.Empty.Add("Princess"));
             action = Assert.IsType<AvatarAction>(_loader.LoadAction(0, plainValue));
             Assert.Contains(
                 "Info already exists",

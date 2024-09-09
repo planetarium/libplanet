@@ -12,9 +12,8 @@ namespace Libplanet.SDK.Action.Tests.Sample.Actions
             new Address("0x1000000000000000000000000000000000000003");
 
         [Executable]
-        public void Append(IValue args)
+        public void Append(Text operand)
         {
-            Text operand = (Text)args;
             Text stored = GetState(Signer) is IValue value
                 ? (Text)value
                 : new Text(string.Empty);

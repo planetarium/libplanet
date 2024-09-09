@@ -12,9 +12,8 @@ namespace Libplanet.SDK.Action.Tests.Sample.Actions
             new Address("0x1000000000000000000000000000000000000001");
 
         [Executable]
-        public void Add(IValue args)
+        public void Add(Integer operand)
         {
-            Integer operand = (Integer)args;
             Integer stored = GetState(Signer) is IValue value
                 ? (Integer)value
                 : new Integer(0);
@@ -23,9 +22,8 @@ namespace Libplanet.SDK.Action.Tests.Sample.Actions
         }
 
         [Executable]
-        public void Subtract(IValue args)
+        public void Subtract(Integer operand)
         {
-            Integer operand = (Integer)args;
             Integer stored = GetState(Signer) is IValue value
                 ? (Integer)value
                 : new Integer(0);
@@ -34,9 +32,8 @@ namespace Libplanet.SDK.Action.Tests.Sample.Actions
         }
 
         [Executable]
-        public void Multiply(IValue args)
+        public void Multiply(Integer operand)
         {
-            Integer operand = (Integer)args;
             Integer stored = GetState(Signer) is IValue value
                 ? (Integer)value
                 : new Integer(1);

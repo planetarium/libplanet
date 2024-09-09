@@ -16,11 +16,8 @@ namespace Libplanet.SDK.Action.Tests.SimpleRPG.Actions
         public override Address StorageAddress => default;
 
         [Executable]
-        public void Farm(IValue args)
+        public void Farm()
         {
-            // Simple type checking.
-            _ = (Null)args;
-
             Avatar avatar = Call<AvatarAction, Avatar>(
                 nameof(AvatarAction.GetAvatar),
                 new object?[] { Signer });
