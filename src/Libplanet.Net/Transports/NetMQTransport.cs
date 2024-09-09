@@ -454,8 +454,7 @@ namespace Libplanet.Net.Transports
                         oce
                     ),
                     peer,
-                    content,
-                    reqId
+                    content
                 );
             }
             catch (OperationCanceledException oce2)
@@ -476,7 +475,7 @@ namespace Libplanet.Net.Transports
             {
                 a?.SetStatus(ActivityStatusCode.Error);
                 a?.AddTag("Exception", nameof(ChannelClosedException));
-                throw WrapCommunicationFailException(ce.InnerException ?? ce, peer, content, reqId);
+                throw WrapCommunicationFailException(ce.InnerException ?? ce, peer, content);
             }
             catch (Exception e)
             {
@@ -964,14 +963,9 @@ namespace Libplanet.Net.Transports
         private CommunicationFailException WrapCommunicationFailException(
             Exception innerException,
             BoundPeer peer,
-            MessageContent message,
-            Guid reqId
+            MessageContent message
         )
         {
-            const string errMsg =
-                "Failed to send and receive replies from {Peer} for request " +
-                "{Message} {RequestId}.";
-            _logger.Error(innerException, errMsg, peer, message, reqId);
             return new CommunicationFailException(
                 $"Failed to send and receive replies from {peer} for request {message}.",
                 message.Type,

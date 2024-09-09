@@ -20,4 +20,7 @@ public sealed class SwarmOptions : AppProtocolOptionsBase<SwarmOptions>, IEnable
     [BoundPeer]
     [Description("The endpoint of the node to block sync.")]
     public string BlocksyncSeedPeer { get; set; } = string.Empty;
+
+    [PublicKeyArray]
+    public string[] TrustedAppProtocolVersionSigners { get; set; } = [];
 }

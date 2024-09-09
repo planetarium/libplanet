@@ -35,8 +35,8 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
     public BlockChainService(
         IOptions<GenesisOptions> genesisOptions,
         IStoreService storeService,
+        IActionService actionService,
         PolicyService policyService,
-        IEnumerable<IActionLoaderProvider> actionLoaderProviders,
         ILogger<BlockChainService> logger)
     {
         _synchronizationContext = SynchronizationContext.Current ?? new();
@@ -45,9 +45,10 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
             genesisOptions: genesisOptions.Value,
             store: storeService.Store,
             stateStore: storeService.StateStore,
+            actionLoader: actionService.ActionLoader,
+            policyActionsRegistry: actionService.PolicyActionsRegistry,
             stagePolicy: policyService.StagePolicy,
-            renderers: [this],
-            actionLoaders: [.. actionLoaderProviders.Select(item => item.GetActionLoader())]);
+            renderers: [this]);
     }
 
     public event EventHandler<BlockEventArgs>? BlockAppended;
@@ -83,7 +84,7 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
                 }
             }
 
-            _logger.LogInformation("#{Height}: Block appended.", newTip.Index);
+            _logger.LogInformation("#{Height}: Block appended", newTip.Index);
             BlockAppended?.Invoke(this, new(newTip));
         }
     }
@@ -92,21 +93,27 @@ internal sealed class BlockChainService : IBlockChainService, IActionRenderer
         GenesisOptions genesisOptions,
         IStore store,
         IStateStore stateStore,
+        IActionLoader actionLoader,
+        IPolicyActionsRegistry policyActionsRegistry,
         IStagePolicy stagePolicy,
-        IRenderer[] renderers,
-        IActionLoader[] actionLoaders)
+        IRenderer[] renderers)
     {
-        var actionLoader = new AggregateTypedActionLoader(actionLoaders);
         var actionEvaluator = new ActionEvaluator(
-            policyActionsRegistry: new(),
+            policyActionsRegistry: policyActionsRegistry,
             stateStore,
             actionLoader);
-
         var genesisBlock = CreateGenesisBlock(genesisOptions);
         var policy = new BlockPolicy(
-            blockInterval: TimeSpan.FromSeconds(10),
-            getMaxTransactionsPerBlock: _ => int.MaxValue,
-            getMaxTransactionsBytes: _ => long.MaxValue);
+            policyActionsRegistry: policyActionsRegistry,
+            blockInterval: TimeSpan.FromSeconds(8),
+            validateNextBlockTx: (chain, transaction) => null,
+            validateNextBlock: (chain, block) => null,
+            getMaxTransactionsBytes: l => long.MaxValue,
+            getMinTransactionsPerBlock: l => 0,
+            getMaxTransactionsPerBlock: l => int.MaxValue,
+            getMaxTransactionsPerSignerPerBlock: l => int.MaxValue
+        );
+
         var blockChainStates = new BlockChainStates(store, stateStore);
         if (store.GetCanonicalChainId() is null)
         {

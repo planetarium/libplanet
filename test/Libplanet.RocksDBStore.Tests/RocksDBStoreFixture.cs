@@ -10,7 +10,7 @@ namespace Libplanet.RocksDBStore.Tests
     public class RocksDBStoreFixture : StoreFixture
     {
         public RocksDBStoreFixture(
-            PolicyActionsRegistry policyActionsRegistry = null)
+            IPolicyActionsRegistry policyActionsRegistry = null)
             : base(policyActionsRegistry)
         {
             Path = System.IO.Path.Combine(
