@@ -27,6 +27,8 @@ To be released.
  -  Removed `Fork()` method from `BlockChain`.  [[#3948]]
  -  Changed the return type for `BlockChain.FindNextHashes()`
     to `IReadOnlyList<BlockHash>`.  [[#3949]]
+ -  (Libplanet.Net) Changed `ActionExecutionState` and `BlockVerificationState`
+    to be `Obsolete`.  [[#3943]]
 
 ### Backward-incompatible network protocol changes
 
@@ -63,6 +65,7 @@ To be released.
 [#3943]: https://github.com/planetarium/libplanet/pull/3943
 [#3948]: https://github.com/planetarium/libplanet/pull/3948
 [#3949]: https://github.com/planetarium/libplanet/pull/3949
+[#3950]: https://github.com/planetarium/libplanet/pull/3950
 
 
 Version 5.2.2

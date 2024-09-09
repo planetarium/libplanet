@@ -354,7 +354,7 @@ namespace Libplanet.Net
                         _cancellationToken
                     ),
                     () => ConsumeBlockCandidates(
-                        TimeSpan.FromMilliseconds(10), true, null, _cancellationToken),
+                        TimeSpan.FromMilliseconds(10), true, _cancellationToken),
                     () => RefreshTableAsync(
                         Options.RefreshPeriod,
                         Options.RefreshLifespan,
@@ -642,12 +642,10 @@ namespace Libplanet.Net
                 BlockCandidateTable.Cleanup((_) => true);
                 await PullBlocksAsync(
                     peersWithExcerpts,
-                    progress,
                     cancellationToken);
 
                 await ConsumeBlockCandidates(
                     render: false,
-                    progress: progress,
                     cancellationToken: cancellationToken);
             }
 
@@ -997,7 +995,6 @@ namespace Libplanet.Net
         /// by this <see cref="Swarm"/> instance.</param>
         /// <param name="peersWithExcerpts">The <see cref="List{T}"/> of <see cref="BoundPeer"/>s
         /// to query with their tips known.</param>
-        /// <param name="progress">The <see cref="IProgress{T}"/> to report to.</param>
         /// <param name="cancellationToken">The cancellation token that should be used to propagate
         /// a notification that this operation should be canceled.</param>
         /// <returns>An <see cref="List{T}"/> of <see cref="BlockHash"/>es together with
@@ -1025,7 +1022,6 @@ namespace Libplanet.Net
         internal async Task<(BoundPeer, List<BlockHash>)> GetDemandBlockHashes(
             BlockChain blockChain,
             IList<(BoundPeer, IBlockExcerpt)> peersWithExcerpts,
-            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             var exceptions = new List<Exception>();
@@ -1045,7 +1041,6 @@ namespace Libplanet.Net
                         blockChain,
                         peer,
                         excerpt,
-                        progress,
                         cancellationToken);
                     if (downloadedHashes.Any())
                     {
@@ -1081,7 +1076,6 @@ namespace Libplanet.Net
             BlockChain blockChain,
             BoundPeer peer,
             IBlockExcerpt excerpt,
-            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             BlockLocator locator = blockChain.GetBlockLocator();

@@ -6,6 +6,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of verifying blocks.
     /// </summary>
+    [Obsolete("This is no longer compatible with the current preloading scheme.")]
     public class BlockVerificationState : BlockSyncState, IEquatable<BlockVerificationState>
     {
         /// <summary>

@@ -40,9 +40,6 @@ namespace Libplanet.Net
         /// The timeout value for the request to get the tip of the block.
         /// </param>
         /// <param name="maximumPollPeers">The maximum targets to send request to.</param>
-        /// <param name="progress">
-        /// An instance that receives progress updates for block downloads.
-        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
@@ -50,7 +47,6 @@ namespace Libplanet.Net
         internal async Task PullBlocksAsync(
             TimeSpan? timeout,
             int maximumPollPeers,
-            IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
             if (maximumPollPeers <= 0)
@@ -61,12 +57,11 @@ namespace Libplanet.Net
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt =
                 await GetPeersWithExcerpts(
                     timeout, maximumPollPeers, cancellationToken);
-            await PullBlocksAsync(peersWithBlockExcerpt, progress, cancellationToken);
+            await PullBlocksAsync(peersWithBlockExcerpt, cancellationToken);
         }
 
         private async Task PullBlocksAsync(
             List<(BoundPeer, IBlockExcerpt)> peersWithBlockExcerpt,
-            IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
             if (!peersWithBlockExcerpt.Any())
@@ -85,7 +80,6 @@ namespace Libplanet.Net
                 (var peer, var demandBlockHashes) = await GetDemandBlockHashes(
                     BlockChain,
                     peersWithBlockExcerpt,
-                    progress,
                     cancellationToken);
                 totalBlocksToDownload = demandBlockHashes.Count;
 
@@ -201,7 +195,7 @@ namespace Libplanet.Net
                         lastUpdated
                     );
                     await PullBlocksAsync(
-                        timeout, maximumPollPeers, null, cancellationToken);
+                        timeout, maximumPollPeers, cancellationToken);
                 }
 
                 await Task.Delay(1000, cancellationToken);

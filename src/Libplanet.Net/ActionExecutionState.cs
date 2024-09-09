@@ -6,6 +6,7 @@ namespace Libplanet.Net
     /// <summary>
     /// Indicates a progress of executing block actions.
     /// </summary>
+    [Obsolete("This is no longer compatible with the current preloading scheme.")]
     public class ActionExecutionState : BlockSyncState, IEquatable<ActionExecutionState>
     {
         /// <summary>

@@ -17,7 +17,6 @@ namespace Libplanet.Net
         private async Task ConsumeBlockCandidates(
             TimeSpan? checkInterval = null,
             bool render = true,
-            IProgress<BlockSyncState> progress = null,
             CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -39,7 +38,6 @@ namespace Libplanet.Net
                         _ = BlockCandidateProcess(
                             branch,
                             render,
-                            progress,
                             cancellationToken);
                         BlockAppended.Set();
                     }
@@ -61,7 +59,6 @@ namespace Libplanet.Net
         private bool BlockCandidateProcess(
             Branch candidate,
             bool render,
-            IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken)
         {
             try
@@ -76,7 +73,6 @@ namespace Libplanet.Net
                     blockChain: BlockChain,
                     candidate: candidate,
                     render: render,
-                    progress: progress,
                     cancellationToken: cancellationToken);
                 ProcessFillBlocksFinished.Set();
                 _logger.Debug(
@@ -101,7 +97,6 @@ namespace Libplanet.Net
             BlockChain blockChain,
             Branch candidate,
             bool render,
-            IProgress<BlockSyncState> progress,
             CancellationToken cancellationToken = default)
         {
             Block oldTip = blockChain.Tip;
@@ -132,20 +127,6 @@ namespace Libplanet.Net
                     }
 
                     verifiedBlockCount++;
-                    progress?.Report(
-                        new ActionExecutionState()
-                        {
-                            TotalBlockCount = blocks.Count,
-                            ExecutedBlockCount = (int)verifiedBlockCount,
-                            ExecutedBlockHash = block.Hash,
-                        });
-                    progress?.Report(
-                        new BlockVerificationState
-                        {
-                            TotalBlockCount = blocks.Count,
-                            VerifiedBlockCount = ++verifiedBlockCount,
-                            VerifiedBlockHash = block.Hash,
-                        });
                 }
             }
             catch (Exception e)
