@@ -149,10 +149,8 @@ namespace Libplanet.SDK.Action.Tests.Sample
                 .Add("exec", "Add")
                 .Add("args", List.Empty.Add("Hello"));
             action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
-            Assert.IsType<InvalidCastException>(
-                Assert.Throws<TargetInvocationException>(() =>
-                    action.Execute(new MockActionContext(address, address, _world)))
-                    .InnerException);
+            Assert.Throws<ArgumentException>(() =>
+                action.Execute(new MockActionContext(address, address, _world)));
         }
 
         [Fact]
@@ -166,7 +164,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             Address signer = new PrivateKey().Address;
             IWorld world = _world;
 
-            Assert.IsType<Exception>(
+            Assert.IsType<ArgumentException>(
                 Assert.Throws<TargetInvocationException>(() =>
                     action.Execute(new MockActionContext(signer, signer, world)))
                     .InnerException);
