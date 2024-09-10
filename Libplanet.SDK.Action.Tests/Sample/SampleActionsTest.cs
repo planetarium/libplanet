@@ -74,6 +74,22 @@ namespace Libplanet.SDK.Action.Tests.Sample
                 world
                     .GetAccountState(new Address("0x1000000000000000000000000000000000000002"))
                     .GetState(signer));
+
+            plainValue = Dictionary.Empty
+                .Add("type_id", "Number")
+                .Add("exec", "Bump")
+                .Add("args", List.Empty);
+            action = Assert.IsType<NumberAction>(_loader.LoadAction(0, plainValue));
+            world = action.Execute(new MockActionContext(signer, signer, world));
+            world = commit ? _stateStore.CommitWorld(world) : world;
+            Assert.Equal(
+                new Integer(-2),
+                world.GetAccountState(action.StorageAddress).GetState(signer));
+            Assert.Equal(
+                new Text("5 - 8 + 1"),
+                world
+                    .GetAccountState(new Address("0x1000000000000000000000000000000000000002"))
+                    .GetState(signer));
         }
 
         [Theory]
@@ -209,7 +225,7 @@ namespace Libplanet.SDK.Action.Tests.Sample
             // Missing attribute.
             plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
-                .Add("exec", nameof(NumberAction.DoNothing))
+                .Add("exec", nameof(NumberAction.NoAttribute))
                 .Add("args", List.Empty);
             Assert.Contains(
                 $"{nameof(ExecutableAttribute)}",
@@ -235,6 +251,66 @@ namespace Libplanet.SDK.Action.Tests.Sample
                 $"The length",
                 Assert.Throws<ArgumentException>(() =>
                     ActionBase.ValidatePlainValue<NumberAction>(plainValue)).Message);
+        }
+
+        [Fact]
+        public void GenerateMethodConstraintsSchema()
+        {
+            var expected = List.Empty.Add(
+                Dictionary.Empty
+                .Add(
+                    "if",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add("type_id", Dictionary.Empty.Add("const", "Number"))
+                                .Add("exec", Dictionary.Empty.Add("const", "Add"))))
+                .Add(
+                    "then",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add(
+                                    "args",
+                                    Dictionary.Empty
+                                        .Add("type", "list")
+                                        .Add(
+                                            "prefixItems",
+                                            List.Empty.Add(Dictionary.Empty.Add("type", "integer")))
+                                        .Add("minItems", 1)
+                                        .Add("maxItems", 1)))));
+            var generated = ActionBase.GenerateMethodConstraintsSchema(
+                typeof(NumberAction), nameof(NumberAction.Add));
+            Assert.Equal(expected, generated);
+
+            expected = List.Empty.Add(
+                Dictionary.Empty
+                .Add(
+                    "if",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add("type_id", Dictionary.Empty.Add("const", "Number"))
+                                .Add("exec", Dictionary.Empty.Add("const", "Bump"))))
+                .Add(
+                    "then",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add(
+                                    "args",
+                                    Dictionary.Empty
+                                        .Add("type", "list")
+                                        .Add("prefixItems", List.Empty)
+                                        .Add("minItems", 0)
+                                        .Add("maxItems", 0)))));
+            generated = ActionBase.GenerateMethodConstraintsSchema(
+                typeof(NumberAction), nameof(NumberAction.Bump));
+            Assert.Equal(expected, generated);
         }
     }
 }

@@ -41,8 +41,18 @@ namespace Libplanet.SDK.Action.Tests.Sample.Actions
             SetState(Signer, new Integer(stored.Value * operand.Value));
         }
 
+        [Executable]
+        public void Bump()
+        {
+            Integer stored = GetState(Signer) is IValue value
+                ? (Integer)value
+                : 0;
+            Call<NumberLogAction>(nameof(NumberLogAction.Add), new object?[] { new Integer(1) });
+            SetState(Signer, new Integer(stored.Value + 1));
+        }
+
         // Just some random public method for testing.
-        public void DoNothing()
+        public void NoAttribute()
         {
             return;
         }

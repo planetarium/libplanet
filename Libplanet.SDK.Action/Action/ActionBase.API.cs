@@ -102,6 +102,192 @@ namespace Libplanet.SDK.Action
             }
         }
 
+        public static List GenerateMethodConstraintsSchema(Type actionType, string methodName)
+        {
+            if (!typeof(ActionBase).IsAssignableFrom(actionType))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(actionType)} is not assignable to " +
+                    $"{nameof(ActionBase)}: {actionType}",
+                    nameof(actionType));
+            }
+
+            ActionTypeAttribute actionTypeAttribute =
+                actionType.GetCustomAttribute<ActionTypeAttribute>() ??
+                    throw new ArgumentException(
+                        $"Type is missing a {nameof(ActionTypeAttribute)}.",
+                        nameof(actionType));
+            Text typeId = actionTypeAttribute.TypeIdentifier is Text text
+                ? text
+                : throw new ArgumentException(
+                    $"Type of {nameof(ActionTypeAttribute.TypeIdentifier)} is expected " +
+                    $"to be {nameof(Text)}: {actionTypeAttribute.TypeIdentifier.GetType()}");
+            MethodInfo methodInfo = actionType.GetMethod(methodName) ??
+                throw new ArgumentException(
+                    $"Method named {methodName} cannot be found for {actionType}.",
+                    nameof(methodName));
+            ParameterInfo[] paramInfos = methodInfo.GetParameters();
+
+            int minItems = paramInfos.Length, maxItems = paramInfos.Length;
+            var prefixItems = List.Empty;
+            foreach (var paramInfo in paramInfos)
+            {
+                if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Boolean)))
+                {
+                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "boolean"));
+                }
+                else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Integer)))
+                {
+                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "integer"));
+                }
+                else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Text)))
+                {
+                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "text"));
+                }
+                else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.List)))
+                {
+                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "list"));
+                }
+                else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Dictionary)))
+                {
+                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "dictionary"));
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        $"Method named {methodName} has a parameter named {paramInfo.Name}" +
+                        $"that has an invalid type: {paramInfo.ParameterType}");
+                }
+            }
+
+            Dictionary argsConstraints = Dictionary.Empty
+                .Add(
+                    "if",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add(
+                                    "type_id",
+                                    Dictionary.Empty.Add("const", typeId))
+                                .Add(
+                                    "exec",
+                                    Dictionary.Empty.Add("const", methodName))))
+                .Add(
+                    "then",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add(
+                                    "args",
+                                    Dictionary.Empty
+                                        .Add("type", "list")
+                                        .Add("prefixItems", prefixItems)
+                                        .Add("minItems", minItems)
+                                        .Add("maxItems", maxItems))));
+            return List.Empty.Add(argsConstraints);
+        }
+
+        public static List GenerateClassConstraintsSchema(Type actionType)
+        {
+            if (!typeof(ActionBase).IsAssignableFrom(actionType))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(actionType)} is not assignable to " +
+                    $"{nameof(ActionBase)}: {actionType}",
+                    nameof(actionType));
+            }
+
+            ActionTypeAttribute actionTypeAttribute =
+                actionType.GetCustomAttribute<ActionTypeAttribute>() ??
+                    throw new ArgumentException(
+                        $"Type is missing a {nameof(ActionTypeAttribute)}.",
+                        nameof(actionType));
+            Text typeId = actionTypeAttribute.TypeIdentifier is Text text
+                ? text
+                : throw new ArgumentException(
+                    $"Type of {nameof(ActionTypeAttribute.TypeIdentifier)} is expected " +
+                    $"to be {nameof(Text)}: {actionTypeAttribute.TypeIdentifier.GetType()}");
+
+            MethodInfo[] methodInfos = actionType
+                .GetMethods()
+                .Where(methodInfo => methodInfo.IsPublic)
+                .Where(methodInfo => methodInfo.GetCustomAttribute<ExecutableAttribute>() is { })
+                .ToArray();
+
+            Dictionary classConstraints = Dictionary.Empty
+                .Add(
+                    "if",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add(
+                                    "type_id",
+                                    Dictionary.Empty.Add("const", typeId))))
+                .Add(
+                    "then",
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add(
+                                    "exec",
+                                    Dictionary.Empty.Add(
+                                        "enum",
+                                        new List(methodInfos.Select(methodInfo => methodInfo.Name)
+                                            .ToList())))));
+            List result = List.Empty;
+            result = result.Add(classConstraints);
+            foreach (var methodInfo in methodInfos)
+            {
+                var methodConstraints =
+                    GenerateMethodConstraintsSchema(actionType, methodInfo.Name);
+                foreach (var methodConstraint in methodConstraints)
+                {
+                    result = result.Add(methodConstraint);
+                }
+            }
+
+            return result;
+        }
+
+        public static List GenerateConstraintsSchema(Assembly assembly)
+        {
+            var baseType = typeof(ActionBase);
+            List<Type> targetTypes = assembly
+                .GetTypes()
+                .Where(type => baseType.IsAssignableFrom(type))
+                .ToList();
+            List result = List.Empty;
+            foreach (var targetType in targetTypes)
+            {
+                var constraints = GenerateClassConstraintsSchema(targetType);
+                foreach (var constraint in constraints)
+                {
+                    result.Add(constraint);
+                }
+            }
+
+            return result;
+        }
+
+        public static Dictionary GenerateSchema(Assembly assembly)
+        {
+            Dictionary result = Dictionary.Empty
+                .Add("type", "dictionary")
+                .Add(
+                    "properties",
+                    Dictionary.Empty
+                        .Add("type_id", Dictionary.Empty.Add("type", "text"))
+                        .Add("exec", Dictionary.Empty.Add("type", "text"))
+                        .Add("args", Dictionary.Empty.Add("type", "list")))
+                .Add("required", List.Empty.Add("type_id").Add("exec").Add("args"));
+            List constraints = GenerateConstraintsSchema(assembly);
+            return result.Add("allOf", constraints);
+        }
+
         protected IValue? GetState(Address address)
             => World.GetAccount(StorageAddress).GetState(address);
 
