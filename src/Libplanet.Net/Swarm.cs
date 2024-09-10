@@ -653,7 +653,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Use <see cref="FindNeighborsMsg"/> messages to to find a <see cref="BoundPeer"/> with
+        /// Use <see cref="FindNeighborsMsg"/> messages to find a <see cref="BoundPeer"/> with
         /// <see cref="Address"/> of <paramref name="target"/>.
         /// </summary>
         /// <param name="target">The <see cref="Address"/> to find.</param>
