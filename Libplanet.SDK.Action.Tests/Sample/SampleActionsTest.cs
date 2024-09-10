@@ -171,39 +171,70 @@ namespace Libplanet.SDK.Action.Tests.Sample
         }
 
         [Fact]
-        public void GeneratePlainValue()
+        public void ValidatePlainValue()
         {
-            IValue expected = Dictionary.Empty
+            IValue plainValue;
+            plainValue = Dictionary.Empty
                 .Add("type_id", "Number")
-                .Add("exec", "Add")
+                .Add("exec", nameof(NumberAction.Add))
                 .Add("args", List.Empty.Add(5));
-            IValue generated = ActionBase.GeneratePlainValue<NumberAction>(
-                "Add", List.Empty.Add(new Integer(5)));
-            Assert.Equal(expected, generated);
+            ActionBase.ValidatePlainValue<NumberAction>(plainValue);
 
-            expected = Dictionary.Empty
+            plainValue = Dictionary.Empty
                 .Add("type_id", "Text")
-                .Add("exec", "Append")
+                .Add("exec", nameof(TextAction.Append))
                 .Add("args", List.Empty.Add("Hello"));
-            generated = ActionBase.GeneratePlainValue<TextAction>(
-                "Append", List.Empty.Add(new Text("Hello")));
-            Assert.Equal(expected, generated);
+            ActionBase.ValidatePlainValue<TextAction>(plainValue);
 
+            // Missing type_id.
+            plainValue = Dictionary.Empty
+                .Add("type_id", "Invalid")
+                .Add("exec", nameof(TextAction.Append))
+                .Add("args", List.Empty.Add("Hello"));
             Assert.Contains(
                 $"{nameof(ActionTypeAttribute)}",
                 Assert.Throws<ArgumentException>(() =>
-                    ActionBase.GeneratePlainValue<InvalidAction>(
-                        "Add", List.Empty.Add(new Integer(5)))).Message);
+                    ActionBase.ValidatePlainValue<InvalidAction>(plainValue)).Message);
+
+            // Unknown exec.
+            plainValue = Dictionary.Empty
+                .Add("type_id", "Number")
+                .Add("exec", "Divide")
+                .Add("args", List.Empty.Add(5));
             Assert.Contains(
                 $"cannot be found",
                 Assert.Throws<ArgumentException>(() =>
-                    ActionBase.GeneratePlainValue<NumberAction>(
-                        "Divide", List.Empty.Add(new Integer(5)))).Message);
+                    ActionBase.ValidatePlainValue<NumberAction>(plainValue)).Message);
+
+            // Missing attribute.
+            plainValue = Dictionary.Empty
+                .Add("type_id", "Number")
+                .Add("exec", nameof(NumberAction.DoNothing))
+                .Add("args", List.Empty);
             Assert.Contains(
                 $"{nameof(ExecutableAttribute)}",
                 Assert.Throws<ArgumentException>(() =>
-                    ActionBase.GeneratePlainValue<NumberAction>(
-                        "DoNothing", List.Empty.Add(new Integer(5)))).Message);
+                    ActionBase.ValidatePlainValue<NumberAction>(plainValue)).Message);
+
+            // Invalid argument type.
+            plainValue = Dictionary.Empty
+                .Add("type_id", "Number")
+                .Add("exec", nameof(NumberAction.Add))
+                .Add("args", List.Empty.Add("Hello"));
+            Assert.Contains(
+                $"argument at",
+                Assert.Throws<ArgumentException>(() =>
+                    ActionBase.ValidatePlainValue<NumberAction>(plainValue)).Message);
+
+            // Invalid arguments length.
+            plainValue = Dictionary.Empty
+                .Add("type_id", "Number")
+                .Add("exec", nameof(NumberAction.Add))
+                .Add("args", List.Empty.Add(5).Add(6));
+            Assert.Contains(
+                $"The length",
+                Assert.Throws<ArgumentException>(() =>
+                    ActionBase.ValidatePlainValue<NumberAction>(plainValue)).Message);
         }
     }
 }

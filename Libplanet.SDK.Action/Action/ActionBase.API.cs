@@ -8,17 +8,55 @@ namespace Libplanet.SDK.Action
 {
     public partial class ActionBase
     {
-        public static IValue GeneratePlainValue<T>(string methodName, List arguments)
+        public static void ValidatePlainValue<T>(IValue plainValue)
             where T : ActionBase
         {
             ActionTypeAttribute actionType = typeof(T).GetCustomAttribute<ActionTypeAttribute>() ??
                 throw new ArgumentException(
                     $"Type is missing a {nameof(ActionTypeAttribute)}.");
 
+            // NOTE: Check type.
+            if (!(plainValue is Dictionary dict))
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(plainValue)} must be of " +
+                    $"type {nameof(Dictionary)}: {plainValue.GetType()}",
+                    nameof(plainValue));
+            }
+
+            // NOTE: Check type id.
+            if (!dict.ContainsKey("type_id"))
+            {
+                throw new ArgumentException(
+                    $"Given dictionary {nameof(plainValue)} must contain \"type_id\" key",
+                    nameof(plainValue));
+            }
+
+            if (!actionType.TypeIdentifier.Equals(dict["type_id"]))
+            {
+                throw new ArgumentException(
+                    $"The value of \"type_id\" for {nameof(plainValue)} does not match " +
+                    $"the expected value {actionType.TypeIdentifier} specified " +
+                    $"by {nameof(ActionTypeAttribute)}: {dict["type_id"]}");
+            }
+
+            // NODE: Check exec.
+            if (!dict.ContainsKey("exec"))
+            {
+                throw new ArgumentException(
+                    $"Given dictionary {nameof(plainValue)} must contain \"exec\" key",
+                    nameof(plainValue));
+            }
+
+            string methodName = dict["exec"] is Text methodNameText
+                ? methodNameText.Value
+                : throw new ArgumentException(
+                    $"The value of \"exec\" for {nameof(plainValue)} is expected to be " +
+                    $"of type {nameof(Text)}: {dict["exec"].GetType()}");
             MethodInfo methodInfo = typeof(T).GetMethod(methodName) ??
                 throw new ArgumentException(
                     $"Method named {methodName} cannot be found for {typeof(T)}.",
-                    nameof(methodName));
+                    nameof(plainValue));
             if (methodInfo.GetCustomAttribute<ExecutableAttribute>() is null)
             {
                 throw new ArgumentException(
@@ -26,13 +64,27 @@ namespace Libplanet.SDK.Action
                     nameof(methodName));
             }
 
+            // NOTE: Check arguments.
+            if (!dict.ContainsKey("args"))
+            {
+                throw new ArgumentException(
+                    $"Given dictionary {nameof(plainValue)} must contain \"args\" key",
+                    nameof(plainValue));
+            }
+
+            List arguments = dict["args"] is List list
+                ? list
+                : throw new ArgumentException(
+                    $"The value of \"args\" for {nameof(plainValue)} is expected to be " +
+                    $"of type {nameof(Text)}: {dict["args"].GetType()}");
+
             ParameterInfo[] paramInfos = methodInfo.GetParameters();
             if (paramInfos.Length != arguments.Count)
             {
                 throw new ArgumentException(
-                    $"The length of {nameof(arguments)} should be {paramInfos.Length}: " +
-                    $"{arguments.Count}",
-                    nameof(arguments));
+                    $"The length of \"args\" for {nameof(plainValue)} should be " +
+                    $"{paramInfos.Length}: {arguments.Count}",
+                    nameof(plainValue));
             }
 
             foreach (((ParameterInfo paramInfo, IValue argument), int index) in
@@ -43,16 +95,11 @@ namespace Libplanet.SDK.Action
                 if (!paramInfo.ParameterType.Equals(argument.GetType()))
                 {
                     throw new ArgumentException(
-                        $"The argument at {index} for given {nameof(arguments)} should be " +
-                        $"{expectedType}: {actualType}",
-                        nameof(arguments));
+                        $"The argument at {index} of \"args\" for {nameof(plainValue)} " +
+                        $"should be {expectedType}: {actualType}",
+                        nameof(plainValue));
                 }
             }
-
-            return Dictionary.Empty
-                .Add("type_id", actionType.TypeIdentifier)
-                .Add("exec", methodName)
-                .Add("args", arguments);
         }
 
         protected IValue? GetState(Address address)
