@@ -1,3 +1,4 @@
+using System.Reflection;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Node.Actions;
@@ -18,7 +19,7 @@ internal sealed class ActionService(IOptions<ActionOptions> options)
     {
         if (options.ActionLoaderType != string.Empty)
         {
-            var modulePath = options.ModulePath;
+            var modulePath = GetModulePath(options.ModulePath);
             var actionLoaderType = options.ActionLoaderType;
             return PluginLoader.LoadActionLoader(modulePath, actionLoaderType);
         }
@@ -30,11 +31,24 @@ internal sealed class ActionService(IOptions<ActionOptions> options)
     {
         if (options.PolicyActionRegistryType != string.Empty)
         {
-            var modulePath = options.ModulePath;
+            var modulePath = GetModulePath(options.ModulePath);
             var policyActionRegistryType = options.PolicyActionRegistryType;
             return PluginLoader.LoadPolicyActionRegistry(modulePath, policyActionRegistryType);
         }
 
         return new PolicyActionsRegistry();
+    }
+
+    private static string GetModulePath(string modulePath)
+    {
+        if (!Path.IsPathRooted(modulePath))
+        {
+            var processPath = Assembly.GetExecutingAssembly().Location;
+            var directory = Path.GetDirectoryName(processPath)
+                ?? throw new InvalidOperationException("Can't get the directory of the process.");
+            return Path.GetFullPath(modulePath, directory);
+        }
+
+        return modulePath;
     }
 }
