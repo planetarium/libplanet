@@ -77,13 +77,10 @@ public class GeneratedBlockChainFixture
             policy.PolicyActionsRegistry,
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
-        var initialWorld = new Dictionary<Address, Dictionary<Address, IValue>>();
-        var validatorSet = new ValidatorSet(
-            PrivateKeys.Select(pk => new Validator(pk.PublicKey, 1)).ToList());
-        initialWorld[ReservedAddresses.ValidatorSetAccount] = new Dictionary<Address, IValue>()
-        {
-            { ValidatorSetAccount.ValidatorSetAddress, validatorSet.Bencoded }
-        };
+        var initialWorld = ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>.Empty
+            .AddValidatorSet(
+                new ValidatorSet(
+                    PrivateKeys.Select(pk => new Validator(pk.PublicKey, 1)).ToList()));
         var initialStaterootHash = stateStore.CommitWorld(initialWorld);
         Block genesisBlock = BlockChain.ProposeGenesisBlock(stateRootHash: initialStaterootHash);
         Chain = BlockChain.Create(
