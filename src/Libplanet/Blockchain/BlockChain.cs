@@ -186,6 +186,14 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            if (!StateStore.GetStateRoot(Tip.StateRootHash).Recorded)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(stateStore)} does not contain the latest state " +
+                    $"corresponding to state root hash {Tip.StateRootHash}",
+                    nameof(stateStore));
+            }
+
             if (Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 _nextStateRootHash = Tip.StateRootHash;
@@ -392,6 +400,14 @@ namespace Libplanet.Blockchain
                 throw new ArgumentException(
                     $"Given {nameof(store)} already has its canonical chain id set: {canonId}",
                     nameof(store));
+            }
+            else if (!stateStore.GetStateRoot(genesisBlock.StateRootHash).Recorded)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(stateStore)} does not contain the state root " +
+                    $"corresponding to the state root hash of {nameof(genesisBlock)} " +
+                    $"{genesisBlock.StateRootHash}",
+                    nameof(stateStore));
             }
 
             var id = Guid.NewGuid();
