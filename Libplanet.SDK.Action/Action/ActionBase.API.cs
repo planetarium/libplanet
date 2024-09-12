@@ -202,7 +202,7 @@ namespace Libplanet.SDK.Action
             ActionTypeAttribute actionTypeAttribute =
                 actionType.GetCustomAttribute<ActionTypeAttribute>() ??
                     throw new ArgumentException(
-                        $"Type is missing a {nameof(ActionTypeAttribute)}.",
+                        $"Type is missing a {nameof(ActionTypeAttribute)}: {actionType}",
                         nameof(actionType));
             Text typeId = actionTypeAttribute.TypeIdentifier is Text text
                 ? text
@@ -253,27 +253,46 @@ namespace Libplanet.SDK.Action
             return result;
         }
 
-        public static List GenerateConstraintsSchema(Assembly assembly)
+        public static List GenerateConstraintsSchema(Assembly assembly, Type baseType)
         {
-            var baseType = typeof(ActionBase);
             List<Type> targetTypes = assembly
                 .GetTypes()
                 .Where(type => baseType.IsAssignableFrom(type))
+                .Where(type => type.GetCustomAttribute<ActionTypeAttribute>() is { })
                 .ToList();
-            List result = List.Empty;
+#pragma warning disable MEN002
+            List result = List.Empty
+                .Add(
+                    Dictionary.Empty
+                        .Add(
+                            "properties",
+                            Dictionary.Empty
+                                .Add(
+                                    "type_id",
+                                    Dictionary.Empty
+                                        .Add(
+                                            "enum",
+                                            new List(targetTypes.Select(targetType => targetType.GetCustomAttribute<ActionTypeAttribute>()!.TypeIdentifier))))));
+#pragma warning restore MEN002
             foreach (var targetType in targetTypes)
             {
                 var constraints = GenerateClassConstraintsSchema(targetType);
                 foreach (var constraint in constraints)
                 {
-                    result.Add(constraint);
+                    result = result.Add(constraint);
                 }
             }
 
             return result;
         }
 
-        public static Dictionary GenerateSchema(Assembly assembly)
+        public static List GenerateConstraintsSchema(Assembly assembly) =>
+            GenerateConstraintsSchema(assembly, typeof(ActionBase));
+
+        public static List GenerateConstraintsSchema(Type baseType) =>
+            GenerateConstraintsSchema(baseType.Assembly, baseType);
+
+        public static Dictionary GenerateSchema(Assembly assembly, Type baseType)
         {
             Dictionary result = Dictionary.Empty
                 .Add("type", "dictionary")
@@ -284,9 +303,15 @@ namespace Libplanet.SDK.Action
                         .Add("exec", Dictionary.Empty.Add("type", "text"))
                         .Add("args", Dictionary.Empty.Add("type", "list")))
                 .Add("required", List.Empty.Add("type_id").Add("exec").Add("args"));
-            List constraints = GenerateConstraintsSchema(assembly);
+            List constraints = GenerateConstraintsSchema(assembly, baseType);
             return result.Add("allOf", constraints);
         }
+
+        public static Dictionary GenerateSchema(Assembly assembly) =>
+            GenerateSchema(assembly, typeof(ActionBase));
+
+        public static Dictionary GenerateSchema(Type baseType) =>
+            GenerateSchema(baseType.Assembly, baseType);
 
         protected IValue? GetState(Address address)
             => World.GetAccount(StorageAddress).GetState(address);
