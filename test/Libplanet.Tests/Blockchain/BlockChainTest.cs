@@ -195,22 +195,11 @@ namespace Libplanet.Tests.Blockchain
                 policy.PolicyActionsRegistry,
                 stateStore,
                 actionLoader);
-            var nonce = 0;
-            var txs = TestUtils.ValidatorSet.Validators
-                .Select(validator => Transaction.Create(
-                    nonce++,
-                    GenesisProposer,
-                    null,
-                    actions: new IAction[]
-                        {
-                            new Initialize(
-                                validatorSet: TestUtils.ValidatorSet,
-                                states: ImmutableDictionary.Create<Address, IValue>()),
-                        }.ToPlainValues(),
-                    timestamp: DateTimeOffset.UtcNow))
-                .OrderBy(tx => tx.Id)
-                .ToImmutableList();
-            var genesis = BlockChain.ProposeGenesisBlock(transactions: txs);
+            var initialState =
+                ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>.Empty
+                    .AddValidatorSet(TestUtils.ValidatorSet);
+            var genesisStateRootHash = stateStore.CommitWorld(initialState);
+            var genesis = BlockChain.ProposeGenesisBlock(stateRootHash: genesisStateRootHash);
             var chain = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
