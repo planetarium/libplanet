@@ -197,7 +197,7 @@ namespace Libplanet.Tests.Blockchain
                 actionLoader);
             var initialState =
                 ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>.Empty
-                    .AddValidatorSet(TestUtils.ValidatorSet);
+                    .AddOrUpdateValidatorSet(TestUtils.ValidatorSet);
             var genesisStateRootHash = stateStore.CommitWorld(initialState);
             var genesis = BlockChain.ProposeGenesisBlock(stateRootHash: genesisStateRootHash);
             var chain = BlockChain.Create(
@@ -1139,6 +1139,44 @@ namespace Libplanet.Tests.Blockchain
                 (Text)$"{miner0},{miner1.Address},{miner1.Address},{miner2.Address}",
                 rewardState
             );
+        }
+
+        [Fact]
+        public void CannotCreateBlockChainWithoutTipStateRootHash()
+        {
+            var policy = new NullBlockPolicy();
+            var data = ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>.Empty;
+            var fx = GetStoreFixture();
+
+            // NOTE: Even though data is empty, trie metadata gets recorded.
+            var tempStateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var genesisStateRootHash = tempStateStore.CommitWorld(data);
+            Assert.NotEqual(genesisStateRootHash, MerkleTrie.EmptyRootHash);
+
+            Block genesis = BlockChain.ProposeGenesisBlock(stateRootHash: genesisStateRootHash);
+            var actionLoader = TypedActionLoader.Create(
+                typeof(BaseAction).Assembly, typeof(BaseAction));
+            var actionEvaluator = new ActionEvaluator(
+                policy.PolicyActionsRegistry,
+                fx.StateStore,
+                actionLoader);
+            Assert.Throws<ArgumentException>(() => BlockChain.Create(
+                policy,
+                new VolatileStagePolicy(),
+                fx.Store,
+                fx.StateStore,
+                genesis,
+                actionEvaluator));
+
+            // Works fine once committed to target store.
+            fx.StateStore.CommitWorld(data);
+            BlockChain.Create(
+                policy,
+                new VolatileStagePolicy(),
+                fx.Store,
+                fx.StateStore,
+                genesis,
+                actionEvaluator);
         }
 
         /// <summary>

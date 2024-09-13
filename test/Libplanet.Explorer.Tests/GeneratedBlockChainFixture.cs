@@ -78,7 +78,7 @@ public class GeneratedBlockChainFixture
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
         var initialWorld = ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>.Empty
-            .AddValidatorSet(
+            .AddOrUpdateValidatorSet(
                 new ValidatorSet(
                     PrivateKeys.Select(pk => new Validator(pk.PublicKey, 1)).ToList()));
         var initialStaterootHash = stateStore.CommitWorld(initialWorld);
