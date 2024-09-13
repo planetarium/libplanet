@@ -11,46 +11,30 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blockchain.Renderers;
 using Libplanet.Crypto;
 using Libplanet.Node.Options;
-using Libplanet.Node.Services.Renderer;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Libplanet.Node.Services;
 
-internal sealed class BlockChainService : IBlockChainService
+internal sealed class BlockChainService(
+    IOptions<GenesisOptions> genesisOptions,
+    IStoreService storeService,
+    IActionService actionService,
+    PolicyService policyService,
+    RendererService rendererService) : IBlockChainService
 {
     private static readonly Codec _codec = new();
-    private readonly ILogger<BlockChainService> _logger;
-    private readonly BlockChain _blockChain;
-
-    public BlockChainService(
-        IOptions<GenesisOptions> genesisOptions,
-        IStoreService storeService,
-        IActionService actionService,
-        PolicyService policyService,
-        IRenderObservables rendererService,
-        ILogger<BlockChainService> logger)
-    {
-        _logger = logger;
-        _blockChain = CreateBlockChain(
-            genesisOptions: genesisOptions.Value,
-            store: storeService.Store,
-            stateStore: storeService.StateStore,
-            actionLoader: actionService.ActionLoader,
-            policyActionsRegistry: actionService.PolicyActionsRegistry,
-            stagePolicy: policyService.StagePolicy,
-            renderers:
-            [
-                rendererService.RenderActionObservable,
-                rendererService.RenderActionErrorObservable,
-                rendererService.RenderBlockObservable,
-                rendererService.RenderBlockEndObservable,
-            ]);
-    }
+    private readonly BlockChain _blockChain = CreateBlockChain(
+        genesisOptions: genesisOptions.Value,
+        store: storeService.Store,
+        stateStore: storeService.StateStore,
+        actionLoader: actionService.ActionLoader,
+        policyActionsRegistry: actionService.PolicyActionsRegistry,
+        stagePolicy: policyService.StagePolicy,
+        renderers: [rendererService]);
 
     public BlockChain BlockChain => _blockChain;
 

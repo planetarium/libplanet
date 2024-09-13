@@ -48,6 +48,8 @@ public static class LibplanetServicesExtensions
         services.AddSingleton(s => (IStoreService)s.GetRequiredService<StoreService>());
         services.AddSingleton<ActionService>();
         services.AddSingleton(s => (IActionService)s.GetRequiredService<ActionService>());
+        services.AddSingleton<RendererService>();
+        services.AddSingleton(s => (IRendererService)s.GetRequiredService<RendererService>());
         services.AddSingleton<IBlockChainService, BlockChainService>();
         services.AddSingleton<IReadChainService, ReadChainService>();
         services.AddSingleton<TransactionService>();
