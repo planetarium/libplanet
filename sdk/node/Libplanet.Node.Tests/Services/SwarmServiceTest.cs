@@ -1,6 +1,7 @@
 using Libplanet.Node.Options;
 using Libplanet.Node.Services;
 using Microsoft.Extensions.DependencyInjection;
+using R3;
 
 namespace Libplanet.Node.Tests.Services;
 
@@ -33,9 +34,10 @@ public class SwarmServiceTest
         var swarmService = serviceProvider.GetRequiredService<ISwarmService>();
         var swarmServiceHost = serviceProvider.GetRequiredService<SwarmService>();
 
-        await Assert.RaisesAnyAsync(
-            handler => swarmService.Started += handler,
-            handler => swarmService.Started -= handler,
+        using var observer = new TestObserver<Unit>(swarmService.Started);
+        await Assert.RaisesAnyAsync<Unit>(
+            attach: handler => observer.Next += handler,
+            detach: handler => observer.Next -= handler,
             async () => await swarmServiceHost.StartAsync(default));
         Assert.True(swarmService.IsRunning);
     }
@@ -60,9 +62,10 @@ public class SwarmServiceTest
         var swarmServiceHost = serviceProvider.GetRequiredService<SwarmService>();
         await swarmServiceHost.StartAsync(default);
 
-        await Assert.RaisesAnyAsync(
-            handler => swarmService.Stopped += handler,
-            handler => swarmService.Stopped -= handler,
+        using var observer = new TestObserver<Unit>(swarmService.Stopped);
+        await Assert.RaisesAnyAsync<Unit>(
+            attach: handler => observer.Next += handler,
+            detach: handler => observer.Next -= handler,
             async () => await swarmServiceHost.StopAsync(default));
         Assert.False(swarmService.IsRunning);
     }
