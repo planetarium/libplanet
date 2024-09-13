@@ -214,7 +214,11 @@ namespace Libplanet.SDK.Action.Tests.Calculator
                                 "properties",
                                 Dictionary.Empty
                                     .Add("type_id", Dictionary.Empty.Add("const", "Calc"))
-                                    .Add("exec", Dictionary.Empty.Add("const", "Add"))))
+                                    .Add(
+                                        "exec",
+                                        Dictionary.Empty
+                                            .Add("const", "Add")
+                                            .Add("description", "Adds two numbers."))))
                     .Add(
                         "then",
                         Dictionary.Empty

@@ -11,7 +11,7 @@ namespace Libplanet.SDK.Action.Tests.SimpleTools.Actions
         public override Address StorageAddress =>
             new Address("0x1000000000000000000000000000000000000003");
 
-        [Executable]
+        [Executable("Converts a string to uppercase.")]
         public void ToUpper(Text text)
         {
             Text result = new Text(text.Value.ToUpper());

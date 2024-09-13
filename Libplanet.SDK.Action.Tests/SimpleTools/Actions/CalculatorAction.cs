@@ -11,7 +11,7 @@ namespace Libplanet.SDK.Action.Tests.SimpleTools.Actions
         public override Address StorageAddress =>
             new Address("0x1000000000000000000000000000000000000001");
 
-        [Executable]
+        [Executable("Adds two numbers.")]
         public void Add(Integer x, Integer y)
         {
             Integer result = x + y;
@@ -35,7 +35,7 @@ namespace Libplanet.SDK.Action.Tests.SimpleTools.Actions
             SetState(Signer, result);
         }
 
-        [Executable]
+        [Executable("Squares the number.")]
         public void Square(Integer x)
         {
             Integer result = x * x;

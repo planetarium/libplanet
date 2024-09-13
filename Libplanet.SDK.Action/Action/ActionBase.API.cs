@@ -126,6 +126,11 @@ namespace Libplanet.SDK.Action
                 throw new ArgumentException(
                     $"Method named {methodName} cannot be found for {actionType}.",
                     nameof(methodName));
+            ExecutableAttribute executableAttribute =
+                methodInfo.GetCustomAttribute<ExecutableAttribute>() ??
+                    throw new ArgumentException(
+                        $"Method named {methodName} is missing a {nameof(ExecutableAttribute)}.",
+                        nameof(methodName));
             ParameterInfo[] paramInfos = methodInfo.GetParameters();
 
             int minItems = paramInfos.Length, maxItems = paramInfos.Length;
@@ -160,6 +165,13 @@ namespace Libplanet.SDK.Action
                 }
             }
 
+            Dictionary typeIdValue = Dictionary.Empty;
+            Dictionary execValue = Dictionary.Empty;
+            typeIdValue = typeIdValue.Add("const", typeId);
+            execValue = execValue.Add("const", methodInfo.Name);
+            execValue = executableAttribute.Description is { } executalbeDescription
+                ? execValue.Add("description", new Text(executalbeDescription))
+                : execValue;
             Dictionary argsConstraints = Dictionary.Empty
                 .Add(
                     "if",
@@ -167,12 +179,8 @@ namespace Libplanet.SDK.Action
                         .Add(
                             "properties",
                             Dictionary.Empty
-                                .Add(
-                                    "type_id",
-                                    Dictionary.Empty.Add("const", typeId))
-                                .Add(
-                                    "exec",
-                                    Dictionary.Empty.Add("const", methodName))))
+                                .Add("type_id", typeIdValue)
+                                .Add("exec", execValue)))
                 .Add(
                     "then",
                     Dictionary.Empty
