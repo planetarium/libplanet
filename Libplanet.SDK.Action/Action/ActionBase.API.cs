@@ -137,25 +137,26 @@ namespace Libplanet.SDK.Action
             var prefixItems = List.Empty;
             foreach (var paramInfo in paramInfos)
             {
+                Dictionary prefixItem = Dictionary.Empty;
                 if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Boolean)))
                 {
-                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "boolean"));
+                    prefixItem = prefixItem.Add("type", "boolean");
                 }
                 else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Integer)))
                 {
-                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "integer"));
+                    prefixItem = prefixItem.Add("type", "integer");
                 }
                 else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Text)))
                 {
-                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "text"));
+                    prefixItem = prefixItem.Add("type", "text");
                 }
                 else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.List)))
                 {
-                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "list"));
+                    prefixItem = prefixItem.Add("type", "list");
                 }
                 else if (paramInfo.ParameterType.Equals(typeof(Bencodex.Types.Dictionary)))
                 {
-                    prefixItems = prefixItems.Add(Dictionary.Empty.Add("type", "dictionary"));
+                    prefixItem = prefixItem.Add("type", "dictionary");
                 }
                 else
                 {
@@ -163,6 +164,14 @@ namespace Libplanet.SDK.Action
                         $"Method named {methodName} has a parameter named {paramInfo.Name}" +
                         $"that has an invalid type: {paramInfo.ParameterType}");
                 }
+
+                prefixItem = prefixItem.Add("title", paramInfo.Name!);
+                if (paramInfo.GetCustomAttribute<ParameterAttribute>() is { } parameterAttribute)
+                {
+                    prefixItem = prefixItem.Add("description", parameterAttribute.Description);
+                }
+
+                prefixItems = prefixItems.Add(prefixItem);
             }
 
             Dictionary typeIdValue = Dictionary.Empty;

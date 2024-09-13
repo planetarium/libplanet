@@ -12,7 +12,9 @@ namespace Libplanet.SDK.Action.Tests.SimpleTools.Actions
             new Address("0x1000000000000000000000000000000000000001");
 
         [Executable("Adds two numbers.")]
-        public void Add(Integer x, Integer y)
+        public void Add(
+            [Parameter("The first operand.")]Integer x,
+            [Parameter("The second operand.")]Integer y)
         {
             Integer result = x + y;
             Call<HistoryAction>(nameof(HistoryAction.LogInteger), new object[] { result });
@@ -36,7 +38,8 @@ namespace Libplanet.SDK.Action.Tests.SimpleTools.Actions
         }
 
         [Executable("Squares the number.")]
-        public void Square(Integer x)
+        public void Square(
+            [Parameter("The number to sqaure.")]Integer x)
         {
             Integer result = x * x;
             Call<HistoryAction>(nameof(HistoryAction.LogInteger), new object[] { result });

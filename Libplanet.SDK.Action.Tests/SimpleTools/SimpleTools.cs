@@ -232,8 +232,20 @@ namespace Libplanet.SDK.Action.Tests.Calculator
                                             .Add(
                                                 "prefixItems",
                                                 List.Empty
-                                                    .Add(Dictionary.Empty.Add("type", "integer"))
-                                                    .Add(Dictionary.Empty.Add("type", "integer")))
+                                                    .Add(
+                                                        Dictionary.Empty
+                                                            .Add("type", "integer")
+                                                            .Add("title", "x")
+                                                            .Add(
+                                                                "description",
+                                                                "The first operand."))
+                                                    .Add(
+                                                        Dictionary.Empty
+                                                            .Add("type", "integer")
+                                                            .Add("title", "y")
+                                                            .Add(
+                                                                "description",
+                                                                "The second operand.")))
                                             .Add("minItems", 2)
                                             .Add("maxItems", 2)))));
             var generated = ActionBase.GenerateMethodConstraintsSchema(
