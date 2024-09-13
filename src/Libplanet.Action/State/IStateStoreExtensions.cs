@@ -75,11 +75,11 @@ namespace Libplanet.Action.State
             stateRoot = stateRoot.SetMetadata(
                 new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
             stateRoot = stateStore.Commit(stateRoot);
-            foreach ((var key, var value) in data)
+            foreach (var pair in data)
             {
                 stateRoot = stateRoot.Set(
-                    KeyConverters.ToStateKey(key),
-                    new Binary(stateStore.CommitAccount(value).ByteArray));
+                    KeyConverters.ToStateKey(pair.Key),
+                    new Binary(stateStore.CommitAccount(pair.Value).ByteArray));
             }
 
             return stateStore.Commit(stateRoot).Hash;
@@ -342,11 +342,11 @@ namespace Libplanet.Action.State
             ImmutableDictionary<Address, IValue> data)
         {
             var stateRoot = stateStore.GetStateRoot(null);
-            foreach ((var key, var value) in data)
+            foreach (var pair in data)
             {
                 stateRoot = stateRoot.Set(
-                    KeyConverters.ToStateKey(key),
-                    value);
+                    KeyConverters.ToStateKey(pair.Key),
+                    pair.Value);
             }
 
             return stateStore.Commit(stateRoot).Hash;
