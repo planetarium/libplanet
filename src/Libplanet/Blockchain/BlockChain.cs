@@ -401,16 +401,6 @@ namespace Libplanet.Blockchain
                     $"Given {nameof(store)} already has its canonical chain id set: {canonId}",
                     nameof(store));
             }
-            else if (!stateStore.GetStateRoot(genesisBlock.StateRootHash).Recorded)
-            {
-                throw new ArgumentException(
-                    $"Given {nameof(stateStore)} does not contain the state root " +
-                    $"corresponding to the state root hash of {nameof(genesisBlock)} " +
-                    $"{genesisBlock.StateRootHash}",
-                    nameof(stateStore));
-            }
-
-            var id = Guid.NewGuid();
 
             if (genesisBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
@@ -428,7 +418,19 @@ namespace Libplanet.Blockchain
                         computedStateRootHash);
                 }
             }
+            else
+            {
+                if (!stateStore.GetStateRoot(genesisBlock.StateRootHash).Recorded)
+                {
+                    throw new ArgumentException(
+                        $"Given {nameof(stateStore)} does not contain the state root " +
+                        $"corresponding to the state root hash of {nameof(genesisBlock)} " +
+                        $"{genesisBlock.StateRootHash}",
+                        nameof(stateStore));
+                }
+            }
 
+            var id = Guid.NewGuid();
             ValidateGenesis(genesisBlock);
             var nonceDeltas = ValidateGenesisNonces(genesisBlock);
 

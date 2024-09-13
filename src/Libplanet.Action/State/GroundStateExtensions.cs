@@ -10,26 +10,26 @@ namespace Libplanet.Action.State
     /// A set of useful extension methods for making an initial state to commit to
     /// an <see cref="IStateStore"/>.
     /// </summary>
-    public static class InitialStateExtensions
+    public static class GroundStateExtensions
     {
         public static ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>
             AddOrUpdateLegacyState(
                 this ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>
-                    initialState,
+                    groundState,
                 ImmutableDictionary<Address, IValue> legacyStates) =>
-                initialState.ContainsKey(ReservedAddresses.LegacyAccount)
-                    ? initialState
+                groundState.ContainsKey(ReservedAddresses.LegacyAccount)
+                    ? groundState
                         .Remove(ReservedAddresses.LegacyAccount)
                         .Add(ReservedAddresses.LegacyAccount, legacyStates)
-                    : initialState.Add(ReservedAddresses.LegacyAccount, legacyStates);
+                    : groundState.Add(ReservedAddresses.LegacyAccount, legacyStates);
 
         public static ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>
             AddOrUpdateValidatorSet(
                 this ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>
-                    initialState,
+                    groundState,
                 ValidatorSet validatorSet) =>
-                initialState.ContainsKey(ReservedAddresses.ValidatorSetAccount)
-                    ? initialState
+                groundState.ContainsKey(ReservedAddresses.ValidatorSetAccount)
+                    ? groundState
                         .Remove(ReservedAddresses.ValidatorSetAccount)
                         .Add(
                             ReservedAddresses.ValidatorSetAccount,
@@ -37,7 +37,7 @@ namespace Libplanet.Action.State
                                 .Add(
                                     ValidatorSetAccount.ValidatorSetAddress,
                                     validatorSet.Bencoded))
-                    : initialState
+                    : groundState
                         .Add(
                             ReservedAddresses.ValidatorSetAccount,
                             ImmutableDictionary<Address, IValue>.Empty
