@@ -1,12 +1,13 @@
 using Libplanet.Net;
+using R3;
 
 namespace Libplanet.Node.Services;
 
 public interface ISwarmService
 {
-    public event EventHandler? Started;
+    IObservable<Unit> Started { get; }
 
-    public event EventHandler? Stopped;
+    IObservable<Unit> Stopped { get; }
 
     Swarm Swarm { get; }
 

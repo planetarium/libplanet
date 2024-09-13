@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Net;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -9,6 +8,7 @@ using Libplanet.Node.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using R3;
 
 namespace Libplanet.Node.Services;
 
@@ -22,15 +22,22 @@ internal sealed class SwarmService(
     private readonly SwarmOptions _options = options.Value;
     private readonly ValidatorOptions _validatorOptions = validatorOptions.Value;
     private readonly ILogger<SwarmService> _logger = logger;
+    private readonly Subject<Unit> _started = new();
+    private readonly Subject<Unit> _stopped = new();
+
+    private IObservable<Unit>? _startedObservable;
+    private IObservable<Unit>? _stoppedObservable;
 
     private Swarm? _swarm;
     private Task _startTask = Task.CompletedTask;
     private Seed? _blocksyncSeed;
     private Seed? _consensusSeed;
 
-    public event EventHandler? Started;
+    IObservable<Unit> ISwarmService.Started
+        => _startedObservable ??= _started.AsSystemObservable();
 
-    public event EventHandler? Stopped;
+    IObservable<Unit> ISwarmService.Stopped
+        => _stoppedObservable ??= _stopped.AsSystemObservable();
 
     public bool IsRunning => _swarm is not null;
 
@@ -114,7 +121,7 @@ internal sealed class SwarmService(
         _logger.LogDebug("Node.Swarm is starting: {Address}", _swarm.Address);
         await _swarm.BootstrapAsync(cancellationToken: default);
         _logger.LogDebug("Node.Swarm is bootstrapped: {Address}", _swarm.Address);
-        Started?.Invoke(this, EventArgs.Empty);
+        _started.OnNext(Unit.Default);
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
@@ -145,7 +152,7 @@ internal sealed class SwarmService(
             _blocksyncSeed = null;
         }
 
-        Stopped?.Invoke(this, EventArgs.Empty);
+        _stopped.OnNext(Unit.Default);
     }
 
     public async ValueTask DisposeAsync()

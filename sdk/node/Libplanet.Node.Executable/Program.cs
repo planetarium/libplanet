@@ -1,3 +1,4 @@
+using Libplanet.Node.API;
 using Libplanet.Node.API.Explorer;
 using Libplanet.Node.API.Services;
 using Libplanet.Node.Extensions;
@@ -27,6 +28,7 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 builder.Services.AddLibplanetNode(builder.Configuration);
+builder.Services.AddHostedService<BlockChainRendererTracer>();
 
 if (builder.IsExplorerEnabled())
 {
