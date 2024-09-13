@@ -39,6 +39,10 @@ To be released.
 
 ### Added APIs
 
+ -  (Libplanet.Action) Added `InitialStateExtensions` static class with
+    extension methods for `Dictionary<Address, Dictionary<Address, IValue>>`s.
+    [[#3952]]
+
 ### Behavioral changes
 
  -  Changed `BlockChain.FindBranchPoint()` to only check for the first
@@ -49,6 +53,10 @@ To be released.
  -  (Libplanet.Net) Changed to no longer report `BlockHashDownloadState`
     and `BlockDownloadState` during preloading.  It is strongly advised
     not to rely on these to track the progress of preloading.  [[#3943]]
+ -  Changed `BlockChain()` to throw an `ArgumentException` if it cannot find
+    the state root for its `Tip` in the `IStateStore`.  [[#3952]]
+ -  Changed `BlockChain.Create()` to throw an `ArgumentException` if it
+    cannot find the state root for the genesis block provided.  [[#3952]]
 
 ### Bug fixes
 
@@ -66,6 +74,7 @@ To be released.
 [#3948]: https://github.com/planetarium/libplanet/pull/3948
 [#3949]: https://github.com/planetarium/libplanet/pull/3949
 [#3950]: https://github.com/planetarium/libplanet/pull/3950
+[#3952]: https://github.com/planetarium/libplanet/pull/3952
 
 
 Version 5.2.2
