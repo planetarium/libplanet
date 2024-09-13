@@ -1,4 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.Loader;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 
@@ -37,8 +39,33 @@ internal static class PluginLoader
         return obj;
     }
 
+    private static bool TryGetLoadedAssembly(
+        string modulePath, [MaybeNullWhen(false)] out Assembly assembly)
+    {
+        var loadedAssemblies = AssemblyLoadContext.All
+            .SelectMany(context => context.Assemblies)
+            .ToList();
+        var comparison = StringComparison.OrdinalIgnoreCase;
+        var comparer = new Predicate<Assembly>(
+            assembly => string.Equals(assembly.Location, modulePath, comparison));
+
+        if (loadedAssemblies.Find(comparer) is Assembly loadedAssembly)
+        {
+            assembly = loadedAssembly;
+            return true;
+        }
+
+        assembly = null;
+        return false;
+    }
+
     private static Assembly LoadAssembly(string modulePath)
     {
+        if (TryGetLoadedAssembly(modulePath, out var assembly))
+        {
+            return assembly;
+        }
+
         var loadContext = new PluginLoadContext(modulePath);
         if (File.Exists(modulePath))
         {
