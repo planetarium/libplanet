@@ -4,7 +4,7 @@ using Libplanet.Node.DataAnnotations;
 namespace Libplanet.Node.Options;
 
 [Options(Position)]
-public sealed class SwarmOptions : AppProtocolOptionsBase<SwarmOptions>, IEnabledOptions
+public sealed class SwarmOptions : AppProtocolOptionsBase<SwarmOptions>
 {
     public const string Position = "Swarm";
 

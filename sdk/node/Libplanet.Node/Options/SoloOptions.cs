@@ -4,7 +4,7 @@ using Libplanet.Node.DataAnnotations;
 namespace Libplanet.Node.Options;
 
 [Options(Position)]
-public class SoloOptions : OptionsBase<SoloOptions>, IEnabledOptions
+public class SoloOptions : OptionsBase<SoloOptions>
 {
     public const string Position = "Solo";
 
