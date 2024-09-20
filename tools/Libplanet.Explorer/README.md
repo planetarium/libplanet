@@ -28,7 +28,7 @@ store blockchain instead of storage.
 
 [.NET Core]: https://dotnet.microsoft.com/
 [PowerShell]: https://microsoft.com/PowerShell
-[1]: https://planetarium.dev/discord
+[1]: https://link.planetarium.dev/libplanet-explorer-readme--pl-dev-discord
 
 
 GraphQL

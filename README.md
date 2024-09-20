@@ -30,7 +30,7 @@ It has competitive advantages over other solutions for decentralized gaming:
 To learn more about why Planetarium is creating technology for fully
 decentralized games, please refer to our [blog post].
 
-[Discord]: https://planetarium.dev/discord
+[Discord]: https://link.planetarium.dev/libplanet-readme--pl-dev-discord
 [CircleCI]: https://app.circleci.com/pipelines/github/planetarium/libplanet
 [Codecov]: https://codecov.io/gh/planetarium/libplanet
 [NuGet]: https://www.nuget.org/packages/Libplanet/
