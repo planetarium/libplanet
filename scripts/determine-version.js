@@ -118,21 +118,20 @@ async function main() {
   } else {
     // Dev
     const timestamp = await getCommitTimestamp();
-    const ts = `${timestamp.getUTCFullYear()}${(timestamp.getUTCMonth() + 1)
+    const formattedMonth = (timestamp.getUTCMonth() + 1)
       .toString()
-      .padStart(2, "0")}${timestamp
-      .getUTCDate()
-      .toString()
-      .padStart(2, "0")}${timestamp
-      .getUTCHours()
-      .toString()
-      .padStart(2, "0")}${timestamp
+      .padStart(2, "0");
+    const formattedDate = timestamp.getUTCDate().toString().padStart(2, "0");
+    const formattedHours = timestamp.getUTCHours().toString().padStart(2, "0");
+    const formattedMinutes = timestamp
       .getUTCMinutes()
       .toString()
-      .padStart(2, "0")}${timestamp
+      .padStart(2, "0");
+    const formattedSeconds = timestamp
       .getUTCSeconds()
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0");
+    const ts = `${timestamp.getUTCFullYear()}${formattedMonth}${formattedDate}${formattedHours}${formattedMinutes}${formattedSeconds}`;
     versionSuffix = `dev.${ts}`;
     packageVersion = `${versionPrefix}-${versionSuffix}`;
     versionSuffix += `+${commitHash}`;
