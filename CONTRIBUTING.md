@@ -19,7 +19,7 @@ for purposes in the *Libplanet* category:
     Ask questions to *hack* Libplanet and to make a patch for it.  People here
     usually speak in Korean, but feel free to speak in English.
 
-[Discord server]: https://planetarium.dev/discord
+[Discord server]: https://link.planetarium.dev/libplanet-contributing--pl-dev-discord
 
 
 Prerequisites
