@@ -131,7 +131,12 @@ async function main() {
       .getUTCSeconds()
       .toString()
       .padStart(2, "0");
-    const ts = `${timestamp.getUTCFullYear()}${formattedMonth}${formattedDate}${formattedHours}${formattedMinutes}${formattedSeconds}`;
+    const ts = `${timestamp.getUTCFullYear()
+    }${formattedMonth
+    }${formattedDate
+    }${formattedHours
+    }${formattedMinutes
+    }${formattedSeconds}`;
     versionSuffix = `dev.${ts}`;
     packageVersion = `${versionPrefix}-${versionSuffix}`;
     versionSuffix += `+${commitHash}`;
