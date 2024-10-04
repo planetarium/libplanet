@@ -118,11 +118,13 @@ async function main() {
   } else {
     // Dev
     const timestamp = await getCommitTimestamp();
-    const ts = `${timestamp.getUTCFullYear()}${
-      timestamp.getUTCMonth() + 1
-    }${timestamp.getUTCDate()}${timestamp.getUTCHours()}${
-      timestamp.getUTCMinutes() + 0
-    }${timestamp.getUTCSeconds()}`;
+    const ts =
+      timestamp.getUTCFullYear().toString() +
+      (timestamp.getUTCMonth() + 1).toString().padStart(2, "0") +
+      timestamp.getUTCDate().toString().padStart(2, "0") +
+      timestamp.getUTCHours().toString().padStart(2, "0") +
+      timestamp.getUTCMinutes().toString().padStart(2, "0") +
+      timestamp.getUTCSeconds().toString().padStart(2, "0");
     versionSuffix = `dev.${ts}`;
     packageVersion = `${versionPrefix}-${versionSuffix}`;
     versionSuffix += `+${commitHash}`;
