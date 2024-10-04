@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
@@ -16,6 +17,7 @@ using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Action.State;
 
 namespace Libplanet.Explorer.Tests;
 
@@ -75,23 +77,12 @@ public class GeneratedBlockChainFixture
             policy.PolicyActionsRegistry,
             stateStore,
             TypedActionLoader.Create(typeof(SimpleAction).Assembly, typeof(SimpleAction)));
-        Block genesisBlock = BlockChain.ProposeGenesisBlock(
-            transactions: PrivateKeys
-                .OrderBy(pk => pk.Address.ToHex())
-                .Select(
-                    (pk, i) => Transaction.Create(
-                        nonce: i,
-                        privateKey: privateKey,
-                        genesisHash: null,
-                        actions: new IAction[]
-                            {
-                                new Initialize(
-                                    new ValidatorSet(
-                                        ImmutableList<Validator>.Empty.Add(
-                                            new Validator(pk.PublicKey, 1)).ToList()),
-                                    ImmutableDictionary.Create<Address, IValue>())
-                            }.ToPlainValues()))
-                .ToImmutableList());
+        var initialWorld = ImmutableDictionary<Address, ImmutableDictionary<Address, IValue>>.Empty
+            .AddOrUpdateValidatorSet(
+                new ValidatorSet(
+                    PrivateKeys.Select(pk => new Validator(pk.PublicKey, 1)).ToList()));
+        var initialStaterootHash = stateStore.CommitWorld(initialWorld);
+        Block genesisBlock = BlockChain.ProposeGenesisBlock(stateRootHash: initialStaterootHash);
         Chain = BlockChain.Create(
             policy,
             new VolatileStagePolicy(),

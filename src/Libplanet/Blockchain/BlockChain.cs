@@ -186,6 +186,14 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            if (!StateStore.GetStateRoot(Tip.StateRootHash).Recorded)
+            {
+                throw new ArgumentException(
+                    $"Given {nameof(stateStore)} does not contain the latest state " +
+                    $"corresponding to state root hash {Tip.StateRootHash}",
+                    nameof(stateStore));
+            }
+
             if (Tip.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 _nextStateRootHash = Tip.StateRootHash;
@@ -394,8 +402,6 @@ namespace Libplanet.Blockchain
                     nameof(store));
             }
 
-            var id = Guid.NewGuid();
-
             if (genesisBlock.ProtocolVersion < BlockMetadata.SlothProtocolVersion)
             {
                 var preEval = new PreEvaluationBlock(
@@ -412,7 +418,19 @@ namespace Libplanet.Blockchain
                         computedStateRootHash);
                 }
             }
+            else
+            {
+                if (!stateStore.GetStateRoot(genesisBlock.StateRootHash).Recorded)
+                {
+                    throw new ArgumentException(
+                        $"Given {nameof(stateStore)} does not contain the state root " +
+                        $"corresponding to the state root hash of {nameof(genesisBlock)} " +
+                        $"{genesisBlock.StateRootHash}",
+                        nameof(stateStore));
+                }
+            }
 
+            var id = Guid.NewGuid();
             ValidateGenesis(genesisBlock);
             var nonceDeltas = ValidateGenesisNonces(genesisBlock);
 
