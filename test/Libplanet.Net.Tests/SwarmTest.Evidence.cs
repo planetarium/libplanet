@@ -69,9 +69,10 @@ namespace Libplanet.Net.Tests
                 var context = consensusContext.CurrentContext;
                 var bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
                 var methodName = "PublishMessage";
-                var methodInfo = context.GetType().GetMethod(methodName, bindingFlags) ??
-                    throw new InvalidOperationException(
-                        $"{nameof(Context)} does not have a method named {methodName}.");
+                var methodInfo = context.GetType().GetMethod(methodName, bindingFlags);
+
+                Assert.NotNull(methodInfo);
+
                 var vote = MakeRandomVote(privateKeys[0], height, round, VoteFlag.PreVote);
                 var args = new object[] { new ConsensusPreVoteMsg(vote) };
 
@@ -90,18 +91,18 @@ namespace Libplanet.Net.Tests
                     }
                 }
 
-                if (i == 10)
-                {
-                    throw new InvalidOperationException("Evidence are not broadcasted.");
-                }
+                Assert.NotEqual(10, i);
 
                 var waitTasks2 = blockChains.Select(item => WaitUntilBlockIndexAsync(item, i));
                 await Task.WhenAll(waitTasks2);
-                Array.ForEach(blockChains, item => Assert.Equal(i + 1, item.Count));
+                foreach (BlockChain blockChain in blockChains)
+                {
+                    Assert.Equal(i + 1, blockChain.Count);
+                }
             }
             finally
             {
-                var cleanTasks = swarms.Select(item => StopAsync(item));
+                var cleanTasks = swarms.Select(StopAsync);
                 await Task.WhenAll(cleanTasks);
             }
         }
