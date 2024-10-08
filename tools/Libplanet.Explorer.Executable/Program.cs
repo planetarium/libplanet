@@ -378,7 +378,7 @@ If omitted (default) explorer only the local blockchain store.")]
                 _impl = blockPolicy;
             }
 
-            public PolicyActionsRegistry PolicyActionsRegistry => _impl.PolicyActionsRegistry;
+            public IPolicyActionsRegistry PolicyActionsRegistry => _impl.PolicyActionsRegistry;
 
             public int GetMinTransactionsPerBlock(long index) =>
                 _impl.GetMinTransactionsPerBlock(index);
