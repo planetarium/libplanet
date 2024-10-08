@@ -135,12 +135,12 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluator
   fullName: Libplanet.Action.ActionEvaluator
   nameWithType: ActionEvaluator
-- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyActionsRegistry,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
-  name: ActionEvaluator(PolicyActionsRegistry, IStateStore, IActionLoader)
-  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_
-  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyActionsRegistry,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
-  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.PolicyActionsRegistry, Libplanet.Store.IStateStore, Libplanet.Action.Loader.IActionLoader)
-  nameWithType: ActionEvaluator.ActionEvaluator(PolicyActionsRegistry, IStateStore, IActionLoader)
+- uid: Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.IPolicyActionsRegistry,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
+  name: ActionEvaluator(IPolicyActionsRegistry, IStateStore, IActionLoader)
+  href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_IPolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_
+  commentId: M:Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.IPolicyActionsRegistry,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)
+  fullName: Libplanet.Action.ActionEvaluator.ActionEvaluator(Libplanet.Action.IPolicyActionsRegistry, Libplanet.Store.IStateStore, Libplanet.Action.Loader.IActionLoader)
+  nameWithType: ActionEvaluator.ActionEvaluator(IPolicyActionsRegistry, IStateStore, IActionLoader)
 - uid: Libplanet.Action.ActionEvaluator.#ctor*
   name: ActionEvaluator
   href: api/Libplanet.Action.ActionEvaluator.html#Libplanet_Action_ActionEvaluator__ctor_
@@ -1322,6 +1322,64 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.InvalidActionException.PlainValue
   nameWithType: InvalidActionException.PlainValue
+- uid: Libplanet.Action.IPolicyActionsRegistry
+  name: IPolicyActionsRegistry
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html
+  commentId: T:Libplanet.Action.IPolicyActionsRegistry
+  fullName: Libplanet.Action.IPolicyActionsRegistry
+  nameWithType: IPolicyActionsRegistry
+- uid: Libplanet.Action.IPolicyActionsRegistry.BeginBlockActions
+  name: BeginBlockActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_BeginBlockActions
+  commentId: P:Libplanet.Action.IPolicyActionsRegistry.BeginBlockActions
+  fullName: Libplanet.Action.IPolicyActionsRegistry.BeginBlockActions
+  nameWithType: IPolicyActionsRegistry.BeginBlockActions
+- uid: Libplanet.Action.IPolicyActionsRegistry.BeginBlockActions*
+  name: BeginBlockActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_BeginBlockActions_
+  commentId: Overload:Libplanet.Action.IPolicyActionsRegistry.BeginBlockActions
+  isSpec: "True"
+  fullName: Libplanet.Action.IPolicyActionsRegistry.BeginBlockActions
+  nameWithType: IPolicyActionsRegistry.BeginBlockActions
+- uid: Libplanet.Action.IPolicyActionsRegistry.BeginTxActions
+  name: BeginTxActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_BeginTxActions
+  commentId: P:Libplanet.Action.IPolicyActionsRegistry.BeginTxActions
+  fullName: Libplanet.Action.IPolicyActionsRegistry.BeginTxActions
+  nameWithType: IPolicyActionsRegistry.BeginTxActions
+- uid: Libplanet.Action.IPolicyActionsRegistry.BeginTxActions*
+  name: BeginTxActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_BeginTxActions_
+  commentId: Overload:Libplanet.Action.IPolicyActionsRegistry.BeginTxActions
+  isSpec: "True"
+  fullName: Libplanet.Action.IPolicyActionsRegistry.BeginTxActions
+  nameWithType: IPolicyActionsRegistry.BeginTxActions
+- uid: Libplanet.Action.IPolicyActionsRegistry.EndBlockActions
+  name: EndBlockActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_EndBlockActions
+  commentId: P:Libplanet.Action.IPolicyActionsRegistry.EndBlockActions
+  fullName: Libplanet.Action.IPolicyActionsRegistry.EndBlockActions
+  nameWithType: IPolicyActionsRegistry.EndBlockActions
+- uid: Libplanet.Action.IPolicyActionsRegistry.EndBlockActions*
+  name: EndBlockActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_EndBlockActions_
+  commentId: Overload:Libplanet.Action.IPolicyActionsRegistry.EndBlockActions
+  isSpec: "True"
+  fullName: Libplanet.Action.IPolicyActionsRegistry.EndBlockActions
+  nameWithType: IPolicyActionsRegistry.EndBlockActions
+- uid: Libplanet.Action.IPolicyActionsRegistry.EndTxActions
+  name: EndTxActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_EndTxActions
+  commentId: P:Libplanet.Action.IPolicyActionsRegistry.EndTxActions
+  fullName: Libplanet.Action.IPolicyActionsRegistry.EndTxActions
+  nameWithType: IPolicyActionsRegistry.EndTxActions
+- uid: Libplanet.Action.IPolicyActionsRegistry.EndTxActions*
+  name: EndTxActions
+  href: api/Libplanet.Action.IPolicyActionsRegistry.html#Libplanet_Action_IPolicyActionsRegistry_EndTxActions_
+  commentId: Overload:Libplanet.Action.IPolicyActionsRegistry.EndTxActions
+  isSpec: "True"
+  fullName: Libplanet.Action.IPolicyActionsRegistry.EndTxActions
+  nameWithType: IPolicyActionsRegistry.EndTxActions
 - uid: Libplanet.Action.IRandom
   name: IRandom
   href: api/Libplanet.Action.IRandom.html
@@ -3921,15 +3979,15 @@ references:
   commentId: T:Libplanet.Blockchain.Policies.BlockPolicy
   fullName: Libplanet.Blockchain.Policies.BlockPolicy
   nameWithType: BlockPolicy
-- uid: Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.PolicyActionsRegistry,System.Nullable{TimeSpan},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException}},System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int64}})
-  name: BlockPolicy(PolicyActionsRegistry, Nullable<TimeSpan>, Nullable<Func<BlockChain, Transaction, TxPolicyViolationException>>, Nullable<Func<BlockChain, Block, BlockPolicyViolationException>>, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int64>>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy__ctor_Libplanet_Action_PolicyActionsRegistry_System_Nullable_TimeSpan__System_Nullable_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Tx_Transaction_Libplanet_Types_Tx_TxPolicyViolationException___System_Nullable_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockPolicyViolationException___System_Nullable_Func_System_Int64_System_Int64___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int64___
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.PolicyActionsRegistry,System.Nullable{TimeSpan},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException}},System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int64}})
-  name.vb: BlockPolicy(PolicyActionsRegistry, Nullable(Of TimeSpan), Nullable(Of Func(Of BlockChain, Transaction, TxPolicyViolationException)), Nullable(Of Func(Of BlockChain, Block, BlockPolicyViolationException)), Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int64)))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.PolicyActionsRegistry, System.Nullable<TimeSpan>, System.Nullable<Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException>>, System.Nullable<Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException>>, System.Nullable<Func<System.Int64, System.Int64>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int64>>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.PolicyActionsRegistry, System.Nullable(Of TimeSpan), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException)), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException)), System.Nullable(Of Func(Of System.Int64, System.Int64)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int64)))
-  nameWithType: BlockPolicy.BlockPolicy(PolicyActionsRegistry, Nullable<TimeSpan>, Nullable<Func<BlockChain, Transaction, TxPolicyViolationException>>, Nullable<Func<BlockChain, Block, BlockPolicyViolationException>>, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int64>>)
-  nameWithType.vb: BlockPolicy.BlockPolicy(PolicyActionsRegistry, Nullable(Of TimeSpan), Nullable(Of Func(Of BlockChain, Transaction, TxPolicyViolationException)), Nullable(Of Func(Of BlockChain, Block, BlockPolicyViolationException)), Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int64)))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.IPolicyActionsRegistry,System.Nullable{TimeSpan},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException}},System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int64}})
+  name: BlockPolicy(IPolicyActionsRegistry, Nullable<TimeSpan>, Nullable<Func<BlockChain, Transaction, TxPolicyViolationException>>, Nullable<Func<BlockChain, Block, BlockPolicyViolationException>>, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int64>>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy__ctor_Libplanet_Action_IPolicyActionsRegistry_System_Nullable_TimeSpan__System_Nullable_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Tx_Transaction_Libplanet_Types_Tx_TxPolicyViolationException___System_Nullable_Func_Libplanet_Blockchain_BlockChain_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockPolicyViolationException___System_Nullable_Func_System_Int64_System_Int64___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int32___System_Nullable_Func_System_Int64_System_Int64___
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy.#ctor(Libplanet.Action.IPolicyActionsRegistry,System.Nullable{TimeSpan},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Tx.Transaction,Libplanet.Types.Tx.TxPolicyViolationException}},System.Nullable{Func{Libplanet.Blockchain.BlockChain,Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockPolicyViolationException}},System.Nullable{Func{System.Int64,System.Int64}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int32}},System.Nullable{Func{System.Int64,System.Int64}})
+  name.vb: BlockPolicy(IPolicyActionsRegistry, Nullable(Of TimeSpan), Nullable(Of Func(Of BlockChain, Transaction, TxPolicyViolationException)), Nullable(Of Func(Of BlockChain, Block, BlockPolicyViolationException)), Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int64)))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.IPolicyActionsRegistry, System.Nullable<TimeSpan>, System.Nullable<Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException>>, System.Nullable<Func<Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException>>, System.Nullable<Func<System.Int64, System.Int64>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int32>>, System.Nullable<Func<System.Int64, System.Int64>>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy.BlockPolicy(Libplanet.Action.IPolicyActionsRegistry, System.Nullable(Of TimeSpan), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Tx.Transaction, Libplanet.Types.Tx.TxPolicyViolationException)), System.Nullable(Of Func(Of Libplanet.Blockchain.BlockChain, Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockPolicyViolationException)), System.Nullable(Of Func(Of System.Int64, System.Int64)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int32)), System.Nullable(Of Func(Of System.Int64, System.Int64)))
+  nameWithType: BlockPolicy.BlockPolicy(IPolicyActionsRegistry, Nullable<TimeSpan>, Nullable<Func<BlockChain, Transaction, TxPolicyViolationException>>, Nullable<Func<BlockChain, Block, BlockPolicyViolationException>>, Nullable<Func<Int64, Int64>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int32>>, Nullable<Func<Int64, Int64>>)
+  nameWithType.vb: BlockPolicy.BlockPolicy(IPolicyActionsRegistry, Nullable(Of TimeSpan), Nullable(Of Func(Of BlockChain, Transaction, TxPolicyViolationException)), Nullable(Of Func(Of BlockChain, Block, BlockPolicyViolationException)), Nullable(Of Func(Of Int64, Int64)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int32)), Nullable(Of Func(Of Int64, Int64)))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy.html#Libplanet_Blockchain_Policies_BlockPolicy__ctor_

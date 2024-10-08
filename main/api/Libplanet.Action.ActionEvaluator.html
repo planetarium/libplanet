@@ -94,19 +94,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.%23ctor(Libplanet.Action.PolicyActionsRegistry%2CLibplanet.Store.IStateStore%2CLibplanet.Action.Loader.IActionLoader)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_IPolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.%23ctor(Libplanet.Action.IPolicyActionsRegistry%2CLibplanet.Store.IStateStore%2CLibplanet.Action.Loader.IActionLoader)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Action/ActionEvaluator.cs/#L42">View Source</a>
   </span>
   <a id="Libplanet_Action_ActionEvaluator__ctor_" data-uid="Libplanet.Action.ActionEvaluator.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_PolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_" data-uid="Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.PolicyActionsRegistry,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)">ActionEvaluator(PolicyActionsRegistry, IStateStore, IActionLoader)</h4>
+  <h4 id="Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_IPolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_" data-uid="Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.IPolicyActionsRegistry,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)">ActionEvaluator(IPolicyActionsRegistry, IStateStore, IActionLoader)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.ActionEvaluator.html">ActionEvaluator</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluator(PolicyActionsRegistry policyActionsRegistry, IStateStore stateStore, IActionLoader actionTypeLoader)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluator(IPolicyActionsRegistry policyActionsRegistry, IStateStore stateStore, IActionLoader actionTypeLoader)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -119,7 +119,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.PolicyActionsRegistry.html">PolicyActionsRegistry</a></td>
+        <td><a class="xref" href="Libplanet.Action.IPolicyActionsRegistry.html">IPolicyActionsRegistry</a></td>
         <td><span class="parametername">policyActionsRegistry</span></td>
         <td><p>A <a class="xref" href="Libplanet.Action.PolicyActionsRegistry.html">PolicyActionsRegistry</a> containing delegators
 to get policy actions to evaluate at each situation.</p>
