@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Store
     {
         public DefaultStoreFixture(
             bool memory = true,
-            PolicyActionsRegistry policyActionsRegistry = null)
+            IPolicyActionsRegistry policyActionsRegistry = null)
             : base(policyActionsRegistry)
         {
             if (memory)
