@@ -29,6 +29,8 @@ To be released.
     to `IReadOnlyList<BlockHash>`.  [[#3949]]
  -  (Libplanet.Net) Changed `ActionExecutionState` and `BlockVerificationState`
     to be `Obsolete`.  [[#3943]]
+ -  (Libplanet.Action) Export `IPolicyActionsRegistry` interface
+    from `PolicyActionsRegistry`.  [[#3960]]
 
 ### Backward-incompatible network protocol changes
 
@@ -66,6 +68,7 @@ To be released.
 [#3948]: https://github.com/planetarium/libplanet/pull/3948
 [#3949]: https://github.com/planetarium/libplanet/pull/3949
 [#3950]: https://github.com/planetarium/libplanet/pull/3950
+[#3960]: https://github.com/planetarium/libplanet/pull/3960
 
 
 Version 5.2.2

@@ -22,7 +22,7 @@ namespace Libplanet.Blockchain.Policies
         private readonly Func<BlockChain, Block, BlockPolicyViolationException?>
             _validateNextBlock;
 
-        private readonly PolicyActionsRegistry _policyActionsRegistry;
+        private readonly IPolicyActionsRegistry _policyActionsRegistry;
         private readonly Func<long, long> _getMaxTransactionsBytes;
         private readonly Func<long, int> _getMinTransactionsPerBlock;
         private readonly Func<long, int> _getMaxTransactionsPerBlock;
@@ -73,7 +73,7 @@ namespace Libplanet.Blockchain.Policies
         /// Goes to <see cref="GetMaxEvidencePendingDuration"/>.  Set to a constant function
         /// of <c>10</c> by default.</param>
         public BlockPolicy(
-            PolicyActionsRegistry? policyActionsRegistry = null,
+            IPolicyActionsRegistry? policyActionsRegistry = null,
             TimeSpan? blockInterval = null,
             Func<BlockChain, Transaction, TxPolicyViolationException?>?
                 validateNextBlockTx = null,
@@ -169,7 +169,7 @@ namespace Libplanet.Blockchain.Policies
             }
         }
 
-        public PolicyActionsRegistry PolicyActionsRegistry => _policyActionsRegistry;
+        public IPolicyActionsRegistry PolicyActionsRegistry => _policyActionsRegistry;
 
         /// <summary>
         /// Targeted time interval between two consecutive <see cref="Block"/>s.

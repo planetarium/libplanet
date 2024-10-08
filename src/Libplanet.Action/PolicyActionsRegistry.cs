@@ -4,7 +4,7 @@ using Libplanet.Types.Tx;
 
 namespace Libplanet.Action
 {
-    public class PolicyActionsRegistry
+    public class PolicyActionsRegistry : IPolicyActionsRegistry
     {
         /// <summary>
         /// A class containing policy actions to evaluate at each situation.
