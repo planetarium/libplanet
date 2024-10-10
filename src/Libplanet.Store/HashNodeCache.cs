@@ -1,11 +1,10 @@
-using System.Diagnostics;
+using System;
 using System.Security.Cryptography;
-using System.Threading;
 using Bencodex.Types;
+using BitFaster.Caching;
+using BitFaster.Caching.Lru;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
-using LruCacheNet;
-using Serilog;
 
 namespace Libplanet.Store
 {
@@ -16,73 +15,26 @@ namespace Libplanet.Store
     {
         // FIXME: Tuned to 9c mainnet.  Should be refactored to accept cache size as an argument.
         private const int _cacheSize = 524_288;
-        private const int _reportPeriod = 60_000;
 
-        private LruCache<HashDigest<SHA256>, IValue> _cache;
-        private Stopwatch _stopwatch;
-        private int _attempts;
-        private int _hits;
-        private object _reportLock;
+        private ICache<HashDigest<SHA256>, IValue> _cache;
 
         internal HashNodeCache()
         {
-            _cache = new LruCache<HashDigest<SHA256>, IValue>(_cacheSize);
-            _stopwatch = new Stopwatch();
-            _attempts = 0;
-            _hits = 0;
-            _reportLock = new object();
-            _stopwatch.Start();
+            _cache = new ConcurrentLruBuilder<HashDigest<SHA256>, IValue>()
+                .WithMetrics()
+                .WithExpireAfterAccess(TimeSpan.FromMinutes(10))
+                .WithCapacity(_cacheSize)
+                .Build();
         }
 
         public bool TryGetValue(HashDigest<SHA256> hash, out IValue? value)
         {
-            lock (_reportLock)
-            {
-                Report();
-            }
-
-            Interlocked.Increment(ref _attempts);
-            if (_cache.TryGetValue(hash, out value))
-            {
-                Interlocked.Increment(ref _hits);
-                return true;
-            }
-            else
-            {
-                value = null;
-                return false;
-            }
+            return _cache.TryGet(hash, out value);
         }
 
         public void AddOrUpdate(HashDigest<SHA256> hash, IValue value)
         {
             _cache.AddOrUpdate(hash, value);
-        }
-
-        private void Report()
-        {
-            long period = _stopwatch.ElapsedMilliseconds;
-            if (period > _reportPeriod)
-            {
-                Log
-                    .ForContext("Source", nameof(HashNodeCache))
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "HashNodeCacheReport")
-                    .Debug(
-                        "Successfully fetched {HitCount} cached values out of last " +
-                        "{AttemptCount} attempts with hitrate of {HitRate} and " +
-                        "{CacheUsed}/{CacheSize} cache in use during last {PeriodMs} ms",
-                        _hits,
-                        _attempts,
-                        (double)_hits / _attempts,
-                        _cache.Count,
-                        _cache.Capacity,
-                        period);
-
-                _stopwatch.Restart();
-                Interlocked.Exchange(ref _attempts, 0);
-                Interlocked.Exchange(ref _hits, 0);
-            }
         }
     }
 }
