@@ -48,7 +48,6 @@ Released on October 10, 2024.
  -  (Libplanet.Store) Optimized LRU Cache for `HashNode` and `BlockSet`.
     [[#3962]]
 
-
 [#3913]: https://github.com/planetarium/libplanet/pull/3913
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
 [#3924]: https://github.com/planetarium/libplanet/pull/3924
