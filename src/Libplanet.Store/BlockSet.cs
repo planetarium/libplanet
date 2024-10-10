@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BitFaster.Caching;
+using BitFaster.Caching.Lru;
 using Caching;
 using Libplanet.Types.Blocks;
 
@@ -10,12 +12,14 @@ namespace Libplanet.Store
     public class BlockSet : IReadOnlyDictionary<BlockHash, Block>
     {
         private readonly IStore _store;
-        private readonly LRUCache<BlockHash, Block> _cache;
+        private readonly ICache<BlockHash, Block> _cache;
 
         public BlockSet(IStore store, int cacheSize = 4096)
         {
             _store = store;
-            _cache = new LRUCache<BlockHash, Block>(cacheSize, Math.Max(cacheSize / 64, 8));
+            _cache = new ConcurrentLruBuilder<BlockHash, Block>()
+                .WithCapacity(cacheSize)
+                .Build();
         }
 
         public IEnumerable<BlockHash> Keys =>
@@ -68,7 +72,7 @@ namespace Libplanet.Store
 
                 value.ValidateTimestamp();
                 _store.PutBlock(value);
-                _cache.AddReplace(value.Hash, value);
+                _cache.AddOrUpdate(value.Hash, value);
             }
         }
 
@@ -82,7 +86,7 @@ namespace Libplanet.Store
         {
             bool deleted = _store.DeleteBlock(key);
 
-            _cache.Remove(key);
+            _cache.TryRemove(key);
 
             return deleted;
         }
@@ -162,14 +166,14 @@ namespace Libplanet.Store
                 else
                 {
                     // The cached block had been deleted on _store...
-                    _cache.Remove(key);
+                    _cache.TryRemove(key);
                 }
             }
 
             Block? fetched = _store.GetBlock(key);
             if (fetched is { })
             {
-                _cache.AddReplace(key, fetched);
+                _cache.AddOrUpdate(key, fetched);
             }
 
             return fetched;
