@@ -4,9 +4,7 @@ Libplanet changelog
 Version 5.3.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on October 10, 2024.
 
 ### Backward-incompatible API changes
 
@@ -37,10 +35,6 @@ To be released.
  -  (Libplanet.Net) Changed the encoding for `GetBlockHashesMsg` and
     `BlockHashesMsg`.  [[#3949]]
 
-### Backward-incompatible storage format changes
-
-### Added APIs
-
 ### Behavioral changes
 
  -  Changed `BlockChain.FindBranchPoint()` to only check for the first
@@ -53,12 +47,6 @@ To be released.
     not to rely on these to track the progress of preloading.  [[#3943]]
  -  (Libplanet.Store) Optimized LRU Cache for `HashNode` and `BlockSet`.
     [[#3962]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3913]: https://github.com/planetarium/libplanet/pull/3913
 [#3922]: https://github.com/planetarium/libplanet/issues/3922
