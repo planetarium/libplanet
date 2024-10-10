@@ -61,9 +61,20 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
+<h2 id="version-540">Version 5.4.0</h2>
+<p>To be released.</p>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<h3 id="added-apis">Added APIs</h3>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<h3 id="bug-fixes">Bug fixes</h3>
+<h3 id="dependencies">Dependencies</h3>
+<h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-530">Version 5.3.0</h2>
 <p>Released on October 10, 2024.</p>
-<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed <code>threshold</code> parameter from <code>BlockChain.GetBlockLocator()</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
@@ -87,12 +98,12 @@ to be <code>Obsolete</code>.  [<a href="https://github.com/planetarium/libplanet
 <li>(Libplanet.Action) Export <code>IPolicyActionsRegistry</code> interface
 from <code>PolicyActionsRegistry</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3960">#3960</a>]</li>
 </ul>
-<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
 <ul>
 <li>(Libplanet.Net) Changed the encoding for <code>GetBlockHashesMsg</code> and
 <code>BlockHashesMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3949">#3949</a>]</li>
 </ul>
-<h3 id="behavioral-changes">Behavioral changes</h3>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
 <ul>
 <li>Changed <code>BlockChain.FindBranchPoint()</code> to only check for the first
 <code>BlockHash</code> in a given <code>BlockLocator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
@@ -118,7 +129,7 @@ when querying blocks [<a href="https://github.com/planetarium/libplanet/pull/389
 </ul>
 <h2 id="version-520">Version 5.2.0</h2>
 <p>Released on July 23, 2024.</p>
-<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed <code>IBlockPolicy.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
 <li>Added <code>IBlockPolicy.PolicyActionsRegistry</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
@@ -132,7 +143,7 @@ parameter instead of the <code>blockAction</code> parameter.  [<a href="https://
 <li>(Libplanet.Action) Renamed <code>IActionContext.BlockAction</code> property to
 <code>IActionContext.IsPolicyAction</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3764">#3764</a>]</li>
 </ul>
-<h3 id="added-apis">Added APIs</h3>
+<h3 id="added-apis-1">Added APIs</h3>
 <ul>
 <li>(Libplanet.Store) Added <code>MerkleTrie.GenerateProof()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3870">#3870</a>]</li>
 <li>(Libplanet.Store) Added <code>MerkleTrie.ValidateProof()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3870">#3870</a>]</li>
@@ -158,7 +169,7 @@ parameter instead of the <code>blockAction</code> parameter.  [<a href="https://
 </ul>
 <h2 id="version-510">Version 5.1.0</h2>
 <p>Released on July 11, 2024.</p>
-<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Explorer) Added <code>ValidatorPower</code> field to <code>VoteType</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3737">#3737</a>, <a href="https://github.com/planetarium/libplanet/pull/3813">#3813</a>]</li>
@@ -177,7 +188,7 @@ Affected classes are <code>Block</code>, <code>BlockContent</code>, <code>BlockH
 <li>(Libplanet) Added <code>IBlockPolicy.GetMaxEvidencePendingDuration</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
 </ul>
-<h3 id="added-apis-1">Added APIs</h3>
+<h3 id="added-apis-2">Added APIs</h3>
 <ul>
 <li>(Libplanet.Types) Added <code>InvalidBlockEvidenceHashException</code> class.
 [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
@@ -216,7 +227,7 @@ class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]
 <li>(Libplanet.Net) Added <code>Context.CollectEvidenceExceptions</code>. property.
 [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
 </ul>
-<h3 id="dependencies">Dependencies</h3>
+<h3 id="dependencies-1">Dependencies</h3>
 <p>The entire project is now defined by common properties in the
 <code>Directory.Build.props</code> file. The Directory.Build.props file is located at
 the root and in the src, tools, test path.</p>
@@ -276,14 +287,14 @@ projects using <code>netstandard2.0</code> will be deprecated.</p>
 <em>src/Libplanet/Libplanet.csproj</em> file to the <code>Directory.Build.props</code> file.</p>
 <h2 id="version-500">Version 5.0.0</h2>
 <p>Released on July 2, 2024.</p>
-<h3 id="deprecated-apis">Deprecated APIs</h3>
+<h3 id="deprecated-apis-1">Deprecated APIs</h3>
 <ul>
 <li><code>BlockChain.DetermineGenesisStateRootHash()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 <li><code>BlockChain.EvaluateGenesis()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 <li><code>BlockChain.DetermineBlockStateRootHash()</code> has been removed.
 [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 </ul>
-<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) <code>IBlockChainStates.GetWorldState(BlockHash?)</code>
 does not accept null parameter any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
@@ -311,11 +322,11 @@ if it is called while its internal <code>BlockChain</code> is in an invalid stat
 [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
 <li>(Libplanet.Net) Removed <code>Null</code> value from <code>ConsensusStep</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
 </ul>
-<h3 id="added-apis-2">Added APIs</h3>
+<h3 id="added-apis-3">Added APIs</h3>
 <ul>
 <li>Added <code>BlockChain.DetermineNextBlockStateRootHash()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 </ul>
-<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<h3 id="behavioral-changes-2">Behavioral changes</h3>
 <ul>
 <li><code>Context.ProcessHeightOrRoundUponRules()</code> now appends block asynchronously,
 as a manner of fire-and-forget.  [<a href="https://github.com/planetarium/libplanet/pull/3808">#3808</a>]</li>
