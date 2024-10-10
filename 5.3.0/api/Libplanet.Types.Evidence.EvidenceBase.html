@@ -1,0 +1,953 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EvidenceBase
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EvidenceBase
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Evidence.EvidenceBase">
+
+
+  <h1 id="Libplanet_Types_Evidence_EvidenceBase" data-uid="Libplanet.Types.Evidence.EvidenceBase" class="text-break">Class EvidenceBase
+</h1>
+  <div class="markdown level0 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">EvidenceBase</span></div>
+      <div class="level2"><a class="xref" href="Libplanet.Types.Evidence.DuplicateVoteEvidence.html">DuplicateVoteEvidence</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>&gt;</div>
+    <div><span class="xref">IComparable</span></div>
+    <div><span class="xref">IBencodable</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Evidence.html">Libplanet.Types.Evidence</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
+  <h5 id="Libplanet_Types_Evidence_EvidenceBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class EvidenceBase : IEquatable&lt;EvidenceBase&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase__ctor_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.%23ctor(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L61">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase__ctor_" data-uid="Libplanet.Types.Evidence.EvidenceBase.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase__ctor_IValue_" data-uid="Libplanet.Types.Evidence.EvidenceBase.#ctor(IValue)">EvidenceBase(IValue)</h4>
+  <div class="markdown level1 summary"><p>Constructor for decoding bencoded evidence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EvidenceBase(IValue bencoded)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">bencoded</span></td>
+        <td><p>Bencoded data of evidence.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase__ctor_System_Int64_Libplanet_Crypto_Address_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.%23ctor(System.Int64%2CLibplanet.Crypto.Address%2CDateTimeOffset)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase__ctor_" data-uid="Libplanet.Types.Evidence.EvidenceBase.#ctor*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase__ctor_System_Int64_Libplanet_Crypto_Address_DateTimeOffset_" data-uid="Libplanet.Types.Evidence.EvidenceBase.#ctor(System.Int64,Libplanet.Crypto.Address,DateTimeOffset)">EvidenceBase(Int64, Address, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Constructor for creating new evidence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EvidenceBase(long height, Address targetAddress, DateTimeOffset timestamp)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">height</span></td>
+        <td><p>Indicates the block height that infraction has been
+occurred.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td><span class="parametername">targetAddress</span></td>
+        <td><p>Indicates the address of the target that caused
+the infraction.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">timestamp</span></td>
+        <td><p>Indicates the timestamp the infraction occurred.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_TimestampFormat.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.TimestampFormat%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L18">View Source</a>
+  </span>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_TimestampFormat" data-uid="Libplanet.Types.Evidence.EvidenceBase.TimestampFormat">TimestampFormat</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string TimestampFormat = null</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L118">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Bencoded_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Bencoded*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Bencoded" data-uid="Libplanet.Types.Evidence.EvidenceBase.Bencoded">Bencoded</h4>
+  <div class="markdown level1 summary"><p>Inner bencoded form of evidence.
+This method won't bencode evidence type, so we can't decode evidence
+without knowing the evidence type.
+For fully bencoded form, use <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Bencode_Libplanet_Types_Evidence_EvidenceBase_">Bencode(EvidenceBase)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IValue Bencoded { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Height.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Height%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L82">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Height_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Height*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Height" data-uid="Libplanet.Types.Evidence.EvidenceBase.Height">Height</h4>
+  <div class="markdown level1 summary"><p>Indicates the block height that infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Height { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Id.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Id%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L97">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Id_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Id*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Id" data-uid="Libplanet.Types.Evidence.EvidenceBase.Id">Id</h4>
+  <div class="markdown level1 summary"><p>Indicates identifier of evidence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EvidenceId Id { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_TargetAddress.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.TargetAddress%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L87">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_TargetAddress_" data-uid="Libplanet.Types.Evidence.EvidenceBase.TargetAddress*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_TargetAddress" data-uid="Libplanet.Types.Evidence.EvidenceBase.TargetAddress">TargetAddress</h4>
+  <div class="markdown level1 summary"><p>Indicates the address of the target that caused the infraction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address TargetAddress { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L92">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Timestamp_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Timestamp*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Timestamp" data-uid="Libplanet.Types.Evidence.EvidenceBase.Timestamp">Timestamp</h4>
+  <div class="markdown level1 summary"><p>Indicates the timestamp the infraction occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Bencode_Libplanet_Types_Evidence_EvidenceBase_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Bencode(Libplanet.Types.Evidence.EvidenceBase)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L141">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Bencode_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Bencode*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Bencode_Libplanet_Types_Evidence_EvidenceBase_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Bencode(Libplanet.Types.Evidence.EvidenceBase)">Bencode(EvidenceBase)</h4>
+  <div class="markdown level1 summary"><p>Bencode <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>.
+This bencodes <code data-dev-comment-type="paramref" class="paramref">evidence</code> with its evidence type,
+so its return can be decoded by <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Decode_IValue_">Decode(IValue)</a>
+without concrete evidence type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IValue Bencode(EvidenceBase evidence)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><span class="parametername">evidence</span></td>
+        <td><p><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to be bencoded.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><p>Bencoded <see cref="!:IValue"></see>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_CompareTo_Libplanet_Types_Evidence_EvidenceBase_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.CompareTo(Libplanet.Types.Evidence.EvidenceBase)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L204">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_CompareTo_" data-uid="Libplanet.Types.Evidence.EvidenceBase.CompareTo*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_CompareTo_Libplanet_Types_Evidence_EvidenceBase_" data-uid="Libplanet.Types.Evidence.EvidenceBase.CompareTo(Libplanet.Types.Evidence.EvidenceBase)">CompareTo(EvidenceBase)</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(EvidenceBase other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_CompareTo_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.CompareTo(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L207">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_CompareTo_" data-uid="Libplanet.Types.Evidence.EvidenceBase.CompareTo*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_CompareTo_System_Nullable_System_Object__" data-uid="Libplanet.Types.Evidence.EvidenceBase.CompareTo(System.Nullable{System.Object})">CompareTo(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Decode_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Decode(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L157">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Decode_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Decode*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Decode_IValue_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Decode(IValue)">Decode(IValue)</h4>
+  <div class="markdown level1 summary"><p>Decode <see cref="!:IValue"></see> that bencoded with <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html#Libplanet_Types_Evidence_EvidenceBase_Bencode_Libplanet_Types_Evidence_EvidenceBase_">Bencode(EvidenceBase)</a>
+to <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EvidenceBase Decode(IValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Bencoded <see cref="!:IValue"></see> to be decoded.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><p>Decoded <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Deserialize_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Deserialize(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L184">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Deserialize_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Deserialize*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Deserialize_System_Byte___" data-uid="Libplanet.Types.Evidence.EvidenceBase.Deserialize(System.Byte[])">Deserialize(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Deserialize <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> from byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EvidenceBase Deserialize(byte[] bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">bytes</span></td>
+        <td><p>Byte array to be deserialized.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><p>Deserialized <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Equals_Libplanet_Types_Evidence_EvidenceBase_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Equals(Libplanet.Types.Evidence.EvidenceBase)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L195">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Equals_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Equals*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Equals_Libplanet_Types_Evidence_EvidenceBase_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Equals(Libplanet.Types.Evidence.EvidenceBase)">Equals(EvidenceBase)</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(EvidenceBase other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L198">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Equals_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Equals*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Evidence.EvidenceBase.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L201">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_GetHashCode_" data-uid="Libplanet.Types.Evidence.EvidenceBase.GetHashCode*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_GetHashCode" data-uid="Libplanet.Types.Evidence.EvidenceBase.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_OnBencoded_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.OnBencoded(Dictionary)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L229">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_OnBencoded_" data-uid="Libplanet.Types.Evidence.EvidenceBase.OnBencoded*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_OnBencoded_Dictionary_" data-uid="Libplanet.Types.Evidence.EvidenceBase.OnBencoded(Dictionary)">OnBencoded(Dictionary)</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Dictionary OnBencoded(Dictionary dictionary)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td><span class="parametername">dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_OnVerify_Libplanet_Types_Evidence_IEvidenceContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.OnVerify(Libplanet.Types.Evidence.IEvidenceContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L231">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_OnVerify_" data-uid="Libplanet.Types.Evidence.EvidenceBase.OnVerify*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_OnVerify_Libplanet_Types_Evidence_IEvidenceContext_" data-uid="Libplanet.Types.Evidence.EvidenceBase.OnVerify(Libplanet.Types.Evidence.IEvidenceContext)">OnVerify(IEvidenceContext)</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void OnVerify(IEvidenceContext evidenceContext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.IEvidenceContext.html">IEvidenceContext</a></td>
+        <td><span class="parametername">evidenceContext</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Serialize.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Serialize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L192">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Serialize_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Serialize*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Serialize" data-uid="Libplanet.Types.Evidence.EvidenceBase.Serialize">Serialize()</h4>
+  <div class="markdown level1 summary"><p>Serialize <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a> to byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Serialize()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Serialized byte array of <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase_Verify_Libplanet_Types_Evidence_IEvidenceContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase.Verify(Libplanet.Types.Evidence.IEvidenceContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L210">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Evidence_EvidenceBase_Verify_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Verify*"></a>
+  <h4 id="Libplanet_Types_Evidence_EvidenceBase_Verify_Libplanet_Types_Evidence_IEvidenceContext_" data-uid="Libplanet.Types.Evidence.EvidenceBase.Verify(Libplanet.Types.Evidence.IEvidenceContext)">Verify(IEvidenceContext)</h4>
+  <div class="markdown level1 summary"><p>Base class for evidence that explains how the infraction has been occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Verify(IEvidenceContext evidenceContext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Evidence.IEvidenceContext.html">IEvidenceContext</a></td>
+        <td><span class="parametername">evidenceContext</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IComparable&lt;&gt;</span>
+  </div>
+  <div>
+      <span class="xref">IComparable</span>
+  </div>
+  <div>
+      <span class="xref">IBencodable</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.BlockMarshaler.html#Libplanet_Types_Blocks_BlockMarshaler_MarshalEvidence_Libplanet_Types_Evidence_EvidenceBase_">BlockMarshaler.MarshalEvidence(EvidenceBase)</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.3.0/apiSpec/new?filename=Libplanet_Types_Evidence_EvidenceBase.md&amp;value=---%0Auid%3A%20Libplanet.Types.Evidence.EvidenceBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.3.0/src/Libplanet.Types/Evidence/EvidenceBase.cs/#L15" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
