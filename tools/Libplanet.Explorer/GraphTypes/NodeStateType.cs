@@ -11,6 +11,10 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Name = "NodeState";
 
+            Field<NonNullGraphType<BoundPeerType>>(
+                name: "self",
+                resolve: context => context.Source.Swarm.AsPeer
+            );
             Field<NonNullGraphType<BooleanGraphType>>(
                 name: "preloaded",
                 resolve: context => context.Source.Preloaded

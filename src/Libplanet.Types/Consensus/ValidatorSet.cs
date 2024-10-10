@@ -7,7 +7,6 @@ using System.Numerics;
 using Bencodex;
 using Libplanet.Crypto;
 using Libplanet.Types.Blocks;
-using Libplanet.Types.Consensus;
 
 namespace Libplanet.Types.Consensus
 {
@@ -264,16 +263,68 @@ namespace Libplanet.Types.Consensus
         /// <remarks>
         /// If <see cref="Vote.ValidatorPower"/> is null, power check is ignored.</remarks>
         /// <param name="blockCommit">The <see cref="BlockCommit"/> to check.</param>
-        /// <returns><see langword="true"/> if the <see cref="BlockCommit.Votes"/> is
-        /// ordered, <see langword="false"/> otherwise.</returns>
-        public bool ValidateBlockCommitValidators(BlockCommit blockCommit)
+        /// <exception cref="InvalidBlockCommitException">Thrown when some votes in the
+        /// <paramref name="blockCommit"/> does not have non-null power.</exception>
+        /// <exception cref="InvalidBlockCommitException">Thrown when validators from
+        /// <paramref name="blockCommit"/> is different from validators of this.</exception>
+        public void ValidateBlockCommitValidators(BlockCommit blockCommit)
         {
-            return Validators.Select(validator => validator.PublicKey)
-                       .SequenceEqual(
-                           blockCommit.Votes.Select(vote => vote.ValidatorPublicKey).ToList()) &&
-                   blockCommit.Votes.All(
-                       v => v.ValidatorPower is null ||
-                            v.ValidatorPower == GetValidator(v.ValidatorPublicKey).Power);
+            ValidatorSet validatorSetFromCommit = new ValidatorSet(blockCommit.Votes.Select(
+                v => v.ValidatorPower is BigInteger power
+                    ? new Validator(v.ValidatorPublicKey, power)
+                    : throw new InvalidBlockCommitException(
+                        "All votes in the block commit after block protocol version 10 " +
+                        "must have power.")).ToList());
+
+            if (!Equals(validatorSetFromCommit))
+            {
+                throw new InvalidBlockCommitException(
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has different validator set with chain state's validator set: \n" +
+                    $"in states | \n " +
+                    Validators.Aggregate(
+                        string.Empty, (s, v) => s + v + ", \n") +
+                    $"in blockCommit | \n " +
+                    validatorSetFromCommit.Validators.Aggregate(
+                        string.Empty, (s, v) => s + v + ", \n"));
+            }
+        }
+
+        /// <summary>
+        /// Checks whether <see cref="BlockCommit.Votes"/> is ordered
+        /// by <see cref="Address"/> of each <see cref="Vote.ValidatorPublicKey"/>,
+        /// and <see cref="Vote.ValidatorPower"/> equals to the one recorded in the chain states.
+        /// </summary>
+        /// <remarks>
+        /// If <see cref="Vote.ValidatorPower"/> is null, power check is ignored.</remarks>
+        /// <param name="blockCommit">The <see cref="BlockCommit"/> to check.</param>
+        /// <exception cref="InvalidBlockCommitException">Thrown when some votes in the
+        /// <paramref name="blockCommit"/> does not have null power.</exception>
+        /// <exception cref="InvalidBlockCommitException">Thrown when public key of validators from
+        /// <paramref name="blockCommit"/> is different from validator's public keys of this.
+        /// </exception>
+        public void ValidateLegacyBlockCommitValidators(BlockCommit blockCommit)
+        {
+            if (blockCommit.Votes.Any(v => v.ValidatorPower is not null))
+            {
+                throw new InvalidBlockCommitException(
+                    "All votes in the block commit before block protocol version 10 " +
+                    "must have null power.");
+            }
+
+            if (!Validators.Select(validator => validator.PublicKey).SequenceEqual(
+                blockCommit.Votes.Select(vote => vote.ValidatorPublicKey).ToList()))
+            {
+                throw new InvalidBlockCommitException(
+                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
+                    $"has different validator set with chain state's validator set: \n" +
+                    $"in states | \n " +
+                    Validators.Aggregate(
+                        string.Empty, (s, key) => s + key + ", \n") +
+                    $"in blockCommit | \n " +
+                    blockCommit.Votes.Aggregate(
+                        string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
+            }
         }
     }
 }
