@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Metrics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using BitFaster.Caching;
@@ -14,8 +13,6 @@ namespace Libplanet.Store
     /// </summary>
     public class HashNodeCache
     {
-        private readonly Meter _hashNodeCacheMeter = new Meter("Libplanet.Store.HashNodeCache");
-
         // FIXME: Tuned to 9c mainnet.  Should be refactored to accept cache size as an argument.
         private const int _cacheSize = 524_288;
 
@@ -28,27 +25,6 @@ namespace Libplanet.Store
                 .WithExpireAfterAccess(TimeSpan.FromMinutes(10))
                 .WithCapacity(_cacheSize)
                 .Build();
-
-            if (_cache.Metrics.Value is null)
-            {
-                return;
-            }
-
-            _hashNodeCacheMeter.CreateObservableGauge(
-                "CacheSize",
-                () => _cache.Count);
-            _hashNodeCacheMeter.CreateObservableCounter(
-                "CacheHit",
-                () => _cache.Metrics.Value.Hits);
-            _hashNodeCacheMeter.CreateObservableCounter(
-                "CacheMiss",
-                () => _cache.Metrics.Value.Misses);
-            _hashNodeCacheMeter.CreateObservableCounter(
-                "CacheEviction",
-                () => _cache.Metrics.Value.Evicted);
-            _hashNodeCacheMeter.CreateObservableCounter(
-                "CacheTotal",
-                () => _cache.Metrics.Value.Total);
         }
 
         public bool TryGetValue(HashDigest<SHA256> hash, out IValue? value)
