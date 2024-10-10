@@ -51,6 +51,8 @@ To be released.
  -  (Libplanet.Net) Changed to no longer report `BlockHashDownloadState`
     and `BlockDownloadState` during preloading.  It is strongly advised
     not to rely on these to track the progress of preloading.  [[#3943]]
+ -  (Libplanet.Store) Optimized LRU Cache for `HashNode` and `BlockSet`.
+    [[#3962]]
 
 ### Bug fixes
 
@@ -69,6 +71,7 @@ To be released.
 [#3949]: https://github.com/planetarium/libplanet/pull/3949
 [#3950]: https://github.com/planetarium/libplanet/pull/3950
 [#3960]: https://github.com/planetarium/libplanet/pull/3960
+[#3962]: https://github.com/planetarium/libplanet/pull/3962
 
 
 Version 5.2.2
