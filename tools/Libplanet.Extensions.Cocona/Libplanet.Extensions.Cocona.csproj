@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Cocona.Lite" Version="2.0.*" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.7" />
+    <PackageReference Include="System.Text.Json" Version="6.0.10" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">
