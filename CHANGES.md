@@ -4,21 +4,7 @@ Libplanet changelog
 Version 5.3.1
 -------------
 
-To be released.
-
-### Deprecated APIs
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
+Released on October 14, 2024.
 
 ### Dependencies
 
@@ -28,8 +14,6 @@ To be released.
     [2.0.0] to [2.4.0].  [[#3968]]
  -  (Libplanet.Crypto) Changed *BouncyCastle.Cryptography* from
     [2.0.0] to [2.4.0].  [[#3968]]
-
-### CLI tools
 
 
 [#3967]: https://github.com/planetarium/libplanet/pull/3967
