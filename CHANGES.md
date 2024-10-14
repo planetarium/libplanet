@@ -22,7 +22,13 @@ To be released.
 
 ### Dependencies
 
+ -  (Libplanet.Extensions.Cocona) Changed *System.Text.Json* from [6.0.7] to
+    [6.0.*].  [[#3967]]
+
 ### CLI tools
+
+
+[#3967]: https://github.com/planetarium/libplanet/pull/3967
 
 
 Version 5.3.0
