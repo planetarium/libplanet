@@ -422,19 +422,18 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var txs = transactions?.ToList() ?? new List<Transaction>();
             long nonce = 0;
             validatorSet = validatorSet ?? ValidatorSet;
-            txs.AddRange(
-                validatorSet.Validators.Select(
-                    validator => Transaction.Create(
-                        nonce++,
-                        GenesisProposer,
-                        null,
-                        actions: new IAction[]
-                            {
-                                new Initialize(
-                                    validatorSet: validatorSet,
-                                    states: ImmutableDictionary.Create<Address, IValue>()),
-                            }.Select(x => x.PlainValue),
-                        timestamp: DateTimeOffset.MinValue)));
+            txs.Add(
+                Transaction.Create(
+                    nonce++,
+                    GenesisProposer,
+                    null,
+                    actions: new IAction[]
+                    {
+                        new Initialize(
+                            validatorSet: validatorSet,
+                            states: ImmutableDictionary.Create<Address, IValue>()),
+                    }.Select(x => x.PlainValue),
+                    timestamp: DateTimeOffset.MinValue));
             txs = txs.OrderBy(tx => tx.Id).ToList();
 
             var content = new BlockContent(
