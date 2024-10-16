@@ -22,12 +22,26 @@ To be released.
 
 ### Dependencies
 
- -  (Libplanet.Extensions.Cocona) Changed *System.Text.Json* from [6.0.7] to
-    [6.0.*].  [[#3966]]
-
 ### CLI tools
 
-[#3966]: https://github.com/planetarium/libplanet/pull/3966
+
+Version 5.3.1
+-------------
+
+Released on October 14, 2024.
+
+### Dependencies
+
+ -  (Libplanet.Extensions.Cocona) Changed *System.Text.Json* from [6.0.7] to
+    [6.0.*].  [[#3967]]
+ -  Changed *BouncyCastle.Cryptography* from
+    [2.0.0] to [2.4.0].  [[#3968]]
+ -  (Libplanet.Crypto) Changed *BouncyCastle.Cryptography* from
+    [2.0.0] to [2.4.0].  [[#3968]]
+
+
+[#3967]: https://github.com/planetarium/libplanet/pull/3967
+[#3968]: https://github.com/planetarium/libplanet/pull/3968
 
 
 Version 5.3.0
