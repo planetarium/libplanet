@@ -596,9 +596,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (2, 0, new[] { "A", "B", "C", null, "F" }, _txFx.Address3),
-                (1, 0, new[] { "A", "B", "C", "E", "F" }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address1),
+                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
+                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
             };
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
