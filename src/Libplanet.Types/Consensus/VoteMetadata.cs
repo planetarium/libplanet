@@ -230,6 +230,7 @@ namespace Libplanet.Types.Consensus
                 BlockHash,
                 Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                 ValidatorPublicKey,
+                ValidatorPower,
                 Flag);
         }
     }
