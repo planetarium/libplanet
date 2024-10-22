@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet changelog | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet changelog | Libplanet ">
+  
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-changelog">Libplanet changelog</h1>
+
+<h2 id="version-532">Version 5.3.2</h2>
+<p>To be released.</p>
+<h3 id="deprecated-apis">Deprecated APIs</h3>
+<h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<h3 id="added-apis">Added APIs</h3>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>There is no longer a check at block validation time to see
+if the actions contained in a block are interpretable. [<a href="https://github.com/planetarium/libplanet/pull/3973">#3973</a>]</li>
+</ul>
+<h3 id="bug-fixes">Bug fixes</h3>
+<h3 id="dependencies">Dependencies</h3>
+<h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-531">Version 5.3.1</h2>
+<p>Released on October 14, 2024.</p>
+<h3 id="dependencies-1">Dependencies</h3>
+<ul>
+<li>(Libplanet.Extensions.Cocona) Changed <em>System.Text.Json</em> from [6.0.7] to
+[6.0.*].  [<a href="https://github.com/planetarium/libplanet/pull/3967">#3967</a>]</li>
+<li>Changed <em>BouncyCastle.Cryptography</em> from
+[2.0.0] to [2.4.0].  [<a href="https://github.com/planetarium/libplanet/pull/3968">#3968</a>]</li>
+<li>(Libplanet.Crypto) Changed <em>BouncyCastle.Cryptography</em> from
+[2.0.0] to [2.4.0].  [<a href="https://github.com/planetarium/libplanet/pull/3968">#3968</a>]</li>
+</ul>
+<h2 id="version-530">Version 5.3.0</h2>
+<p>Released on October 10, 2024.</p>
+<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>threshold</code> parameter from <code>BlockChain.GetBlockLocator()</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
+<li>(Libplanet.Net) Removed <code>SwarmOptions.BranchpointThreshold</code> property.
+[<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
+<li>(Libplanet.Store) Removed unused <code>HashNode.Serialize()</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/3922">#3922</a>, <a href="https://github.com/planetarium/libplanet/pull/3924">#3924</a>]</li>
+<li>(Libplanet.Net) Removed <code>Header</code> property and added <code>BlockExcerpt</code> property
+to <code>BlockDemand</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3934">#3934</a>]</li>
+<li>Removed <code>BlockLocator.Create()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3942">#3942</a>]</li>
+<li>Changed <code>BlockLocator()</code> to take a single <code>BlockHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3942">#3942</a>]</li>
+<li>Changed <code>BlockLocator()</code> to no longer implemnet <code>IEnumerable&lt;BlockHash&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3942">#3942</a>]</li>
+<li>(Libplanet.Net) Changed <code>BlockHashDownloadState</code> and <code>BlockDownloadState</code>
+to be <code>Obsolete</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3943">#3943</a>]</li>
+<li>Removed <code>Fork()</code> method from <code>BlockChain</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3948">#3948</a>]</li>
+<li>Changed the return type for <code>BlockChain.FindNextHashes()</code>
+to <code>IReadOnlyList&lt;BlockHash&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3949">#3949</a>]</li>
+<li>(Libplanet.Net) Changed <code>ActionExecutionState</code> and <code>BlockVerificationState</code>
+to be <code>Obsolete</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3943">#3943</a>]</li>
+<li>(Libplanet.Action) Export <code>IPolicyActionsRegistry</code> interface
+from <code>PolicyActionsRegistry</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3960">#3960</a>]</li>
+</ul>
+<h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>(Libplanet.Net) Changed the encoding for <code>GetBlockHashesMsg</code> and
+<code>BlockHashesMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3949">#3949</a>]</li>
+</ul>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<ul>
+<li>Changed <code>BlockChain.FindBranchPoint()</code> to only check for the first
+<code>BlockHash</code> in a given <code>BlockLocator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
+<li>(Libplanet.Store) Optimized <code>HashNode.ToBencodex()</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/3922">#3922</a>, <a href="https://github.com/planetarium/libplanet/pull/3924">#3924</a>]</li>
+<li>(Libplanet.Store) Optimized internal conversions to <code>KeyBytes</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3926">#3926</a>]</li>
+<li>(Libplanet.Net) Changed to no longer report <code>BlockHashDownloadState</code>
+and <code>BlockDownloadState</code> during preloading.  It is strongly advised
+not to rely on these to track the progress of preloading.  [<a href="https://github.com/planetarium/libplanet/pull/3943">#3943</a>]</li>
+<li>(Libplanet.Store) Optimized LRU Cache for <code>HashNode</code> and <code>BlockSet</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3962">#3962</a>]</li>
+</ul>
+<h2 id="version-522">Version 5.2.2</h2>
+<p>Released on August 8, 2024.</p>
+<ul>
+<li>(Libplanet.Explorer) Fix an issue with high CPU usage
+when querying blocks [<a href="https://github.com/planetarium/libplanet/pull/3897">#3897</a>]</li>
+</ul>
+<h2 id="version-521">Version 5.2.1</h2>
+<p>Released on July 31, 2024.</p>
+<ul>
+<li>Ported changes from <a href="https://www.nuget.org/packages/Libplanet/5.1.3">Libplanet 5.1.3</a> release.  [<a href="https://github.com/planetarium/libplanet/pull/3902">#3902</a>]</li>
+</ul>
+<h2 id="version-520">Version 5.2.0</h2>
+<p>Released on July 23, 2024.</p>
+<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>IBlockPolicy.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
+<li>Added <code>IBlockPolicy.PolicyActionsRegistry</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
+<li><code>BlockPolicy</code> constructor now requires <code>policyActionsRegistry</code>
+parameter instead of the <code>blockAction</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>, <a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet.Action) Removed <code>PolicyBlockActionGetter</code> delegate.
+[<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>, <a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet.Action) <code>ActionEvaluator</code> constructor requires
+<code>PolicyActionsRegistry</code> parameter instead of the
+<code>policyBlockActionGetter</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>, <a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+<li>(Libplanet.Action) Renamed <code>IActionContext.BlockAction</code> property to
+<code>IActionContext.IsPolicyAction</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3764">#3764</a>]</li>
+</ul>
+<h3 id="added-apis-1">Added APIs</h3>
+<ul>
+<li>(Libplanet.Store) Added <code>MerkleTrie.GenerateProof()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3870">#3870</a>]</li>
+<li>(Libplanet.Store) Added <code>MerkleTrie.ValidateProof()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3870">#3870</a>]</li>
+<li>(Libplanet.Action) Added <code>PolicyActionsRegistry</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3748">#3748</a>]</li>
+</ul>
+<h2 id="version-513">Version 5.1.3</h2>
+<p>Released on July 30, 2024.</p>
+<ul>
+<li>(Libplanet.Explorer) Removed code that was used in development.  [<a href="https://github.com/planetarium/libplanet/pull/3898">#3898</a>]</li>
+</ul>
+<h2 id="version-512">Version 5.1.2</h2>
+<p>Released on July 17, 2024.</p>
+<ul>
+<li>Fix an issue where currency does not work correctly in dotnet6.
+[<a href="https://github.com/planetarium/libplanet/pull/3880">#3880</a>]</li>
+<li>Fix an issue where evidence queries cause errors in the explorer. [<a href="https://github.com/planetarium/libplanet/pull/3883">#3883</a>]</li>
+</ul>
+<h2 id="version-511">Version 5.1.1</h2>
+<p>Released on July 15, 2024.</p>
+<ul>
+<li>Fixed an issue with the evidence hash changing depending on the version.
+[<a href="https://github.com/planetarium/libplanet/pull/3874">#3874</a>]</li>
+</ul>
+<h2 id="version-510">Version 5.1.0</h2>
+<p>Released on July 11, 2024.</p>
+<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Explorer) Added <code>ValidatorPower</code> field to <code>VoteType</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3737">#3737</a>, <a href="https://github.com/planetarium/libplanet/pull/3813">#3813</a>]</li>
+<li>(Libplanet.Types) Added <code>ValidatorPower</code> property to <code>IVoteMetadata</code>
+interface and its implementations.  [<a href="https://github.com/planetarium/libplanet/pull/3737">#3737</a>, <a href="https://github.com/planetarium/libplanet/pull/3813">#3813</a>]</li>
+<li>(Libplanet.Types) Added <code>IBlockMetadata.EvidenceHash</code> property and
+the parameters required by the derived class's properties and constructors
+have been added.
+Affected classes are <code>Block</code>, <code>BlockContent</code>, <code>BlockHeader</code>,
+<code>BlockMetadata</code>, <code>PreEvaluationBlockHeader</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>IBlockContent.Evidence</code> property and the
+parameters required by the derived class's properties and constructors
+have been added.
+Affected classes are <code>Block</code>, <code>BlockContent</code>, <code>BlockHeader</code>,
+<code>PreEvaluationBlock</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>IBlockPolicy.GetMaxEvidencePendingDuration</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+</ul>
+<h3 id="added-apis-2">Added APIs</h3>
+<ul>
+<li>(Libplanet.Types) Added <code>InvalidBlockEvidenceHashException</code> class.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>InvalidBlockEvidencePendingDurationException</code>
+class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceBase</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>DuplicateVoteEvidence</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>DuplicateVoteException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceContext</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>EvidenceId</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>IEvidenceContext</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Types) Added <code>InvalidEvidenceException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Net) Added <code>EvidenceCompletion</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.IteratePendingEvidenceIds</code>. method.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.GetPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.GetCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.PutPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.PutCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.DeletePendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.DeleteCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.ContainsPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Store) Added <code>IStore.ContainsCommittedEvidence</code>. method.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.GetPendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.GetCommittedEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.AddEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.CommitEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.IsEvidencePending</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.IsEvidenceCommitted</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.IsEvidenceExpired</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet) Added <code>BlockChain.DeletePendingEvidence</code>. method.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Action) Added <code>IActionContext.Evidence</code>. property.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Net) Added <code>Swarm.BroadcastEvidence</code>. property.  [<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+<li>(Libplanet.Net) Added <code>Context.CollectEvidenceExceptions</code>. property.
+[<a href="https://github.com/planetarium/libplanet/pull/3696">#3696</a>]</li>
+</ul>
+<h3 id="dependencies-2">Dependencies</h3>
+<p>The entire project is now defined by common properties in the
+<code>Directory.Build.props</code> file. The Directory.Build.props file is located at
+the root and in the src, tools, test path.</p>
+<p>The project structure and affected Directory.Build.props locations are shown
+below.</p>
+<pre><code class="lang-plain">┌ Directory.Build.props
+├ src
+│  ├ Directory.Build.props
+│  ├ Libplanet
+│  ├ Libplanet.Action
+│  ├ Libplanet.Common
+│  ├ Libplanet.Crypto.Secp256k1
+│  ├ Libplanet.Crypto
+│  ├ Libplanet.Net
+│  ├ Libplanet.RocksDBStore
+│  ├ Libplanet.Store.Remote
+│  ├ Libplanet.Store
+│  ├ Libplanet.Stun
+│  └ Libplanet.Types
+├ test
+│  ├ Directory.Build.props
+│  ├ Libplanet.Action.Tests
+│  ├ Libplanet.Analyzers.Tests
+│  ├ Libplanet.Crypto.Secp256k1.Tests
+│  ├ Libplanet.Explorer.Cocona.Tests
+│  ├ Libplanet.Explorer.Tests
+│  ├ Libplanet.Extensions.Cocona.Tests
+│  ├ Libplanet.Mocks
+│  ├ Libplanet.Net.Tests
+│  ├ Libplanet.RocksDBStore.Tests
+│  ├ Libplanet.Store.Remote.Tests
+│  ├ Libplanet.Stun.Tests
+│  └ Libplanet.Tests
+└ tools
+   ├ Directory.Build.props
+   ├ Libplanet.Analyzers
+   ├ Libplanet.Benchmarks
+   ├ Libplanet.Explorer.Cocona
+   ├ Libplanet.Explorer.Executable
+   ├ Libplanet.Explorer
+   ├ Libplanet.Extensions.Cocona
+   └ Libplanet.Tools
+</code></pre>
+<p>The default SDK version for the project has been bumped up to .NET 6.0.
+The list of supported SDKs is as follows</p>
+<ul>
+<li>netstandard2.0</li>
+<li>netstandard2.1</li>
+<li>netcoreapp3.1</li>
+<li>net6.0&quot;</li>
+</ul>
+<blockquote>
+<p>Support for <code>netstandard2.0</code> is coming to an end soon, please note that
+projects using <code>netstandard2.0</code> will be deprecated.</p>
+</blockquote>
+<p>The <code>VersionPrefix</code> property has been moved from the
+<em>src/Libplanet/Libplanet.csproj</em> file to the <code>Directory.Build.props</code> file.</p>
+<h2 id="version-500">Version 5.0.0</h2>
+<p>Released on July 2, 2024.</p>
+<h3 id="deprecated-apis-1">Deprecated APIs</h3>
+<ul>
+<li><code>BlockChain.DetermineGenesisStateRootHash()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.EvaluateGenesis()</code> has been removed.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.DetermineBlockStateRootHash()</code> has been removed.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
+<ul>
+<li>(Libplanet.Action) <code>IBlockChainStates.GetWorldState(BlockHash?)</code>
+does not accept null parameter any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>Bumped <code>BlockMetadata.CurrentProtocolVersion</code> to 8.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.EvaluateBlock()</code> accepts <code>Block</code>
+instead of <code>IPreEvaluationBlock</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.ProposeGenesisBlock()</code> receives parameter
+<code>HashDigest&lt;SHA256&gt;? stateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.ProposeGenesisBlock()</code> does not receive
+parameter <code>IActionEvaluator actionEvaluator</code> any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li><code>BlockChain.ProposeBlock()</code> receives parameter
+<code>HashDigest&lt;SHA256&gt; stateRootHash</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+<li>(Libplanet.Net) Changed <code>Context()</code> to accept additional <code>BlockCommit?</code>
+typed argument.  Removed <code>lastCommit</code> parameter from <code>Context.Start()</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/3833">#3833</a>, <a href="https://github.com/planetarium/libplanet/pull/3845">#3845</a>]</li>
+<li>(Libplanet.Net) Changed <code>Context.Start()</code> to throw an
+<code>InvalidOperationException</code> when <code>Context</code> is not in a valid state.
+[<a href="https://github.com/planetarium/libplanet/pull/3846">#3846</a>]</li>
+<li>(Libplanet.Net) Removed <code>IConsensusMessageCommunicator</code> parameter from
+<code>Context()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/3848">#3848</a>, <a href="https://github.com/planetarium/libplanet/issues/3849">#3849</a>]</li>
+<li>(Libplanet.Net) Added <code>Running</code> property to <code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Added <code>Start()</code> method to <code>ConsensusContext</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Changed <code>NewHeight()</code> to throw a <code>NullReferenceException</code>
+if it is called while its internal <code>BlockChain</code> is in an invalid state.
+[<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+<li>(Libplanet.Net) Removed <code>Null</code> value from <code>ConsensusStep</code> enum.  [<a href="https://github.com/planetarium/libplanet/pull/3851">#3851</a>]</li>
+</ul>
+<h3 id="added-apis-3">Added APIs</h3>
+<ul>
+<li>Added <code>BlockChain.DetermineNextBlockStateRootHash()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h3 id="behavioral-changes-2">Behavioral changes</h3>
+<ul>
+<li><code>Context.ProcessHeightOrRoundUponRules()</code> now appends block asynchronously,
+as a manner of fire-and-forget.  [<a href="https://github.com/planetarium/libplanet/pull/3808">#3808</a>]</li>
+<li><code>BlockHeader.StateRootHash</code> now means state root hash calculated by
+<code>BlockChain.DetermineNextBlockStateRootHash(previousBlockHash)</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
+</ul>
+<h2 id="previous-version-changes">Previous version changes</h2>
+<ul>
+<li><a href="changes/v4.html">Version 4.x.x</a></li>
+<li><a href="changes/v3.html">Version 3.x.x</a></li>
+<li><a href="changes/v2.html">Version 2.x.x</a></li>
+<li><a href="changes/v1.html">Version 1.x.x</a></li>
+<li><a href="changes/v0.html">Version 0.x.x</a></li>
+</ul>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

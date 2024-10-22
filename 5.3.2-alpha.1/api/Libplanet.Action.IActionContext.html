@@ -1,0 +1,601 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IActionContext
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IActionContext
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.IActionContext">
+
+
+  <h1 id="Libplanet_Action_IActionContext" data-uid="Libplanet.Action.IActionContext" class="text-break">Interface IActionContext
+</h1>
+  <div class="markdown level0 summary"><p>Contextual data determined by a transaction and a block.
+Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
+  <h5 id="Libplanet_Action_IActionContext_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IActionContext</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_BlockIndex.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.BlockIndex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L47">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_BlockIndex_" data-uid="Libplanet.Action.IActionContext.BlockIndex*"></a>
+  <h4 id="Libplanet_Action_IActionContext_BlockIndex" data-uid="Libplanet.Action.IActionContext.BlockIndex">BlockIndex</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Index">Index</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that contains
+the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">long BlockIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_BlockProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.BlockProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L54">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_BlockProtocolVersion_" data-uid="Libplanet.Action.IActionContext.BlockProtocolVersion*"></a>
+  <h4 id="Libplanet_Action_IActionContext_BlockProtocolVersion" data-uid="Libplanet.Action.IActionContext.BlockProtocolVersion">BlockProtocolVersion</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_ProtocolVersion">ProtocolVersion</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that contains
+the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int BlockProtocolVersion { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_Evidence.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Evidence%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L100">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_Evidence_" data-uid="Libplanet.Action.IActionContext.Evidence*"></a>
+  <h4 id="Libplanet_Action_IActionContext_Evidence" data-uid="Libplanet.Action.IActionContext.Evidence">Evidence</h4>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>s that are included in a
+<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;EvidenceBase&gt; Evidence { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_IsPolicyAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.IsPolicyAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L85">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_IsPolicyAction_" data-uid="Libplanet.Action.IActionContext.IsPolicyAction*"></a>
+  <h4 id="Libplanet_Action_IActionContext_IsPolicyAction" data-uid="Libplanet.Action.IActionContext.IsPolicyAction">IsPolicyAction</h4>
+  <div class="markdown level1 summary"><p>Whether this action is executed as a policy action.
+<span class="xref">false</span> if it is a user action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsPolicyAction { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_Miner.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Miner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_Miner_" data-uid="Libplanet.Action.IActionContext.Miner*"></a>
+  <h4 id="Libplanet_Action_IActionContext_Miner" data-uid="Libplanet.Action.IActionContext.Miner">Miner</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Miner">Miner</a> of the <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> that contains
+the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Address Miner { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_PreviousState.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.PreviousState%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L67">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_PreviousState_" data-uid="Libplanet.Action.IActionContext.PreviousState*"></a>
+  <h4 id="Libplanet_Action_IActionContext_PreviousState" data-uid="Libplanet.Action.IActionContext.PreviousState">PreviousState</h4>
+  <div class="markdown level1 summary"><p>A null delta of states, which means it represents the states
+before <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> executes.</p>
+<p>Although a <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> instance is
+immutable, it has several manipulative methods that returns
+new <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> instances with some &quot;dirty&quot;
+states.  These kinds of dirty <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>
+instances can be returned by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IWorld PreviousState { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_RandomSeed.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.RandomSeed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L79">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_RandomSeed_" data-uid="Libplanet.Action.IActionContext.RandomSeed*"></a>
+  <h4 id="Libplanet_Action_IActionContext_RandomSeed" data-uid="Libplanet.Action.IActionContext.RandomSeed">RandomSeed</h4>
+  <div class="markdown level1 summary"><p>The random seed to use for pseudorandom number generator.  This value
+is determined by various block properties, the signature of the transaction
+containing the action to execute, and index of the action to execute, which is
+deterministic so that every node can replay the same action and
+then reproduce the same result, while neither a single block miner
+nor a single transaction signer can predict the result and cheat.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int RandomSeed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IActionContext_RandomSeed_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_GetRandom">GetRandom()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Signer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L24">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_Signer_" data-uid="Libplanet.Action.IActionContext.Signer*"></a>
+  <h4 id="Libplanet_Action_IActionContext_Signer" data-uid="Libplanet.Action.IActionContext.Signer">Signer</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Signer">Signer</a> of the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> that contains
+the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> to be executed.  If the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is
+not part of a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>, e.g. <see cref="!:IBlockPolicy.BlockAction"></see>,
+this is set to <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Miner">Miner</a> instead.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Address Signer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_TxId.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.TxId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L33">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_TxId_" data-uid="Libplanet.Action.IActionContext.TxId*"></a>
+  <h4 id="Libplanet_Action_IActionContext_TxId" data-uid="Libplanet.Action.IActionContext.TxId">TxId</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a> of the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> that contains
+the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.  If the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is not part of
+a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>, e.g. <see cref="!:IBlockPolicy.BlockAction"></see>,
+this is set to <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">TxId? TxId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_Txs.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Txs%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L93">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_Txs_" data-uid="Libplanet.Action.IActionContext.Txs*"></a>
+  <h4 id="Libplanet_Action_IActionContext_Txs" data-uid="Libplanet.Action.IActionContext.Txs">Txs</h4>
+  <div class="markdown level1 summary"><p>A list of <a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>s that are included in a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> as
+the <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> to be evaluated.  This information is provided only if
+<a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_IsPolicyAction">IsPolicyAction</a> is <span class="xref">true</span>, otherwise returns an empty set.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;ITransaction&gt; Txs { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_GasLimit.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GasLimit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L133">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_GasLimit_" data-uid="Libplanet.Action.IActionContext.GasLimit*"></a>
+  <h4 id="Libplanet_Action_IActionContext_GasLimit" data-uid="Libplanet.Action.IActionContext.GasLimit">GasLimit()</h4>
+  <div class="markdown level1 summary"><p>Returns the limit gas of the current action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">long GasLimit()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>The limit gas of the current action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_GasUsed.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GasUsed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L124">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_GasUsed_" data-uid="Libplanet.Action.IActionContext.GasUsed*"></a>
+  <h4 id="Libplanet_Action_IActionContext_GasUsed" data-uid="Libplanet.Action.IActionContext.GasUsed">GasUsed()</h4>
+  <div class="markdown level1 summary"><p>Returns the total gas used by the current action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">long GasUsed()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>The total gas used by the current action.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_GetRandom.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.GetRandom%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L117">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_GetRandom_" data-uid="Libplanet.Action.IActionContext.GetRandom*"></a>
+  <h4 id="Libplanet_Action_IActionContext_GetRandom" data-uid="Libplanet.Action.IActionContext.GetRandom">GetRandom()</h4>
+  <div class="markdown level1 summary"><p>Returns a newly initialized <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a> using <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_RandomSeed">RandomSeed</a>
+as its seed value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IRandom GetRandom()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
+        <td><p>A newly initialized <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a> using <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_RandomSeed">RandomSeed</a>
+as its seed value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext_UseGas_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.UseGas(System.Int64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L109">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IActionContext_UseGas_" data-uid="Libplanet.Action.IActionContext.UseGas*"></a>
+  <h4 id="Libplanet_Action_IActionContext_UseGas_System_Int64_" data-uid="Libplanet.Action.IActionContext.UseGas(System.Int64)">UseGas(Int64)</h4>
+  <div class="markdown level1 summary"><p>Consumes the specified amount of gas.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UseGas(long gas)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">gas</span></td>
+        <td><p>The amount of gas to consume.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_IActionContext.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/IActionContext.cs/#L16" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

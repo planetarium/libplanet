@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ActionEvaluator
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ActionEvaluator
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.ActionEvaluator">
+
+
+  <h1 id="Libplanet_Action_ActionEvaluator" data-uid="Libplanet.Action.ActionEvaluator" class="text-break">Class ActionEvaluator
+</h1>
+  <div class="markdown level0 summary"><p>Class responsible for handling of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> evaluations.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ActionEvaluator</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Action.dll</h6>
+  <h5 id="Libplanet_Action_ActionEvaluator_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ActionEvaluator : object, IActionEvaluator</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_IPolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.%23ctor(Libplanet.Action.IPolicyActionsRegistry%2CLibplanet.Store.IStateStore%2CLibplanet.Action.Loader.IActionLoader)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/ActionEvaluator.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionEvaluator__ctor_" data-uid="Libplanet.Action.ActionEvaluator.#ctor*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluator__ctor_Libplanet_Action_IPolicyActionsRegistry_Libplanet_Store_IStateStore_Libplanet_Action_Loader_IActionLoader_" data-uid="Libplanet.Action.ActionEvaluator.#ctor(Libplanet.Action.IPolicyActionsRegistry,Libplanet.Store.IStateStore,Libplanet.Action.Loader.IActionLoader)">ActionEvaluator(IPolicyActionsRegistry, IStateStore, IActionLoader)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.ActionEvaluator.html">ActionEvaluator</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ActionEvaluator(IPolicyActionsRegistry policyActionsRegistry, IStateStore stateStore, IActionLoader actionTypeLoader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IPolicyActionsRegistry.html">IPolicyActionsRegistry</a></td>
+        <td><span class="parametername">policyActionsRegistry</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Action.PolicyActionsRegistry.html">PolicyActionsRegistry</a> containing delegators
+to get policy actions to evaluate at each situation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a></td>
+        <td><span class="parametername">stateStore</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a> to use to retrieve
+the states for a provided <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a></td>
+        <td><span class="parametername">actionTypeLoader</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a> implementation using
+action type lookup.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_ActionLoader.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.ActionLoader%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/ActionEvaluator.cs/#L58">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionEvaluator_ActionLoader_" data-uid="Libplanet.Action.ActionEvaluator.ActionLoader*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluator_ActionLoader" data-uid="Libplanet.Action.ActionEvaluator.ActionLoader">ActionLoader</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a> used by this <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a>
+when evaluating <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IActionLoader ActionLoader { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.Loader.IActionLoader.html">IActionLoader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock%2CSystem.Nullable%7BLibplanet.Common.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/ActionEvaluator.cs/#L98">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionEvaluator_Evaluate_" data-uid="Libplanet.Action.ActionEvaluator.Evaluate*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_SHA256___" data-uid="Libplanet.Action.ActionEvaluator.Evaluate(Libplanet.Types.Blocks.IPreEvaluationBlock,System.Nullable{Libplanet.Common.HashDigest{SHA256}})">Evaluate(IPreEvaluationBlock, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>The main entry point for evaluating a <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;ICommittedActionEvaluation&gt; Evaluate(IPreEvaluationBlock block, HashDigest&lt;SHA256&gt;? baseStateRootHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a></td>
+        <td><span class="parametername">block</span></td>
+        <td><p>The block to evaluate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td><span class="parametername">baseStateRootHash</span></td>
+        <td><p>The base state to use when evaluating
+<code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a>&gt;</td>
+        <td><p>The result of evaluating every <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> related to
+<code data-dev-comment-type="paramref" class="paramref">block</code> as an <see cref="!:IReadOnlyList&lt;T>"></see> of
+<a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a>s.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_ActionEvaluator_Evaluate_Libplanet_Types_Blocks_IPreEvaluationBlock_System_Nullable_Libplanet_Common_HashDigest_SHA256____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>
+This has a side-effect of writing data to internally held <a class="xref" href="Libplanet.Store.IStateStore.html">IStateStore</a>.
+</p>
+<p>
+First evaluates all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s in
+<a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html#Libplanet_Types_Blocks_IBlockContent_Transactions">Transactions</a> of <code data-dev-comment-type="paramref" class="paramref">block</code> and appends the
+evaluation of the <see cref="!:IBlockPolicy.BlockAction"></see> held by the instance at
+the end.
+</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.BlockProtocolVersionNotSupportedException.html">BlockProtocolVersionNotSupportedException</a></td>
+        <td><p>Thrown when
+<code data-dev-comment-type="paramref" class="paramref">block</code> has a <see cref="!:IPreEvaluationBlock.ProtocolVersion"></see>
+that is not supported by an implementation of <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_ActionEvaluator_GenerateRandomSeed_System_Byte___System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte%5B%5D%2CSystem.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/ActionEvaluator.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionEvaluator_GenerateRandomSeed_" data-uid="Libplanet.Action.ActionEvaluator.GenerateRandomSeed*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluator_GenerateRandomSeed_System_Byte___System_Byte___System_Int32_" data-uid="Libplanet.Action.ActionEvaluator.GenerateRandomSeed(System.Byte[],System.Byte[],System.Int32)">GenerateRandomSeed(Byte[], Byte[], Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a random seed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GenerateRandomSeed(byte[] preEvaluationHashBytes, byte[] signature, int actionOffset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">preEvaluationHashBytes</span></td>
+        <td><p>The pre-evaluation hash as bytes.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">signature</span></td>
+        <td><p>The signature of the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> the target
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a> belongs to.  Must be empty if the target <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+is a block action.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">actionOffset</span></td>
+        <td><p>The offset of the target <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>An integer of the random seed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Action.IActionEvaluator.html">IActionEvaluator</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.3.2-alpha.1/apiSpec/new?filename=Libplanet_Action_ActionEvaluator.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.3.2-alpha.1/src/Libplanet.Action/ActionEvaluator.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

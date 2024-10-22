@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Libplanet.RocksDBStore
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Libplanet.RocksDBStore
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.RocksDBStore">
+
+  <h1 id="Libplanet_RocksDBStore" data-uid="Libplanet.RocksDBStore" class="text-break">Namespace Libplanet.RocksDBStore
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+</h3>
+      <h4><a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a></h4>
+      <section><p>The <a href="https://rocksdb.org/">RocksDB</a> <a class="xref" href="Libplanet.Store.Trie.IKeyValueStore.html">IKeyValueStore</a> implementation.
+This stores data in the RocksDB.</p>
+<p><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a> and <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>-backed
+<see cref="!:TrieStateStore"></see> can be instantiated from a URI with <code>rocksdb+file:</code> scheme
+using <see cref="!:StoreLoaderAttribute.LoadStore(Uri)"></see>, e.g.:</p>
+<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>max-total-wal-size</code></td><td>Corresponds to RocksDB&apos;s <code>max_total_wal_size</code> option.</td></tr><tr><td><code>keep-log-file-num</code></td><td>Corresponds to RocksDB&apos;s <code>keep_log_file_num</code> option.</td></tr><tr><td><code>max_log_file_size</code></td><td>Corresponds to RocksDB&apos;s <code>max_log_file_size</code> option.</td></tr><tr><td><code>tx-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>block-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>connection-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>dbConnectionCacheSize</code> parameter.  100 by default.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:RocksDBKeyValueStore(string)"></see>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
+</section>
+      <h4><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a></h4>
+      <section><p>The <a href="https://rocksdb.org/">RocksDB</a> <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation,
+which is more production-ready than <a class="xref" href="Libplanet.Store.DefaultStore.html">DefaultStore</a>.
+This stores data in the RocksDB with multiple partitions under the hood.</p>
+<p><a class="xref" href="Libplanet.RocksDBStore.RocksDBStore.html">RocksDBStore</a> and <a class="xref" href="Libplanet.RocksDBStore.RocksDBKeyValueStore.html">RocksDBKeyValueStore</a>-backed
+<a class="xref" href="Libplanet.Store.TrieStateStore.html">TrieStateStore</a> can be instantiated from a URI with <code>rocksdb+file:</code> scheme
+using <see cref="!:StoreLoaderAttribute.LoadStore(Uri)"></see>, e.g.:</p>
+<ul><li><code>rocksdb+file:///var/data/planet/</code></li><li><code>rocksdb+file:///c:/Users/john/AppData/Local/planet/</code></li></ul>
+<p>The following query string parameters are supported:</p>
+<table><tbody><tr><td><code>block-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockCacheSize</code> parameter.  512 by default.</td></tr><tr><td><code>tx-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txCacheSize</code> parameter.  1024 by default.</td></tr><tr><td><code>max-total-wal-size</code></td><td>Corresponds to RocksDB&apos;s <code>max_total_wal_size</code> option.</td></tr><tr><td><code>keep-log-file-num</code></td><td>Corresponds to RocksDB&apos;s <code>keep_log_file_num</code> option.</td></tr><tr><td><code>max_log_file_size</code></td><td>Corresponds to RocksDB&apos;s <code>max_log_file_size</code> option.</td></tr><tr><td><code>tx-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>txEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>block-epoch-unit-secs</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>blockEpochUnitSeconds</code> parameter.  86400 by default.</td></tr><tr><td><code>connection-cache</code></td><td>Corresponds to
+<see cref="!:RocksDBStore(string, int, int, ulong?, ulong?, ulong?, int, int, int)"></see>&apos;s
+<code>dbConnectionCacheSize</code> parameter.  100 by default.</td></tr><tr><td><code>states-dir</code></td><td>Corresponds to <see cref="!:RocksDBKeyValueStore(string)"></see>&apos;s <code>path</code>
+parameter.  It is relative to the URI path, and defaults to <code>states</code>.</td></tr></tbody></table>
+</section>
+    <h3 id="enums">Enums
+</h3>
+      <h4><a class="xref" href="Libplanet.RocksDBStore.RocksDBInstanceType.html">RocksDBInstanceType</a></h4>
+      <section><p>Represent <see cref="!:RocksDbSharp.RocksDb"></see>'s instance type.
+<see cref="!:RocksDbSharp.RocksDb"></see> can be instantiated as primary, read-only, or secondary.
+Please refer a <a href="https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances">
+RocksDB's document</a> for more details.</p>
+</section>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
