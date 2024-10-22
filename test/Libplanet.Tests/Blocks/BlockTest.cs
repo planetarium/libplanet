@@ -71,8 +71,14 @@ namespace Libplanet.Tests.Blocks
                     {
                         new ContextRecordingAction(signer.Address, new Text("Foo")),
                     }.ToPlainValues())).ToImmutableArray();
-            var blockA = ProposeGenesis(timestamp: timestamp, transactions: txs);
-            var blockB = ProposeGenesis(timestamp: timestamp, transactions: txs);
+            var blockA = ProposeGenesis(
+                GenesisProposer.PublicKey,
+                timestamp: timestamp,
+                transactions: txs);
+            var blockB = ProposeGenesis(
+                GenesisProposer.PublicKey,
+                timestamp: timestamp,
+                transactions: txs);
 
             Assert.True(blockA.Transactions.SequenceEqual(blockB.Transactions));
         }

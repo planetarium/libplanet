@@ -121,6 +121,23 @@ namespace Libplanet.Net.Tests.Consensus
         }
 
         [Fact]
+        public void CannotAddVoteWithoutValidatorPower()
+        {
+            var preVote = new VoteMetadata(
+                2,
+                0,
+                default,
+                DateTimeOffset.UtcNow,
+                TestUtils.PrivateKeys[0].PublicKey,
+                null,
+                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[0]);
+
+            var exception = Assert.Throws<InvalidVoteException>(
+                () => _heightVoteSet.AddVote(preVote));
+            Assert.Equal("ValidatorPower of the vote cannot be null", exception.Message);
+        }
+
+        [Fact]
         public void GetCount()
         {
             var preVotes = Enumerable.Range(0, TestUtils.PrivateKeys.Count)

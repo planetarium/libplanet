@@ -132,8 +132,12 @@ namespace Libplanet.Net.Consensus
                         vote);
                 }
 
-                if (vote.ValidatorPower is { } power &&
-                    _validatorSet.GetValidator(validatorKey).Power != power)
+                if (vote.ValidatorPower is not { } power)
+                {
+                    const string msg = "ValidatorPower of the vote cannot be null";
+                    throw new InvalidVoteException(msg, vote);
+                }
+                else if (_validatorSet.GetValidator(validatorKey).Power != power)
                 {
                     const string msg = "ValidatorPower of the vote is given and the value is " +
                                        "not the same with the one in the validator set";

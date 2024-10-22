@@ -207,8 +207,7 @@ namespace Libplanet.Action
         {
             IActionContext CreateActionContext(
                 IWorld prevState,
-                int randomSeed,
-                long actionGasLimit)
+                int randomSeed)
             {
                 return new ActionContext(
                     signer: tx?.Signer ?? block.Miner,
@@ -216,15 +215,14 @@ namespace Libplanet.Action
                     miner: block.Miner,
                     blockIndex: block.Index,
                     blockProtocolVersion: block.ProtocolVersion,
+                    lastCommit: block.LastCommit,
                     txs: block.Transactions,
                     previousState: prevState,
                     isPolicyAction: isPolicyAction,
                     randomSeed: randomSeed,
-                    gasLimit: actionGasLimit,
+                    maxGasPrice: tx?.MaxGasPrice,
                     evidence: block.Evidence);
             }
-
-            long gasLimit = tx?.GasLimit ?? long.MaxValue;
 
             byte[] preEvaluationHashBytes = block.PreEvaluationHash.ToByteArray();
             byte[] signature = tx?.Signature ?? Array.Empty<byte>();
@@ -233,8 +231,8 @@ namespace Libplanet.Action
             IWorld state = previousState;
             foreach (IAction action in actions)
             {
-                IActionContext context = CreateActionContext(state, seed, gasLimit);
-                (ActionEvaluation Evaluation, long NextGasLimit) result = EvaluateAction(
+                IActionContext context = CreateActionContext(state, seed);
+                ActionEvaluation evaluation = EvaluateAction(
                     block,
                     tx,
                     context,
@@ -243,10 +241,9 @@ namespace Libplanet.Action
                     isPolicyAction,
                     logger);
 
-                yield return result.Evaluation;
+                yield return evaluation;
 
-                state = result.Evaluation.OutputState;
-                gasLimit = result.NextGasLimit;
+                state = evaluation.OutputState;
 
                 unchecked
                 {
@@ -255,7 +252,7 @@ namespace Libplanet.Action
             }
         }
 
-        internal static (ActionEvaluation Evaluation, long NextGasLimit) EvaluateAction(
+        internal static ActionEvaluation EvaluateAction(
             IPreEvaluationBlock block,
             ITransaction? tx,
             IActionContext context,
@@ -274,7 +271,6 @@ namespace Libplanet.Action
             IActionContext inputContext = context;
             IWorld state = inputContext.PreviousState;
             Exception? exc = null;
-            IFeeCollector feeCollector = new FeeCollector(context, tx?.MaxGasPrice);
 
             IActionContext CreateActionContext(IWorld newPrevState)
             {
@@ -284,10 +280,11 @@ namespace Libplanet.Action
                     miner: inputContext.Miner,
                     blockIndex: inputContext.BlockIndex,
                     blockProtocolVersion: inputContext.BlockProtocolVersion,
+                    lastCommit: inputContext.LastCommit,
                     previousState: newPrevState,
                     randomSeed: inputContext.RandomSeed,
                     isPolicyAction: isPolicyAction,
-                    gasLimit: inputContext.GasLimit(),
+                    maxGasPrice: tx?.MaxGasPrice,
                     txs: inputContext.Txs,
                     evidence: inputContext.Evidence);
             }
@@ -297,9 +294,7 @@ namespace Libplanet.Action
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 AccountMetrics.Initialize();
-                state = feeCollector.Mortgage(state);
                 context = CreateActionContext(state);
-                feeCollector = feeCollector.Next(context);
                 state = action.Execute(context);
                 logger?
                     .ForContext("Tag", "Metric")
@@ -361,8 +356,6 @@ namespace Libplanet.Action
                     e);
             }
 
-            state = feeCollector.Refund(state);
-            state = feeCollector.Reward(state);
             state = stateStore.CommitWorld(state);
 
             if (!state.Trie.Recorded)
@@ -371,13 +364,11 @@ namespace Libplanet.Action
                     $"Failed to record {nameof(IAccount)}'s {nameof(ITrie)}.");
             }
 
-            return (
-                new ActionEvaluation(
+            return new ActionEvaluation(
                     action: action,
                     inputContext: inputContext,
                     outputState: state,
-                    exception: exc),
-                context.GasLimit() - context.GasUsed());
+                    exception: exc);
         }
 
         /// <summary>
@@ -479,6 +470,8 @@ namespace Libplanet.Action
             ITransaction tx,
             IWorld previousState)
         {
+            GasTracer.Initialize(tx.GasLimit ?? long.MaxValue);
+            GasTracer.StartTrace();
             var evaluations = ImmutableList<ActionEvaluation>.Empty;
             if (_policyActionsRegistry.BeginTxActions.Length > 0)
             {
@@ -506,6 +499,8 @@ namespace Libplanet.Action
                 evaluations = evaluations.AddRange(
                     EvaluatePolicyEndTxActions(block, tx, previousState));
             }
+
+            GasTracer.EndTrace();
 
             return evaluations;
         }

@@ -23,12 +23,13 @@ namespace Libplanet.Tests.Blockchain.Renderers
                 default,
                 default,
                 default,
+                0,
                 Block.CurrentProtocolVersion,
-                default,
+                null,
                 _world,
                 default,
                 false,
-                0));
+                null));
 
         private static Exception _exception = new Exception();
 

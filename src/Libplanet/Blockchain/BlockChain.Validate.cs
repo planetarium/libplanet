@@ -144,17 +144,14 @@ namespace Libplanet.Blockchain
             var validators = block.ProtocolVersion < BlockMetadata.SlothProtocolVersion
                 ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
                 : GetWorldState(block.StateRootHash).GetValidatorSet();
-            if (!validators.ValidateBlockCommitValidators(blockCommit))
+
+            if (block.ProtocolVersion < BlockMetadata.EvidenceProtocolVersion)
             {
-                throw new InvalidBlockCommitException(
-                    $"BlockCommit of BlockHash {blockCommit.BlockHash} " +
-                    $"has different validator set with chain state's validator set: \n" +
-                    $"in states | \n " +
-                    validators.Validators.Aggregate(
-                        string.Empty, (s, key) => s + key + ", \n") +
-                    $"in blockCommit | \n " +
-                    blockCommit.Votes.Aggregate(
-                        string.Empty, (s, key) => s + key.ValidatorPublicKey + ", \n"));
+                validators.ValidateLegacyBlockCommitValidators(blockCommit);
+            }
+            else
+            {
+                validators.ValidateBlockCommitValidators(blockCommit);
             }
 
             BigInteger commitPower = blockCommit.Votes.Aggregate(

@@ -1,3 +1,4 @@
+#pragma warning disable MEN003 // Method is too long
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -284,6 +285,59 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void EvaluateWithPolicyActionsWithException()
+        {
+            var store = new MemoryStore();
+            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
+            var policyWithExceptions = new BlockPolicy(
+                new PolicyActionsRegistry(
+                    beginBlockActions: new IAction[]
+                    {
+                        new UpdateValueAction(_beginBlockValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray(),
+                    endBlockActions: new IAction[]
+                    {
+                        new UpdateValueAction(_endBlockValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray(),
+                    beginTxActions: new IAction[]
+                    {
+                        new UpdateValueAction(_beginTxValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray(),
+                    endTxActions: new IAction[]
+                    {
+                        new UpdateValueAction(_endTxValueAddress, 1),
+                        new ThrowException { ThrowOnExecution = true },
+                    }.ToImmutableArray()));
+
+            var (chain, actionEvaluator) =
+                TestUtils.MakeBlockChainAndActionEvaluator(
+                    policy: policyWithExceptions,
+                    store: store,
+                    stateStore: stateStore,
+                    actionLoader: new SingleActionLoader(typeof(DumbAction)));
+
+            (_, Transaction[] txs) = MakeFixturesForAppendTests();
+            var block = chain.ProposeBlock(
+                GenesisProposer,
+                txs.ToImmutableList(),
+                CreateBlockCommit(chain.Tip),
+                ImmutableArray<EvidenceBase>.Empty);
+            var evaluations = actionEvaluator.Evaluate(
+                block, chain.Store.GetStateRootHash(chain.Tip.Hash)).ToArray();
+
+            // BeginBlockAction + (BeginTxAction + #Action + EndTxAction) * #Tx + EndBlockAction
+            Assert.Equal(
+                4 + txs.Length * 4 + txs.Sum(tx => tx.Actions.Count),
+                evaluations.Length);
+            Assert.Equal(
+                2 + txs.Length * 2,
+                evaluations.Count(e => e.Exception != null));
+        }
+
+        [Fact]
         public void EvaluateWithException()
         {
             var privateKey = new PrivateKey();
@@ -475,10 +529,38 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),  // Adds "C"
-                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),   // Adds "A"
-                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),    // Adds "B"
+                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),  // Adds "A"
+                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),   // Adds "B"
+                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),    // Adds "C"
             };
+
+#if DEBUG
+            // This code was created by ilgyu.
+            // You can preview the result of the test in the debug console.
+            // If this test fails, you can copy the result from the debug console
+            // and paste it to the upper part of the test code.
+            System.Diagnostics.Trace.WriteLine("------- 1");
+            foreach (var eval in evals)
+            {
+                int txIdx = block1Txs.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Id.Equals(eval.InputContext.TxId)).idx;
+                int actionIdx = block1Txs[txIdx].Actions.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.Action.PlainValue)).idx;
+                string updatedStates = "new[] { " + string.Join(", ", addresses.Select(
+                    eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                    .Select(x => x is Text t ? '"' + t.Value + '"' : "null")) + " }";
+                string signerIdx = "_txFx.Address" + (addresses.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.InputContext.Signer)).idx + 1);
+                System.Diagnostics.Trace.WriteLine(
+                    $"({txIdx}, {actionIdx}, {updatedStates}, {signerIdx}),");
+            }
+
+            System.Diagnostics.Trace.WriteLine("---------");
+#endif // DEBUG
+
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
@@ -532,7 +614,7 @@ namespace Libplanet.Tests.Action
                         new TxInvoice(
                             genesisHash: genesis.Hash,
                             updatedAddresses: new[] { addresses[0] }.ToImmutableHashSet(),
-                            timestamp: DateTimeOffset.MinValue.AddSeconds(1),
+                            timestamp: DateTimeOffset.MinValue.AddSeconds(3),
                             actions: new TxActionList(new[]
                             {
                                 MakeAction(addresses[0], 'D'),
@@ -596,10 +678,38 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", null, "F" }, _txFx.Address3),
+                (1, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address2),
             };
+
+#if DEBUG
+            // This code was created by ilgyu.
+            // You can preview the result of the test in the debug console.
+            // If this test fails, you can copy the result from the debug console
+            // and paste it to the upper part of the test code.
+            System.Diagnostics.Trace.WriteLine("------- 2");
+            foreach (var eval in evals)
+            {
+                int txIdx = block2Txs.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Id.Equals(eval.InputContext.TxId)).idx;
+                int actionIdx = block2Txs[txIdx].Actions.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.Action.PlainValue)).idx;
+                string updatedStates = "new[] { " + string.Join(", ", addresses.Select(
+                    eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                    .Select(x => x is Text t ? '"' + t.Value + '"' : "null")) + " }";
+                string signerIdx = "_txFx.Address" + (addresses.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.InputContext.Signer)).idx + 1);
+                System.Diagnostics.Trace.WriteLine(
+                    $"({txIdx}, {actionIdx}, {updatedStates}, {signerIdx}),");
+            }
+
+            System.Diagnostics.Trace.WriteLine("---------");
+#endif // DEBUG
+
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
@@ -929,7 +1039,7 @@ namespace Libplanet.Tests.Action
                 stateStore: _storeFx.StateStore,
                 actionLoader: new SingleActionLoader(typeof(DumbAction)),
                 genesisBlock: _storeFx.GenesisBlock,
-                privateKey: ChainPrivateKey);
+                privateKey: GenesisProposer);
             (_, Transaction[] txs) = MakeFixturesForAppendTests();
             var genesis = chain.Genesis;
             var block = chain.ProposeBlock(
@@ -1271,7 +1381,7 @@ namespace Libplanet.Tests.Action
                 privateKey: privateKey,
                 genesisHash: chain.Genesis.Hash,
                 maxGasPrice: FungibleAssetValue.FromRawValue(foo, 1),
-                gasLimit: 2,
+                gasLimit: 3,
                 actions: new[]
                 {
                     payGasAction,
@@ -1287,16 +1397,8 @@ namespace Libplanet.Tests.Action
             Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
             Assert.Null(evaluations.Single().Exception);
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 9),
-                chain
-                    .GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(address, foo));
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 1),
-                chain
-                    .GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(miner.Address, foo));
+            Assert.Equal(2, GasTracer.GasAvailable);
+            Assert.Equal(1, GasTracer.GasUsed);
         }
 
         [Fact]
@@ -1361,77 +1463,8 @@ namespace Libplanet.Tests.Action
             Assert.Equal(
                 typeof(GasLimitExceededException),
                 evaluations.Single().Exception?.InnerException?.GetType());
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 5),
-                chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(address, foo));
-            Assert.Equal(
-                FungibleAssetValue.FromRawValue(foo, 5),
-                chain.GetWorldState(evaluations.Single().OutputState)
-                    .GetBalance(miner.Address, foo));
-        }
-
-        [Fact]
-        public void EvaluateThrowingInsufficientBalanceForGasFee()
-        {
-            var privateKey = new PrivateKey();
-            var address = privateKey.Address;
-            Currency foo = Currency.Uncapped(
-                "FOO",
-                18,
-                null
-            );
-
-            var freeGasAction = new UseGasAction()
-            {
-                GasUsage = 0,
-                Memo = "FREE",
-                MintValue = FungibleAssetValue.FromRawValue(foo, 10),
-                Receiver = address,
-            };
-
-            var payGasAction = new UseGasAction()
-            {
-                GasUsage = 2,
-                Memo = "CHARGE",
-            };
-
-            var store = new MemoryStore();
-            var stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            var chain = TestUtils.MakeBlockChain(
-                policy: new BlockPolicy(),
-                actions: new[]
-                {
-                    freeGasAction,
-                },
-                store: store,
-                stateStore: stateStore,
-                actionLoader: new SingleActionLoader(typeof(UseGasAction)));
-            var tx = Transaction.Create(
-                nonce: 0,
-                privateKey: privateKey,
-                genesisHash: chain.Genesis.Hash,
-                maxGasPrice: FungibleAssetValue.FromRawValue(foo, 10),
-                gasLimit: 5,
-                actions: new[]
-                {
-                    payGasAction,
-                }.ToPlainValues());
-
-            chain.StageTransaction(tx);
-            var miner = new PrivateKey();
-            Block block = chain.ProposeBlock(miner);
-
-            var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.Store.GetStateRootHash(block.PreviousHash));
-
-            Assert.False(evaluations[0].InputContext.IsPolicyAction);
-            Assert.Single(evaluations);
-            Assert.NotNull(evaluations.Single().Exception);
-            Assert.NotNull(evaluations.Single().Exception?.InnerException);
-            Assert.Equal(
-                typeof(InsufficientBalanceException),
-                evaluations.Single().Exception?.InnerException?.GetType());
+            Assert.Equal(0, GasTracer.GasAvailable);
+            Assert.Equal(5, GasTracer.GasUsed);
         }
 
         [Fact]
@@ -1619,7 +1652,7 @@ namespace Libplanet.Tests.Action
 
             public IWorld Execute(IActionContext context)
             {
-                context.UseGas(GasUsage);
+                GasTracer.UseGas(GasUsage);
                 var state = context.PreviousState
                     .SetAccount(
                         ReservedAddresses.LegacyAccount,

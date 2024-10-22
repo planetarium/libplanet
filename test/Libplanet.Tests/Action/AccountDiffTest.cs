@@ -76,12 +76,13 @@ namespace Libplanet.Tests.Action
                 signer,
                 0,
                 Block.CurrentProtocolVersion,
+                null,
                 new World(
                     new WorldBaseState(
                         trie,
                         new TrieStateStore(new MemoryKeyValueStore()))),
                 0,
                 true,
-                0);
+                null);
     }
 }

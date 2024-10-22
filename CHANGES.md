@@ -10,6 +10,21 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Action) Added `MaxGasPrice` property to `IActionContext`
+    interface and its implementations.  [[#3912]]
+ -  (Libplanet.Explorer) Added `self` field to `NoteStateType`.  [[#3912]]
+ -  (Libplanet.Action) Removed `IFeeCollector` interface
+    and its implementations.  [[#3912]]
+ -  (Libplanet.Action) Removed following methods from the
+    `IActionContext` interface.  [[#3912]]
+     -  Removed `IActionContext.UseGas(long)`.
+     -  Removed `IActionContext.GasUsed()`.
+     -  Removed `IActionContext.GasLimit()`.
+ -  (Libplanet.Action) Added `GasTracer` static class.  [[#3912]]
+ -  (Libplanet.Action) Added `LastCommit` property to `IActionContext`
+    interface and its implementations.  [[#3912]]
+
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +38,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3912]: https://github.com/planetarium/libplanet/pull/3912
 
 
 Version 5.3.1

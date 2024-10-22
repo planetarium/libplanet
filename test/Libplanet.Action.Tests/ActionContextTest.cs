@@ -1,7 +1,10 @@
+using System.Collections.Immutable;
+using System.Numerics;
 using Libplanet.Action.State;
 using Libplanet.Crypto;
 using Libplanet.Mocks;
 using Libplanet.Types.Blocks;
+using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
 using Xunit;
 
@@ -12,12 +15,30 @@ namespace Libplanet.Action.Tests
         private readonly System.Random _random;
         private readonly Address _address;
         private readonly TxId _txid;
+        private readonly BlockCommit _lastCommit;
 
         public ActionContextTest()
         {
             _random = new System.Random();
             _address = _random.NextAddress();
             _txid = _random.NextTxId();
+            var key = new PrivateKey();
+            var hash = _random.NextBlockHash();
+            _lastCommit = new BlockCommit(
+                0,
+                0,
+                hash,
+                new[]
+                {
+                    new VoteMetadata(
+                        0,
+                        0,
+                        hash,
+                        DateTimeOffset.UtcNow,
+                        key.PublicKey,
+                        BigInteger.One,
+                        VoteFlag.PreCommit).Sign(key),
+                }.ToImmutableArray());
         }
 
         [Fact]
@@ -36,10 +57,11 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
+                    lastCommit: _lastCommit,
                     previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: seed,
                     isPolicyAction: false,
-                    gasLimit: 0
+                    maxGasPrice: null
                 );
                 IRandom random = context.GetRandom();
                 Assert.Equal(expected, random.Next());
@@ -55,10 +77,11 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: _lastCommit,
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
                 isPolicyAction: false,
-                gasLimit: 0
+                maxGasPrice: null
             );
 
             var context2 = new ActionContext(
@@ -67,10 +90,11 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: _lastCommit,
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 0,
                 isPolicyAction: false,
-                gasLimit: 0
+                maxGasPrice: null
             );
 
             var context3 = new ActionContext(
@@ -79,10 +103,11 @@ namespace Libplanet.Action.Tests
                 miner: _address,
                 blockIndex: 1,
                 blockProtocolVersion: Block.CurrentProtocolVersion,
+                lastCommit: _lastCommit,
                 previousState: new World(MockWorldState.CreateModern()),
                 randomSeed: 1,
                 isPolicyAction: false,
-                gasLimit: 0
+                maxGasPrice: null
             );
 
             (Guid Expected, Guid Diff)[] testCases =
@@ -119,10 +144,11 @@ namespace Libplanet.Action.Tests
                     miner: _address,
                     blockIndex: 1,
                     blockProtocolVersion: Block.CurrentProtocolVersion,
+                    lastCommit: _lastCommit,
                     previousState: new World(MockWorldState.CreateModern()),
                     randomSeed: i,
                     isPolicyAction: false,
-                    gasLimit: 0
+                    maxGasPrice: null
                 );
                 var guid = context.GetRandom().GenerateRandomGuid().ToString();
 
