@@ -145,7 +145,7 @@ namespace Libplanet.Blockchain
                 ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
                 : GetWorldState(block.StateRootHash).GetValidatorSet();
 
-            if (block.ProtocolVersion < BlockMetadata.BlockCommitPowerProtocolVersion)
+            if (block.ProtocolVersion < BlockMetadata.EvidenceProtocolVersion)
             {
                 validators.ValidateLegacyBlockCommitValidators(blockCommit);
             }

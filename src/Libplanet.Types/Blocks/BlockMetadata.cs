@@ -23,7 +23,7 @@ namespace Libplanet.Types.Blocks
         /// <summary>
         /// The latest protocol version.
         /// </summary>
-        public const int CurrentProtocolVersion = 10;
+        public const int CurrentProtocolVersion = 9;
 
         /// <summary>
         /// <para>
@@ -99,12 +99,6 @@ namespace Libplanet.Types.Blocks
         /// layer, you can define and use custom evidence.
         /// </summary>
         public const int EvidenceProtocolVersion = 9;
-
-        /// <summary>
-        /// The starting protocol version where the power of the each validator is stored in the
-        /// block commit.
-        /// </summary>
-        public const int BlockCommitPowerProtocolVersion = 10;
 
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
         private static readonly Codec Codec = new Codec();
