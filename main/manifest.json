@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "z//1O3btdbg67tSKkqehVwqd6vZ9U5yDr2TldKX/sJc="
+          "hash": "nM2/6U2yxsKpv5P5nuUeZe2rTUuyhkRjHAfgV1/CQN0="
         }
       },
       "is_incremental": false,
@@ -308,6 +308,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Action.GasTracer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Action.GasTracer.html",
+          "hash": "kuWEjnryNWD/I94DpqpisIId19LiuvtVJMqlm7ef3zo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Action.GasUseNegativeException.yml",
       "output": {
         ".html": {
@@ -336,7 +348,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IActionContext.html",
-          "hash": "wkT277s95CM71BXyUEuGRDe2uPLFQp2kwtoYI8CDuHc="
+          "hash": "TnEBn/k+fASDoe12RIHDX2f7NGm7wRLrbmpyp8UnHM4="
         }
       },
       "is_incremental": false,
@@ -404,18 +416,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Action.IFeeCollector.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Action.IFeeCollector.html",
-          "hash": "wtU4MwfYHjykSw6XQs2gobhhIgfpoyFsJTVwHGm2i84="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Action.IGasMeter.yml",
       "output": {
         ".html": {
@@ -432,7 +432,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IPolicyActionsRegistry.html",
-          "hash": "wos9TJFBO4ZTcX4eczarXOlE9zyH98VyZ+F7QO+wRnk="
+          "hash": "dH1i1JCoQWjwnRJXYmL45smYlpyrQ8RVl/4iM4A/VWs="
         }
       },
       "is_incremental": false,
@@ -852,7 +852,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.html",
-          "hash": "pGzHrWGKSXVUVoUGMz+smX49DbYeEqzdSMV+jkhqb5U="
+          "hash": "oFfIln0fmqQYpH+FGEyVO2RiTG1vQAOUZYK+2gPhR8w="
         }
       },
       "is_incremental": false,
@@ -2448,7 +2448,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Consensus.HeightVoteSet.html",
-          "hash": "bTEwCYawvJin88L+tjyWJVvvUNBVrYANzIp1LCIZnJM="
+          "hash": "RnFvUAC7TzBPvBQ2L6rNUrnU4Zj2VNHha7mKaI2PZR4="
         }
       },
       "is_incremental": false,
@@ -5028,7 +5028,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Types.Consensus.ValidatorSet.html",
-          "hash": "OTRaB6IODLcZPQUWoBra7D8XrSt5Nv1MKc90WeHE3g0="
+          "hash": "X7ujLksG8t7grw1cijExok6363vu9tDLqL17aVSEG/I="
         }
       },
       "is_incremental": false,
@@ -5484,7 +5484,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "LtA7aQltushkeMI/v+JuXHkx1Wwz4xlSgPANq1TMwhI="
+          "hash": "VgihKfKeJMLvdF6dw9OdCa/O++fGLOhh5vAw+gxiG9A="
         }
       },
       "is_incremental": false,

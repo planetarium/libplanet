@@ -113,6 +113,11 @@ a single action.</p>
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.GasLimitNegativeException.html">GasLimitNegativeException</a></h4>
       <section></section>
+      <h4><a class="xref" href="Libplanet.Action.GasTracer.html">GasTracer</a></h4>
+      <section><p>Provides a way to trace the gas usage of an <a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>.
+It will be initialize each transaction.</p>
+<p><a class="xref" href="Libplanet.Action.GasTracer.html">GasTracer</a> is thread-local, so it can be used in a multi-threaded environment.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.GasUseNegativeException.html">GasUseNegativeException</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Action.InvalidActionException.html">InvalidActionException</a></h4>
@@ -187,15 +192,6 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
 </section>
       <h4><a class="xref" href="Libplanet.Action.ICommittedActionEvaluation.html">ICommittedActionEvaluation</a></h4>
       <section></section>
-      <h4><a class="xref" href="Libplanet.Action.IFeeCollector.html">IFeeCollector</a></h4>
-      <section><p>Represents a fee collector.
-A fee collector is a class that collects fees from the sender of the transaction.
-The fee collector is called three times in a single block.
-The first call is to collect the fee from the sender of the transaction.
-The second call is to refund the fee to the sender of the transaction.
-The third call is to reward the proposer of the block.
-The fee collector is called only when the transaction is collectible.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Action.IGasMeter.html">IGasMeter</a></h4>
       <section><p>An interface to provide a transition of the gas usage.</p>
 </section>
