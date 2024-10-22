@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Libplanet.Types.Tx;
 
@@ -18,12 +19,16 @@ namespace Libplanet.Action
         /// <summary>
         /// The amount of gas used so far.
         /// </summary>
-        public static long GasUsed => GasMeter.Value.GasUsed;
+        public static long GasUsed => GasMeterValue.GasUsed;
 
         /// <summary>
         /// The amount of gas available.
         /// </summary>
-        public static long GasAvailable => GasMeter.Value.GasAvailable;
+        public static long GasAvailable => GasMeterValue.GasAvailable;
+
+        private static GasMeter GasMeterValue
+            => GasMeter.Value ?? throw new InvalidOperationException(
+                "GasTracer is not initialized.");
 
         /// <summary>
         /// Using gas by the specified amount.
@@ -35,7 +40,7 @@ namespace Libplanet.Action
         {
             if (IsTrace.Value)
             {
-                GasMeter.Value.UseGas(gas);
+                GasMeterValue.UseGas(gas);
             }
         }
 
