@@ -11,6 +11,7 @@ namespace Libplanet.Action
         {
             get;
         }
+
         /// <summary>
         /// An array of <see cref="IAction"/> to execute and be rendered at the end
         /// for every block, if any.</summary>
@@ -18,6 +19,7 @@ namespace Libplanet.Action
         {
             get;
         }
+
         /// <summary>
         /// An array of <see cref="IAction"/> to execute and be rendered at the beginning
         /// for every transaction, if any.</summary>
@@ -25,6 +27,7 @@ namespace Libplanet.Action
         {
             get;
         }
+
         /// <summary>
         /// An array of <see cref="IAction"/> to execute and be rendered at the end
         /// for every transaction, if any.</summary>

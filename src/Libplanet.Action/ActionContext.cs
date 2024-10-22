@@ -12,7 +12,6 @@ namespace Libplanet.Action
 {
     internal class ActionContext : IActionContext
     {
-
         private readonly IReadOnlyList<ITransaction> _txs;
 
         public ActionContext(
