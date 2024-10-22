@@ -167,7 +167,7 @@ namespace Libplanet.Tests.Consensus
             var blockCommitWithUnorderedVotes =
                 new BlockCommit(height, round, hash, unorderedVotes);
             var blockCommitWithInvalidPowerVotes =
-                new BlockCommit(height, round, hash, unorderedVotes);
+                new BlockCommit(height, round, hash, invalidPowerVotes);
             var blockCommitWithInsufficientVotes =
                 new BlockCommit(height, round, hash, orderedVotes.Take(5).ToImmutableArray());
             var validBlockCommit = new BlockCommit(height, round, hash, orderedVotes);

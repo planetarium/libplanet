@@ -1,3 +1,4 @@
+#pragma warning disable MEN003 // Method is too long
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -532,6 +533,34 @@ namespace Libplanet.Tests.Action
                 (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),   // Adds "B"
                 (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),    // Adds "C"
             };
+
+#if DEBUG
+            // This code was created by ilgyu.
+            // You can preview the result of the test in the debug console.
+            // If this test fails, you can copy the result from the debug console
+            // and paste it to the upper part of the test code.
+            System.Diagnostics.Trace.WriteLine("------- 1");
+            foreach (var eval in evals)
+            {
+                int txIdx = block1Txs.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Id.Equals(eval.InputContext.TxId)).idx;
+                int actionIdx = block1Txs[txIdx].Actions.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.Action.PlainValue)).idx;
+                string updatedStates = "new[] { " + string.Join(", ", addresses.Select(
+                    eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                    .Select(x => x is Text t ? '"' + t.Value + '"' : "null")) + " }";
+                string signerIdx = "_txFx.Address" + (addresses.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.InputContext.Signer)).idx + 1);
+                System.Diagnostics.Trace.WriteLine(
+                    $"({txIdx}, {actionIdx}, {updatedStates}, {signerIdx}),");
+            }
+
+            System.Diagnostics.Trace.WriteLine("---------");
+#endif // DEBUG
+
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {
@@ -649,10 +678,38 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
-                (1, 0, new[] { "A", "B", "C", "E", null }, _txFx.Address2),
-                (0, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
+                (2, 0, new[] { "A,D", "B", "C", null, "F" }, _txFx.Address3),
+                (1, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address2),
             };
+
+#if DEBUG
+            // This code was created by ilgyu.
+            // You can preview the result of the test in the debug console.
+            // If this test fails, you can copy the result from the debug console
+            // and paste it to the upper part of the test code.
+            System.Diagnostics.Trace.WriteLine("------- 2");
+            foreach (var eval in evals)
+            {
+                int txIdx = block2Txs.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Id.Equals(eval.InputContext.TxId)).idx;
+                int actionIdx = block2Txs[txIdx].Actions.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.Action.PlainValue)).idx;
+                string updatedStates = "new[] { " + string.Join(", ", addresses.Select(
+                    eval.OutputState.GetAccount(ReservedAddresses.LegacyAccount).GetState)
+                    .Select(x => x is Text t ? '"' + t.Value + '"' : "null")) + " }";
+                string signerIdx = "_txFx.Address" + (addresses.Select(
+                    (e, idx) => new { e, idx }).First(
+                    x => x.e.Equals(eval.InputContext.Signer)).idx + 1);
+                System.Diagnostics.Trace.WriteLine(
+                    $"({txIdx}, {actionIdx}, {updatedStates}, {signerIdx}),");
+            }
+
+            System.Diagnostics.Trace.WriteLine("---------");
+#endif // DEBUG
+
             Assert.Equal(expectations.Length, evals.Length);
             foreach (var (expect, eval) in expectations.Zip(evals, (x, y) => (x, y)))
             {

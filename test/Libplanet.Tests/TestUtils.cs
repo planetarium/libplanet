@@ -374,17 +374,24 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static BlockCommit CreateBlockCommit(
             Block block,
-            bool deterministicTimestamp = false) =>
-                block.Index > 0 &&
-                block.ProtocolVersion >= BlockMetadata.PBFTProtocolVersion
-                    ? CreateBlockCommit(block.Hash, block.Index, 0, deterministicTimestamp)
-                    : null;
+            bool deterministicTimestamp = false)
+        {
+            if (block.Index <= 0 || block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
+            {
+                return null;
+            }
+
+            var useValidatorPower = block.ProtocolVersion >= BlockMetadata.EvidenceProtocolVersion;
+            return CreateBlockCommit(
+                block.Hash, block.Index, 0, deterministicTimestamp, useValidatorPower);
+        }
 
         public static BlockCommit CreateBlockCommit(
             BlockHash blockHash,
             long height,
             int round,
-            bool deterministicTimestamp = false)
+            bool deterministicTimestamp = false,
+            bool useValidatorPower = true)
         {
             // Index #1 block cannot have lastCommit: There was no consensus of genesis block.
             if (height == 0)
@@ -400,7 +407,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 blockHash,
                 deterministicTimestamp ? DateTimeOffset.UnixEpoch : DateTimeOffset.UtcNow,
                 key.PublicKey,
-                ValidatorSet.GetValidator(key.PublicKey).Power,
+                useValidatorPower ? ValidatorSet.GetValidator(key.PublicKey).Power : null,
                 VoteFlag.PreCommit).Sign(key)).ToImmutableArray();
 
             return new BlockCommit(
