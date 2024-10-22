@@ -18,11 +18,17 @@ To be released.
 
 ### Behavioral changes
 
+ -  There is no longer a check at block validation time to see
+    if the actions contained in a block are interpretable. [[#3973]]
+
 ### Bug fixes
 
 ### Dependencies
 
 ### CLI tools
+
+
+[#3973]: https://github.com/planetarium/libplanet/pull/3973
 
 
 Version 5.3.1
