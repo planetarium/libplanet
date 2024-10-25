@@ -23,7 +23,7 @@ To be released.
  -  (Libplanet.Action) Added `GasTracer` static class.  [[#3912]]
  -  (Libplanet.Action) Added `LastCommit` property to `IActionContext`
     interface and its implementations.  [[#3912]]
-
+ -  (Libplanet.Action) Added `CancelTrace` method to `GasTracer`.  [[#3974]]
 
 ### Backward-incompatible network protocol changes
 
@@ -40,6 +40,7 @@ To be released.
 ### CLI tools
 
 [#3912]: https://github.com/planetarium/libplanet/pull/3912
+[#3974]: https://github.com/planetarium/libplanet/pull/3974
 
 
 Version 5.3.1
