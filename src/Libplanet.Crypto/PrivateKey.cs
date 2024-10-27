@@ -405,6 +405,11 @@ namespace Libplanet.Crypto
 
         private static ECPrivateKeyParameters GenerateKeyFromBytes(byte[] privateKey)
         {
+            if (privateKey.All(b => b.Equals(0x00)))
+            {
+                throw new ArgumentException("Every bytes in Private key is zero value.");
+            }
+
             var param = new ECPrivateKeyParameters(
                 "ECDSA",
                 new BigInteger(1, privateKey),
