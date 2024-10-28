@@ -16,6 +16,8 @@ namespace Libplanet.Action
 
         private static readonly AsyncLocal<bool> IsTrace = new AsyncLocal<bool>();
 
+        private static readonly AsyncLocal<bool> IsTraceCancelled = new AsyncLocal<bool>();
+
         /// <summary>
         /// The amount of gas used so far.
         /// </summary>
@@ -25,6 +27,8 @@ namespace Libplanet.Action
         /// The amount of gas available.
         /// </summary>
         public static long GasAvailable => GasMeterValue.GasAvailable;
+
+        internal static bool IsTxAction { get; set; }
 
         private static GasMeter GasMeterValue
             => GasMeter.Value ?? throw new InvalidOperationException(
@@ -41,23 +45,39 @@ namespace Libplanet.Action
             if (IsTrace.Value)
             {
                 GasMeterValue.UseGas(gas);
+                if (IsTraceCancelled.Value)
+                {
+                    throw new InvalidOperationException("GasTracing was canceled.");
+                }
             }
+        }
+
+        public static void CancelTrace()
+        {
+            if (!IsTxAction)
+            {
+                throw new InvalidOperationException("CancelTrace can only be called in TxAction.");
+            }
+
+            if (IsTraceCancelled.Value)
+            {
+                throw new InvalidOperationException("GasTracing is already canceled.");
+            }
+
+            IsTraceCancelled.Value = true;
         }
 
         internal static void Initialize(long gasLimit)
         {
             GasMeter.Value = new GasMeter(gasLimit);
-            IsTrace.Value = false;
-        }
-
-        internal static void StartTrace()
-        {
             IsTrace.Value = true;
+            IsTraceCancelled.Value = false;
         }
 
-        internal static void EndTrace()
+        internal static void Release()
         {
             IsTrace.Value = false;
+            IsTraceCancelled.Value = false;
         }
     }
 }

@@ -471,13 +471,14 @@ namespace Libplanet.Action
             IWorld previousState)
         {
             GasTracer.Initialize(tx.GasLimit ?? long.MaxValue);
-            GasTracer.StartTrace();
             var evaluations = ImmutableList<ActionEvaluation>.Empty;
             if (_policyActionsRegistry.BeginTxActions.Length > 0)
             {
+                GasTracer.IsTxAction = true;
                 evaluations = evaluations.AddRange(
                     EvaluatePolicyBeginTxActions(block, tx, previousState));
                 previousState = evaluations.Last().OutputState;
+                GasTracer.IsTxAction = false;
             }
 
             ImmutableList<IAction> actions =
@@ -500,7 +501,7 @@ namespace Libplanet.Action
                     EvaluatePolicyEndTxActions(block, tx, previousState));
             }
 
-            GasTracer.EndTrace();
+            GasTracer.Release();
 
             return evaluations;
         }
