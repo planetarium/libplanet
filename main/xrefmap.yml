@@ -635,6 +635,19 @@ references:
   commentId: T:Libplanet.Action.GasTracer
   fullName: Libplanet.Action.GasTracer
   nameWithType: GasTracer
+- uid: Libplanet.Action.GasTracer.CancelTrace
+  name: CancelTrace()
+  href: api/Libplanet.Action.GasTracer.html#Libplanet_Action_GasTracer_CancelTrace
+  commentId: M:Libplanet.Action.GasTracer.CancelTrace
+  fullName: Libplanet.Action.GasTracer.CancelTrace()
+  nameWithType: GasTracer.CancelTrace()
+- uid: Libplanet.Action.GasTracer.CancelTrace*
+  name: CancelTrace
+  href: api/Libplanet.Action.GasTracer.html#Libplanet_Action_GasTracer_CancelTrace_
+  commentId: Overload:Libplanet.Action.GasTracer.CancelTrace
+  isSpec: "True"
+  fullName: Libplanet.Action.GasTracer.CancelTrace
+  nameWithType: GasTracer.CancelTrace
 - uid: Libplanet.Action.GasTracer.GasAvailable
   name: GasAvailable
   href: api/Libplanet.Action.GasTracer.html#Libplanet_Action_GasTracer_GasAvailable
