@@ -33,7 +33,7 @@ namespace Libplanet.Blockchain
     /// <para>
     /// In order to watch its state changes, implement <see cref="IRenderer"/> interface
     /// and pass it to the
-    /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
+    /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer}, bool)"/>
     /// constructor.
     /// </para>
     /// </summary>
@@ -90,6 +90,9 @@ namespace Libplanet.Blockchain
         /// by default or if it is <see langword="null"/>.  Note that action renderers receive
         /// events made by unsuccessful transactions as well.</param>
         /// <param name="stateStore"><see cref="IStateStore"/> to store states.</param>
+        /// <param name="determineNextBlockStateRootHash">
+        /// Whether to determine the next block's state root hash when the chain is instantiated.
+        /// </param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="store"/> does not
         /// have canonical chain id set, i.e. <see cref="IStore.GetCanonicalChainId()"/> is
         /// <see langword="null"/>.</exception>
@@ -106,7 +109,8 @@ namespace Libplanet.Blockchain
             Block genesisBlock,
             IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator,
-            IEnumerable<IRenderer> renderers = null)
+            IEnumerable<IRenderer> renderers = null,
+            bool determineNextBlockStateRootHash = true)
 #pragma warning disable SA1118  // The parameter spans multiple lines
             : this(
                 policy,
@@ -120,7 +124,8 @@ namespace Libplanet.Blockchain
                 genesisBlock,
                 blockChainStates,
                 actionEvaluator,
-                renderers)
+                renderers,
+                determineNextBlockStateRootHash)
         {
         }
 
@@ -133,7 +138,8 @@ namespace Libplanet.Blockchain
             Block genesisBlock,
             IBlockChainStates blockChainStates,
             IActionEvaluator actionEvaluator,
-            IEnumerable<IRenderer> renderers)
+            IEnumerable<IRenderer> renderers,
+            bool determineNextBlockStateRootHash)
         {
             if (store is null)
             {
@@ -190,7 +196,7 @@ namespace Libplanet.Blockchain
             {
                 _nextStateRootHash = Tip.StateRootHash;
             }
-            else
+            else if (determineNextBlockStateRootHash)
             {
                 _nextStateRootHash =
                     DetermineNextBlockStateRootHash(Tip, out var actionEvaluations);
@@ -224,7 +230,7 @@ namespace Libplanet.Blockchain
         /// <remarks>
         /// Since this value is immutable, renderers cannot be registered after once a <see
         /// cref="BlockChain"/> object is instantiated; use <c>renderers</c> option of
-        /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer})"/>
+        /// <see cref="BlockChain(IBlockPolicy, IStagePolicy, IStore, IStateStore, Block, IBlockChainStates, IActionEvaluator, IEnumerable{IRenderer}, bool)"/>
         /// constructor instead.
         /// </remarks>
 #pragma warning restore MEN002
@@ -441,7 +447,8 @@ namespace Libplanet.Blockchain
                 genesisBlock,
                 blockChainStates,
                 actionEvaluator,
-                renderers);
+                renderers,
+                true);
         }
 
         /// <summary>
