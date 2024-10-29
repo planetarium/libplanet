@@ -165,7 +165,9 @@ namespace Libplanet.KeyStore
                     Match m = NamePattern.Match(f);
                     if (m.Success)
                     {
+#pragma warning disable S4056
                         if (!Guid.TryParse(m.Groups[1].Value, out Guid id))
+#pragma warning restore S4056
                         {
                             _logger.Debug(
                                 "Failed to parse the file name due to invalid UUID: {keyPath}"
