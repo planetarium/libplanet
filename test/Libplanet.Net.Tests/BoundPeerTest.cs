@@ -17,16 +17,6 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact]
-        public void Serializable()
-        {
-            var expected = new BoundPeer(
-                new PrivateKey().PublicKey, new DnsEndPoint("0.0.0.0", 1234));
-            var deserialized = Libplanet.Tests.TestUtils.BinarySerializeDeserialize<BoundPeer>(
-                expected);
-            Assert.Equal(expected, deserialized);
-        }
-
-        [Fact]
         public void ParsePeer()
         {
 #pragma warning disable MEN002 // Line is too long

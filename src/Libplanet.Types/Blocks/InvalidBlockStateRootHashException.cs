@@ -1,9 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Common;
-using Libplanet.Common.Serialization;
 
 namespace Libplanet.Types.Blocks
 {
@@ -32,16 +30,6 @@ namespace Libplanet.Types.Blocks
             ExpectedStateRootHash = expectedStateRootHash;
         }
 
-        private InvalidBlockStateRootHashException(
-            SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            ActualStateRootHash =
-                info.GetValue<HashDigest<SHA256>>(nameof(ActualStateRootHash));
-            ExpectedStateRootHash =
-                info.GetValue<HashDigest<SHA256>>(nameof(ExpectedStateRootHash));
-        }
-
         /// <summary>
         /// The hash of state trie on the block executed.
         /// </summary>
@@ -53,13 +41,5 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         [Pure]
         public HashDigest<SHA256> ExpectedStateRootHash { get; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue(nameof(ActualStateRootHash), ActualStateRootHash);
-            info.AddValue(nameof(ExpectedStateRootHash), ExpectedStateRootHash);
-        }
     }
 }

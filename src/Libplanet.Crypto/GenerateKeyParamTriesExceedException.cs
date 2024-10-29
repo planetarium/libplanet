@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Crypto
 {
@@ -17,13 +16,6 @@ namespace Libplanet.Crypto
 
         public GenerateKeyParamTriesExceedException(string message, Exception innerException)
           : base(message, innerException)
-        {
-        }
-
-        protected GenerateKeyParamTriesExceedException(
-          SerializationInfo info, StreamingContext context
-        )
-          : base(info, context)
         {
         }
     }

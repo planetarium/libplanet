@@ -10,14 +10,12 @@ using System.Reflection;
 #if NETSTANDARD2_0
 using System.Runtime.CompilerServices;
 #endif
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Common.Serialization;
 
 namespace Libplanet.Common
 {
@@ -38,7 +36,7 @@ namespace Libplanet.Common
     [TypeConverter(typeof(HashDigestTypeConverter))]
     [JsonConverter(typeof(HashDigestJsonConverter))]
     [Serializable]
-    public readonly struct HashDigest<T> : ISerializable, IEquatable<HashDigest<T>>, IBencodable
+    public readonly struct HashDigest<T> : IEquatable<HashDigest<T>>, IBencodable
         where T : HashAlgorithm
     {
         /// <summary>
@@ -128,13 +126,6 @@ namespace Libplanet.Common
 
         private HashDigest(Binary binary)
             : this(binary.ByteArray)
-        {
-        }
-
-        private HashDigest(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info.GetValue<byte[]>(nameof(HashDigest<T>)))
         {
         }
 
@@ -316,12 +307,6 @@ namespace Libplanet.Common
         [Pure]
         public override bool Equals(object? obj) =>
             obj is IEquatable<HashDigest<T>> other && other.Equals(this);
-
-        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(HashDigest<T>), ToByteArray());
-        }
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Common;
 
@@ -30,23 +29,6 @@ namespace Libplanet.Types.Blocks
             CalculatedEvidenceHash = calculatedEvidenceHash;
         }
 
-        protected InvalidBlockEvidenceHashException(
-            SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            if ((byte[])info.GetValue(nameof(BlockEvidenceHash), typeof(byte[]))! is
-                { } bEvidenceHashBytes)
-            {
-                BlockEvidenceHash = new HashDigest<SHA256>(bEvidenceHashBytes);
-            }
-
-            if ((byte[])info.GetValue(nameof(CalculatedEvidenceHash), typeof(byte[]))! is
-                { } cEvidenceHashBytes)
-            {
-                CalculatedEvidenceHash = new HashDigest<SHA256>(cEvidenceHashBytes);
-            }
-        }
-
         /// <summary>
         /// The hash digest from actual block.
         /// </summary>
@@ -66,13 +48,6 @@ namespace Libplanet.Types.Blocks
             InvalidBlockEvidenceHashException left,
             InvalidBlockEvidenceHashException right
         ) => !left.Equals(right);
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(BlockEvidenceHash), BlockEvidenceHash?.ToByteArray());
-            info.AddValue(nameof(CalculatedEvidenceHash), CalculatedEvidenceHash?.ToByteArray());
-        }
 
         public bool Equals(InvalidBlockEvidenceHashException? other)
         {

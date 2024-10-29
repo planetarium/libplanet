@@ -1,10 +1,8 @@
 using System;
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
-using Libplanet.Common.Serialization;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
 
@@ -55,68 +53,6 @@ namespace Libplanet.Action
             Action = action;
         }
 
-        private UnexpectedlyTerminatedActionException(
-            SerializationInfo info,
-            StreamingContext context
-        )
-            : base(info, context)
-        {
-            if (info.TryGetValue(nameof(PreEvaluationHash), out byte[] blockHash))
-            {
-                PreEvaluationHash = new HashDigest<SHA256>(blockHash);
-            }
-
-            if (info.TryGetValue(nameof(BlockIndex), out long blockIndex))
-            {
-                BlockIndex = blockIndex;
-            }
-
-            if (info.TryGetValue(nameof(TxId), out byte[] txId))
-            {
-                TxId = new TxId(txId);
-            }
-
-            if (info.TryGetValue(nameof(PreviousStateRootHash), out byte[] previousStateRootHash))
-            {
-                PreviousStateRootHash = new HashDigest<SHA256>(previousStateRootHash);
-            }
-
-            string actionKey = $"{nameof(Action)}_type";
-            if (info.TryGetValue(actionKey, out string actionType))
-            {
-                string valuesKey = $"{nameof(Action)}_values";
-                if (!(info.GetValue<byte[]>(valuesKey) is byte[] valuesBytes))
-                {
-                    throw new SerializationException($"Missing the {valuesKey} field.");
-                }
-
-                if (!(new Codec().Decode(valuesBytes) is Dictionary values))
-                {
-                    throw new SerializationException(
-                        $"{valuesKey} field must be a Bencodex dictionary."
-                    );
-                }
-
-                Type type = Type.GetType(actionType, true, true)
-                    ?? throw new SerializationException($"Failed to find the type: {actionType}.");
-                if (Activator.CreateInstance(type) is IAction action)
-                {
-                    Action = action;
-                    Action.LoadPlainValue(values);
-                }
-                else
-                {
-                    throw new SerializationException(
-                        $"Failed to instantiate the action: {actionType}."
-                    );
-                }
-            }
-            else
-            {
-                throw new SerializationException($"Missing the {actionKey} field.");
-            }
-        }
-
         /// <summary>
         /// The <see cref="Block.PreEvaluationHash"/> of the <see cref="Block"/> that
         /// <see cref="Action"/> belongs to.
@@ -143,29 +79,5 @@ namespace Libplanet.Action
         public IAction Action { get; }
 
         public HashDigest<SHA256>? PreviousStateRootHash { get; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue(nameof(PreEvaluationHash), PreEvaluationHash.ToByteArray());
-            info.AddValue(nameof(BlockIndex), BlockIndex);
-
-            if (TxId is TxId txId)
-            {
-                info.AddValue(nameof(TxId), txId.ToByteArray());
-            }
-
-            if (PreviousStateRootHash is HashDigest<SHA256> previousStateRootHash)
-            {
-                info.AddValue(nameof(PreviousStateRootHash), previousStateRootHash.ToByteArray());
-            }
-
-            if (!(Action is null))
-            {
-                info.AddValue($"{nameof(Action)}_type", Action.GetType().AssemblyQualifiedName);
-                info.AddValue($"{nameof(Action)}_values", new Codec().Encode(Action.PlainValue));
-            }
-        }
     }
 }

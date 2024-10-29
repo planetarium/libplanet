@@ -1,7 +1,5 @@
 using System;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Net.Messages;
 using Xunit;
 
@@ -164,31 +162,6 @@ namespace Libplanet.Net.Tests.Messages
 
             Assert.False(sameId1 != sameId2);
             Assert.True(sameId2 != differentId);
-        }
-
-        [Fact]
-        public void CanSerializeAndDeserialize()
-        {
-            // Serialize and deserialize to and from memory
-            var expectedId = new MessageId(
-                new byte[]
-                {
-                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
-                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
-                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
-                    0x9c, 0xcc,
-                }
-            );
-            MessageId deserializedId;
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (var memoryStream = new MemoryStream())
-            {
-                formatter.Serialize(memoryStream, expectedId);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                deserializedId = (MessageId)formatter.Deserialize(memoryStream);
-            }
-
-            Assert.Equal(deserializedId, expectedId);
         }
 
         [Fact]

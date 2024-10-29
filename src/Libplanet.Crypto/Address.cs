@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -46,7 +45,7 @@ namespace Libplanet.Crypto
     [TypeConverter(typeof(AddressTypeConverter))]
     [JsonConverter(typeof(AddressJsonConverter))]
     public readonly struct Address
-        : ISerializable, IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
+        : IEquatable<Address>, IComparable<Address>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -161,15 +160,6 @@ namespace Libplanet.Crypto
         {
         }
 
-        private Address(SerializationInfo info, StreamingContext context)
-            : this(_codec.Decode(info.GetValue(nameof(Bencoded), typeof(byte[])) is
-                byte[] bytes
-                    ? bytes
-                    : throw new SerializationException(
-                        $"Invalid type for {nameof(Bencoded)} in {nameof(info)}.")))
-        {
-        }
-
         /// <summary>
         /// An immutable array of 20 <see cref="byte"/>s that represent this
         /// <see cref="Address"/>.
@@ -244,12 +234,6 @@ namespace Libplanet.Crypto
         /// <seealso cref="ToHex()"/>
         [Pure]
         public override string ToString() => $"0x{ToHex()}";
-
-        /// <inheritdoc/>
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(Bencoded), _codec.Encode(Bencoded));
-        }
 
         /// <inheritdoc cref="IComparable{T}.CompareTo(T)"/>
         public int CompareTo(Address other)

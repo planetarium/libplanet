@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Types.Blocks
 {
@@ -22,18 +21,6 @@ namespace Libplanet.Types.Blocks
             TxCount = txCount;
         }
 
-        private InvalidBlockTxCountException(SerializationInfo info, StreamingContext context)
-            : base(info.GetString(nameof(Message)) ?? string.Empty)
-        {
-            TxCount = info.GetInt32(nameof(TxCount));
-        }
-
         public int TxCount { get; private set; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(TxCount), TxCount);
-        }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Types.Evidence
 {
@@ -18,12 +17,6 @@ namespace Libplanet.Types.Evidence
         /// <inheritdoc cref="Exception(string, Exception)"/>
         protected EvidenceException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        /// <inheritdoc cref="Exception(SerializationInfo, StreamingContext)"/>
-        protected EvidenceException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
 

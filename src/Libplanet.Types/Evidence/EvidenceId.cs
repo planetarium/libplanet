@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -24,7 +23,7 @@ namespace Libplanet.Types.Evidence
     [Serializable]
     [JsonConverter(typeof(EvidenceIdJsonConverter))]
     public readonly struct EvidenceId
-        : ISerializable, IEquatable<EvidenceId>, IComparable<EvidenceId>, IComparable, IBencodable
+        : IEquatable<EvidenceId>, IComparable<EvidenceId>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="EvidenceId"/> takes.
@@ -92,15 +91,6 @@ namespace Libplanet.Types.Evidence
                     $"Given {nameof(bencoded)} must be of type " +
                     $"{typeof(Binary)}: {bencoded.GetType()}",
                     nameof(bencoded)))
-        {
-        }
-
-        public EvidenceId(SerializationInfo info, StreamingContext context)
-            : this(Codec.Decode(info.GetValue(nameof(Bencoded), typeof(byte[])) is
-                byte[] bytes
-                    ? bytes
-                    : throw new SerializationException(
-                        $"Invalid type for {nameof(Bencoded)} in {nameof(info)}.")))
         {
         }
 
@@ -215,12 +205,6 @@ namespace Libplanet.Types.Evidence
 
         /// <inheritdoc cref="IComparable.CompareTo(object)"/>
         public int CompareTo(object? obj) => obj is EvidenceId other ? CompareTo(other) : 1;
-
-        /// <inheritdoc />
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(Bencoded), Codec.Encode(Bencoded));
-        }
     }
 
     [SuppressMessage(
