@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Net
 {
@@ -17,14 +16,6 @@ namespace Libplanet.Net
 
         public SwarmException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected SwarmException(
-            SerializationInfo info,
-            StreamingContext context
-        )
-            : base(info, context)
         {
         }
     }

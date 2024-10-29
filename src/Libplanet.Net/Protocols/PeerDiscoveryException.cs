@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Net.Protocols
 {
@@ -16,14 +15,6 @@ namespace Libplanet.Net.Protocols
 
         public PeerDiscoveryException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected PeerDiscoveryException(
-            SerializationInfo info,
-            StreamingContext context
-        )
-            : base(info, context)
         {
         }
     }
