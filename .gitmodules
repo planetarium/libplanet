@@ -1,0 +1,3 @@
+[submodule "dotnet-libp2p"]
+	path = dotnet-libp2p
+	url = https://github.com/greymistcube/dotnet-libp2p
