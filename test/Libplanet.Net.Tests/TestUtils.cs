@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
@@ -365,6 +366,21 @@ namespace Libplanet.Net.Tests
             Random.NextBytes(bytes);
 
             return bytes;
+        }
+
+        public static int[] GetFreePorts(int count)
+        {
+            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
+            IPEndPoint[] listeners = properties.GetActiveTcpListeners();
+            ImmutableHashSet<int> usedPorts =
+                listeners.Select(item => item.Port).ToImmutableHashSet();
+            Random random = new Random();
+            return Enumerable
+                .Range(49152, 65535 - 49152)
+                .Where(port => !usedPorts.Contains(port))
+                .OrderBy(port => random.Next())
+                .Take(count)
+                .ToArray();
         }
 
         public class DummyConsensusMessageHandler : IConsensusMessageCommunicator

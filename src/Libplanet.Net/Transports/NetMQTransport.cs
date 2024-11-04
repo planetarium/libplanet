@@ -130,7 +130,7 @@ namespace Libplanet.Net.Transports
 
         /// <inheritdoc/>
         public BoundPeer AsPeer => _turnClient is TurnClient turnClient
-            ? new BoundPeer(_privateKey.PublicKey, turnClient.EndPoint, turnClient.PublicAddress)
+            ? new BoundPeer(_privateKey.PublicKey, turnClient.EndPoint)
             : new BoundPeer(_privateKey.PublicKey, _hostEndPoint!);
 
         /// <inheritdoc/>

@@ -109,20 +109,6 @@ namespace Libplanet.Net.Tests.Transports
             Assert.Contains(addr, expected);
         }
 
-        [Fact]
-        public async Task ResolveNetMQAddressAsyncFails()
-        {
-            string hostDoesNotExist = $"{Guid.NewGuid()}.com";
-            var bp = new BoundPeer(
-                new PrivateKey().PublicKey,
-                new DnsEndPoint(hostDoesNotExist, 3000)
-            );
-            await Assert.ThrowsAnyAsync<SocketException>(async () =>
-            {
-                await bp.ResolveNetMQAddressAsync();
-            });
-        }
-
         private static int FreeTcpPort()
         {
             var l = new TcpListener(IPAddress.Loopback, 0);

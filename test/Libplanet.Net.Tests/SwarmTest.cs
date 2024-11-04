@@ -399,15 +399,16 @@ namespace Libplanet.Net.Tests
             var policy = new NullBlockPolicy();
             var genesis = new MemoryStoreFixture(policy.PolicyActionsRegistry).GenesisBlock;
 
+            var freePorts = TestUtils.GetFreePorts(8);
             var consensusPeers = Enumerable.Range(0, 4).Select(i =>
                 new BoundPeer(
                     TestUtils.PrivateKeys[i].PublicKey,
-                    new DnsEndPoint("127.0.0.1", 6000 + i))).ToImmutableList();
+                    new DnsEndPoint("127.0.0.1", freePorts[i]))).ToImmutableList();
             var reactorOpts = Enumerable.Range(0, 4).Select(i =>
                 new ConsensusReactorOption
                 {
                     ConsensusPeers = consensusPeers,
-                    ConsensusPort = 6000 + i,
+                    ConsensusPort = consensusPeers[i].EndPoint.Port,
                     ConsensusPrivateKey = TestUtils.PrivateKeys[i],
                     ConsensusWorkers = 100,
                     TargetBlockInterval = TimeSpan.FromSeconds(10),
@@ -421,7 +422,7 @@ namespace Libplanet.Net.Tests
                     hostOptions: new HostOptions(
                         "127.0.0.1",
                         Array.Empty<IceServer>(),
-                        9000 + i),
+                        freePorts[4 + i]),
                     policy: policy,
                     genesis: genesis,
                     consensusReactorOption: reactorOpts[i]).ConfigureAwait(false));
@@ -1517,7 +1518,7 @@ namespace Libplanet.Net.Tests
             NetMQTransport transport = await NetMQTransport.Create(
                 key,
                 apvOptions,
-                new HostOptions("localhost", Enumerable.Empty<IceServer>()));
+                new HostOptions("0.0.0.0", Enumerable.Empty<IceServer>()));
 
             try
             {
@@ -1578,7 +1579,7 @@ namespace Libplanet.Net.Tests
             NetMQTransport transport = await NetMQTransport.Create(
                 key,
                 apvOptions,
-                new HostOptions("localhost", Enumerable.Empty<IceServer>()));
+                new HostOptions("0.0.0.0", Enumerable.Empty<IceServer>()));
 
             try
             {
