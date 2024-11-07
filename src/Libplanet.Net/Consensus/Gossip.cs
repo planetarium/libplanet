@@ -35,7 +35,7 @@ namespace Libplanet.Net.Consensus
         private CancellationTokenSource? _cancellationTokenSource;
         private RoutingTable _table;
         private HashSet<BoundPeer> _denySet;
-        private IProtocol _protocol;
+        private IPeerDiscoveryProtocol _protocol;
         private ConcurrentDictionary<BoundPeer, HashSet<MessageId>> _haveDict;
 
         /// <summary>

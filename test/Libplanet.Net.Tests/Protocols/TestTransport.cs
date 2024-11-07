@@ -113,7 +113,7 @@ namespace Libplanet.Net.Tests.Protocols
 
         internal RoutingTable Table { get; }
 
-        internal IProtocol Protocol { get; }
+        internal IPeerDiscoveryProtocol Protocol { get; }
 
         public void Dispose()
         {

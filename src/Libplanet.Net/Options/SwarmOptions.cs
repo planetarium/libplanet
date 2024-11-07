@@ -22,13 +22,13 @@ namespace Libplanet.Net.Options
         public TimeSpan? MessageTimestampBuffer { get; set; } = TimeSpan.FromSeconds(60);
 
         /// <summary>
-        /// The frequency of <see cref="IProtocol.RefreshTableAsync" />.
+        /// The frequency of <see cref="IPeerDiscoveryProtocol.RefreshTableAsync" />.
         /// </summary>
         public TimeSpan RefreshPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
         /// The lifespan of <see cref="BoundPeer"/> in routing table.
-        /// <seealso cref="IProtocol.RefreshTableAsync" />
+        /// <seealso cref="IPeerDiscoveryProtocol.RefreshTableAsync" />
         /// </summary>
         public TimeSpan RefreshLifespan { get; set; } = TimeSpan.FromSeconds(60);
 

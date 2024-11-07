@@ -17,7 +17,7 @@ namespace Libplanet.Net.Protocols
     /// <summary>
     /// A Kademlia based peer discovery protocol.
     /// </summary>
-    public class KademliaProtocol : IProtocol
+    public class KademliaProtocol : IPeerDiscoveryProtocol
     {
         private readonly TimeSpan _requestTimeout;
         private readonly ITransport _transport;
