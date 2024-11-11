@@ -351,12 +351,13 @@ namespace Libplanet.Net.Transports
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
                 NetMQMessage rawMessage = _messageCodec.Encode(
-                    content,
-                    _privateKey,
-                    _appProtocolVersionOptions.AppProtocolVersion,
-                    AsPeer,
-                    DateTimeOffset.UtcNow
-                );
+                    new Message(
+                        content,
+                        _appProtocolVersionOptions.AppProtocolVersion,
+                        AsPeer,
+                        DateTimeOffset.UtcNow,
+                        null),
+                    _privateKey);
                 var req = new MessageRequest(
                     reqId,
                     rawMessage,
@@ -551,13 +552,13 @@ namespace Libplanet.Net.Transports
                 (
                     ev,
                     _messageCodec.Encode(
-                        content,
-                        _privateKey,
-                        _appProtocolVersionOptions.AppProtocolVersion,
-                        AsPeer,
-                        DateTimeOffset.UtcNow,
-                        identity
-                    )
+                        new Message(
+                            content,
+                            _appProtocolVersionOptions.AppProtocolVersion,
+                            AsPeer,
+                            DateTimeOffset.UtcNow,
+                            identity),
+                        _privateKey)
                 )
             );
 

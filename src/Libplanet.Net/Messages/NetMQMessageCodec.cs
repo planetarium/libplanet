@@ -13,8 +13,6 @@ namespace Libplanet.Net.Messages
         public static readonly int CommonFrames =
             Enum.GetValues(typeof(MessageFrame)).Length;
 
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
         private readonly Codec _codec;
 
         /// <summary>
@@ -55,36 +53,32 @@ namespace Libplanet.Net.Messages
 
         /// <inheritdoc/>
         public NetMQMessage Encode(
-            MessageContent content,
-            PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            BoundPeer peer,
-            DateTimeOffset timestamp,
-            byte[]? identity = null)
+            Message message,
+            PrivateKey privateKey)
         {
-            if (!privateKey.PublicKey.Equals(peer.PublicKey))
+            if (!privateKey.PublicKey.Equals(message.Remote.PublicKey))
             {
                 throw new InvalidCredentialException(
-                    $"An invalid private key was provided: " +
-                    $"the provided private key's expected public key is {peer.PublicKey} " +
+                    $"An invalid private key was provided: the provided private key's " +
+                    $"expected public key is {message.Remote.PublicKey} " +
                     $"but its actual public key is {privateKey.PublicKey}.",
-                    peer.PublicKey,
+                    message.Remote.PublicKey,
                     privateKey.PublicKey);
             }
 
             var netMqMessage = new NetMQMessage();
 
             // Write body (by concrete class)
-            foreach (byte[] frame in content.DataFrames)
+            foreach (byte[] frame in message.Content.DataFrames)
             {
                 netMqMessage.Append(frame);
             }
 
             // Write headers. (inverse order, version-type-peer-timestamp)
-            netMqMessage.Push(timestamp.Ticks);
-            netMqMessage.Push(_codec.Encode(peer.Bencoded));
-            netMqMessage.Push((int)content.Type);
-            netMqMessage.Push(appProtocolVersion.Token);
+            netMqMessage.Push(message.Timestamp.Ticks);
+            netMqMessage.Push(_codec.Encode(message.Remote.Bencoded));
+            netMqMessage.Push((int)message.Content.Type);
+            netMqMessage.Push(message.Version.Token);
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(netMqMessage.ToByteArray());
@@ -92,9 +86,9 @@ namespace Libplanet.Net.Messages
             frames.Insert((int)MessageFrame.Sign, new NetMQFrame(signature));
             netMqMessage = new NetMQMessage(frames);
 
-            if (identity != null)
+            if (message.Identity != null)
             {
-                netMqMessage.Push(identity);
+                netMqMessage.Push(message.Identity);
             }
 
             return netMqMessage;
