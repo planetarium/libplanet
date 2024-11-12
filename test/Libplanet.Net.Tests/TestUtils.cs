@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
@@ -368,19 +368,29 @@ namespace Libplanet.Net.Tests
             return bytes;
         }
 
-        public static int[] GetFreePorts(int count)
+        public static List<int> GetFreePorts(int count)
         {
-            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] listeners = properties.GetActiveTcpListeners();
-            ImmutableHashSet<int> usedPorts =
-                listeners.Select(item => item.Port).ToImmutableHashSet();
-            Random random = new Random();
-            return Enumerable
-                .Range(49152, 65535 - 49152)
-                .Where(port => !usedPorts.Contains(port))
-                .OrderBy(port => random.Next())
-                .Take(count)
-                .ToArray();
+            List<int> freePorts = new List<int>();
+            for (int i = 0; i < count;)
+            {
+                int port = GetFreePort();
+                if (!freePorts.Contains(port))
+                {
+                    freePorts.Add(port);
+                    i++;
+                }
+            }
+
+            return freePorts;
+        }
+
+        public static int GetFreePort()
+        {
+            var listener = new TcpListener(IPAddress.Loopback, 0);
+            listener.Start();
+            int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            listener.Stop();
+            return port;
         }
 
         public class DummyConsensusMessageHandler : IConsensusMessageCommunicator
