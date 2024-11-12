@@ -33,6 +33,9 @@ To be released.
 
 ### Behavioral changes
 
+ -  Added `DetermineNextBlockStateRootHash` property to `BlockChain.BlockChain`.
+    [[#3977], [#3978]]
+
 ### Bug fixes
 
 ### Dependencies
@@ -41,6 +44,8 @@ To be released.
 
 [#3912]: https://github.com/planetarium/libplanet/pull/3912
 [#3974]: https://github.com/planetarium/libplanet/pull/3974
+[#3977]: https://github.com/planetarium/libplanet/issue/3977
+[#3978]: https://github.com/planetarium/libplanet/pull/3978
 
 
 Version 5.3.1
