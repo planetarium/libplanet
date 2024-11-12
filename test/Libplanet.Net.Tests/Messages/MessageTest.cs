@@ -71,26 +71,25 @@ namespace Libplanet.Net.Tests.Messages
                 ImmutableArray<byte>.Empty,
                 default(Address));
             var content = new PingMsg();
-            var codec = new NetMQMessageCodec();
-            var netMqMessage = codec.Encode(
+            var messageCodec = new NetMQMessageCodec();
+            var netMqMessage = messageCodec.Encode(
                 new Message(content, apv, peer, timestamp, null),
                 privateKey).ToArray();
 
             // Attacker
             var fakePeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 0));
-            var fakeMessage = codec.Encode(
-                new Message(content, apv, fakePeer, timestamp, null),
-                privateKey).ToArray();
+            var fakeMessage = messageCodec
+                .Encode(
+                    new Message(content, apv, fakePeer, timestamp, null),
+                    privateKey)
+                .ToArray();
 
             var frames = new NetMQMessage();
-            frames.Push(netMqMessage[4]);
-            frames.Push(netMqMessage[3]);
-            frames.Push(fakeMessage[2]);
             frames.Push(netMqMessage[1]);
-            frames.Push(netMqMessage[0]);
+            frames.Push(fakeMessage[0]);
 
             Assert.Throws<InvalidMessageSignatureException>(() =>
-                codec.Decode(frames, true));
+                messageCodec.Decode(frames, true));
         }
 
         [Fact]

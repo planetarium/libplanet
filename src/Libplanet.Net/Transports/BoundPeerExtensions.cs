@@ -33,8 +33,8 @@ namespace Libplanet.Net.Transports
             using var dealerSocket = new DealerSocket(ToNetMQAddress(peer));
             var privateKey = new PrivateKey();
             var ping = new PingMsg();
-            var netMQMessageCodec = new NetMQMessageCodec();
-            NetMQMessage request = netMQMessageCodec.Encode(
+            var messageCodec = new NetMQMessageCodec();
+            NetMQMessage request = messageCodec.Encode(
                 new Message(
                     ping,
                     default,
@@ -51,7 +51,7 @@ namespace Libplanet.Net.Transports
                     var response = new NetMQMessage();
                     if (dealerSocket.TryReceiveMultipartMessage(timeoutNotNull, ref response))
                     {
-                        return AppProtocolVersion.FromToken(response.First.ConvertToString());
+                        return messageCodec.Decode(response, true).Version;
                     }
                 }
             }
