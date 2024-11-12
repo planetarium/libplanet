@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Bencodex;
 using Libplanet.Crypto;
 using Libplanet.Net.Transports;
 using NetMQ;
@@ -12,16 +10,6 @@ namespace Libplanet.Net.Messages
     {
         public static readonly int CommonFrames =
             Enum.GetValues(typeof(MessageFrame)).Length;
-
-        private readonly Codec _codec;
-
-        /// <summary>
-        /// Creates a <see cref="NetMQMessageCodec"/> instance.
-        /// </summary>
-        public NetMQMessageCodec()
-        {
-            _codec = new Codec();
-        }
 
         public enum MessageFrame
         {
@@ -68,24 +56,15 @@ namespace Libplanet.Net.Messages
 
             var netMqMessage = new NetMQMessage();
 
-            // Write body (by concrete class)
-            foreach (byte[] frame in message.Content.DataFrames)
-            {
-                netMqMessage.Append(frame);
-            }
-
-            // Write headers. (inverse order, version-type-peer-timestamp)
-            netMqMessage.Push(message.Timestamp.Ticks);
-            netMqMessage.Push(_codec.Encode(message.Remote.Bencoded));
-            netMqMessage.Push((int)message.Content.Type);
-            netMqMessage.Push(message.Version.Token);
+            // Push message
+            byte[] messageBytes = message.ToByteArray();
+            netMqMessage.Push(messageBytes);
 
             // Make and insert signature
-            byte[] signature = privateKey.Sign(netMqMessage.ToByteArray());
-            List<NetMQFrame> frames = netMqMessage.ToList();
-            frames.Insert((int)MessageFrame.Sign, new NetMQFrame(signature));
-            netMqMessage = new NetMQMessage(frames);
+            byte[] signature = privateKey.Sign(messageBytes);
+            netMqMessage.Push(signature);
 
+            // Add identity if necessary
             if (message.Identity != null)
             {
                 netMqMessage.Push(message.Identity);
@@ -107,8 +86,7 @@ namespace Libplanet.Net.Messages
         /// interpreted in <see cref="MessageContent.MessageType"/>,
         /// this would return a integer number.</returns>
         public MessageContent.MessageType ParseMessageType(NetMQMessage encoded, bool reply)
-            => (MessageContent.MessageType)encoded[(int)MessageFrame.Type + (reply ? 0 : 1)]
-                .ConvertToInt32();
+            => Decode(encoded, reply).Content.Type;
 
         /// <inheritdoc/>
         public Message Decode(NetMQMessage encoded, bool reply)
@@ -118,114 +96,22 @@ namespace Libplanet.Net.Messages
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)            [version, type, peer, timestamp, sign, frames...]
-            // (reply == false) [identity, version, type, peer, timestamp, sign, frames...]
-            NetMQFrame[] remains = reply ? encoded.ToArray() : encoded.Skip(1).ToArray();
+            byte[]? identity = reply ? null : encoded[0].Buffer.ToArray();
+            byte[] signatureBytes = encoded[reply ? 0 : 1].Buffer.ToArray();
+            byte[] messageBytes = encoded[reply ? 1 : 2].Buffer.ToArray();
+            Message message = Message.FromByteArray(messageBytes, identity);
 
-            var versionToken = remains[(int)MessageFrame.Version].ConvertToString();
-
-            AppProtocolVersion version = AppProtocolVersion.FromToken(versionToken);
-            var dictionary = _codec.Decode(remains[(int)MessageFrame.Peer].ToByteArray());
-            var remote = new BoundPeer(dictionary);
-
-            var type =
-                (MessageContent.MessageType)remains[(int)MessageFrame.Type].ConvertToInt32();
-            var ticks = remains[(int)MessageFrame.Timestamp].ConvertToInt64();
-            var timestamp = new DateTimeOffset(ticks, TimeSpan.Zero);
-
-            byte[] signature = remains[(int)MessageFrame.Sign].ToByteArray();
-
-            NetMQFrame[] body = remains.Skip(CommonFrames).ToArray();
-
-            MessageContent content = CreateMessage(
-                type,
-                body.Select(frame => frame.ToByteArray()).ToArray());
-
-            var headerWithoutSign = new[]
-            {
-                remains[(int)MessageFrame.Version],
-                remains[(int)MessageFrame.Type],
-                remains[(int)MessageFrame.Peer],
-                remains[(int)MessageFrame.Timestamp],
-            };
-
-            var messageToVerify = headerWithoutSign.Concat(body).ToByteArray();
-            if (!remote.PublicKey.Verify(messageToVerify, signature))
+            if (!message.Remote.PublicKey.Verify(messageBytes, signatureBytes))
             {
                 throw new InvalidMessageSignatureException(
                     "The signature of an encoded message is invalid.",
-                    remote,
-                    remote.PublicKey,
-                    messageToVerify,
-                    signature);
+                    message.Remote,
+                    message.Remote.PublicKey,
+                    messageBytes,
+                    signatureBytes);
             }
 
-            byte[]? identity = reply ? null : encoded[0].Buffer.ToArray();
-
-            return new Message(content, version, remote, timestamp, identity);
-        }
-
-        internal static MessageContent CreateMessage(
-            MessageContent.MessageType type,
-            byte[][] dataframes)
-        {
-            switch (type)
-            {
-                case MessageContent.MessageType.Ping:
-                    return new PingMsg();
-                case MessageContent.MessageType.Pong:
-                    return new PongMsg();
-                case MessageContent.MessageType.GetBlockHashes:
-                    return new GetBlockHashesMsg(dataframes);
-                case MessageContent.MessageType.TxIds:
-                    return new TxIdsMsg(dataframes);
-                case MessageContent.MessageType.EvidenceIds:
-                    return new EvidenceIdsMsg(dataframes);
-                case MessageContent.MessageType.GetBlocks:
-                    return new GetBlocksMsg(dataframes);
-                case MessageContent.MessageType.GetTxs:
-                    return new GetTxsMsg(dataframes);
-                case MessageContent.MessageType.GetEvidence:
-                    return new GetEvidenceMsg(dataframes);
-                case MessageContent.MessageType.Blocks:
-                    return new BlocksMsg(dataframes);
-                case MessageContent.MessageType.Tx:
-                    return new TxMsg(dataframes);
-                case MessageContent.MessageType.Evidence:
-                    return new EvidenceMsg(dataframes);
-                case MessageContent.MessageType.FindNeighbors:
-                    return new FindNeighborsMsg(dataframes);
-                case MessageContent.MessageType.Neighbors:
-                    return new NeighborsMsg(dataframes);
-                case MessageContent.MessageType.BlockHeaderMessage:
-                    return new BlockHeaderMsg(dataframes);
-                case MessageContent.MessageType.BlockHashes:
-                    return new BlockHashesMsg(dataframes);
-                case MessageContent.MessageType.GetChainStatus:
-                    return new GetChainStatusMsg();
-                case MessageContent.MessageType.ChainStatus:
-                    return new ChainStatusMsg(dataframes);
-                case MessageContent.MessageType.DifferentVersion:
-                    return new DifferentVersionMsg();
-                case MessageContent.MessageType.HaveMessage:
-                    return new HaveMessage(dataframes);
-                case MessageContent.MessageType.WantMessage:
-                    return new WantMessage(dataframes);
-                case MessageContent.MessageType.ConsensusProposal:
-                    return new ConsensusProposalMsg(dataframes);
-                case MessageContent.MessageType.ConsensusVote:
-                    return new ConsensusPreVoteMsg(dataframes);
-                case MessageContent.MessageType.ConsensusCommit:
-                    return new ConsensusPreCommitMsg(dataframes);
-                case MessageContent.MessageType.ConsensusMaj23Msg:
-                    return new ConsensusMaj23Msg(dataframes);
-                case MessageContent.MessageType.ConsensusVoteSetBitsMsg:
-                    return new ConsensusVoteSetBitsMsg(dataframes);
-                case MessageContent.MessageType.ConsensusProposalClaimMsg:
-                    return new ConsensusProposalClaimMsg(dataframes);
-                default:
-                    throw new InvalidCastException($"Given type {type} is not a valid message.");
-            }
+            return message;
         }
     }
 }
