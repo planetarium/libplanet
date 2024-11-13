@@ -1,0 +1,690 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SwarmOptions
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SwarmOptions
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Options.SwarmOptions">
+
+
+  <h1 id="Libplanet_Net_Options_SwarmOptions" data-uid="Libplanet.Net.Options.SwarmOptions" class="text-break">Class SwarmOptions
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">SwarmOptions</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.Options.html">Libplanet.Net.Options</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Net.dll</h6>
+  <h5 id="Libplanet_Net_Options_SwarmOptions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SwarmOptions : object</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_BlockBroadcastInterval.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.BlockBroadcastInterval%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L63">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_BlockBroadcastInterval_" data-uid="Libplanet.Net.Options.SwarmOptions.BlockBroadcastInterval*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_BlockBroadcastInterval" data-uid="Libplanet.Net.Options.SwarmOptions.BlockBroadcastInterval">BlockBroadcastInterval</h4>
+  <div class="markdown level1 summary"><p>Determines how often <a class="xref" href="Libplanet.Net.Swarm.html">Swarm</a> broadcasts <span class="xref">Libplanet.Net.Messages.BlockHeaderMsg</span>
+to its peers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan BlockBroadcastInterval { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Options_SwarmOptions_BlockBroadcastInterval_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Broadcasts are also made whenever <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a> changes in addition
+to regular broadcasts determined by this option.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_BlockDemandLifespan.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.BlockDemandLifespan%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L16">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_BlockDemandLifespan_" data-uid="Libplanet.Net.Options.SwarmOptions.BlockDemandLifespan*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_BlockDemandLifespan" data-uid="Libplanet.Net.Options.SwarmOptions.BlockDemandLifespan">BlockDemandLifespan</h4>
+  <div class="markdown level1 summary"><p>The lifespan of block demand.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan BlockDemandLifespan { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_BootstrapOptions.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.BootstrapOptions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L104">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_BootstrapOptions_" data-uid="Libplanet.Net.Options.SwarmOptions.BootstrapOptions*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_BootstrapOptions" data-uid="Libplanet.Net.Options.SwarmOptions.BootstrapOptions">BootstrapOptions</h4>
+  <div class="markdown level1 summary"><p>Various options for the default bootstrap behavior of <a class="xref" href="Libplanet.Net.Swarm.html">Swarm</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BootstrapOptions BootstrapOptions { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Options.BootstrapOptions.html">BootstrapOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_BucketSize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.BucketSize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L87">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_BucketSize_" data-uid="Libplanet.Net.Options.SwarmOptions.BucketSize*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_BucketSize" data-uid="Libplanet.Net.Options.SwarmOptions.BucketSize">BucketSize</h4>
+  <div class="markdown level1 summary"><p>The size of each bucket of the Kademlia based routing table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BucketSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Options_SwarmOptions_BucketSize_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_MaximumPollPeers.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.MaximumPollPeers%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L92">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_MaximumPollPeers_" data-uid="Libplanet.Net.Options.SwarmOptions.MaximumPollPeers*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_MaximumPollPeers" data-uid="Libplanet.Net.Options.SwarmOptions.MaximumPollPeers">MaximumPollPeers</h4>
+  <div class="markdown level1 summary"><p>The maximum number of peers to poll blocks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MaximumPollPeers { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_MessageTimestampBuffer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.MessageTimestampBuffer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L22">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_MessageTimestampBuffer_" data-uid="Libplanet.Net.Options.SwarmOptions.MessageTimestampBuffer*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_MessageTimestampBuffer" data-uid="Libplanet.Net.Options.SwarmOptions.MessageTimestampBuffer">MessageTimestampBuffer</h4>
+  <div class="markdown level1 summary"><p>The amount of difference in <see cref="!:TimeSpan"></see> allowed from current local time for
+a received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan? MessageTimestampBuffer { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">TimeSpan</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_MinimumBroadcastTarget.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.MinimumBroadcastTarget%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L53">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_MinimumBroadcastTarget_" data-uid="Libplanet.Net.Options.SwarmOptions.MinimumBroadcastTarget*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_MinimumBroadcastTarget" data-uid="Libplanet.Net.Options.SwarmOptions.MinimumBroadcastTarget">MinimumBroadcastTarget</h4>
+  <div class="markdown level1 summary"><p>The minimum number to select from routing table when broadcast messages.
+It is 10 by default.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MinimumBroadcastTarget { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_PreloadOptions.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.PreloadOptions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L109">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_PreloadOptions_" data-uid="Libplanet.Net.Options.SwarmOptions.PreloadOptions*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_PreloadOptions" data-uid="Libplanet.Net.Options.SwarmOptions.PreloadOptions">PreloadOptions</h4>
+  <div class="markdown level1 summary"><p>Various options for the default preload behavior of <a class="xref" href="Libplanet.Net.Swarm.html">Swarm</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PreloadOptions PreloadOptions { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Options.PreloadOptions.html">PreloadOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_RefreshLifespan.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.RefreshLifespan%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L33">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_RefreshLifespan_" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshLifespan*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_RefreshLifespan" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshLifespan">RefreshLifespan</h4>
+  <div class="markdown level1 summary"><p>The lifespan of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> in routing table.
+<a class="xref" href="Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_TimeSpan_CancellationToken_">RefreshTableAsync(TimeSpan, CancellationToken)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan RefreshLifespan { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_RefreshPeriod.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.RefreshPeriod%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L27">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_RefreshPeriod_" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshPeriod*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_RefreshPeriod" data-uid="Libplanet.Net.Options.SwarmOptions.RefreshPeriod">RefreshPeriod</h4>
+  <div class="markdown level1 summary"><p>The frequency of <a class="xref" href="Libplanet.Net.Protocols.IProtocol.html#Libplanet_Net_Protocols_IProtocol_RefreshTableAsync_TimeSpan_CancellationToken_">RefreshTableAsync(TimeSpan, CancellationToken)</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan RefreshPeriod { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_StaticPeers.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.StaticPeers%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_StaticPeers_" data-uid="Libplanet.Net.Options.SwarmOptions.StaticPeers*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_StaticPeers" data-uid="Libplanet.Net.Options.SwarmOptions.StaticPeers">StaticPeers</h4>
+  <div class="markdown level1 summary"><p>The list of <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s to keep in routing table permanently.
+The <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>s in the list will be maintained periodically within
+<a class="xref" href="Libplanet.Net.Options.SwarmOptions.html#Libplanet_Net_Options_SwarmOptions_StaticPeersMaintainPeriod">StaticPeersMaintainPeriod</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IImmutableSet&lt;BoundPeer&gt; StaticPeers { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_StaticPeersMaintainPeriod.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.StaticPeersMaintainPeriod%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L47">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_StaticPeersMaintainPeriod_" data-uid="Libplanet.Net.Options.SwarmOptions.StaticPeersMaintainPeriod*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_StaticPeersMaintainPeriod" data-uid="Libplanet.Net.Options.SwarmOptions.StaticPeersMaintainPeriod">StaticPeersMaintainPeriod</h4>
+  <div class="markdown level1 summary"><p>The period of <code>Task</code> maintains static peer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan StaticPeersMaintainPeriod { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Options_SwarmOptions_StaticPeersMaintainPeriod_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Options.SwarmOptions.html#Libplanet_Net_Options_SwarmOptions_StaticPeers">StaticPeers</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_TableSize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.TableSize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L81">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_TableSize_" data-uid="Libplanet.Net.Options.SwarmOptions.TableSize*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_TableSize" data-uid="Libplanet.Net.Options.SwarmOptions.TableSize">TableSize</h4>
+  <div class="markdown level1 summary"><p>The number of buckets of the Kademlia based routing table.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TableSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Options_SwarmOptions_TableSize_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Net.Protocols.RoutingTable.html">RoutingTable</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_TaskRegulationOptions.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.TaskRegulationOptions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L121">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_TaskRegulationOptions_" data-uid="Libplanet.Net.Options.SwarmOptions.TaskRegulationOptions*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_TaskRegulationOptions" data-uid="Libplanet.Net.Options.SwarmOptions.TaskRegulationOptions">TaskRegulationOptions</h4>
+  <div class="markdown level1 summary"><p>Various task spawning regulations for handling received <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s
+through an <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskRegulationOptions TaskRegulationOptions { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Options.TaskRegulationOptions.html">TaskRegulationOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_TimeoutOptions.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.TimeoutOptions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L115">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_TimeoutOptions_" data-uid="Libplanet.Net.Options.SwarmOptions.TimeoutOptions*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_TimeoutOptions" data-uid="Libplanet.Net.Options.SwarmOptions.TimeoutOptions">TimeoutOptions</h4>
+  <div class="markdown level1 summary"><p>Various timeout options for sending and receiving <a class="xref" href="Libplanet.Net.Messages.Message.html">Message</a>s through
+an <a class="xref" href="Libplanet.Net.Transports.ITransport.html">ITransport</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeoutOptions TimeoutOptions { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.Options.TimeoutOptions.html">TimeoutOptions</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_TipLifespan.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.TipLifespan%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L99">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_TipLifespan_" data-uid="Libplanet.Net.Options.SwarmOptions.TipLifespan*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_TipLifespan" data-uid="Libplanet.Net.Options.SwarmOptions.TipLifespan">TipLifespan</h4>
+  <div class="markdown level1 summary"><p>The lifespan of the <a class="xref" href="Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Tip">Tip</a>.  When the tip has not been updated
+for the configured lifespan, <a class="xref" href="Libplanet.Net.Swarm.html">Swarm</a> pulls new blocks from neighbor
+peers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan TipLifespan { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions_TxBroadcastInterval.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions.TxBroadcastInterval%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Net_Options_SwarmOptions_TxBroadcastInterval_" data-uid="Libplanet.Net.Options.SwarmOptions.TxBroadcastInterval*"></a>
+  <h4 id="Libplanet_Net_Options_SwarmOptions_TxBroadcastInterval" data-uid="Libplanet.Net.Options.SwarmOptions.TxBroadcastInterval">TxBroadcastInterval</h4>
+  <div class="markdown level1 summary"><p>Determines how often <a class="xref" href="Libplanet.Net.Swarm.html">Swarm</a> broadcasts <span class="xref">Libplanet.Net.Messages.TxIdsMsg</span>
+to its peers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan TxBroadcastInterval { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Net_Options_SwarmOptions_TxBroadcastInterval_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Broadcasts are also made whenever <see cref="!:Transaction"></see> is staged in addition
+to regular broadcasts determined by this option.</p>
+</div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.4.0/apiSpec/new?filename=Libplanet_Net_Options_SwarmOptions.md&amp;value=---%0Auid%3A%20Libplanet.Net.Options.SwarmOptions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.4.0/src/Libplanet.Net/Options/SwarmOptions.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
