@@ -4,9 +4,7 @@ Libplanet changelog
 Version 5.4.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on November 13, 2024.
 
 ### Backward-incompatible API changes
 
@@ -24,20 +22,6 @@ To be released.
  -  (Libplanet.Action) Added `LastCommit` property to `IActionContext`
     interface and its implementations.  [[#3912]]
  -  (Libplanet.Action) Added `CancelTrace` method to `GasTracer`.  [[#3974]]
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
 
 [#3912]: https://github.com/planetarium/libplanet/pull/3912
 [#3974]: https://github.com/planetarium/libplanet/pull/3974
