@@ -1,6 +1,30 @@
 Libplanet changelog
 ===================
 
+Version 5.5.0
+-------------
+
+To be released.
+
+### Deprecated APIs
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### Dependencies
+
+### CLI tools
+
+
 Version 5.4.0
 -------------
 
