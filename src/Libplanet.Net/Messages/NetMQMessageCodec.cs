@@ -94,22 +94,6 @@ namespace Libplanet.Net.Messages
             return netMqMessage;
         }
 
-        /// <summary>
-        /// Parses a <see cref="MessageContent.MessageType"/> from given <see cref="NetMQMessage"/>.
-        /// </summary>
-        /// <param name="encoded">A encoded <see cref="NetMQMessage"/>.</param>
-        /// <param name="reply">A flag to express whether the target is a reply of other message.
-        /// </param>
-        /// <exception cref="IndexOutOfRangeException">Thrown if given <see cref="NetMQMessage"/>
-        /// has not enough <see cref="NetMQFrame"/> for parsing a message type.</exception>
-        /// <returns>Returns a <see cref="MessageContent.MessageType"/> of given
-        /// <paramref name="encoded"/>. If given value cannot be
-        /// interpreted in <see cref="MessageContent.MessageType"/>,
-        /// this would return a integer number.</returns>
-        public MessageContent.MessageType ParseMessageType(NetMQMessage encoded, bool reply)
-            => (MessageContent.MessageType)encoded[(int)MessageFrame.Type + (reply ? 0 : 1)]
-                .ConvertToInt32();
-
         /// <inheritdoc cref="IMessageCodec{T}.Decode"/>
         public Message Decode(NetMQMessage encoded, bool reply)
         {

@@ -38,7 +38,7 @@ namespace Libplanet.Net.Transports
         private readonly AsyncManualResetEvent _runningEvent;
         private readonly ActivitySource _activitySource;
 
-        private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>? _replyQueue;
+        private NetMQQueue<(AsyncManualResetEvent, Message)>? _replyQueue;
 
         private RouterSocket? _router;
         private NetMQPoller? _routerPoller;
@@ -203,7 +203,7 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            _replyQueue = new NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>();
+            _replyQueue = new NetMQQueue<(AsyncManualResetEvent, Message)>();
             _routerPoller = new NetMQPoller { _router!, _replyQueue };
 
             _router!.ReceiveReady += ReceiveMessage!;
@@ -349,7 +349,6 @@ namespace Libplanet.Net.Transports
 
             try
             {
-                DateTimeOffset now = DateTimeOffset.UtcNow;
                 var req = new MessageRequest(
                     reqId,
                     new Message(
@@ -359,7 +358,6 @@ namespace Libplanet.Net.Transports
                         DateTimeOffset.UtcNow,
                         null),
                     peer,
-                    now,
                     expectedResponses,
                     channel,
                     linkedCt);
@@ -548,14 +546,12 @@ namespace Libplanet.Net.Transports
             _replyQueue!.Enqueue(
                 (
                     ev,
-                    _messageCodec.Encode(
-                        new Message(
-                            content,
-                            _appProtocolVersionOptions.AppProtocolVersion,
-                            AsPeer,
-                            DateTimeOffset.UtcNow,
-                            identity),
-                        _privateKey)
+                    new Message(
+                        content,
+                        _appProtocolVersionOptions.AppProtocolVersion,
+                        AsPeer,
+                        DateTimeOffset.UtcNow,
+                        identity)
                 )
             );
 
@@ -722,25 +718,28 @@ namespace Libplanet.Net.Transports
 
         private void DoReply(
             object? sender,
-            NetMQQueueEventArgs<(AsyncManualResetEvent, NetMQMessage)> e
+            NetMQQueueEventArgs<(AsyncManualResetEvent, Message)> e
         )
         {
-            (AsyncManualResetEvent ev, NetMQMessage message) = e.Queue.Dequeue();
-            string reqId = message[0].Buffer.Length == 16 ?
-                new Guid(message[0].ToByteArray()).ToString() : "unknown";
-            string messageType = _messageCodec.ParseMessageType(message, false).ToString();
+            (AsyncManualResetEvent ev, Message message) = e.Queue.Dequeue();
+            string reqId = message.Identity is { } identity && identity.Length == 16
+                ? new Guid(identity).ToString()
+                : "unknown";
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
+            NetMQMessage netMQMessage = _messageCodec.Encode(message, _privateKey);
+            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
             {
                 _logger.Debug(
-                    "{Message} as a reply to {Identity} sent", messageType, reqId);
+                    "{Message} as a reply to {Identity} sent", message.Content.Type, reqId);
             }
             else
             {
                 _logger.Debug(
-                    "Failed to send {Message} as a reply to {Identity}", messageType, reqId);
+                    "Failed to send {Message} as a reply to {Identity}",
+                    message.Content.Type,
+                    reqId);
             }
 
             ev.Set();
@@ -787,7 +786,7 @@ namespace Libplanet.Net.Transports
                 "Request {Message} {RequestId} is ready to be processed in {TimeSpan}",
                 req.Message.Content.Type,
                 req.Id,
-                DateTimeOffset.UtcNow - req.RequestedTime);
+                DateTimeOffset.UtcNow - req.Message.Timestamp);
 
             Channel<NetMQMessage> channel = req.Channel;
 
@@ -979,13 +978,12 @@ namespace Libplanet.Net.Transports
             );
         }
 
-        private readonly struct MessageRequest
+        private class MessageRequest
         {
             public MessageRequest(
                 in Guid id,
                 Message message,
                 BoundPeer peer,
-                DateTimeOffset requestedTime,
                 in int expectedResponses,
                 Channel<NetMQMessage> channel,
                 CancellationToken cancellationToken)
@@ -993,7 +991,6 @@ namespace Libplanet.Net.Transports
                 Id = id;
                 Message = message;
                 Peer = peer;
-                RequestedTime = requestedTime;
                 ExpectedResponses = expectedResponses;
                 Channel = channel;
                 CancellationToken = cancellationToken;
@@ -1004,8 +1001,6 @@ namespace Libplanet.Net.Transports
             public Message Message { get; }
 
             public BoundPeer Peer { get; }
-
-            public DateTimeOffset RequestedTime { get; }
 
             public int ExpectedResponses { get; }
 
