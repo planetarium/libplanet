@@ -350,16 +350,14 @@ namespace Libplanet.Net.Transports
             try
             {
                 DateTimeOffset now = DateTimeOffset.UtcNow;
-                NetMQMessage rawMessage = _messageCodec.Encode(
-                    content,
-                    _privateKey,
-                    _appProtocolVersionOptions.AppProtocolVersion,
-                    AsPeer,
-                    DateTimeOffset.UtcNow
-                );
                 var req = new MessageRequest(
                     reqId,
-                    rawMessage,
+                    new Message(
+                        content,
+                        _appProtocolVersionOptions.AppProtocolVersion,
+                        AsPeer,
+                        DateTimeOffset.UtcNow,
+                        null),
                     peer,
                     now,
                     expectedResponses,
@@ -551,13 +549,13 @@ namespace Libplanet.Net.Transports
                 (
                     ev,
                     _messageCodec.Encode(
-                        content,
-                        _privateKey,
-                        _appProtocolVersionOptions.AppProtocolVersion,
-                        AsPeer,
-                        DateTimeOffset.UtcNow,
-                        identity
-                    )
+                        new Message(
+                            content,
+                            _appProtocolVersionOptions.AppProtocolVersion,
+                            AsPeer,
+                            DateTimeOffset.UtcNow,
+                            identity),
+                        _privateKey)
                 )
             );
 
@@ -763,11 +761,10 @@ namespace Libplanet.Net.Transports
                 _logger.Verbose(waitMsg);
                 MessageRequest req = await reader.ReadAsync(cancellationToken);
 #endif
-                string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
                 long left = Interlocked.Decrement(ref _requestCount);
                 _logger.Debug(
                     "Request {Message} {RequestId} taken for processing; {Count} requests left",
-                    messageType,
+                    req.Message.Content.Type,
                     req.Id,
                     left);
 
@@ -783,13 +780,12 @@ namespace Libplanet.Net.Transports
 
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
-            string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
             _logger.Debug(
                 "Request {Message} {RequestId} is ready to be processed in {TimeSpan}",
-                messageType,
+                req.Message.Content.Type,
                 req.Id,
                 DateTimeOffset.UtcNow - req.RequestedTime);
 
@@ -797,7 +793,7 @@ namespace Libplanet.Net.Transports
 
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer}",
-                messageType,
+                req.Message.Content.Type,
                 req.Id,
                 req.Peer
             );
@@ -817,7 +813,7 @@ namespace Libplanet.Net.Transports
                     _logger.Debug(
                         "Trying to connect to {Peer} for request {Message} {RequestId}",
                         req.Peer,
-                        messageType,
+                        req.Message.Content.Type,
                         req.Id);
                     dealer.Connect(await req.Peer.ResolveNetMQAddressAsync());
                     incrementedSocketCount = Interlocked.Increment(ref _socketCount);
@@ -828,7 +824,7 @@ namespace Libplanet.Net.Transports
                             "{SocketCount} sockets open for processing request " +
                             "{Message} {RequestId}",
                             incrementedSocketCount,
-                            messageType,
+                            req.Message.Content.Type,
                             req.Id);
                 }
                 catch (NetMQException nme)
@@ -843,17 +839,20 @@ namespace Libplanet.Net.Transports
                             nme,
                             logMsg,
                             Interlocked.Read(ref _socketCount),
-                            messageType,
+                            req.Message.Content.Type,
                             req.Id);
                     throw;
                 }
 
-                if (dealer.TrySendMultipartMessage(req.Message))
+                var netMQMessage = _messageCodec.Encode(
+                    req.Message,
+                    _privateKey);
+                if (dealer.TrySendMultipartMessage(netMQMessage))
                 {
                     _logger.Debug(
                         "Request {RequestId} {Message} sent to {Peer}",
                         req.Id,
-                        messageType,
+                        req.Message.Content.Type,
                         req.Peer);
                 }
                 else
@@ -861,11 +860,11 @@ namespace Libplanet.Net.Transports
                     _logger.Debug(
                         "Failed to send {RequestId} {Message} to {Peer}",
                         req.Id,
-                        messageType,
+                        req.Message.Content.Type,
                         req.Peer);
 
                     throw new SendMessageFailException(
-                        $"Failed to send {messageType} to {req.Peer}.",
+                        $"Failed to send {req.Message.Content.Type} to {req.Peer}.",
                         req.Peer);
                 }
 
@@ -893,7 +892,7 @@ namespace Libplanet.Net.Transports
                 _logger.Error(
                     e,
                     "Failed to process {Message} {RequestId}; discarding it",
-                    messageType,
+                    req.Message.Content.Type,
                     req.Id);
                 channel.Writer.TryComplete(e);
             }
@@ -918,7 +917,7 @@ namespace Libplanet.Net.Transports
                         "processed in {DurationMs} ms with {ReceivedCount} replies received " +
                         "out of {ExpectedCount} expected replies",
                         req.Id,
-                        messageType,
+                        req.Message.Content.Type,
                         stopwatch.ElapsedMilliseconds,
                         receivedCount,
                         req.ExpectedResponses);
@@ -984,7 +983,7 @@ namespace Libplanet.Net.Transports
         {
             public MessageRequest(
                 in Guid id,
-                NetMQMessage message,
+                Message message,
                 BoundPeer peer,
                 DateTimeOffset requestedTime,
                 in int expectedResponses,
@@ -1002,7 +1001,7 @@ namespace Libplanet.Net.Transports
 
             public Guid Id { get; }
 
-            public NetMQMessage Message { get; }
+            public Message Message { get; }
 
             public BoundPeer Peer { get; }
 
