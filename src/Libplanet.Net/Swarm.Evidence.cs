@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
@@ -132,7 +133,7 @@ namespace Libplanet.Net
             BroadcastMessage(except, message);
         }
 
-        private async Task TransferEvidenceAsync(Message message)
+        private async Task TransferEvidenceAsync(Message message, Channel<MessageContent> channel)
         {
             if (!await _transferEvidenceSemaphore.WaitAsync(TimeSpan.Zero, _cancellationToken))
             {
@@ -158,7 +159,7 @@ namespace Libplanet.Net
                         }
 
                         MessageContent response = new EvidenceMsg(ev.Serialize());
-                        await Transport.ReplyMessageAsync(response, message.Identity, default);
+                        await channel.Writer.WriteAsync(response).ConfigureAwait(false);
                     }
                     catch (KeyNotFoundException)
                     {

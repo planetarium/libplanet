@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Dasync.Collections;
 using Libplanet.Net.Messages;
@@ -145,8 +146,8 @@ namespace Libplanet.Net.Consensus
                     nameof(StartAsync));
             }
 
-            _transport.ProcessMessageHandler.Register(
-                HandleMessageAsync(_cancellationTokenSource.Token));
+            _transport.ProcessMessageHandler.Register((message, channel) =>
+                HandleMessageAsync(message, channel, _cancellationTokenSource.Token));
             _logger.Debug("All peers are alive. Starting gossip...");
             Running = true;
             await Task.WhenAny(
@@ -307,50 +308,57 @@ namespace Libplanet.Net.Consensus
         /// <summary>
         /// Handle a message received from <see cref="ITransport.ProcessMessageHandler"/>.
         /// </summary>
-        /// <param name="ctx">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
         /// <returns>A function with parameter of <see cref="Message"/>
         /// and return <see cref="Task"/>.</returns>
-        private Func<Message, Task> HandleMessageAsync(CancellationToken ctx) => async msg =>
+        private async Task HandleMessageAsync(
+            Message message,
+            Channel<MessageContent> channel,
+            CancellationToken cancellationToken)
         {
-            _logger.Verbose("HandleMessage: {Message}", msg);
+            _logger.Verbose("HandleMessage: {Message}", message.Content);
 
-            if (_denySet.Contains(msg.Remote))
+            if (_denySet.Contains(message.Remote))
             {
-                _logger.Verbose("Message from denied peer, rejecting: {Message}", msg);
-                await ReplyMessagePongAsync(msg, ctx);
+                _logger.Verbose("Message from denied peer, rejecting: {Message}", message.Content);
+                await channel.Writer
+                    .WriteAsync(new PongMsg(), cancellationToken)
+                    .ConfigureAwait(false);
                 return;
             }
 
             try
             {
-                _validateMessageToReceive(msg);
+                _validateMessageToReceive(message);
             }
             catch (Exception e)
             {
                 _logger.Error(
-                    "Invalid message, rejecting: {Message}, {Exception}", msg, e.Message);
+                    e,
+                    "Invalid message, rejecting: {Message}",
+                    message.Content);
                 return;
             }
 
-            switch (msg.Content)
+            switch (message.Content)
             {
                 case PingMsg _:
                 case FindNeighborsMsg _:
                     // Ignore protocol related messages, Kadmelia Protocol will handle it.
-                    break;
+                    return;
                 case HaveMessage _:
-                    await HandleHaveAsync(msg, ctx);
-                    break;
+                    await HandleHaveAsync(message, channel, cancellationToken);
+                    return;
                 case WantMessage _:
-                    await HandleWantAsync(msg, ctx);
-                    break;
+                    await HandleWantAsync(message, channel, cancellationToken);
+                    return;
                 default:
-                    await ReplyMessagePongAsync(msg, ctx);
-                    AddMessage(msg.Content);
-                    break;
+                    await channel.Writer
+                        .WriteAsync(new PongMsg(), cancellationToken)
+                        .ConfigureAwait(false);
+                    AddMessage(message.Content);
+                    return;
             }
-        };
+        }
 
         /// <summary>
         /// A lifecycle task which will run in every <see cref="_heartbeatInterval"/>.
@@ -380,15 +388,23 @@ namespace Libplanet.Net.Consensus
         /// A function handling <see cref="HaveMessage"/>.
         /// <seealso cref="HandleMessageAsync"/>
         /// </summary>
-        /// <param name="msg">Target <see cref="HaveMessage"/>.</param>
-        /// <param name="ctx">A cancellation token used to propagate notification
+        /// <param name="message">Target <see cref="HaveMessage"/>.</param>
+        /// <param name="channel">The <see cref="Channel{T}"/> to write
+        /// reply messages.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        private async Task HandleHaveAsync(Message msg, CancellationToken ctx)
+        private async Task HandleHaveAsync(
+            Message message,
+            Channel<MessageContent> channel,
+            CancellationToken cancellationToken)
         {
-            var haveMessage = (HaveMessage)msg.Content;
+            var haveMessage = (HaveMessage)message.Content;
 
-            await ReplyMessagePongAsync(msg, ctx);
+            await channel.Writer
+                .WriteAsync(new PongMsg(), cancellationToken)
+                .ConfigureAwait(false);
+
             MessageId[] idsToGet = _cache.DiffFrom(haveMessage.Ids);
             _logger.Verbose(
                 "Handle HaveMessage. {Total}/{Count} messages to get.",
@@ -400,15 +416,15 @@ namespace Libplanet.Net.Consensus
             }
 
             _logger.Verbose("Ids to receive: {Ids}", idsToGet);
-            if (!_haveDict.ContainsKey(msg.Remote))
+            if (!_haveDict.ContainsKey(message.Remote))
             {
-                _haveDict.TryAdd(msg.Remote, new HashSet<MessageId>(idsToGet));
+                _haveDict.TryAdd(message.Remote, new HashSet<MessageId>(idsToGet));
             }
             else
             {
-                List<MessageId> list = _haveDict[msg.Remote].ToList();
+                List<MessageId> list = _haveDict[message.Remote].ToList();
                 list.AddRange(idsToGet.Where(id => !list.Contains(id)));
-                _haveDict[msg.Remote] = new HashSet<MessageId>(list);
+                _haveDict[message.Remote] = new HashSet<MessageId>(list);
             }
         }
 
@@ -485,14 +501,19 @@ namespace Libplanet.Net.Consensus
         /// A function handling <see cref="WantMessage"/>.
         /// <seealso cref="HandleMessageAsync"/>
         /// </summary>
-        /// <param name="msg">Target <see cref="WantMessage"/>.</param>
-        /// <param name="ctx">A cancellation token used to propagate notification
+        /// <param name="message">Target <see cref="WantMessage"/>.</param>
+        /// <param name="channel">The <see cref="Channel{T}"/> to write
+        /// reply messages.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        private async Task HandleWantAsync(Message msg, CancellationToken ctx)
+        private async Task HandleWantAsync(
+            Message message,
+            Channel<MessageContent> channel,
+            CancellationToken cancellationToken)
         {
             // FIXME: Message may have been discarded.
-            var wantMessage = (WantMessage)msg.Content;
+            WantMessage wantMessage = (WantMessage)message.Content;
             MessageContent[] contents = wantMessage.Ids.Select(id => _cache.Get(id)).ToArray();
             MessageId[] ids = contents.Select(c => c.Id).ToArray();
 
@@ -502,23 +523,23 @@ namespace Libplanet.Net.Consensus
                 ids,
                 contents.Select(content => (content.Type, content.Id)));
 
-            await contents.ParallelForEachAsync(
-                async c =>
+            foreach (var content in contents)
+            {
+                try
                 {
-                    try
-                    {
-                        _validateMessageToSend(c);
-                        await _transport.ReplyMessageAsync(c, msg.Identity, ctx);
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Error(
-                            "Invalid message, rejecting: {Message}, {Exception}", msg, e.Message);
-                    }
-                }, ctx);
-
-            var id = msg is { Identity: null } ? "unknown" : new Guid(msg.Identity).ToString();
-            _logger.Debug("Finished replying WantMessage. {RequestId}", id);
+                    _validateMessageToSend(content);
+                    await channel.Writer
+                        .WriteAsync(content, cancellationToken)
+                        .ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "Invalid message, rejecting {Message}",
+                        message.Content);
+                }
+            }
         }
 
         /// <summary>
@@ -574,18 +595,6 @@ namespace Libplanet.Net.Consensus
                     _logger.Warning(e, msg, e);
                 }
             }
-        }
-
-        /// <summary>
-        /// Replies a <see cref="PongMsg"/> of received <paramref name="message"/>.
-        /// </summary>
-        /// <param name="message">A message to replies.</param>
-        /// <param name="ctx">A cancellation token used to propagate notification
-        /// that this operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        private async Task ReplyMessagePongAsync(Message message, CancellationToken ctx)
-        {
-            await _transport.ReplyMessageAsync(new PongMsg(), message.Identity, ctx);
         }
     }
 }

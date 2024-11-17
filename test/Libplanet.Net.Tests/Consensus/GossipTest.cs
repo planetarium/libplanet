@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Net;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Consensus;
@@ -223,7 +224,7 @@ namespace Libplanet.Net.Tests.Consensus
             var receivedEvent = new AsyncAutoResetEvent();
             var transport1 = CreateTransport(key1, 6001);
 
-            async Task HandleMessage(Message message)
+            async Task HandleMessage(Message message, Channel<MessageContent> channel)
             {
                 received = true;
                 receivedEvent.Set();
@@ -269,14 +270,10 @@ namespace Libplanet.Net.Tests.Consensus
         public async void DoNotBroadcastToSeedPeers()
         {
             bool received = false;
-            async Task ProcessMessage(Message msg)
+            Task ProcessMessage(Message message, Channel<MessageContent> channel)
             {
-                if (msg.Content is HaveMessage)
-                {
-                    received = true;
-                }
-
-                await Task.CompletedTask;
+                received = received | message.Content is HaveMessage;
+                return Task.CompletedTask;
             }
 
             ITransport seed = CreateTransport();
@@ -308,14 +305,10 @@ namespace Libplanet.Net.Tests.Consensus
         public async void DoNotSendDuplicateMessageRequest()
         {
             int received = 0;
-            async Task ProcessMessage(Message msg)
+            Task ProcessMessage(Message message, Channel<MessageContent> channel)
             {
-                if (msg.Content is WantMessage)
-                {
-                    received++;
-                }
-
-                await Task.CompletedTask;
+                received += message.Content is WantMessage ? 1 : 0;
+                return Task.CompletedTask;
             }
 
             Gossip receiver = CreateGossip(_ => { });

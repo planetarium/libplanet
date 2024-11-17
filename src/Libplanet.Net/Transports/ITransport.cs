@@ -25,7 +25,7 @@ namespace Libplanet.Net.Transports
         /// The list of tasks invoked when a message that is not
         /// a reply is received.
         /// </summary>
-        AsyncDelegate<Message> ProcessMessageHandler { get; }
+        AsyncDelegate ProcessMessageHandler { get; }
 
         /// <summary>
         /// The <em>current</em> <see cref="BoundPeer"/> representation of <see cref="ITransport"/>.
@@ -154,22 +154,5 @@ namespace Libplanet.Net.Transports
         /// <exception cref="ObjectDisposedException">Thrown when <see cref="ITransport"/> instance
         /// is already disposed.</exception>
         void BroadcastMessage(IEnumerable<BoundPeer> peers, MessageContent content);
-
-        /// <summary>
-        /// Sends a <see cref="MessageContent"/> as a reply.
-        /// </summary>
-        /// <param name="content">The <see cref="MessageContent"/> to send as a reply.</param>
-        /// <param name="identity">The byte array that represents identification of the
-        /// <see cref="MessageContent"/> to respond.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
-        Task ReplyMessageAsync(
-            MessageContent content,
-            byte[] identity,
-            CancellationToken cancellationToken);
     }
 }
