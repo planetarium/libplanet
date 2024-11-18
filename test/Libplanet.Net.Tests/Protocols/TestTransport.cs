@@ -13,6 +13,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Net.Transports;
+using Multiformats.Address;
 using Nito.AsyncEx;
 using Serilog;
 
@@ -68,6 +69,14 @@ namespace Libplanet.Net.Tests.Protocols
             Protocol = new KademliaProtocol(Table, this, Address);
             MessageHistory = new FixedSizedQueue<Message>(30);
         }
+
+#pragma warning disable CS0067 // The event is never used
+        public event EventHandler<(
+            Multiaddress RemoteAddress,
+            Message Message,
+            int ReplyCount,
+            Channel<Message> LocalInboundReplyChannel)> RequestMessageToSend;
+#pragma warning restore CS0067
 
         public AsyncDelegate ProcessMessageHandler { get; }
 
@@ -462,6 +471,14 @@ namespace Libplanet.Net.Tests.Protocols
             await Task.Delay(_networkDelay, cancellationToken);
             _transports[_peersToReply[identity]].ReceiveReply(message);
             _peersToReply.TryRemove(identity, out Address addr);
+        }
+
+        public Task ReceiveRequestMessage(
+            Multiaddress multiaddress,
+            Message requestMessage,
+            Channel<MessageContent> localOutboundReplyChannel)
+        {
+            throw new NotSupportedException();
         }
 
         public async Task WaitForTestMessageWithData(

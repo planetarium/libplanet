@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
+using Multiformats.Address;
 
 namespace Libplanet.Net.Transports
 {
@@ -21,6 +23,12 @@ namespace Libplanet.Net.Transports
     /// </remarks>
     public interface ITransport : IDisposable
     {
+        event EventHandler<(
+            Multiaddress RemoteAddress,
+            Message Message,
+            int ReplyCount,
+            Channel<Message> LocalInboundReplyChannel)> RequestMessageToSend;
+
         /// <summary>
         /// The list of tasks invoked when a message that is not
         /// a reply is received.
@@ -171,5 +179,10 @@ namespace Libplanet.Net.Transports
             MessageContent content,
             byte[] identity,
             CancellationToken cancellationToken);
+
+        Task ReceiveRequestMessage(
+            Multiaddress multiaddress,
+            Message requestMessage,
+            Channel<MessageContent> localOutboundReplyChannel);
     }
 }

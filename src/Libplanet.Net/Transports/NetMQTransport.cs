@@ -14,6 +14,7 @@ using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
 using Libplanet.Stun;
+using Multiformats.Address;
 using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
@@ -124,6 +125,14 @@ namespace Libplanet.Net.Transports
             _runningEvent = new AsyncManualResetEvent();
             ProcessMessageHandler = new AsyncDelegate();
         }
+
+#pragma warning disable CS0067 // The event is never used
+        public event EventHandler<(
+            Multiaddress RemoteAddress,
+            Message Message,
+            int ReplyCount,
+            Channel<Message> LocalInboundReplyChannel)>? RequestMessageToSend;
+#pragma warning restore CS0067
 
         /// <inheritdoc/>
         public AsyncDelegate ProcessMessageHandler { get; }
@@ -561,6 +570,14 @@ namespace Libplanet.Net.Transports
             );
 
             await ev.WaitAsync(cancellationToken);
+        }
+
+        public Task ReceiveRequestMessage(
+            Multiaddress multiaddress,
+            Message requestMessage,
+            Channel<MessageContent> localOutboundReplyChannel)
+        {
+            throw new NotSupportedException();
         }
 
         /// <summary>
