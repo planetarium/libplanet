@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Dasync.Collections;
 using Libplanet.Crypto;
@@ -447,19 +448,19 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        private async Task ProcessMessageHandler(Message message)
+        private async Task ProcessMessageHandler(Message message, Channel<MessageContent> channel)
         {
             switch (message.Content)
             {
                 case PingMsg ping:
                 {
-                    await ReceivePingAsync(message).ConfigureAwait(false);
+                    await ReceivePingAsync(message, channel).ConfigureAwait(false);
                     break;
                 }
 
                 case FindNeighborsMsg findNeighbors:
                 {
-                    await ReceiveFindPeerAsync(message).ConfigureAwait(false);
+                    await ReceiveFindPeerAsync(message, channel).ConfigureAwait(false);
                     break;
                 }
             }
@@ -635,7 +636,7 @@ namespace Libplanet.Net.Protocols
         }
 
         // Send pong back to remote
-        private async Task ReceivePingAsync(Message message)
+        private async Task ReceivePingAsync(Message message, Channel<MessageContent> channel)
         {
             var ping = (PingMsg)message.Content;
             if (message.Remote.Address.Equals(_address))
@@ -643,10 +644,7 @@ namespace Libplanet.Net.Protocols
                 throw new InvalidMessageContentException("Cannot receive ping from self.", ping);
             }
 
-            var pong = new PongMsg();
-
-            await _transport.ReplyMessageAsync(pong, message.Identity, default)
-                .ConfigureAwait(false);
+            await channel.Writer.WriteAsync(new PongMsg());
         }
 
         /// <summary>
@@ -769,16 +767,13 @@ namespace Libplanet.Net.Protocols
 
         // FIXME: this method is not safe from amplification attack
         // maybe ping/pong/ping/pong is required
-        private async Task ReceiveFindPeerAsync(Message message)
+        private async Task ReceiveFindPeerAsync(Message message, Channel<MessageContent> channel)
         {
             var findNeighbors = (FindNeighborsMsg)message.Content;
             IEnumerable<BoundPeer> found =
                 _table.Neighbors(findNeighbors.Target, _table.BucketSize, true);
 
-            var neighbors = new NeighborsMsg(found);
-
-            await _transport.ReplyMessageAsync(neighbors, message.Identity, default)
-                .ConfigureAwait(false);
+            await channel.Writer.WriteAsync(new NeighborsMsg(found));
         }
     }
 }
