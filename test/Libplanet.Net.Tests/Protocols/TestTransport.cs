@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -63,12 +64,12 @@ namespace Libplanet.Net.Tests.Protocols
             _ignoreTestMessageWithData = new List<string>();
             _random = new Random();
             Table = new RoutingTable(Address, tableSize, bucketSize);
-            ProcessMessageHandler = new AsyncDelegate<Message>();
+            ProcessMessageHandler = new AsyncDelegate();
             Protocol = new KademliaProtocol(Table, this, Address);
             MessageHistory = new FixedSizedQueue<Message>(30);
         }
 
-        public AsyncDelegate<Message> ProcessMessageHandler { get; }
+        public AsyncDelegate ProcessMessageHandler { get; }
 
         public AsyncAutoResetEvent MessageReceived { get; }
 
@@ -495,7 +496,9 @@ namespace Libplanet.Net.Tests.Protocols
                 .Any(c => c.Data == data);
         }
 
-        private void ReceiveMessage(Message message)
+#pragma warning disable S4457 // Split this method.
+        private async void ReceiveMessage(Message message)
+#pragma warning restore S4457
         {
             if (_swarmCancellationTokenSource.IsCancellationRequested)
             {
@@ -532,7 +535,14 @@ namespace Libplanet.Net.Tests.Protocols
 
             LastMessageTimestamp = DateTimeOffset.UtcNow;
             ReceivedMessages.Add(message);
-            _ = ProcessMessageHandler.InvokeAsync(message);
+            Channel<MessageContent> channel = Channel.CreateUnbounded<MessageContent>();
+            await ProcessMessageHandler.InvokeAsync(message, channel);
+            channel.Writer.Complete();
+            await foreach (var messageContent in channel.Reader.ReadAllAsync())
+            {
+                await ReplyMessageAsync(messageContent, message.Identity, default);
+            }
+
             MessageReceived.Set();
         }
 

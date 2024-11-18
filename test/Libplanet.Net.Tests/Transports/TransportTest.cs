@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -152,14 +153,11 @@ namespace Libplanet.Net.Tests.Transports
             ITransport transportA = await CreateTransportAsync().ConfigureAwait(false);
             ITransport transportB = await CreateTransportAsync().ConfigureAwait(false);
 
-            transportB.ProcessMessageHandler.Register(async message =>
+            transportB.ProcessMessageHandler.Register(async (message, channel) =>
             {
                 if (message.Content is PingMsg)
                 {
-                    await transportB.ReplyMessageAsync(
-                        new PongMsg(),
-                        message.Identity,
-                        CancellationToken.None);
+                    await channel.Writer.WriteAsync(new PongMsg());
                 }
             });
 
@@ -221,18 +219,12 @@ namespace Libplanet.Net.Tests.Transports
             ITransport transportA = await CreateTransportAsync().ConfigureAwait(false);
             ITransport transportB = await CreateTransportAsync().ConfigureAwait(false);
 
-            transportB.ProcessMessageHandler.Register(async message =>
+            transportB.ProcessMessageHandler.Register(async (message, channel) =>
             {
                 if (message.Content is PingMsg)
                 {
-                    await transportB.ReplyMessageAsync(
-                        new PingMsg(),
-                        message.Identity,
-                        default);
-                    await transportB.ReplyMessageAsync(
-                        new PongMsg(),
-                        message.Identity,
-                        default);
+                    await channel.Writer.WriteAsync(new PingMsg());
+                    await channel.Writer.WriteAsync(new PongMsg());
                 }
             });
 
@@ -370,9 +362,10 @@ namespace Libplanet.Net.Tests.Transports
             transportC.ProcessMessageHandler.Register(MessageHandler(tcsC));
             transportD.ProcessMessageHandler.Register(MessageHandler(tcsD));
 
-            Func<Message, Task> MessageHandler(TaskCompletionSource<Message> tcs)
+            Func<Message, Channel<MessageContent>, Task>
+                MessageHandler(TaskCompletionSource<Message> tcs)
             {
-                return async message =>
+                return async (message, channel) =>
                 {
                     if (message.Content is PingMsg)
                     {
