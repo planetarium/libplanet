@@ -110,11 +110,6 @@ namespace Libplanet.Net.Tests.Transports
                         default));
                 Assert.Throws<ObjectDisposedException>(
                     () => transport.BroadcastMessage(null, message));
-                await Assert.ThrowsAsync<ObjectDisposedException>(
-                    async () => await transport.ReplyMessageAsync(
-                        message,
-                        Array.Empty<byte>(),
-                        default));
 
                 // To check multiple Dispose() throws error or not.
                 transport.Dispose();

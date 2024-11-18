@@ -538,7 +538,6 @@ namespace Libplanet.Net.Transports
             );
         }
 
-        /// <inheritdoc/>
         public async Task ReplyMessageAsync(
             MessageContent content,
             byte[] identity,
