@@ -25,7 +25,7 @@ namespace Libplanet.Net.Transports
         /// The list of tasks invoked when a message that is not
         /// a reply is received.
         /// </summary>
-        AsyncDelegate<Message> ProcessMessageHandler { get; }
+        AsyncDelegate ProcessMessageHandler { get; }
 
         /// <summary>
         /// The <em>current</em> <see cref="BoundPeer"/> representation of <see cref="ITransport"/>.

@@ -122,11 +122,11 @@ namespace Libplanet.Net.Transports
             );
 
             _runningEvent = new AsyncManualResetEvent();
-            ProcessMessageHandler = new AsyncDelegate<Message>();
+            ProcessMessageHandler = new AsyncDelegate();
         }
 
         /// <inheritdoc/>
-        public AsyncDelegate<Message> ProcessMessageHandler { get; }
+        public AsyncDelegate ProcessMessageHandler { get; }
 
         /// <inheritdoc/>
         public BoundPeer AsPeer => _turnClient is TurnClient turnClient
@@ -655,7 +655,28 @@ namespace Libplanet.Net.Transports
                                 {
                                     _messageValidator.ValidateTimestamp(message);
                                     _messageValidator.ValidateAppProtocolVersion(message);
-                                    await ProcessMessageHandler.InvokeAsync(message);
+                                    Channel<MessageContent> channel =
+                                        Channel.CreateUnbounded<MessageContent>();
+                                    try
+                                    {
+                                        await ProcessMessageHandler.InvokeAsync(
+                                            message,
+                                            channel);
+                                    }
+                                    finally
+                                    {
+                                        channel.Writer.Complete();
+                                    }
+
+                                    await foreach (
+                                        var messageContent in channel.Reader.ReadAllAsync(
+                                            _runtimeCancellationTokenSource.Token))
+                                    {
+                                        await ReplyMessageAsync(
+                                            messageContent,
+                                            message.Identity ?? Array.Empty<byte>(),
+                                            _runtimeCancellationTokenSource.Token);
+                                    }
                                 }
                                 catch (InvalidMessageTimestampException imte)
                                 {
