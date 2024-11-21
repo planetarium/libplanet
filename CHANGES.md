@@ -4,29 +4,12 @@ Libplanet changelog
 Version 5.3.2
 -------------
 
-To be released.
-
-### Deprecated APIs
-
-### Backward-incompatible API changes
-
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
+Released on November 21, 2024
 
 ### Behavioral changes
 
  -  There is no longer a check at block validation time to see
     if the actions contained in a block are interpretable. [[#3973]]
-
-### Bug fixes
-
-### Dependencies
-
-### CLI tools
-
 
 [#3973]: https://github.com/planetarium/libplanet/pull/3973
 
