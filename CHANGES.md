@@ -6,6 +6,11 @@ Version 5.4.1
 
 To be released.
 
+-  Ported changes from [Libplanet 5.3.2] release.  [[#3973]]
+
+[#3973]: https://github.com/planetarium/libplanet/pull/3973
+[Libplanet 5.3.2]: https://www.nuget.org/packages/Libplanet/5.3.2
+
 
 Version 5.4.0
 -------------

@@ -652,56 +652,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [SkippableFact]
-        public void CannotAppendBlockWithInvalidActions()
-        {
-            var txSigner = new PrivateKey();
-            var unsignedInvalidTx = new UnsignedTx(
-                new TxInvoice(
-                    _blockChain.Genesis.Hash,
-                    DateTimeOffset.UtcNow,
-                    new TxActionList((IValue)List.Empty.Add(new Text("Foo")))), // Invalid action
-                new TxSigningMetadata(txSigner.PublicKey, 1));
-            var invalidTx = new Transaction(
-                unsignedInvalidTx, unsignedInvalidTx.CreateSignature(txSigner));
-            var txs = new[]
-            {
-                Transaction.Create(
-                    nonce: 0,
-                    privateKey: txSigner,
-                    genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues()),
-                invalidTx,
-                Transaction.Create(
-                    nonce: 2,
-                    privateKey: txSigner,
-                    genesisHash: _blockChain.Genesis.Hash,
-                    actions: Array.Empty<DumbAction>().ToPlainValues()),
-            }.OrderBy(tx => tx.Id);
-            var evs = Array.Empty<EvidenceBase>();
-
-            var metadata = new BlockMetadata(
-                index: 1L,
-                timestamp: DateTimeOffset.UtcNow,
-                publicKey: _fx.Proposer.PublicKey,
-                previousHash: _blockChain.Genesis.Hash,
-                txHash: BlockContent.DeriveTxHash(txs),
-                lastCommit: null,
-                evidenceHash: null);
-            var preEval = new PreEvaluationBlock(
-                preEvaluationBlockHeader: new PreEvaluationBlockHeader(
-                    metadata, metadata.DerivePreEvaluationHash()),
-                transactions: txs,
-                evidence: evs);
-            var block = preEval.Sign(
-                _fx.Proposer,
-                (HashDigest<SHA256>)_blockChain.GetNextStateRootHash(_blockChain.Tip.Hash));
-
-            Assert.Throws<InvalidActionException>(
-                () => _blockChain.Append(block, TestUtils.CreateBlockCommit(block)));
-            Assert.Equal(0, _blockChain.Tip.Index);
-        }
-
-        [SkippableFact]
         public void DoesNotMigrateStateWithoutAction()
         {
             var policy = new BlockPolicy(
