@@ -85,7 +85,8 @@ namespace Libplanet.Net.Transports
             IChannel channel,
             IPeerContext context)
         {
-            _logger.Debug("Trying to send a request message to {Remote}", context.RemotePeer.Address);
+            _logger.Debug(
+                "Trying to send a request message to {Remote}", context.RemotePeer.Address);
             (Multiaddress remoteAddress, Message message,
                 int replyCount, Channel<Message> localChannel) =
                     await requestRequests.Reader.ReadAsync();

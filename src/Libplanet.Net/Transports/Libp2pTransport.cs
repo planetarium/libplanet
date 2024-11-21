@@ -199,6 +199,38 @@ namespace Libplanet.Net.Transports
                 {
                     Message replyMessage =
                         await inboundReplyChannel.Reader.ReadAsync(linkedCts.Token);
+                    try
+                    {
+                        _messageValidator.ValidateTimestamp(replyMessage);
+                        _messageValidator.ValidateAppProtocolVersion(replyMessage);
+                    }
+                    catch (InvalidMessageTimestampException imte)
+                    {
+                        const string imteMsge =
+                            "Ignoring a reply {Reply} from {Peer} to request {Request} as " +
+                            "it has an invalid timestamp";
+                        _logger.Warning(
+                            imte,
+                            imteMsge,
+                            replyMessage.Content.Type,
+                            replyMessage.Remote,
+                            content.Type);
+                        continue;
+                    }
+                    catch (DifferentAppProtocolVersionException dapve)
+                    {
+                        const string dapveMsg =
+                            "Ignoring a reply {Reply} from {Peer} to request {Request} as " +
+                            "it has an invalid APV";
+                        _logger.Warning(
+                            dapve,
+                            dapveMsg,
+                            replyMessage.Content.Type,
+                            replyMessage.Remote,
+                            content.Type);
+                        continue;
+                    }
+
                     replyMessages.Add(replyMessage);
                 }
             }
