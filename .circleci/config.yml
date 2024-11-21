@@ -467,21 +467,37 @@ jobs:
     - netcore_test_base: { code_coverage: false }
 
 workflows:
-  main:
+  Libplanet:
     jobs:
     - linux-netcore-build:
         collect_tests_filter: "FullyQualifiedName!~Libplanet.Net.Tests & CircleCI!=Skip"
     - linux-netcore-test-netmq:
         requires: [linux-netcore-build]
     - linux-netcore-test-ar-SA:
+        filters:
+          branches:
+            only:
+              - main
         requires: [linux-netcore-build]
     - linux-netcore-test-fr-FR:
+        filters:
+          branches:
+            only:
+              - main
         requires: [linux-netcore-build]
     - macos-netcore-test:
+        filters:
+          branches:
+            only:
+              - main
         requires: [linux-netcore-build]
     - windows-netcore-test:
+        filters:
+          branches:
+            only:
+              - main
         requires: [linux-netcore-build]
-  net:
+  Libplanet.Net:
     jobs:
     - linux-netcore-build:
         name: linux-netcore-build-net
@@ -491,6 +507,10 @@ workflows:
         requires: [linux-netcore-build-net]
         parallelism: 1
     - windows-netcore-test:
+        filters:
+          branches:
+            only:
+              - main
         name: windows-netcore-test-net
         requires: [linux-netcore-build-net]
         parallelism: 1
