@@ -30,22 +30,23 @@ namespace Libplanet.Net.Transports
             IChannelFactory? upChannelFactory,
             IPeerContext context)
         {
+            // NOTE: This does not run.
             _logger.Debug(
                 "Connected to remote peer {RemotePeer} as dialer {LocalPeer}",
                 context.RemotePeer.Address,
                 context.LocalPeer.Address);
 
             // NOTE: Probably not a good idea to have unbounded channel.
-            Channel<(Multiaddress, Message, int, Channel<Message>)> requestRequests =
+            Channel<(Multiaddress, Message, int, Channel<Message>)> request =
                 Channel.CreateUnbounded<(Multiaddress, Message, int, Channel<Message>)>();
             EventHandler<(Multiaddress, Message, int, Channel<Message>)> eventHandler =
-                (object? sender, (Multiaddress, Message, int, Channel<Message>) tuple) =>
-                    requestRequests.Writer.TryWrite(tuple);
+                async (object? sender, (Multiaddress, Message, int, Channel<Message>) tuple) =>
+                    await request.Writer.WriteAsync(tuple);
 
             try
             {
                 _transport.RequestMessageToSend += eventHandler;
-                await SendAndReceiveMessage(requestRequests, downChannel, context);
+                await SendAndReceiveMessage(request, downChannel, context);
             }
             finally
             {
@@ -63,7 +64,19 @@ namespace Libplanet.Net.Transports
                 "Connected to remote peer {RemotePeer} as listener {LocalPeer}",
                 context.RemotePeer.Address,
                 context.LocalPeer.Address);
-            await ReceiveAndSendMessage(downChannel, context);
+            try
+            {
+                await ReceiveAndSendMessage(downChannel, context);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "An exception occured during receiving a message {E}", e);
+            }
+
+            _logger.Debug(
+                "Disconnecting from remote peer {RemotePeer} as listener {LocalPeer}",
+                context.RemotePeer.Address,
+                context.LocalPeer.Address);
         }
 
         private async Task SendAndReceiveMessage(
@@ -71,6 +84,7 @@ namespace Libplanet.Net.Transports
             IChannel channel,
             IPeerContext context)
         {
+            _logger.Debug("Trying to send a message to {Remote}", context.RemotePeer.Address);
             (Multiaddress remoteAddress, Message message,
                 int replyCount, Channel<Message> localChannel) =
                     await requestRequests.Reader.ReadAsync();
@@ -107,12 +121,15 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private async Task ReceiveAndSendMessage(IChannel channel, IPeerContext context)
+        private async Task ReceiveAndSendMessage(IChannel downChannel, IPeerContext context)
         {
+            _logger.Information(
+                "Trying to receive a message to reply to from {Remote}",
+                context.RemotePeer.Address);
             while (true)
             {
                 ReadOnlySequence<byte> read =
-                    await channel.ReadAsync(0, ReadBlockingMode.WaitAny).OrThrow();
+                    await downChannel.ReadAsync(0, ReadBlockingMode.WaitAny).OrThrow();
                 _logger.Debug(
                     "Reaceived a message of length {Length} from {RemotePeer}",
                     read.Length,
@@ -138,7 +155,7 @@ namespace Libplanet.Net.Transports
                         DateTimeOffset.UtcNow,
                         null);
                     byte[] replyMessageBytes = replyMessage.ToByteArray();
-                    await channel.WriteAsync(new ReadOnlySequence<byte>(replyMessageBytes));
+                    await downChannel.WriteAsync(new ReadOnlySequence<byte>(replyMessageBytes));
                     _logger.Debug(
                         "Sent a message of length {Length} to {RemotePeer}",
                         replyMessageBytes.Length,

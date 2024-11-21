@@ -73,7 +73,10 @@ namespace Libplanet.Net.Transports
         public IListener Listener => _listener ??
             throw new NullReferenceException($"{nameof(Listener)} is not set.");
 
-        public BoundPeer AsPeer => new BoundPeer(Listener.Address);
+        public Multiaddress ListenerAddress => _listenerAddress ??
+            throw new NullReferenceException($"{nameof(ListenerAddress)} is not set.");
+
+        public BoundPeer AsPeer => new BoundPeer(ListenerAddress);
 
         public DateTimeOffset? LastMessageTimestamp { get; }
 
@@ -148,7 +151,12 @@ namespace Libplanet.Net.Transports
             bool returnWhenTimeout,
             CancellationToken cancellationToken)
         {
+            _logger.Information(
+                "Trying to dial {Remote} As {LocalPeer}",
+                peer.Multiaddress,
+                LocalPeer.Address);
             IRemotePeer remote = await LocalPeer.DialAsync(peer.Multiaddress, default);
+            _logger.Information("Dialing to {Remote} successful", peer.Multiaddress);
 
             // FIXME: There should be default maximum timeout.
             CancellationTokenSource timerCts = new CancellationTokenSource();
@@ -163,12 +171,16 @@ namespace Libplanet.Net.Transports
                     cancellationToken,
                     timerCts.Token);
 
-            _ = remote
-                .DialAsync<ReqRepProtocol>(linkedCts.Token)
-                .ContinueWith(t =>
-                    _logger.Information(
-                        "Request and reply complete to {RemoteAddress}",
-                        peer.Multiaddress));
+            // FIXME: This should not be awaited. Await is temporarily here for debugging.
+            _logger.Information(
+                "Dialing to {Remote} with protocol {Protocol}",
+                remote.Address,
+                nameof(ReqRepProtocol));
+            await remote.DialAsync<ReqRepProtocol>(default);
+            _logger.Information(
+                "Dialed to {Remote} with protocol {Protocol}",
+                remote.Address,
+                nameof(ReqRepProtocol));
 
             Message message = new Message(
                 content,
@@ -180,8 +192,9 @@ namespace Libplanet.Net.Transports
             // FIXME: The tasks may not be ready to consume the message.
             // There needs to be a way to know whether the connection is ready
             // to consume the message.
-            await Task.Delay(100);
+            await Task.Delay(1_000);
             Channel<Message> inboundReplyChannel = Channel.CreateUnbounded<Message>();
+            _logger.Information("Invoking sending message");
             RequestMessageToSend?.Invoke(
                 this,
                 (peer.Multiaddress, message, 1, inboundReplyChannel));
@@ -264,17 +277,18 @@ namespace Libplanet.Net.Transports
             IServiceProvider serviceProvider,
             CancellationToken cancellationToken = default)
         {
-            string addrTemplate = "/ip4/127.0.0.1/tcp/0";
-            PrivateKey privateKey = new PrivateKey();
-            Identity identity = new Identity(
-                privateKey.ToByteArray(),
-                Nethermind.Libp2p.Core.Dto.KeyType.Secp256K1);
-
+            // FIXME: Host being null should be dealt with.
+            _logger.Information("Initialization started");
+            string localPeerAddressTemplate = $"/ip4/{_hostOptions.Host}/tcp/0";
+            string listenerAddressTemplate = $"/ip4/{_hostOptions.Host}/tcp/{_hostOptions.Port}";
             IPeerFactory peerFactory = serviceProvider.GetService<IPeerFactory>()!;
-            ILocalPeer localPeer = peerFactory.Create(identity: identity, localAddr: addrTemplate);
-
+            _logger.Information("Peer factory obtained");
+            ILocalPeer localPeer = peerFactory.Create(
+                CryptoKeyConverter.ToLibp2pIdentity(_privateKey),
+                localPeerAddressTemplate);
             _logger.Information("Local peer created at {LocalPeerAddress}", localPeer.Address);
-            IListener listener = await localPeer.ListenAsync(addrTemplate, cancellationToken);
+            IListener listener = await localPeer.ListenAsync(
+                listenerAddressTemplate, cancellationToken);
             _logger.Information("Listener started at {ListenerAddress}", listener.Address);
 
             _localPeer = localPeer;

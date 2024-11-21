@@ -10,6 +10,7 @@ namespace Libplanet.Net
 {
     public static class CryptoKeyConverter
     {
+        // NOTE: Do not use PublicKey for Identity.
         public static Identity ToLibp2pIdentity(PrivateKey privateKey) =>
             new Identity(
                 privateKey: privateKey.ToByteArray(),
