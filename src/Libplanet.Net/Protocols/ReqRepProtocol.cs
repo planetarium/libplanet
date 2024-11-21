@@ -55,6 +55,7 @@ namespace Libplanet.Net.Transports
         }
 
         // NOTE: Responsible for receiving requests and sending replys.
+        // FIXME: Maybe close channel after certain period of time.
         public async Task ListenAsync(
             IChannel downChannel,
             IChannelFactory? upChannelFactory,
@@ -84,7 +85,7 @@ namespace Libplanet.Net.Transports
             IChannel channel,
             IPeerContext context)
         {
-            _logger.Debug("Trying to send a message to {Remote}", context.RemotePeer.Address);
+            _logger.Debug("Trying to send a request message to {Remote}", context.RemotePeer.Address);
             (Multiaddress remoteAddress, Message message,
                 int replyCount, Channel<Message> localChannel) =
                     await requestRequests.Reader.ReadAsync();
@@ -93,9 +94,10 @@ namespace Libplanet.Net.Transports
                 byte[] messageBytes = message.ToByteArray();
                 await channel.WriteAsync(new ReadOnlySequence<byte>(messageBytes));
                 _logger.Debug(
-                    "Sent a message of length {Length} to {RemotePeer}",
+                    "Sent a message of length {Length} to {RemotePeer} expecting {Count} replies",
                     messageBytes.Length,
-                    context.RemotePeer.Address);
+                    context.RemotePeer.Address,
+                    replyCount);
 
                 // FIXME: This does not guarantee that the message read
                 // is the reply for the message sent.
@@ -124,50 +126,47 @@ namespace Libplanet.Net.Transports
         private async Task ReceiveAndSendMessage(IChannel downChannel, IPeerContext context)
         {
             _logger.Information(
-                "Trying to receive a message to reply to from {Remote}",
+                "Trying to receive a request message from {Remote}",
                 context.RemotePeer.Address);
-            while (true)
+            ReadOnlySequence<byte> read =
+                await downChannel.ReadAsync(0, ReadBlockingMode.WaitAny).OrThrow();
+            _logger.Debug(
+                "Reaceived a message of length {Length} from {RemotePeer}",
+                read.Length,
+                context.RemotePeer.Address);
+
+            Channel<MessageContent> outboundReplyChannel =
+                Channel.CreateUnbounded<MessageContent>();
+            Message requestMessage = Message.FromByteArray(read.ToArray(), null);
+            await _transport.ReceiveRequestMessage(
+                requestMessage.Remote.Multiaddress,
+                requestMessage,
+                outboundReplyChannel);
+            outboundReplyChannel.Writer.Complete();
+
+            int replyCount = 0;
+            await foreach (MessageContent replyMessageContent in
+                outboundReplyChannel.Reader.ReadAllAsync(default))
             {
-                ReadOnlySequence<byte> read =
-                    await downChannel.ReadAsync(0, ReadBlockingMode.WaitAny).OrThrow();
+                Message replyMessage = new Message(
+                    replyMessageContent,
+                    _transport.AppProtocolVersion,
+                    _transport.AsPeer,
+                    DateTimeOffset.UtcNow,
+                    null);
+                byte[] replyMessageBytes = replyMessage.ToByteArray();
+                await downChannel.WriteAsync(new ReadOnlySequence<byte>(replyMessageBytes));
                 _logger.Debug(
-                    "Reaceived a message of length {Length} from {RemotePeer}",
-                    read.Length,
+                    "Sent a reply message of length {Length} to {RemotePeer}",
+                    replyMessageBytes.Length,
                     context.RemotePeer.Address);
-
-                Channel<MessageContent> outboundReplyChannel =
-                    Channel.CreateUnbounded<MessageContent>();
-                Message requestMessage = Message.FromByteArray(read.ToArray(), null);
-                await _transport.ReceiveRequestMessage(
-                    requestMessage.Remote.Multiaddress,
-                    requestMessage,
-                    outboundReplyChannel);
-                outboundReplyChannel.Writer.Complete();
-
-                int replyCount = 0;
-                await foreach (MessageContent replyMessageContent in
-                    outboundReplyChannel.Reader.ReadAllAsync(default))
-                {
-                    Message replyMessage = new Message(
-                        replyMessageContent,
-                        _transport.AppProtocolVersion,
-                        _transport.AsPeer,
-                        DateTimeOffset.UtcNow,
-                        null);
-                    byte[] replyMessageBytes = replyMessage.ToByteArray();
-                    await downChannel.WriteAsync(new ReadOnlySequence<byte>(replyMessageBytes));
-                    _logger.Debug(
-                        "Sent a message of length {Length} to {RemotePeer}",
-                        replyMessageBytes.Length,
-                        context.RemotePeer.Address);
-                    replyCount++;
-                }
-
-                _logger.Debug(
-                    "Sent {Count} messages to {RemotePeer}",
-                    replyCount,
-                    context.RemotePeer.Address);
+                replyCount++;
             }
+
+            _logger.Debug(
+                "Sent {Count} reply messages to {RemotePeer}",
+                replyCount,
+                context.RemotePeer.Address);
         }
     }
 }

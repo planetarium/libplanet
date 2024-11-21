@@ -171,16 +171,8 @@ namespace Libplanet.Net.Transports
                     cancellationToken,
                     timerCts.Token);
 
-            // FIXME: This should not be awaited. Await is temporarily here for debugging.
-            _logger.Information(
-                "Dialing to {Remote} with protocol {Protocol}",
-                remote.Address,
-                nameof(ReqRepProtocol));
-            await remote.DialAsync<ReqRepProtocol>(default);
-            _logger.Information(
-                "Dialed to {Remote} with protocol {Protocol}",
-                remote.Address,
-                nameof(ReqRepProtocol));
+            // FIXME: Add logging.
+            _ = remote.DialAsync<ReqRepProtocol>(linkedCts.Token);
 
             Message message = new Message(
                 content,
@@ -192,7 +184,7 @@ namespace Libplanet.Net.Transports
             // FIXME: The tasks may not be ready to consume the message.
             // There needs to be a way to know whether the connection is ready
             // to consume the message.
-            await Task.Delay(1_000);
+            await Task.Delay(100);
             Channel<Message> inboundReplyChannel = Channel.CreateUnbounded<Message>();
             _logger.Information("Invoking sending message");
             RequestMessageToSend?.Invoke(
@@ -246,15 +238,6 @@ namespace Libplanet.Net.Transports
                 content,
                 AsPeer,
                 boundPeers.Count);
-        }
-
-        public Task ReplyMessageAsync(
-            MessageContent content,
-            byte[] identity,
-            CancellationToken cancellationToken)
-        {
-            // Does nothing.
-            return Task.CompletedTask;
         }
 
         public async Task ReceiveRequestMessage(
