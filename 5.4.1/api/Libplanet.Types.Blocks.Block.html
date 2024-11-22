@@ -1,0 +1,1224 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Block
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Block
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Blocks.Block">
+
+
+  <h1 id="Libplanet_Types_Blocks_Block" data-uid="Libplanet.Types.Blocks.Block" class="text-break">Class Block
+</h1>
+  <div class="markdown level0 summary"><p>The complete block including all block contents and action evaluation.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">Block</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a></div>
+    <div><a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html">IBlockContent</a></div>
+    <div><a class="xref" href="Libplanet.Types.Blocks.IBlockHeader.html">IBlockHeader</a></div>
+    <div><a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></div>
+    <div><a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a></div>
+    <div><a class="xref" href="Libplanet.Types.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>&gt;</div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Blocks.html">Libplanet.Types.Blocks</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
+  <h5 id="Libplanet_Types_Blocks_Block_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class Block : object, IPreEvaluationBlock, IBlockContent, IBlockHeader, IPreEvaluationBlockHeader, IBlockMetadata, IBlockExcerpt</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_IBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__IEnumerable_Libplanet_Types_Evidence_EvidenceBase__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.%23ctor(Libplanet.Types.Blocks.IBlockHeader%2CIEnumerable%7BLibplanet.Types.Tx.Transaction%7D%2CIEnumerable%7BLibplanet.Types.Evidence.EvidenceBase%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L55">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block__ctor_" data-uid="Libplanet.Types.Blocks.Block.#ctor*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_IBlockHeader_IEnumerable_Libplanet_Types_Tx_Transaction__IEnumerable_Libplanet_Types_Evidence_EvidenceBase__" data-uid="Libplanet.Types.Blocks.Block.#ctor(Libplanet.Types.Blocks.IBlockHeader,IEnumerable{Libplanet.Types.Tx.Transaction},IEnumerable{Libplanet.Types.Evidence.EvidenceBase})">Block(IBlockHeader, IEnumerable&lt;Transaction&gt;, IEnumerable&lt;EvidenceBase&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> instance by combining a block <code data-dev-comment-type="paramref" class="paramref">header</code>
+and <code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block(IBlockHeader header, IEnumerable&lt;Transaction&gt; transactions, IEnumerable&lt;EvidenceBase&gt; evidence)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.IBlockHeader.html">IBlockHeader</a></td>
+        <td><span class="parametername">header</span></td>
+        <td><p>The block header.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td><span class="parametername">transactions</span></td>
+        <td><p>The transactions to include.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>&gt;</td>
+        <td><span class="parametername">evidence</span></td>
+        <td><p>The evidence to include.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.html">InvalidBlockProtocolVersionException</a></td>
+        <td><p>Thrown when
+the <code data-dev-comment-type="paramref" class="paramref">header</code>'s <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_ProtocolVersion">ProtocolVersion</a>
+is less than 0, or greater than <a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrentProtocolVersion">CurrentProtocolVersion</a>,
+the latest known protocol version.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></td>
+        <td><p>Thrown when the <code data-dev-comment-type="paramref" class="paramref">header</code>
+has a negative <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_Index">Index</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
+        <td><p>Thrown when any tx signature is invalid or
+not signed by its signer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></td>
+        <td><p>Thrown when the same tx nonce is used by
+a signer twice or more, or a tx nonce is used without its previous nonce by a signer.
+Note that this validates only a block's intrinsic integrity between its transactions,
+but does not guarantee integrity between blocks.  Such validation needs to be conducted
+by <see cref="!:Blockchain.BlockChain"></see>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxGenesisHashException.html">InvalidTxGenesisHashException</a></td>
+        <td><p>Thrown when transactions to set have
+inconsistent genesis hashes.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockTxHashException.html">InvalidBlockTxHashException</a></td>
+        <td><p>Thrown when the given block
+<code data-dev-comment-type="paramref" class="paramref">header</code>'s <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_TxHash">TxHash</a> is not consistent with
+its <code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.html">InvalidBlockPreEvaluationHashException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">header</code> has an invalid
+<a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Types_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash">PreEvaluationHash</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_PreEvaluationBlock_System_ValueTuple_Libplanet_Common_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Types_Blocks_BlockHash__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.%23ctor(Libplanet.Types.Blocks.PreEvaluationBlock%2CSystem.ValueTuple%7BLibplanet.Common.HashDigest%7BSHA256%7D%2CSystem.Nullable%7BImmutableArray%7BSystem.Byte%7D%7D%2CLibplanet.Types.Blocks.BlockHash%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block__ctor_" data-uid="Libplanet.Types.Blocks.Block.#ctor*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block__ctor_Libplanet_Types_Blocks_PreEvaluationBlock_System_ValueTuple_Libplanet_Common_HashDigest_SHA256__System_Nullable_ImmutableArray_System_Byte___Libplanet_Types_Blocks_BlockHash__" data-uid="Libplanet.Types.Blocks.Block.#ctor(Libplanet.Types.Blocks.PreEvaluationBlock,System.ValueTuple{Libplanet.Common.HashDigest{SHA256},System.Nullable{ImmutableArray{System.Byte}},Libplanet.Types.Blocks.BlockHash})">Block(PreEvaluationBlock, (HashDigest&lt;SHA256&gt; StateRootHash, Nullable&lt;ImmutableArray&lt;Byte&gt;&gt; Signature, BlockHash Hash))</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> instance by combining
+a <code data-dev-comment-type="paramref" class="paramref">preEvaluationBlock</code>, its corresponding
+<code data-dev-comment-type="paramref" class="paramref">proof.StateRootHash.StateRootHash</code>, valid <code data-dev-comment-type="paramref" class="paramref">proof.Signature.Signature</code>,
+and correctly derived <code data-dev-comment-type="paramref" class="paramref">proof.Hash.Hash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block(PreEvaluationBlock preEvaluationBlock, (HashDigest&lt;SHA256&gt; StateRootHash, ImmutableArray&lt;byte&gt;? Signature, BlockHash Hash) proof)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlock.html">PreEvaluationBlock</a></td>
+        <td><span class="parametername">preEvaluationBlock</span></td>
+        <td><p>A pre-evaluation block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;, <span class="xref">System.Nullable</span>&lt;<span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;, <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="parametername">proof</span></td>
+        <td><p>A triple of the state root hash, the block signature,
+and the block hash.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_CurrentProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.CurrentProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L22">View Source</a>
+  </span>
+  <h4 id="Libplanet_Types_Blocks_Block_CurrentProtocolVersion" data-uid="Libplanet.Types.Blocks.Block.CurrentProtocolVersion">CurrentProtocolVersion</h4>
+  <div class="markdown level1 summary"><p>The latest protocol version.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int CurrentProtocolVersion = null</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Evidence.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Evidence%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L135">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Evidence_" data-uid="Libplanet.Types.Blocks.Block.Evidence*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Evidence" data-uid="Libplanet.Types.Blocks.Block.Evidence">Evidence</h4>
+  <div class="markdown level1 summary"><p>The complete block including all block contents and action evaluation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;EvidenceBase&gt; Evidence { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Evidence.EvidenceBase.html">EvidenceBase</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_EvidenceHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.EvidenceHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L132">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_EvidenceHash_" data-uid="Libplanet.Types.Blocks.Block.EvidenceHash*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_EvidenceHash" data-uid="Libplanet.Types.Blocks.Block.EvidenceHash">EvidenceHash</h4>
+  <div class="markdown level1 summary"><p>Committing <a class="xref" href="Libplanet.Types.Evidence.EvidenceId.html">EvidenceId</a>s of vote infraction
+that has been made on previous blocks.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt;? EvidenceHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Hash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Hash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L97">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Hash_" data-uid="Libplanet.Types.Blocks.Block.Hash*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Hash" data-uid="Libplanet.Types.Blocks.Block.Hash">Hash</h4>
+  <div class="markdown level1 summary"><p>A block's hash.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHash Hash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Blocks_Block_Hash_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Types_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash">PreEvaluationHash</a></div>
+      <div><a class="xref" href="Libplanet.Types.Blocks.IBlockHeader.html#Libplanet_Types_Blocks_IBlockHeader_StateRootHash">StateRootHash</a></div>
+      <div><a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Hash">Hash</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Header.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Header%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L90">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Header_" data-uid="Libplanet.Types.Blocks.Block.Header*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Header" data-uid="Libplanet.Types.Blocks.Block.Header">Header</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html">BlockHeader</a> of the block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHeader Header { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html">BlockHeader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Index.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Index%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L111">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Index_" data-uid="Libplanet.Types.Blocks.Block.Index*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Index" data-uid="Libplanet.Types.Blocks.Block.Index">Index</h4>
+  <div class="markdown level1 summary"><p>The height of the block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Index { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Blocks_Block_Index_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Zero means it is a genesis block.  Not allowed to be negative.</p>
+</div>
+  <h5 id="Libplanet_Types_Blocks_Block_Index_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Index">Index</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_LastCommit.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.LastCommit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L129">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_LastCommit_" data-uid="Libplanet.Types.Blocks.Block.LastCommit*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_LastCommit" data-uid="Libplanet.Types.Blocks.Block.LastCommit">LastCommit</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a> about previous block's vote information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockCommit LastCommit { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Miner.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Miner%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L114">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Miner_" data-uid="Libplanet.Types.Blocks.Block.Miner*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Miner" data-uid="Libplanet.Types.Blocks.Block.Miner">Miner</h4>
+  <div class="markdown level1 summary"><p>The address of the miner.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address Miner { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_PreEvaluationHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.PreEvaluationHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L105">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_PreEvaluationHash_" data-uid="Libplanet.Types.Blocks.Block.PreEvaluationHash*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_PreEvaluationHash" data-uid="Libplanet.Types.Blocks.Block.PreEvaluationHash">PreEvaluationHash</h4>
+  <div class="markdown level1 summary"><p>The hash derived from the block <em>except of</em> its state root hash (i.e., without
+action evaluation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt; PreEvaluationHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_PreviousHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.PreviousHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L120">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_PreviousHash_" data-uid="Libplanet.Types.Blocks.Block.PreviousHash*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_PreviousHash" data-uid="Libplanet.Types.Blocks.Block.PreviousHash">PreviousHash</h4>
+  <div class="markdown level1 summary"><p>The previous block's hash.  If it's a genesis block (i.e., its <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_Index">Index</a> is 0)
+this must be <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHash? PreviousHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_ProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.ProtocolVersion%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L94">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_ProtocolVersion_" data-uid="Libplanet.Types.Blocks.Block.ProtocolVersion*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_ProtocolVersion" data-uid="Libplanet.Types.Blocks.Block.ProtocolVersion">ProtocolVersion</h4>
+  <div class="markdown level1 summary"><p>The protocol version number.  For the latest protocol version, see
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrentProtocolVersion">CurrentProtocolVersion</a>.  We have the following
+version info:</p>
+<ul><li>
+0: The initial block protocol version number.  This is not actually recorded in
+storage.  That is, the lack of block protocol version in a stored block means it
+is of version 0.
+</li><li>
+1: Introduced to be stored with the block data.  Validation for
+<a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html#Libplanet_Types_Blocks_IPreEvaluationBlockHeader_PreEvaluationHash">PreEvaluationHash</a> was added.
+</li><li>
+2: Updated to include <a class="xref" href="Libplanet.Types.Blocks.IBlockHeader.html#Libplanet_Types_Blocks_IBlockHeader_Signature">Signature</a> to blocks.  As a result,
+the miner&apos;s identity is provided as a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>
+instead of a <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>.  Additionally, total difficulty was added.
+</li><li>
+3: Updated to fix an issue with the internal execution ordering
+of <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s in blocks.
+</li><li>
+4: Updated to introduce a PBFT scheme.  <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_LastCommit">LastCommit</a> was added and
+total difficulty was removed.
+</li><li>
+5: Updated to introduce a world model.  No structural changes were made to blocks.
+This is used as a marker indicating when the data model should be migrated.
+</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ProtocolVersion { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Blocks_Block_ProtocolVersion_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_CurrentProtocolVersion">CurrentProtocolVersion</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L117">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_PublicKey_" data-uid="Libplanet.Types.Blocks.Block.PublicKey*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_PublicKey" data-uid="Libplanet.Types.Blocks.Block.PublicKey">PublicKey</h4>
+  <div class="markdown level1 summary"><p>The public key of the <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_Miner">Miner</a>.  This is used for verifying the signature.</p>
+<p>Although this is nullable type-wise, it is mandatory where
+<a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_ProtocolVersion">ProtocolVersion</a> is 2 or later.  As blocks had not been signed in
+the previous protocol versions, the type of this is nullable.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PublicKey PublicKey { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L100">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Signature_" data-uid="Libplanet.Types.Blocks.Block.Signature*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Signature" data-uid="Libplanet.Types.Blocks.Block.Signature">Signature</h4>
+  <div class="markdown level1 summary"><p>
+The digital signature of the whole block content (except for
+<a class="xref" href="Libplanet.Types.Blocks.IBlockExcerpt.html#Libplanet_Types_Blocks_IBlockExcerpt_Hash">Hash</a>, which is derived from the signature and other
+contents).  This is made by the <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_Miner">Miner</a>&apos;s
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.
+</p>
+<p>
+As the block signature is introduced since
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SignatureProtocolVersion">SignatureProtocolVersion</a>, it is
+<span class="xref">null</span> for blocks with earlier protocol versions than
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SignatureProtocolVersion">SignatureProtocolVersion</a>.  Although
+the property is type-wise, the block signature is mandatory since
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_SignatureProtocolVersion">SignatureProtocolVersion</a>.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt;? Signature { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_StateRootHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.StateRootHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L108">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_StateRootHash_" data-uid="Libplanet.Types.Blocks.Block.StateRootHash*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_StateRootHash" data-uid="Libplanet.Types.Blocks.Block.StateRootHash">StateRootHash</h4>
+  <div class="markdown level1 summary"><p>The <see cref="!:ITrie.Hash"></see> of the resulting states after evaluating transactions and
+a <see cref="!:Blockchain.Policies.IBlockPolicy.BlockAction"></see> (if exists).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt; StateRootHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L123">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Timestamp_" data-uid="Libplanet.Types.Blocks.Block.Timestamp*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Timestamp" data-uid="Libplanet.Types.Blocks.Block.Timestamp">Timestamp</h4>
+  <div class="markdown level1 summary"><p>The time the block is created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Blocks_Block_Timestamp_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is always UTC.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Transactions.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Transactions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L138">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Transactions_" data-uid="Libplanet.Types.Blocks.Block.Transactions*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Transactions" data-uid="Libplanet.Types.Blocks.Block.Transactions">Transactions</h4>
+  <div class="markdown level1 summary"><p>Transactions belonging to the block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Transaction&gt; Transactions { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_TxHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.TxHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L126">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_TxHash_" data-uid="Libplanet.Types.Blocks.Block.TxHash*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_TxHash" data-uid="Libplanet.Types.Blocks.Block.TxHash">TxHash</h4>
+  <div class="markdown level1 summary"><p>The hash of all transactions in the block.  This is <span class="xref">null</span> if the block
+has no transactions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt;? TxHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Equals_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Equals(Libplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L164">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Equals_" data-uid="Libplanet.Types.Blocks.Block.Equals*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Equals_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Types.Blocks.Block.Equals(Libplanet.Types.Blocks.Block)">Equals(Block)</h4>
+  <div class="markdown level1 summary"><p>The complete block including all block contents and action evaluation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(Block other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L175">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Equals_" data-uid="Libplanet.Types.Blocks.Block.Equals*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Blocks.Block.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>The complete block including all block contents and action evaluation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L179">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_GetHashCode_" data-uid="Libplanet.Types.Blocks.Block.GetHashCode*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_GetHashCode" data-uid="Libplanet.Types.Blocks.Block.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>The complete block including all block contents and action evaluation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L183">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_ToString_" data-uid="Libplanet.Types.Blocks.Block.ToString*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_ToString" data-uid="Libplanet.Types.Blocks.Block.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>The complete block including all block contents and action evaluation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_op_Equality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.op_Equality(Libplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L150">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_op_Equality_" data-uid="Libplanet.Types.Blocks.Block.op_Equality*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_op_Equality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Types.Blocks.Block.op_Equality(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block)">Equality(Block, Block)</h4>
+  <div class="markdown level1 summary"><p>Equivalent to <see cref="!:IEquatable&lt;T>.Equals(T)"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Block left, Block right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">left</span></td>
+        <td><p>A block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">right</span></td>
+        <td><p>Another block.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if two blocks are equal.
+Otherwise <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_op_Inequality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.op_Inequality(Libplanet.Types.Blocks.Block%2CLibplanet.Types.Blocks.Block)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L160">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_op_Inequality_" data-uid="Libplanet.Types.Blocks.Block.op_Inequality*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_op_Inequality_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_Block_" data-uid="Libplanet.Types.Blocks.Block.op_Inequality(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.Block)">Inequality(Block, Block)</h4>
+  <div class="markdown level1 summary"><p>Negation of <see cref="!:IEquatable&lt;T>.Equals(T)"></see>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Block left, Block right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">left</span></td>
+        <td><p>A block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></td>
+        <td><span class="parametername">right</span></td>
+        <td><p>Another block.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if two blocks are different.
+Otherwise <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_IBlockContent_Transactions.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block.Libplanet%23Types%23Blocks%23IBlockContent%23Transactions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L141">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_IBlockContent_Transactions_" data-uid="Libplanet.Types.Blocks.Block.Libplanet#Types#Blocks#IBlockContent#Transactions*"></a>
+  <h4 id="Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_IBlockContent_Transactions" data-uid="Libplanet.Types.Blocks.Block.Libplanet#Types#Blocks#IBlockContent#Transactions">IBlockContent.Transactions</h4>
+  <div class="markdown level1 summary"><p>Transactions belonging to the block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IReadOnlyList&lt;ITransaction&gt; IBlockContent.Transactions { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html">IBlockContent</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.IBlockHeader.html">IBlockHeader</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.BlockMarshaler.html#Libplanet_Types_Blocks_BlockMarshaler_MarshalBlock_Libplanet_Types_Blocks_Block_">BlockMarshaler.MarshalBlock(Block)</a>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.4.1/apiSpec/new?filename=Libplanet_Types_Blocks_Block.md&amp;value=---%0Auid%3A%20Libplanet.Types.Blocks.Block%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.4.1/src/Libplanet.Types/Blocks/Block.cs/#L17" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
