@@ -398,7 +398,7 @@ jobs:
         default: ""
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
-    resource_class: xlarge
+    resource_class: large
     working_directory: /mnt/ramdisk
     steps:
     - netcore_build_base:
@@ -413,7 +413,7 @@ jobs:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
     environment:
       TRANSPORT_TYPE: netmq
-    resource_class: xlarge
+    resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: <<parameters.parallelism>>
     steps:
@@ -423,7 +423,7 @@ jobs:
   linux-netcore-test-ar-SA:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
-    resource_class: xlarge
+    resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 4
     steps:
@@ -434,7 +434,7 @@ jobs:
   linux-netcore-test-fr-FR:
     docker:
     - image: mcr.microsoft.com/dotnet/sdk:6.0
-    resource_class: xlarge
+    resource_class: large
     working_directory: /mnt/ramdisk
     parallelism: 4
     steps:
@@ -461,7 +461,7 @@ jobs:
         default: 6
     executor:
       name: win/server-2022
-      size: xlarge
+      size: large
     parallelism: <<parameters.parallelism>>
     steps:
     - netcore_test_base: { code_coverage: false }
