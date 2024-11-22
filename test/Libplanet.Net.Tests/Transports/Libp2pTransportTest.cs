@@ -21,7 +21,7 @@ namespace Libplanet.Net.Tests.Transports
     public class Libp2pTransportTest : IDisposable
     {
         private bool _disposed;
-        private Serilog.ILogger _logger;
+        private ILogger _logger;
 
         public Libp2pTransportTest(ITestOutputHelper testOutputHelper)
         {
@@ -49,14 +49,17 @@ namespace Libplanet.Net.Tests.Transports
             HostOptions hostOptions = new HostOptions("127.0.0.1", new IceServer[] { }, freePort);
             Libp2pTransport transport = new Libp2pTransport(
                 privateKey,
-                default,
+                new AppProtocolVersionOptions(),
                 hostOptions);
             Assert.Throws<NullReferenceException>(() => transport.AsPeer);
             Assert.Throws<NullReferenceException>(() => transport.LocalPeer);
             Assert.Throws<NullReferenceException>(() => transport.Listener);
             Assert.Throws<NullReferenceException>(() => transport.ListenerAddress);
 
-            await transport.Initialize(GetServiceProvider(transport));
+            transport = await Libp2pTransport.Create(
+                privateKey,
+                new AppProtocolVersionOptions(),
+                hostOptions);
             BoundPeer expected = new BoundPeer(
                 CryptoKeyConverter.ToLibplanetPublicKey(
                     CryptoKeyConverter.ToLibp2pIdentity(privateKey).PublicKey),
@@ -121,19 +124,12 @@ namespace Libplanet.Net.Tests.Transports
                 .ToList();
             List<Libp2pTransport> transports = Enumerable
                 .Range(0, 2)
-                .Select(i => new Libp2pTransport(
+                .Select(async i => await Libp2pTransport.Create(
                     privateKeys[i],
                     new AppProtocolVersionOptions(),
                     hosts[i]))
+                .Select(task => task.Result)
                 .ToList();
-            List<IServiceProvider> serviceProviders = transports
-                .Select(transport => GetServiceProvider(transport))
-                .ToList();
-
-            for (int i = 0; i < count; i++)
-            {
-                await transports[i].Initialize(serviceProviders[i]);
-            }
 
             IRemotePeer remote0 = await transports[0].LocalPeer.DialAsync(
                 transports[1].ListenerAddress, default);
@@ -155,19 +151,12 @@ namespace Libplanet.Net.Tests.Transports
             List<int> freePorts = TestUtils.GetFreePorts(2);
             List<Libp2pTransport> transports = Enumerable
                 .Range(0, count)
-                .Select(i => new Libp2pTransport(
+                .Select(async i => await Libp2pTransport.Create(
                     privateKeys[i],
                     new AppProtocolVersionOptions(),
                     new HostOptions("127.0.0.1", new IceServer[] { }, freePorts[i])))
+                .Select(task => task.Result)
                 .ToList();
-            List<IServiceProvider> serviceProviders = transports
-                .Select(transport => GetServiceProvider(transport))
-                .ToList();
-
-            for (int i = 0; i < count; i++)
-            {
-                await transports[i].Initialize(serviceProviders[i]);
-            }
 
             transports[1].ProcessMessageHandler.Register(async (message, channel) =>
             {

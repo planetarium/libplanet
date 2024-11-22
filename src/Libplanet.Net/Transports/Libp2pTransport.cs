@@ -12,6 +12,7 @@ using Libplanet.Net.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Multiformats.Address;
 using Nethermind.Libp2p.Core;
+using Nethermind.Libp2p.Stack;
 using Serilog;
 
 namespace Libplanet.Net.Transports
@@ -91,7 +92,6 @@ namespace Libplanet.Net.Transports
             _appProtocolVersionOptions.DifferentAppProtocolVersionEncountered;
 
         public static async Task<Libp2pTransport> Create(
-            IServiceProvider serviceProvider,
             PrivateKey privateKey,
             AppProtocolVersionOptions appProtocolVersionOptions,
             HostOptions hostOptions,
@@ -102,6 +102,10 @@ namespace Libplanet.Net.Transports
                 appProtocolVersionOptions,
                 hostOptions,
                 messageTimestampBuffer);
+            var serviceProvider = new ServiceCollection()
+                .AddLibp2p(builder => builder
+                    .AddAppLayerProtocol<ReqRepProtocol>(new ReqRepProtocol(transport)))
+                .BuildServiceProvider();
             await transport.Initialize(serviceProvider);
             return transport;
         }
@@ -288,7 +292,7 @@ namespace Libplanet.Net.Transports
             _disposed = true;
         }
 
-        public async Task Initialize(
+        private async Task Initialize(
             IServiceProvider serviceProvider,
             CancellationToken cancellationToken = default)
         {
