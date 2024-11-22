@@ -1,8 +1,7 @@
+using System;
 using Libplanet.Crypto;
 using Nethermind.Libp2p.Core;
 using Xunit;
-using Libp2pKeyType = Nethermind.Libp2p.Core.Dto.KeyType;
-using Libp2pPrivateKey = Nethermind.Libp2p.Core.Dto.PrivateKey;
 using Libp2pPublicKey = Nethermind.Libp2p.Core.Dto.PublicKey;
 
 namespace Libplanet.Net.Tests
@@ -12,15 +11,18 @@ namespace Libplanet.Net.Tests
         [Fact]
         public void KeyConversionEquality()
         {
-            PrivateKey privateKey1 = new PrivateKey();
-            Libp2pPrivateKey libp2pPrivateKey = CryptoKeyConverter.ToLibp2pPrivateKey(privateKey1);
-            PrivateKey privateKey2 = CryptoKeyConverter.ToLibplanetPrivateKey(libp2pPrivateKey);
-            Assert.Equal(privateKey1, privateKey2);
+            PrivateKey privateKey = new PrivateKey();
 
-            PublicKey publicKey1 = privateKey1.PublicKey;
-            Libp2pPublicKey libp2pPublicKey = CryptoKeyConverter.ToLibp2pPublicKey(publicKey1);
-            PublicKey publicKey2 = CryptoKeyConverter.ToLibplanetPublicKey(libp2pPublicKey);
+            PublicKey publicKey1 = privateKey.PublicKey;
+            Libp2pPublicKey libp2pPublicKey1 = CryptoKeyConverter.ToLibp2pPublicKey(publicKey1);
+            PublicKey publicKey2 = CryptoKeyConverter.ToLibplanetPublicKey(libp2pPublicKey1);
             Assert.Equal(publicKey1, publicKey2);
+
+            Libp2pPublicKey libp2pPublicKey2 =
+                CryptoKeyConverter.ToLibp2pIdentity(privateKey).PublicKey;
+            PublicKey publicKey3 = CryptoKeyConverter.ToLibplanetPublicKey(libp2pPublicKey2);
+            Assert.Equal(publicKey1, publicKey3);
+            Assert.Equal(libp2pPublicKey1, libp2pPublicKey2);
         }
 
         [Fact]
@@ -34,17 +36,26 @@ namespace Libplanet.Net.Tests
         }
 
         [Fact]
-        public void IdentityConversionEquality()
+        public void CompareSignatures()
         {
-            // NOTE: PublicKey derived from Identity(PrivateKey) may be different from
-            // PublicKey directly derived from PrivateKey.
             PrivateKey privateKey = new PrivateKey();
-            Identity identity1 = new Identity(
-                privateKey.ToByteArray(),
-                Libp2pKeyType.Secp256K1);
-            Identity identity2 = new Identity(
-                CryptoKeyConverter.ToLibp2pPrivateKey(privateKey));
-            Assert.Equal(identity1.PeerId, identity2.PeerId);
+            Identity identity = new Identity(CryptoKeyConverter.ToLibp2pPrivateKey(privateKey));
+
+            // Make sure keys are the same.
+            Assert.Equal(
+                privateKey.PublicKey,
+                CryptoKeyConverter.ToLibplanetPublicKey(identity.PublicKey));
+
+            Random random = new Random();
+            byte[] message = new byte[1024];
+            random.NextBytes(message);
+            byte[] libplanetSignature = privateKey.Sign(message);
+            byte[] libp2pSignature = identity.Sign(message);
+            Assert.NotEqual(libplanetSignature, libp2pSignature);
+            Assert.True(privateKey.PublicKey.Verify(message, libplanetSignature));
+            Assert.True(identity.VerifySignature(message, libp2pSignature));
+            Assert.True(privateKey.PublicKey.Verify(message, libp2pSignature));
+            Assert.True(identity.VerifySignature(message, libplanetSignature));
         }
     }
 }

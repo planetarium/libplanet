@@ -8,29 +8,27 @@ using Libp2pPublicKey = Nethermind.Libp2p.Core.Dto.PublicKey;
 
 namespace Libplanet.Net
 {
+    // FIXME: LibplanetPrivateKey to Libp2pPrivateKey conversion is missing.
     public static class CryptoKeyConverter
     {
         // NOTE: Do not use PublicKey for Identity.
         public static Identity ToLibp2pIdentity(PrivateKey privateKey) =>
             new Identity(
-                privateKey: privateKey.ToByteArray(),
+                privateKey: privateKey.ToByteArray(unsigned: false),
                 keyType: Libp2pKeyType.Secp256K1);
 
         public static Libp2pPrivateKey ToLibp2pPrivateKey(PrivateKey privateKey) =>
             new Libp2pPrivateKey()
             {
+                Data = ByteString.CopyFrom(privateKey.ToByteArray(unsigned: false)),
                 Type = Libp2pKeyType.Secp256K1,
-                Data = ByteString.CopyFrom(privateKey.ToByteArray()),
             };
-
-        public static PrivateKey ToLibplanetPrivateKey(Libp2pPrivateKey privateKey) =>
-            new PrivateKey(privateKey.Data.ToByteArray());
 
         public static Libp2pPublicKey ToLibp2pPublicKey(PublicKey publicKey) =>
             new Libp2pPublicKey()
             {
-                Type = Libp2pKeyType.Secp256K1,
                 Data = ByteString.CopyFrom(publicKey.Format(true)),
+                Type = Libp2pKeyType.Secp256K1,
             };
 
         // NOTE: This assumes all keys are secp256k1.
