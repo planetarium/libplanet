@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.4.1
 -------------
 
-To be released.
+Released on November 22, 2024.
 
 -  Ported changes from [Libplanet 5.3.2] release.  [[#3973]]
 
