@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -18,8 +19,10 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Net.Tests.Transports
 {
+    [CollectionDefinition(nameof(Libp2pTransportTest), DisableParallelization = true)]
     public class Libp2pTransportTest : IDisposable
     {
+        public const int Timeout = 30_000;
         private bool _disposed;
         private ILogger _logger;
 
@@ -41,7 +44,7 @@ namespace Libplanet.Net.Tests.Transports
             Dispose(false);
         }
 
-        [Fact(Timeout = 10_000)]
+        [Fact(Timeout = Timeout)]
         public async Task Initialize()
         {
             PrivateKey privateKey = new PrivateKey();
@@ -67,10 +70,16 @@ namespace Libplanet.Net.Tests.Transports
             Assert.Equal(expected, transport.AsPeer);
         }
 
-        [Fact(Timeout = 10_000)]
-        public async Task DialToListeners()
+        [Theory(Timeout = Timeout)]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task DialToListeners(bool usePortZero)
         {
+            // NOTE: Using port 0 does not work for this test.
             int count = 2;
+            List<int> freePorts = usePortZero
+                ? Enumerable.Range(0, count).Select(_ => 0).ToList()
+                : TestUtils.GetFreePorts(count);
             List<PrivateKey> privateKeys = Enumerable
                 .Range(0, count)
                 .Select(_ => new PrivateKey())
@@ -80,7 +89,7 @@ namespace Libplanet.Net.Tests.Transports
                 .Select(i => new Libp2pTransport(
                     privateKeys[i],
                     new AppProtocolVersionOptions(),
-                    new HostOptions("127.0.0.1", new IceServer[] { }, 0)))
+                    new HostOptions("127.0.0.1", new IceServer[] { }, freePorts[i])))
                 .ToList();
             List<IServiceProvider> serviceProviders = transports
                 .Select(transport => GetServiceProvider(transport))
@@ -92,11 +101,12 @@ namespace Libplanet.Net.Tests.Transports
                 .Range(0, count)
                 .Select(i => peerFactories[i].Create(
                     CryptoKeyConverter.ToLibp2pIdentity(privateKeys[i]),
-                    "/ip4/127.0.0.1/tcp/0"))
+                    $"/ip4/127.0.0.1/tcp/{freePorts[i]}"))
                 .ToList();
-            List<IListener> listeners = localPeers
-                .Select(async localPeer =>
-                    await localPeer.ListenAsync("/ip4/127.0.0.1/tcp/0", default))
+            List<IListener> listeners = Enumerable
+                .Range(0, count)
+                .Select(async i =>
+                    await localPeers[i].ListenAsync($"/ip4/127.0.0.1/tcp/{freePorts[i]}", default))
                 .Select(task => task.Result)
                 .ToList();
             List<Multiaddress> listenerAddresses = listeners
@@ -110,15 +120,37 @@ namespace Libplanet.Net.Tests.Transports
             Assert.Equal(listenerAddresses[0], remote1.Address);
         }
 
-        [Fact(Timeout = 10_000)]
-        public async Task DialToTransports()
+        [Fact(Timeout = Timeout)]
+        public async Task DialCancel()
+        {
+            PrivateKey privateKey = new PrivateKey();
+            List<int> freePorts = TestUtils.GetFreePorts(2);
+            Libp2pTransport transport = await Libp2pTransport.Create(
+                privateKey,
+                new AppProtocolVersionOptions(),
+                new HostOptions("127.0.0.1", new IceServer[] { }, freePorts[0]));
+
+            Identity identity = CryptoKeyConverter.ToLibp2pIdentity(new PrivateKey());
+            Multiaddress badAddress = $"/ip4/127.0.0.1/tcp/{freePorts[1]}/p2p/{identity.PeerId}";
+            CancellationTokenSource cts = new CancellationTokenSource();
+            cts.CancelAfter(1_000);
+            await Assert.ThrowsAsync<TaskCanceledException>(
+                async () => await transport.LocalPeer.DialAsync(badAddress, cts.Token));
+        }
+
+        [Theory(Timeout = Timeout)]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task DialToTransports(bool usePortZero)
         {
             int count = 2;
+            List<int> freePorts = usePortZero
+                ? Enumerable.Range(0, count).Select(_ => 0).ToList()
+                : TestUtils.GetFreePorts(count);
             List<PrivateKey> privateKeys = Enumerable
                 .Range(0, count)
                 .Select(_ => new PrivateKey())
                 .ToList();
-            List<int> freePorts = TestUtils.GetFreePorts(2);
             List<HostOptions> hosts = freePorts
                 .Select(freePort => new HostOptions("127.0.0.1", new IceServer[] { }, freePort))
                 .ToList();
@@ -140,15 +172,19 @@ namespace Libplanet.Net.Tests.Transports
             Assert.Equal(transports[0].ListenerAddress, remote1.Address);
         }
 
-        [Fact(Timeout = 10_000)]
-        public async Task RequestReply()
+        [Theory(Timeout = Timeout)]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task RequestReply(bool usePortZero)
         {
             int count = 2;
+            List<int> freePorts = usePortZero
+                ? Enumerable.Range(0, count).Select(_ => 0).ToList()
+                : TestUtils.GetFreePorts(count);
             List<PrivateKey> privateKeys = Enumerable
                 .Range(0, count)
                 .Select(_ => new PrivateKey())
                 .ToList();
-            List<int> freePorts = TestUtils.GetFreePorts(2);
             List<Libp2pTransport> transports = Enumerable
                 .Range(0, count)
                 .Select(async i => await Libp2pTransport.Create(
@@ -166,15 +202,54 @@ namespace Libplanet.Net.Tests.Transports
                 }
             });
 
-            List<Message> reply = (await transports[0].SendMessageAsync(
+            Message reply = await transports[0].SendMessageAsync(
                 transports[1].AsPeer,
                 new PingMsg(),
                 TimeSpan.FromSeconds(5),
-                1,
-                true,
-                default)).ToList();
-            Message single = Assert.Single<Message>(reply);
-            Assert.IsType<PongMsg>(single.Content);
+                default);
+            Assert.IsType<PongMsg>(reply.Content);
+        }
+
+        [Theory(Timeout = Timeout)]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Broadcast(bool usePortZero)
+        {
+            int count = 4;
+            List<int> freePorts = usePortZero
+                ? Enumerable.Range(0, count).Select(_ => 0).ToList()
+                : TestUtils.GetFreePorts(count);
+            List<PrivateKey> privateKeys = Enumerable
+                .Range(0, count)
+                .Select(_ => new PrivateKey())
+                .ToList();
+            List<Libp2pTransport> transports = Enumerable
+                .Range(0, count)
+                .Select(async i => await Libp2pTransport.Create(
+                    privateKeys[i],
+                    new AppProtocolVersionOptions(),
+                    new HostOptions("127.0.0.1", new IceServer[] { }, freePorts[i])))
+                .Select(task => task.Result)
+                .ToList();
+
+            int receivedCount = 0;
+            foreach (var transport in transports.Skip(1).ToList())
+            {
+                transport.ProcessMessageHandler.Register(async (message, channel) =>
+                {
+                    if (message.Content is PingMsg)
+                    {
+                        await channel.Writer.WriteAsync(new PongMsg());
+                        receivedCount++;
+                    }
+                });
+            }
+
+            transports[0].BroadcastMessage(
+                transports.Skip(1).Select(transport => transport.AsPeer).ToList(),
+                new PingMsg());
+            await Task.Delay(1_000);
+            Assert.Equal(count - 1, receivedCount);
         }
 
         public void Dispose()

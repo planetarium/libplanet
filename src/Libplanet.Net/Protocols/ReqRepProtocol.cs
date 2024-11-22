@@ -46,6 +46,10 @@ namespace Libplanet.Net.Transports
             try
             {
                 _transport.RequestMessageToSend += eventHandler;
+                _logger.Debug(
+                    "Ready to send a request message to {RemotePeer} as {LocalPeer}",
+                    context.RemotePeer.Address,
+                    context.LocalPeer.Address);
                 await SendAndReceiveMessage(request, downChannel, context);
             }
             finally

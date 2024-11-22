@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Dasync.Collections;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
@@ -21,6 +20,8 @@ namespace Libplanet.Net.Transports
     public class Libp2pTransport : ITransport
 #pragma warning restore S101
     {
+        public const int DialProtocolDelay = 100;
+
         private readonly PrivateKey _privateKey;
         private readonly ILogger _logger;
         private readonly HostOptions _hostOptions;
@@ -33,6 +34,7 @@ namespace Libplanet.Net.Transports
         private Multiaddress? _listenerAddress = null;
 
         private CancellationTokenSource _runtimeCancellationTokenSource;
+        private bool _running = false;
         private bool _disposed = false;
 
         public Libp2pTransport(
@@ -81,7 +83,7 @@ namespace Libplanet.Net.Transports
 
         public DateTimeOffset? LastMessageTimestamp { get; }
 
-        public bool Running { get; }
+        public bool Running => _running;
 
         public AppProtocolVersion AppProtocolVersion { get; }
 
@@ -113,12 +115,14 @@ namespace Libplanet.Net.Transports
         public Task StartAsync(CancellationToken cancellationToken = default)
         {
             // Does nothing.
+            _running = true;
             return Task.CompletedTask;
         }
 
         public Task StopAsync(TimeSpan waitFor, CancellationToken cancellationToken = default)
         {
             // Does nothing.
+            _running = false;
             _runtimeCancellationTokenSource.Cancel();
             return Task.CompletedTask;
         }
@@ -155,13 +159,6 @@ namespace Libplanet.Net.Transports
             bool returnWhenTimeout,
             CancellationToken cancellationToken)
         {
-            _logger.Information(
-                "Trying to dial {Remote} As {LocalPeer}",
-                peer.Multiaddress,
-                LocalPeer.Address);
-            IRemotePeer remote = await LocalPeer.DialAsync(peer.Multiaddress, default);
-            _logger.Information("Dialing to {Remote} successful", peer.Multiaddress);
-
             // FIXME: There should be default maximum timeout.
             CancellationTokenSource timerCts = new CancellationTokenSource();
             if (timeout is { } timeoutNotNull)
@@ -174,6 +171,16 @@ namespace Libplanet.Net.Transports
                     _runtimeCancellationTokenSource.Token,
                     cancellationToken,
                     timerCts.Token);
+
+            _logger.Verbose(
+                "Trying to dial {Remote} as {LocalPeer}",
+                peer.Multiaddress,
+                LocalPeer.Address);
+            IRemotePeer remote = await LocalPeer.DialAsync(peer.Multiaddress);
+            _logger.Verbose(
+                "Dialing to {Remote} as {LocalPeer} was successful",
+                peer.Multiaddress,
+                LocalPeer.Address);
 
             // FIXME: Add logging.
             _ = remote.DialAsync<ReqRepProtocol>(linkedCts.Token);
@@ -188,12 +195,12 @@ namespace Libplanet.Net.Transports
             // FIXME: The tasks may not be ready to consume the message.
             // There needs to be a way to know whether the connection is ready
             // to consume the message.
-            await Task.Delay(100);
+            await Task.Delay(DialProtocolDelay);
             Channel<Message> inboundReplyChannel = Channel.CreateUnbounded<Message>();
             _logger.Information("Invoking sending message");
             RequestMessageToSend?.Invoke(
                 this,
-                (peer.Multiaddress, message, 1, inboundReplyChannel));
+                (remote.Address, message, 1, inboundReplyChannel));
 
             List<Message> replyMessages = new List<Message>();
 
@@ -248,26 +255,33 @@ namespace Libplanet.Net.Transports
                     replyMessages.Count);
             }
 
-            return returnWhenTimeout
-                ? replyMessages
-                : new List<Message>();
+#pragma warning disable S3358 // Extract this ternary expresion.
+            return timerCts.IsCancellationRequested
+                ? returnWhenTimeout
+                    ? replyMessages
+                    : new List<Message>()
+                : replyMessages;
+#pragma warning restore S3358
         }
 
         public void BroadcastMessage(IEnumerable<BoundPeer> peers, MessageContent content)
         {
             if (_disposed)
             {
-                throw new ObjectDisposedException(nameof(NetMQTransport));
+                throw new ObjectDisposedException(nameof(Libp2pTransport));
             }
 
             CancellationToken ct = _runtimeCancellationTokenSource.Token;
             List<BoundPeer> boundPeers = peers.ToList();
-            Task.Run(
-                async () =>
-                    await boundPeers.ParallelForEachAsync(
-                        peer => SendMessageAsync(peer, content, TimeSpan.FromSeconds(1), ct),
-                        ct),
-                ct);
+
+            // FIXME: Parallel does not work.
+            // Also should catch an exception and ignore it.
+            foreach (var boundPeer in boundPeers)
+            {
+                _ = SendMessageAsync(boundPeer, content, TimeSpan.FromSeconds(1), ct)
+                    .GetAwaiter()
+                    .GetResult();
+            }
 
             _logger.Debug(
                 "Broadcasting message {Message} as {AsPeer} to {PeerCount} peers",
@@ -298,16 +312,12 @@ namespace Libplanet.Net.Transports
         {
             // FIXME: Host being null should be dealt with.
             _logger.Information("Initialization started");
-            string localPeerAddressTemplate = $"/ip4/{_hostOptions.Host}/tcp/0";
-            string listenerAddressTemplate = $"/ip4/{_hostOptions.Host}/tcp/{_hostOptions.Port}";
+            string addressTemplate = $"/ip4/{_hostOptions.Host}/tcp/{_hostOptions.Port}";
             IPeerFactory peerFactory = serviceProvider.GetService<IPeerFactory>()!;
-            _logger.Information("Peer factory obtained");
             ILocalPeer localPeer = peerFactory.Create(
-                CryptoKeyConverter.ToLibp2pIdentity(_privateKey),
-                localPeerAddressTemplate);
+                CryptoKeyConverter.ToLibp2pIdentity(_privateKey), addressTemplate);
             _logger.Information("Local peer created at {LocalPeerAddress}", localPeer.Address);
-            IListener listener = await localPeer.ListenAsync(
-                listenerAddressTemplate, cancellationToken);
+            IListener listener = await localPeer.ListenAsync(addressTemplate, cancellationToken);
             _logger.Information("Listener started at {ListenerAddress}", listener.Address);
 
             _localPeer = localPeer;
