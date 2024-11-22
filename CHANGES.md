@@ -51,6 +51,17 @@ Released on November 13, 2024.
 [#3974]: https://github.com/planetarium/libplanet/pull/3974
 
 
+Version 5.3.2
+-------------
+
+Released on November 21, 2024
+
+ -  There is no longer a check at block validation time to see
+    if the actions contained in a block are interpretable. [[#3973]]
+
+[#3973]: https://github.com/planetarium/libplanet/pull/3973
+
+
 Version 5.3.1
 -------------
 
