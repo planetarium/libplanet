@@ -662,10 +662,26 @@ namespace Libplanet.Net.Transports
                                         channel.Writer.Complete();
                                     }
 
+#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
                                     await foreach (
                                         var messageContent in channel.Reader.ReadAllAsync(
                                             _runtimeCancellationTokenSource.Token))
                                     {
+#else
+                                    while (true)
+                                    {
+                                        MessageContent messageContent;
+                                        try
+                                        {
+                                            messageContent = await channel.Reader.ReadAsync(
+                                                _runtimeCancellationTokenSource.Token);
+                                        }
+                                        catch (ChannelClosedException)
+                                        {
+                                            break;
+                                        }
+
+#endif
                                         await ReplyMessageAsync(
                                             messageContent,
                                             message.Identity ?? Array.Empty<byte>(),
