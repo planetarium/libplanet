@@ -13,6 +13,8 @@ To be released.
  -  Changed `IMessageCodec.Encode(MessageContent, PrivateKey,
     AppProtocolVersion, BoundPeer, DateTimeOffset, byte[]?)` to
     `IMessageCodec.Encode(Message, PrivateKey)`.  [[#3997]]
+ -  Removed `ITransport.ReplyMessageAsync()` interface method.  [[#3998]]
+ -  Changed `AsyncDelegate<T>` class to `AsyncDelegate`.  [[#3998]]
 
 ### Backward-incompatible network protocol changes
 
@@ -29,6 +31,7 @@ To be released.
 ### CLI tools
 
 [#3997]: https://github.com/planetarium/libplanet/pull/3997
+[#3998]: https://github.com/planetarium/libplanet/pull/3998
 
 
 Version 5.4.0
