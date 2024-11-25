@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
 using Libplanet.Types.Blocks;
@@ -15,13 +16,15 @@ namespace Libplanet.Net
         private readonly NullableSemaphore _transferTxsSemaphore;
         private readonly NullableSemaphore _transferEvidenceSemaphore;
 
-        private Task ProcessMessageHandlerAsync(Message message)
+        private async Task ProcessMessageHandlerAsync(
+            Message message,
+            Channel<MessageContent> channel)
         {
             switch (message.Content)
             {
                 case PingMsg _:
                 case FindNeighborsMsg _:
-                    return Task.CompletedTask;
+                    return;
 
                 case GetChainStatusMsg getChainStatus:
                 {
@@ -38,10 +41,8 @@ namespace Libplanet.Net
                         tip.Hash
                     );
 
-                    return Transport.ReplyMessageAsync(
-                        chainStatus,
-                        message.Identity,
-                        default);
+                    await channel.Writer.WriteAsync(chainStatus).ConfigureAwait(false);
+                    return;
                 }
 
                 case GetBlockHashesMsg getBlockHashes:
@@ -60,53 +61,47 @@ namespace Libplanet.Net
                         getBlockHashes.Locator.Hash);
                     var reply = new BlockHashesMsg(hashes);
 
-                    return Transport.ReplyMessageAsync(reply, message.Identity, default);
+                    await channel.Writer.WriteAsync(reply).ConfigureAwait(false);
+                    return;
                 }
 
                 case GetBlocksMsg getBlocksMsg:
-                    return TransferBlocksAsync(message);
+                    await TransferBlocksAsync(message, channel);
+                    return;
 
                 case GetTxsMsg getTxs:
-                    return TransferTxsAsync(message);
+                    await TransferTxsAsync(message, channel);
+                    return;
 
                 case GetEvidenceMsg getTxs:
-                    return TransferEvidenceAsync(message);
+                    await TransferEvidenceAsync(message, channel);
+                    return;
 
                 case TxIdsMsg txIds:
                     ProcessTxIds(message);
-                    return Transport.ReplyMessageAsync(
-                        new PongMsg(),
-                        message.Identity,
-                        default
-                    );
+                    await channel.Writer.WriteAsync(new PongMsg()).ConfigureAwait(false);
+                    return;
 
                 case EvidenceIdsMsg evidenceIds:
                     ProcessEvidenceIds(message);
-                    return Transport.ReplyMessageAsync(
-                        new PongMsg(),
-                        message.Identity,
-                        default
-                    );
+                    await channel.Writer.WriteAsync(new PongMsg()).ConfigureAwait(false);
+                    return;
 
                 case BlockHashesMsg _:
                     _logger.Error(
                         "{MessageType} messages are only for IBD",
                         nameof(BlockHashesMsg));
-                    return Task.CompletedTask;
+                    return;
 
                 case BlockHeaderMsg blockHeader:
                     ProcessBlockHeader(message);
-                    return Transport.ReplyMessageAsync(
-                        new PongMsg(),
-                        message.Identity,
-                        default
-                    );
+                    await channel.Writer.WriteAsync(new PongMsg()).ConfigureAwait(false);
+                    return;
 
                 default:
                     throw new InvalidMessageContentException(
                         $"Failed to handle message: {message.Content}",
-                        message.Content
-                    );
+                        message.Content);
             }
         }
 
@@ -192,7 +187,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task TransferTxsAsync(Message message)
+        private async Task TransferTxsAsync(Message message, Channel<MessageContent> channel)
         {
             if (!await _transferTxsSemaphore.WaitAsync(TimeSpan.Zero, _cancellationToken))
             {
@@ -218,7 +213,7 @@ namespace Libplanet.Net
                         }
 
                         MessageContent response = new TxMsg(tx.Serialize());
-                        await Transport.ReplyMessageAsync(response, message.Identity, default);
+                        await channel.Writer.WriteAsync(response).ConfigureAwait(false);
                     }
                     catch (KeyNotFoundException)
                     {
@@ -252,7 +247,7 @@ namespace Libplanet.Net
             TxCompletion.Demand(message.Remote, txIdsMsg.Ids);
         }
 
-        private async Task TransferBlocksAsync(Message message)
+        private async Task TransferBlocksAsync(Message message, Channel<MessageContent> channel)
         {
             if (!await _transferBlocksSemaphore.WaitAsync(TimeSpan.Zero, _cancellationToken))
             {
@@ -304,7 +299,7 @@ namespace Libplanet.Net
                             count,
                             total
                         );
-                        await Transport.ReplyMessageAsync(response, message.Identity, default);
+                        await channel.Writer.WriteAsync(response).ConfigureAwait(false);
                         payloads.Clear();
                     }
                 }
@@ -317,7 +312,7 @@ namespace Libplanet.Net
                         count,
                         total,
                         reqId);
-                    await Transport.ReplyMessageAsync(response, message.Identity, default);
+                    await channel.Writer.WriteAsync(response).ConfigureAwait(false);
                 }
 
                 if (count == 0)
@@ -328,7 +323,7 @@ namespace Libplanet.Net
                         count,
                         total,
                         reqId);
-                    await Transport.ReplyMessageAsync(response, message.Identity, default);
+                    await channel.Writer.WriteAsync(response).ConfigureAwait(false);
                 }
 
                 _logger.Debug("{Count} blocks were transferred to {Identity}", count, reqId);

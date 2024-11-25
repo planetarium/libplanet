@@ -64,15 +64,7 @@ namespace Libplanet.Net.Tests.Transports
                     new HostOptions(IPAddress.Loopback.ToString(), new IceServer[] { }, 0)
                 ).ConfigureAwait(false);
                 transport.ProcessMessageHandler.Register(
-                    async m =>
-                    {
-                        await transport.ReplyMessageAsync(
-                            new PongMsg(),
-                            m.Identity,
-                            CancellationToken.None
-                        );
-                    }
-                );
+                    async (m, c) => await c.Writer.WriteAsync(new PongMsg()));
                 await InitializeAsync(transport);
 
                 string invalidHost = Guid.NewGuid().ToString();
