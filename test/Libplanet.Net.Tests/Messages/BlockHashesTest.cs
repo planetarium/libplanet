@@ -23,20 +23,22 @@ namespace Libplanet.Net.Tests.Messages
         public void Decode()
         {
             BlockHash[] blockHashes = GenerateRandomBlockHashes(100L).ToArray();
-            var msg = new BlockHashesMsg(blockHashes);
-            Assert.Equal(blockHashes, msg.Hashes);
+            var messageContent = new BlockHashesMsg(blockHashes);
+            Assert.Equal(blockHashes, messageContent.Hashes);
             var privateKey = new PrivateKey();
             AppProtocolVersion apv = AppProtocolVersion.Sign(privateKey, 3);
             var peer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234));
             var messageCodec = new NetMQMessageCodec();
             NetMQMessage encoded = messageCodec.Encode(
-                msg,
-                privateKey,
-                apv,
-                peer,
-                DateTimeOffset.UtcNow);
+                new Message(
+                    messageContent,
+                    apv,
+                    peer,
+                    DateTimeOffset.UtcNow,
+                    null),
+                privateKey);
             BlockHashesMsg restored = (BlockHashesMsg)messageCodec.Decode(encoded, true).Content;
-            Assert.Equal(msg.Hashes, restored.Hashes);
+            Assert.Equal(messageContent.Hashes, restored.Hashes);
         }
 
         private static IEnumerable<BlockHash> GenerateRandomBlockHashes(long count)

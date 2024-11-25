@@ -28,10 +28,10 @@ namespace Libplanet.Net.Tests.Messages
                 default(Address));
             var dateTimeOffset = DateTimeOffset.UtcNow;
             Block genesis = ProposeGenesisBlock(GenesisProposer);
-            var message = new BlockHeaderMsg(genesis.Hash, genesis.Header);
+            var messageContent = new BlockHeaderMsg(genesis.Hash, genesis.Header);
             var codec = new NetMQMessageCodec();
-            NetMQMessage raw =
-                codec.Encode(message, privateKey, apv, peer, dateTimeOffset);
+            NetMQMessage raw = codec.Encode(
+                new Message(messageContent, apv, peer, dateTimeOffset, null), privateKey);
             var parsed = codec.Decode(raw, true);
             Assert.Equal(peer, parsed.Remote);
         }
@@ -39,7 +39,7 @@ namespace Libplanet.Net.Tests.Messages
         [Fact]
         public void InvalidCredential()
         {
-            var message = new PingMsg();
+            var ping = new PingMsg();
             var privateKey = new PrivateKey();
             var apv = new AppProtocolVersion(
                 1,
@@ -51,7 +51,8 @@ namespace Libplanet.Net.Tests.Messages
             var badPrivateKey = new PrivateKey();
             var codec = new NetMQMessageCodec();
             Assert.Throws<InvalidCredentialException>(() =>
-                codec.Encode(message, badPrivateKey, apv, peer, timestamp));
+                codec.Encode(
+                    new Message(ping, apv, peer, timestamp, null), badPrivateKey));
         }
 
         [Fact]
@@ -68,11 +69,13 @@ namespace Libplanet.Net.Tests.Messages
                 default(Address));
             var ping = new PingMsg();
             var codec = new NetMQMessageCodec();
-            var netMqMessage = codec.Encode(ping, privateKey, apv, peer, timestamp).ToArray();
+            var netMqMessage = codec.Encode(
+                new Message(ping, apv, peer, timestamp, null), privateKey).ToArray();
 
             // Attacker
             var fakePeer = new BoundPeer(privateKey.PublicKey, new DnsEndPoint("1.2.3.4", 0));
-            var fakeMessage = codec.Encode(ping, privateKey, apv, fakePeer, timestamp).ToArray();
+            var fakeMessage = codec.Encode(
+                new Message(ping, apv, fakePeer, timestamp, null), privateKey).ToArray();
 
             var frames = new NetMQMessage();
             frames.Push(netMqMessage[4]);

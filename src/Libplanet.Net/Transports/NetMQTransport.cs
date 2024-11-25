@@ -38,7 +38,7 @@ namespace Libplanet.Net.Transports
         private readonly AsyncManualResetEvent _runningEvent;
         private readonly ActivitySource _activitySource;
 
-        private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>? _replyQueue;
+        private NetMQQueue<(AsyncManualResetEvent, Message)>? _replyQueue;
 
         private RouterSocket? _router;
         private NetMQPoller? _routerPoller;
@@ -203,7 +203,7 @@ namespace Libplanet.Net.Transports
             _turnCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
-            _replyQueue = new NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>();
+            _replyQueue = new NetMQQueue<(AsyncManualResetEvent, Message)>();
             _routerPoller = new NetMQPoller { _router!, _replyQueue };
 
             _router!.ReceiveReady += ReceiveMessage!;
@@ -349,19 +349,15 @@ namespace Libplanet.Net.Transports
 
             try
             {
-                DateTimeOffset now = DateTimeOffset.UtcNow;
-                NetMQMessage rawMessage = _messageCodec.Encode(
-                    content,
-                    _privateKey,
-                    _appProtocolVersionOptions.AppProtocolVersion,
-                    AsPeer,
-                    DateTimeOffset.UtcNow
-                );
                 var req = new MessageRequest(
                     reqId,
-                    rawMessage,
+                    new Message(
+                        content,
+                        _appProtocolVersionOptions.AppProtocolVersion,
+                        AsPeer,
+                        DateTimeOffset.UtcNow,
+                        null),
                     peer,
-                    now,
                     expectedResponses,
                     channel,
                     linkedCt);
@@ -550,14 +546,12 @@ namespace Libplanet.Net.Transports
             _replyQueue!.Enqueue(
                 (
                     ev,
-                    _messageCodec.Encode(
+                    new Message(
                         content,
-                        _privateKey,
                         _appProtocolVersionOptions.AppProtocolVersion,
                         AsPeer,
                         DateTimeOffset.UtcNow,
-                        identity
-                    )
+                        identity)
                 )
             );
 
@@ -724,25 +718,28 @@ namespace Libplanet.Net.Transports
 
         private void DoReply(
             object? sender,
-            NetMQQueueEventArgs<(AsyncManualResetEvent, NetMQMessage)> e
+            NetMQQueueEventArgs<(AsyncManualResetEvent, Message)> e
         )
         {
-            (AsyncManualResetEvent ev, NetMQMessage message) = e.Queue.Dequeue();
-            string reqId = message[0].Buffer.Length == 16 ?
-                new Guid(message[0].ToByteArray()).ToString() : "unknown";
-            string messageType = _messageCodec.ParseMessageType(message, false).ToString();
+            (AsyncManualResetEvent ev, Message message) = e.Queue.Dequeue();
+            string reqId = message.Identity is { } identity && identity.Length == 16
+                ? new Guid(identity).ToString()
+                : "unknown";
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
+            NetMQMessage netMQMessage = _messageCodec.Encode(message, _privateKey);
+            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
             {
                 _logger.Debug(
-                    "{Message} as a reply to {Identity} sent", messageType, reqId);
+                    "{Message} as a reply to {Identity} sent", message.Content.Type, reqId);
             }
             else
             {
                 _logger.Debug(
-                    "Failed to send {Message} as a reply to {Identity}", messageType, reqId);
+                    "Failed to send {Message} as a reply to {Identity}",
+                    message.Content.Type,
+                    reqId);
             }
 
             ev.Set();
@@ -763,11 +760,10 @@ namespace Libplanet.Net.Transports
                 _logger.Verbose(waitMsg);
                 MessageRequest req = await reader.ReadAsync(cancellationToken);
 #endif
-                string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
                 long left = Interlocked.Decrement(ref _requestCount);
                 _logger.Debug(
                     "Request {Message} {RequestId} taken for processing; {Count} requests left",
-                    messageType,
+                    req.Message.Content.Type,
                     req.Id,
                     left);
 
@@ -783,21 +779,20 @@ namespace Libplanet.Net.Transports
 
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
-            string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
             _logger.Debug(
                 "Request {Message} {RequestId} is ready to be processed in {TimeSpan}",
-                messageType,
+                req.Message.Content.Type,
                 req.Id,
-                DateTimeOffset.UtcNow - req.RequestedTime);
+                DateTimeOffset.UtcNow - req.Message.Timestamp);
 
             Channel<NetMQMessage> channel = req.Channel;
 
             _logger.Debug(
                 "Trying to send request {Message} {RequestId} to {Peer}",
-                messageType,
+                req.Message.Content.Type,
                 req.Id,
                 req.Peer
             );
@@ -817,7 +812,7 @@ namespace Libplanet.Net.Transports
                     _logger.Debug(
                         "Trying to connect to {Peer} for request {Message} {RequestId}",
                         req.Peer,
-                        messageType,
+                        req.Message.Content.Type,
                         req.Id);
                     dealer.Connect(await req.Peer.ResolveNetMQAddressAsync());
                     incrementedSocketCount = Interlocked.Increment(ref _socketCount);
@@ -828,7 +823,7 @@ namespace Libplanet.Net.Transports
                             "{SocketCount} sockets open for processing request " +
                             "{Message} {RequestId}",
                             incrementedSocketCount,
-                            messageType,
+                            req.Message.Content.Type,
                             req.Id);
                 }
                 catch (NetMQException nme)
@@ -843,17 +838,20 @@ namespace Libplanet.Net.Transports
                             nme,
                             logMsg,
                             Interlocked.Read(ref _socketCount),
-                            messageType,
+                            req.Message.Content.Type,
                             req.Id);
                     throw;
                 }
 
-                if (dealer.TrySendMultipartMessage(req.Message))
+                var netMQMessage = _messageCodec.Encode(
+                    req.Message,
+                    _privateKey);
+                if (dealer.TrySendMultipartMessage(netMQMessage))
                 {
                     _logger.Debug(
                         "Request {RequestId} {Message} sent to {Peer}",
                         req.Id,
-                        messageType,
+                        req.Message.Content.Type,
                         req.Peer);
                 }
                 else
@@ -861,11 +859,11 @@ namespace Libplanet.Net.Transports
                     _logger.Debug(
                         "Failed to send {RequestId} {Message} to {Peer}",
                         req.Id,
-                        messageType,
+                        req.Message.Content.Type,
                         req.Peer);
 
                     throw new SendMessageFailException(
-                        $"Failed to send {messageType} to {req.Peer}.",
+                        $"Failed to send {req.Message.Content.Type} to {req.Peer}.",
                         req.Peer);
                 }
 
@@ -893,7 +891,7 @@ namespace Libplanet.Net.Transports
                 _logger.Error(
                     e,
                     "Failed to process {Message} {RequestId}; discarding it",
-                    messageType,
+                    req.Message.Content.Type,
                     req.Id);
                 channel.Writer.TryComplete(e);
             }
@@ -918,7 +916,7 @@ namespace Libplanet.Net.Transports
                         "processed in {DurationMs} ms with {ReceivedCount} replies received " +
                         "out of {ExpectedCount} expected replies",
                         req.Id,
-                        messageType,
+                        req.Message.Content.Type,
                         stopwatch.ElapsedMilliseconds,
                         receivedCount,
                         req.ExpectedResponses);
@@ -980,13 +978,12 @@ namespace Libplanet.Net.Transports
             );
         }
 
-        private readonly struct MessageRequest
+        private class MessageRequest
         {
             public MessageRequest(
                 in Guid id,
-                NetMQMessage message,
+                Message message,
                 BoundPeer peer,
-                DateTimeOffset requestedTime,
                 in int expectedResponses,
                 Channel<NetMQMessage> channel,
                 CancellationToken cancellationToken)
@@ -994,7 +991,6 @@ namespace Libplanet.Net.Transports
                 Id = id;
                 Message = message;
                 Peer = peer;
-                RequestedTime = requestedTime;
                 ExpectedResponses = expectedResponses;
                 Channel = channel;
                 CancellationToken = cancellationToken;
@@ -1002,11 +998,9 @@ namespace Libplanet.Net.Transports
 
             public Guid Id { get; }
 
-            public NetMQMessage Message { get; }
+            public Message Message { get; }
 
             public BoundPeer Peer { get; }
-
-            public DateTimeOffset RequestedTime { get; }
 
             public int ExpectedResponses { get; }
 

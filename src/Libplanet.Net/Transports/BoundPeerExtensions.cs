@@ -35,11 +35,13 @@ namespace Libplanet.Net.Transports
             var ping = new PingMsg();
             var netMQMessageCodec = new NetMQMessageCodec();
             NetMQMessage request = netMQMessageCodec.Encode(
-                ping,
-                privateKey,
-                default,
-                new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0)),
-                DateTimeOffset.UtcNow);
+                new Message(
+                    ping,
+                    default,
+                    new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0)),
+                    DateTimeOffset.UtcNow,
+                    null),
+                privateKey);
 
             TimeSpan timeoutNotNull = timeout ?? TimeSpan.FromSeconds(5);
             try

@@ -10,6 +10,10 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Changed `IMessageCodec.Encode(MessageContent, PrivateKey,
+    AppProtocolVersion, BoundPeer, DateTimeOffset, byte[]?)` to
+    `IMessageCodec.Encode(Message, PrivateKey)`.  [[#3997]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -23,6 +27,8 @@ To be released.
 ### Dependencies
 
 ### CLI tools
+
+[#3997]: https://github.com/planetarium/libplanet/pull/3997
 
 
 Version 5.4.0

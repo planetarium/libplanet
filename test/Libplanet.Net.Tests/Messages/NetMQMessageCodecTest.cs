@@ -63,16 +63,18 @@ namespace Libplanet.Net.Tests.Messages
                 new Bencodex.Types.Integer(0),
                 ImmutableArray<byte>.Empty,
                 default(Address));
-            var message = CreateMessage(type);
+            var messageContent = CreateMessage(type);
             var codec = new NetMQMessageCodec();
             NetMQMessage raw =
-                codec.Encode(message, privateKey, apv, peer, dateTimeOffset);
+                codec.Encode(
+                    new Message(messageContent, apv, peer, dateTimeOffset, null),
+                    privateKey);
             var parsed = codec.Decode(raw, true);
             Assert.Equal(apv, parsed.Version);
             Assert.Equal(peer, parsed.Remote);
             Assert.Equal(dateTimeOffset, parsed.Timestamp);
-            Assert.IsType(message.GetType(), parsed.Content);
-            Assert.Equal(message.DataFrames, parsed.Content.DataFrames);
+            Assert.IsType(messageContent.GetType(), parsed.Content);
+            Assert.Equal(messageContent.DataFrames, parsed.Content.DataFrames);
         }
 
         private MessageContent CreateMessage(MessageContent.MessageType type)

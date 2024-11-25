@@ -13,8 +13,6 @@ namespace Libplanet.Net.Messages
         public static readonly int CommonFrames =
             Enum.GetValues(typeof(MessageFrame)).Length;
 
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
         private readonly Codec _codec;
 
         /// <summary>
@@ -53,38 +51,34 @@ namespace Libplanet.Net.Messages
             Sign = 4,
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IMessageCodec{T}.Encode"/>
         public NetMQMessage Encode(
-            MessageContent content,
-            PrivateKey privateKey,
-            AppProtocolVersion appProtocolVersion,
-            BoundPeer peer,
-            DateTimeOffset timestamp,
-            byte[]? identity = null)
+            Message message,
+            PrivateKey privateKey)
         {
-            if (!privateKey.PublicKey.Equals(peer.PublicKey))
+            if (!privateKey.PublicKey.Equals(message.Remote.PublicKey))
             {
                 throw new InvalidCredentialException(
-                    $"An invalid private key was provided: " +
-                    $"the provided private key's expected public key is {peer.PublicKey} " +
+                    $"An invalid private key was provided: the provided private key's " +
+                    $"expected public key is {message.Remote.PublicKey} " +
                     $"but its actual public key is {privateKey.PublicKey}.",
-                    peer.PublicKey,
+                    message.Remote.PublicKey,
                     privateKey.PublicKey);
             }
 
             var netMqMessage = new NetMQMessage();
 
             // Write body (by concrete class)
-            foreach (byte[] frame in content.DataFrames)
+            foreach (byte[] frame in message.Content.DataFrames)
             {
                 netMqMessage.Append(frame);
             }
 
             // Write headers. (inverse order, version-type-peer-timestamp)
-            netMqMessage.Push(timestamp.Ticks);
-            netMqMessage.Push(_codec.Encode(peer.Bencoded));
-            netMqMessage.Push((int)content.Type);
-            netMqMessage.Push(appProtocolVersion.Token);
+            netMqMessage.Push(message.Timestamp.Ticks);
+            netMqMessage.Push(_codec.Encode(message.Remote.Bencoded));
+            netMqMessage.Push((int)message.Content.Type);
+            netMqMessage.Push(message.Version.Token);
 
             // Make and insert signature
             byte[] signature = privateKey.Sign(netMqMessage.ToByteArray());
@@ -92,31 +86,15 @@ namespace Libplanet.Net.Messages
             frames.Insert((int)MessageFrame.Sign, new NetMQFrame(signature));
             netMqMessage = new NetMQMessage(frames);
 
-            if (identity != null)
+            if (message.Identity is { })
             {
-                netMqMessage.Push(identity);
+                netMqMessage.Push(message.Identity);
             }
 
             return netMqMessage;
         }
 
-        /// <summary>
-        /// Parses a <see cref="MessageContent.MessageType"/> from given <see cref="NetMQMessage"/>.
-        /// </summary>
-        /// <param name="encoded">A encoded <see cref="NetMQMessage"/>.</param>
-        /// <param name="reply">A flag to express whether the target is a reply of other message.
-        /// </param>
-        /// <exception cref="IndexOutOfRangeException">Thrown if given <see cref="NetMQMessage"/>
-        /// has not enough <see cref="NetMQFrame"/> for parsing a message type.</exception>
-        /// <returns>Returns a <see cref="MessageContent.MessageType"/> of given
-        /// <paramref name="encoded"/>. If given value cannot be
-        /// interpreted in <see cref="MessageContent.MessageType"/>,
-        /// this would return a integer number.</returns>
-        public MessageContent.MessageType ParseMessageType(NetMQMessage encoded, bool reply)
-            => (MessageContent.MessageType)encoded[(int)MessageFrame.Type + (reply ? 0 : 1)]
-                .ConvertToInt32();
-
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IMessageCodec{T}.Decode"/>
         public Message Decode(NetMQMessage encoded, bool reply)
         {
             if (encoded.FrameCount == 0)
