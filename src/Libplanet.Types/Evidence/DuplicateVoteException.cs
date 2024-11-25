@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Types.Evidence
@@ -51,42 +49,11 @@ namespace Libplanet.Types.Evidence
             VoteDup = voteDup;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/>
-        /// class with serialized data.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/>
-        /// that holds the serialized object data about the exception being thrown.
-        /// </param>
-        /// <param name="context">The <see cref="StreamingContext"/>
-        /// that contains contextual information about the source or destination.
-        /// </param>
-        protected DuplicateVoteException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            VoteRef =
-                info.GetValue(nameof(VoteRef), typeof(Vote)) as Vote ??
-                throw new SerializationException(
-                    $"{nameof(Vote)} is expected to be a non-null {nameof(Vote)}.");
-            VoteDup =
-                info.GetValue(nameof(VoteRef), typeof(Vote)) as Vote ??
-                throw new SerializationException(
-                    $"{nameof(Vote)} is expected to be a non-null {nameof(Vote)}.");
-        }
-
         public Vote VoteRef { get; }
 
         public Vote VoteDup { get; }
 
         public override long Height => VoteRef.Height;
-
-        public override void GetObjectData(
-            SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Vote), VoteRef);
-            info.AddValue(nameof(Vote), VoteDup);
-        }
 
         protected override EvidenceBase OnCreateEvidence(IEvidenceContext evidenceContext)
         {

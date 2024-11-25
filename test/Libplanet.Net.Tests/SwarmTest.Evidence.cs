@@ -22,22 +22,23 @@ namespace Libplanet.Net.Tests
     public partial class SwarmTest
     {
         [Fact(Timeout = Timeout)]
-        public async Task DuplicateVote_Test()
+        public async Task DuplicateVoteTest()
         {
             var policy = new NullBlockPolicy();
             var genesisBlock = new MemoryStoreFixture(policy.PolicyActionsRegistry).GenesisBlock;
             var genesisProposer = Libplanet.Tests.TestUtils.GenesisProposer;
             var privateKeys = Libplanet.Tests.TestUtils.ValidatorPrivateKeys.ToArray();
             var count = privateKeys.Length;
+            var freePorts = TestUtils.GetFreePorts(count);
             var consensusPeers = Enumerable.Range(0, count).Select(i =>
                 new BoundPeer(
                     privateKeys[i].PublicKey,
-                    new DnsEndPoint("127.0.0.1", 6000 + i))).ToImmutableList();
+                    new DnsEndPoint("127.0.0.1", freePorts[i]))).ToImmutableList();
             var reactorOptions = Enumerable.Range(0, count).Select(i =>
                 new ConsensusReactorOption
                 {
                     ConsensusPeers = consensusPeers,
-                    ConsensusPort = 6000 + i,
+                    ConsensusPort = consensusPeers[i].EndPoint.Port,
                     ConsensusPrivateKey = privateKeys[i],
                     ConsensusWorkers = 100,
                     TargetBlockInterval = TimeSpan.FromSeconds(4),

@@ -33,13 +33,15 @@ namespace Libplanet.Net.Transports
             using var dealerSocket = new DealerSocket(ToNetMQAddress(peer));
             var privateKey = new PrivateKey();
             var ping = new PingMsg();
-            var netMQMessageCodec = new NetMQMessageCodec();
-            NetMQMessage request = netMQMessageCodec.Encode(
-                ping,
-                privateKey,
-                default,
-                new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0)),
-                DateTimeOffset.UtcNow);
+            var messageCodec = new NetMQMessageCodec();
+            NetMQMessage request = messageCodec.Encode(
+                new Message(
+                    ping,
+                    default,
+                    new BoundPeer(privateKey.PublicKey, new DnsEndPoint("0.0.0.0", 0)),
+                    DateTimeOffset.UtcNow,
+                    null),
+                privateKey);
 
             TimeSpan timeoutNotNull = timeout ?? TimeSpan.FromSeconds(5);
             try
@@ -49,7 +51,7 @@ namespace Libplanet.Net.Transports
                     var response = new NetMQMessage();
                     if (dealerSocket.TryReceiveMultipartMessage(timeoutNotNull, ref response))
                     {
-                        return AppProtocolVersion.FromToken(response.First.ConvertToString());
+                        return messageCodec.Decode(response, true).Version;
                     }
                 }
             }

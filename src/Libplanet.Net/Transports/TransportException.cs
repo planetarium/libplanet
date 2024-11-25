@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Net.Transports
 {
@@ -17,14 +16,6 @@ namespace Libplanet.Net.Transports
 
         public TransportException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected TransportException(
-            SerializationInfo info,
-            StreamingContext context
-        )
-            : base(info, context)
         {
         }
     }

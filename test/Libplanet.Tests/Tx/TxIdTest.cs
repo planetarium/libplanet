@@ -204,17 +204,6 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(expected, deserialized);
         }
 
-        [Fact]
-        public void Serializable()
-        {
-            var expected = new TxId(TestUtils.GetRandomBytes(TxId.Size));
-            var deserialized = TestUtils.BinarySerializeDeserialize<TxId>(expected);
-            Assert.Equal(expected, deserialized);
-            expected = default(TxId);
-            deserialized = TestUtils.BinarySerializeDeserialize<TxId>(expected);
-            Assert.Equal(expected, deserialized);
-        }
-
         [SkippableFact]
         public void JsonSerialization()
         {

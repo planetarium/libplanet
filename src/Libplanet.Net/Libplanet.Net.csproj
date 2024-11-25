@@ -24,5 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
+    <ProjectReference Include="..\..\dotnet-libp2p\src\libp2p\Libp2p\Libp2p.csproj" />
   </ItemGroup>
 </Project>

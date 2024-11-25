@@ -9,7 +9,7 @@ namespace Libplanet.Net.Protocols
     /// <summary>
     /// An interface of protocol to discover peers from the distributed network.
     /// </summary>
-    public interface IProtocol
+    public interface IPeerDiscoveryProtocol
     {
         /// <summary>
         /// Conducts peer discovery for given <paramref name="bootstrapPeers"/>.

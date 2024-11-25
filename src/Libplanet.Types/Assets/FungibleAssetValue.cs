@@ -4,11 +4,9 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex.Types;
-using Libplanet.Common.Serialization;
 
 namespace Libplanet.Types.Assets
 {
@@ -25,8 +23,7 @@ namespace Libplanet.Types.Assets
     public readonly struct FungibleAssetValue :
         IEquatable<FungibleAssetValue>,
         IComparable<FungibleAssetValue>,
-        IComparable,
-        ISerializable
+        IComparable
     {
         /// <summary>
         /// The currency of the fungible asset.
@@ -176,19 +173,6 @@ namespace Libplanet.Types.Assets
         {
             Currency = currency;
             RawValue = rawValue;
-        }
-
-        /// <summary>
-        /// Deserializes a fungible asset value.
-        /// </summary>
-        /// <param name="info">A serialization information.</param>
-        /// <param name="context">A streaming context.</param>
-        private FungibleAssetValue(SerializationInfo info, StreamingContext context)
-            : this(
-                info.GetValue<Currency>(nameof(Currency)),
-                info.GetValue<BigInteger>(nameof(RawValue))
-            )
-        {
         }
 
         /// <summary>
@@ -640,13 +624,6 @@ namespace Libplanet.Types.Assets
             : throw new ArgumentException(
                 $"Unable to compare heterogeneous currencies: {Currency} \u2260 {other.Currency}.",
                 nameof(other));
-
-        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(Currency), Currency);
-            info.AddValue(nameof(RawValue), RawValue);
-        }
 
         /// <inheritdoc cref="object.ToString()"/>
         [Pure]

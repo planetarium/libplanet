@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Common;
 using Libplanet.Types.Blocks;
@@ -110,29 +108,6 @@ namespace Libplanet.Tests.Blocks
             var expected = new BlockHash(b);
             var actual = new BlockHash(bAsArray);
             Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void SerializeAndDeserialize()
-        {
-            byte[] b =
-            {
-                0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57, 0x88,
-                0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc, 0x45, 0xa2,
-                0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57, 0x88, 0x69,
-            };
-
-            var expected = new BlockHash(b);
-            BlockHash deserialized;
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (var memoryStream = new MemoryStream())
-            {
-                formatter.Serialize(memoryStream, expected);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                deserialized = (BlockHash)formatter.Deserialize(memoryStream);
-            }
-
-            Assert.Equal(deserialized, expected);
         }
 
         [SkippableFact]

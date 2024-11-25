@@ -182,7 +182,7 @@ namespace Libplanet.Net
 
         internal RoutingTable RoutingTable { get; }
 
-        internal IProtocol PeerDiscovery { get; }
+        internal IPeerDiscoveryProtocol PeerDiscovery { get; }
 
         internal ITransport Transport { get; }
 

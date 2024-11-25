@@ -73,7 +73,7 @@ namespace Libplanet.Crypto
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(privateKey),
-                    $"The key must be {KeyByteSize} bytes."
+                    $"The key must be {KeyByteSize} bytes: {privateKey.Count}"
                 );
             }
         }
@@ -341,6 +341,9 @@ namespace Libplanet.Crypto
         /// Encodes the private key into a corresponding mutable <see cref="byte"/> array
         /// representation.
         /// </summary>
+        /// <param name="unsigned">Whether an encoded <see cref="byte"/> will be in
+        /// an unsigned format or a signed format.  This is <see langword="true"/> by default.
+        /// </param>
         /// <returns>An encoded <see cref="byte"/> array representation.  It guarantees that
         /// returned arrays are never reused, and mutating on them does not affect
         /// <see cref="PrivateKey"/> instance's internal states.</returns>
@@ -359,8 +362,9 @@ namespace Libplanet.Crypto
         /// <seealso cref="ByteArray"/>
         /// <seealso cref="PrivateKey(IReadOnlyList{byte})"/>
         [Pure]
-        public byte[] ToByteArray() =>
-            KeyParam.D.ToByteArrayUnsigned();
+        public byte[] ToByteArray(bool unsigned = true) => unsigned
+            ? KeyParam.D.ToByteArrayUnsigned()
+            : KeyParam.D.ToByteArray();
 
         internal static ECDomainParameters GetECParameters()
         {
@@ -425,7 +429,7 @@ namespace Libplanet.Crypto
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(hex),
-                    $"Expected {KeyByteSize * 2} hexadecimal digits."
+                    $"Expected {KeyByteSize * 2} hexadecimal digits: {bytes.Length}"
                 );
             }
 

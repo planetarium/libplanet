@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Common;
@@ -159,32 +157,6 @@ namespace Libplanet.Tests.Assets
 
             currency = Currency.Capped("GOLD", 0, (100, 0), AddressA);
             Assert.Equal("GOLD (f0fd50b87b39d9f24c0922551e59914dbbeb3544)", currency.ToString());
-        }
-
-        [Fact]
-        public void Serializable()
-        {
-            var currencies = new[]
-            {
-                Currency.Uncapped("GOLD", 2, AddressA),
-#pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.Legacy("GOLD", 2, AddressA),
-#pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-                Currency.Capped("GOLD", 2, (100, 0), AddressA),
-            };
-
-            var formatter = new BinaryFormatter();
-            foreach (var currency in currencies)
-            {
-                using (var ms = new MemoryStream())
-                {
-                    formatter.Serialize(ms, currency);
-                    ms.Seek(0, SeekOrigin.Begin);
-
-                    var deserialized = (Currency)formatter.Deserialize(ms);
-                    Assert.Equal(currency.Hash, deserialized.Hash);
-                }
-            }
         }
 
         [Fact]

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Tests.Common;
@@ -41,7 +40,7 @@ namespace Libplanet.Net.Tests.Transports
             var apv = AppProtocolVersion.Sign(new PrivateKey(), 1);
             var apvOptions = new AppProtocolVersionOptions() { AppProtocolVersion = apv };
             string host = IPAddress.Loopback.ToString();
-            int port = FreeTcpPort();
+            int port = TestUtils.GetFreePort();
             var hostOptions = new HostOptions(
                 IPAddress.Loopback.ToString(), new IceServer[] { }, port);
             var option = new SwarmOptions();
@@ -107,29 +106,6 @@ namespace Libplanet.Net.Tests.Transports
             var addr = await bp.ResolveNetMQAddressAsync();
 
             Assert.Contains(addr, expected);
-        }
-
-        [Fact]
-        public async Task ResolveNetMQAddressAsyncFails()
-        {
-            string hostDoesNotExist = $"{Guid.NewGuid()}.com";
-            var bp = new BoundPeer(
-                new PrivateKey().PublicKey,
-                new DnsEndPoint(hostDoesNotExist, 3000)
-            );
-            await Assert.ThrowsAnyAsync<SocketException>(async () =>
-            {
-                await bp.ResolveNetMQAddressAsync();
-            });
-        }
-
-        private static int FreeTcpPort()
-        {
-            var l = new TcpListener(IPAddress.Loopback, 0);
-            l.Start();
-            int port = ((IPEndPoint)l.LocalEndpoint).Port;
-            l.Stop();
-            return port;
         }
     }
 }

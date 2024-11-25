@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
@@ -1006,16 +1007,13 @@ namespace Libplanet.Net.Tests
                     Array.Empty<IceServer>()));
             int requestCount = 0;
 
-            async Task MessageHandler(Message message)
+            async Task MessageHandler(Message message, Channel<MessageContent> channel)
             {
                 _logger.Debug("Received message: {Content}", message);
                 switch (message.Content)
                 {
                     case PingMsg ping:
-                        await mockTransport.ReplyMessageAsync(
-                            new PongMsg(),
-                            message.Identity,
-                            default);
+                        await channel.Writer.WriteAsync(new PongMsg());
                         break;
 
                     case GetBlockHashesMsg gbhm:

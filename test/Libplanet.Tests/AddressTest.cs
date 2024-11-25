@@ -302,17 +302,6 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void Serializable()
-        {
-            var expected = new Address(TestUtils.GetRandomBytes(Address.Size));
-            Address deserialized = TestUtils.BinarySerializeDeserialize<Address>(expected);
-            Assert.Equal(expected, deserialized);
-            expected = default(Address);
-            deserialized = TestUtils.BinarySerializeDeserialize<Address>(expected);
-            Assert.Equal(expected, deserialized);
-        }
-
-        [Fact]
         public void TypeConverter()
         {
             TypeConverter converter = TypeDescriptor.GetConverter(typeof(Address));

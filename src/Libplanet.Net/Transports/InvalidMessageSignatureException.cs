@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 
@@ -27,17 +25,6 @@ namespace Libplanet.Net.Transports
             Signature = signature;
         }
 
-        protected InvalidMessageSignatureException(
-            SerializationInfo info,
-            StreamingContext context)
-            : base(info, context)
-        {
-            Peer = info.GetValue<BoundPeer>(nameof(Peer));
-            PublicKey = new PublicKey(info.GetValue<byte[]>(nameof(PublicKey)));
-            MessageToVerify = info.GetValue<byte[]>(nameof(MessageToVerify));
-            Signature = info.GetValue<byte[]>(nameof(Signature));
-        }
-
         public BoundPeer Peer { get; }
 
         public PublicKey PublicKey { get; }
@@ -45,15 +32,5 @@ namespace Libplanet.Net.Transports
         public byte[] MessageToVerify { get; }
 
         public byte[] Signature { get; }
-
-        public override void GetObjectData(
-            SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Peer), Peer);
-            info.AddValue(nameof(PublicKey), PublicKey.Format(true));
-            info.AddValue(nameof(MessageToVerify), MessageToVerify);
-            info.AddValue(nameof(Signature), Signature);
-        }
     }
 }

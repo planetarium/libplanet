@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Store.Trie
 {
@@ -13,11 +12,6 @@ namespace Libplanet.Store.Trie
 
         public InvalidTrieNodeException(string message)
             : base(message)
-        {
-        }
-
-        protected InvalidTrieNodeException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

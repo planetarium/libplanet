@@ -2,9 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Serialization;
 using Libplanet.Common;
-using Libplanet.Common.Serialization;
 
 namespace Libplanet.Net.Messages
 {
@@ -18,7 +16,7 @@ namespace Libplanet.Net.Messages
     /// </summary>
     /// <seealso cref="MessageContent.Id"/>
     [Serializable]
-    public struct MessageId : ISerializable, IComparable<MessageId>, IComparable
+    public struct MessageId : IComparable<MessageId>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="MessageId"/> takes.
@@ -50,13 +48,6 @@ namespace Libplanet.Net.Messages
             }
 
             _byteArray = messageId.ToImmutableArray();
-        }
-
-        public MessageId(
-            SerializationInfo info,
-            StreamingContext context)
-            : this(info.GetValue<byte[]>("message_id"))
-        {
         }
 
         /// <summary>
@@ -182,14 +173,6 @@ namespace Libplanet.Net.Messages
             }
 
             throw new ArgumentException(nameof(obj));
-        }
-
-        /// <inheritdoc />
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context)
-        {
-            info.AddValue("message_id", _byteArray.ToArray());
         }
     }
 }

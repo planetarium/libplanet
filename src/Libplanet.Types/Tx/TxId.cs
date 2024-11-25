@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -24,7 +23,7 @@ namespace Libplanet.Types.Tx
     [Serializable]
     [JsonConverter(typeof(TxIdJsonConverter))]
     public readonly struct TxId
-        : ISerializable, IEquatable<TxId>, IComparable<TxId>, IComparable, IBencodable
+        : IEquatable<TxId>, IComparable<TxId>, IComparable, IBencodable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -91,15 +90,6 @@ namespace Libplanet.Types.Tx
                     $"Given {nameof(bencoded)} must be of type " +
                     $"{typeof(Binary)}: {bencoded.GetType()}",
                     nameof(bencoded)))
-        {
-        }
-
-        public TxId(SerializationInfo info, StreamingContext context)
-            : this(_codec.Decode(info.GetValue(nameof(Bencoded), typeof(byte[])) is
-                byte[] bytes
-                    ? bytes
-                    : throw new SerializationException(
-                        $"Invalid type for {nameof(Bencoded)} in {nameof(info)}.")))
         {
         }
 
@@ -208,12 +198,6 @@ namespace Libplanet.Types.Tx
             ? this.CompareTo(other)
             : throw new ArgumentException(
                 $"Argument {nameof(obj)} is not a ${nameof(TxId)}.", nameof(obj));
-
-        /// <inheritdoc />
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(Bencoded), _codec.Encode(Bencoded));
-        }
     }
 
     [SuppressMessage(

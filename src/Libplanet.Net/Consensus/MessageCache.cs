@@ -65,7 +65,7 @@ namespace Libplanet.Net.Consensus
                 {
                     // FIXME: This is a workaround for preventing any message modification in
                     // message dictionary.
-                    return NetMQMessageCodec.CreateMessage(msg.Type, msg.DataFrames.ToArray());
+                    return Message.CreateMessageContent(msg.Type, msg.DataFrames.ToArray());
                 }
 
                 throw new KeyNotFoundException($"A message of id {id} does not exist.");

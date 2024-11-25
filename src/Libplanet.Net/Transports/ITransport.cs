@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Options;
+using Multiformats.Address;
 
 namespace Libplanet.Net.Transports
 {
@@ -21,11 +23,17 @@ namespace Libplanet.Net.Transports
     /// </remarks>
     public interface ITransport : IDisposable
     {
+        event EventHandler<(
+            Multiaddress RemoteAddress,
+            Message Message,
+            int ReplyCount,
+            Channel<Message> LocalInboundReplyChannel)> RequestMessageToSend;
+
         /// <summary>
         /// The list of tasks invoked when a message that is not
         /// a reply is received.
         /// </summary>
-        AsyncDelegate<Message> ProcessMessageHandler { get; }
+        AsyncDelegate ProcessMessageHandler { get; }
 
         /// <summary>
         /// The <em>current</em> <see cref="BoundPeer"/> representation of <see cref="ITransport"/>.
@@ -155,21 +163,9 @@ namespace Libplanet.Net.Transports
         /// is already disposed.</exception>
         void BroadcastMessage(IEnumerable<BoundPeer> peers, MessageContent content);
 
-        /// <summary>
-        /// Sends a <see cref="MessageContent"/> as a reply.
-        /// </summary>
-        /// <param name="content">The <see cref="MessageContent"/> to send as a reply.</param>
-        /// <param name="identity">The byte array that represents identification of the
-        /// <see cref="MessageContent"/> to respond.</param>
-        /// <param name="cancellationToken">
-        /// A cancellation token used to propagate notification that this
-        /// operation should be canceled.</param>
-        /// <returns>An awaitable task without value.</returns>
-        /// <exception cref="ObjectDisposedException">
-        /// Thrown when <see cref="ITransport"/> instance is already disposed.</exception>
-        Task ReplyMessageAsync(
-            MessageContent content,
-            byte[] identity,
-            CancellationToken cancellationToken);
+        Task ReceiveRequestMessage(
+            Multiaddress multiaddress,
+            Message requestMessage,
+            Channel<MessageContent> localOutboundReplyChannel);
     }
 }

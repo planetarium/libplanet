@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Types.Tx;
 
@@ -28,23 +26,8 @@ namespace Libplanet.Types.Blocks
             TxCount = txCount;
         }
 
-        private InvalidBlockTxCountPerSignerException(
-            SerializationInfo info, StreamingContext context)
-                : base(info, context)
-        {
-            Signer = info.GetValue<Address>(nameof(Signer));
-            TxCount = info.GetInt32(nameof(TxCount));
-        }
-
         public Address Signer { get; private set; }
 
         public int TxCount { get; private set; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Signer), Signer);
-            info.AddValue(nameof(TxCount), TxCount);
-        }
     }
 }

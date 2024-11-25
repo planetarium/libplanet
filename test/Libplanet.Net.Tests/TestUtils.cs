@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Numerics;
 using System.Threading.Tasks;
 using Bencodex;
@@ -365,6 +366,31 @@ namespace Libplanet.Net.Tests
             Random.NextBytes(bytes);
 
             return bytes;
+        }
+
+        public static List<int> GetFreePorts(int count)
+        {
+            List<int> freePorts = new List<int>();
+            for (int i = 0; i < count;)
+            {
+                int port = GetFreePort();
+                if (!freePorts.Contains(port))
+                {
+                    freePorts.Add(port);
+                    i++;
+                }
+            }
+
+            return freePorts;
+        }
+
+        public static int GetFreePort()
+        {
+            var listener = new TcpListener(IPAddress.Loopback, 0);
+            listener.Start();
+            int port = ((IPEndPoint)listener.LocalEndpoint).Port;
+            listener.Stop();
+            return port;
         }
 
         public class DummyConsensusMessageHandler : IConsensusMessageCommunicator

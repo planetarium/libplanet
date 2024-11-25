@@ -53,10 +53,11 @@ namespace Libplanet.Net.Tests.Consensus
 
             for (var i = 0; i < 4; i++)
             {
+                var freePorts = TestUtils.GetFreePorts(4);
                 validatorPeers.Add(
                     new BoundPeer(
                         TestUtils.PrivateKeys[i].PublicKey,
-                        new DnsEndPoint("127.0.0.1", 6000 + i)));
+                        new DnsEndPoint("127.0.0.1", freePorts[i])));
                 stores[i] = new MemoryStore();
                 var stateStore = new TrieStateStore(new MemoryKeyValueStore());
                 blockChains[i] = BlockChain.Create(
@@ -76,7 +77,7 @@ namespace Libplanet.Net.Tests.Consensus
                 consensusReactors[i] = TestUtils.CreateDummyConsensusReactor(
                     blockChain: blockChains[i],
                     key: TestUtils.PrivateKeys[i],
-                    consensusPort: 6000 + i,
+                    consensusPort: validatorPeers[i].EndPoint.Port,
                     validatorPeers: validatorPeers,
                     newHeightDelayMilliseconds: PropagationDelay * 2);
             }

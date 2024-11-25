@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Libplanet.Net.Messages
@@ -10,6 +11,6 @@ namespace Libplanet.Net.Messages
     {
         public override MessageType Type => MessageType.Ping;
 
-        public override IEnumerable<byte[]> DataFrames => new byte[][] { };
+        public override IEnumerable<byte[]> DataFrames => Array.Empty<byte[]>();
     }
 }

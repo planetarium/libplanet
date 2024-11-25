@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Transports
@@ -34,25 +32,8 @@ namespace Libplanet.Net.Transports
             MessageType = messageType;
         }
 
-        public CommunicationFailException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            Peer = info.GetValue<BoundPeer>(nameof(Peer));
-            MessageType = info.GetValue(nameof(MessageType), typeof(MessageContent.MessageType))
-                is MessageContent.MessageType messageType
-                ? messageType
-                : throw new SerializationException($"{nameof(MessageType)} is of an invalid type.");
-        }
-
         public BoundPeer Peer { get; }
 
         public MessageContent.MessageType MessageType { get; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Peer), Peer);
-            info.AddValue(nameof(MessageType), MessageType, typeof(MessageContent.MessageType));
-        }
     }
 }

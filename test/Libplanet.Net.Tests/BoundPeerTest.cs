@@ -1,74 +1,88 @@
 using System;
 using System.Net;
 using Libplanet.Crypto;
+using Nethermind.Libp2p.Core;
 using Xunit;
 
 namespace Libplanet.Net.Tests
 {
     public class BoundPeerTest
     {
+        private readonly string _host;
+        private readonly int _port;
+        private readonly string _peerString;
+        private readonly PublicKey _publicKey;
+        private readonly Identity _identity;
+
+        public BoundPeerTest()
+        {
+            Random random = new Random();
+            _publicKey = new PrivateKey().PublicKey;
+            _identity = new Identity(CryptoKeyConverter.ToLibp2pPublicKey(_publicKey));
+            _host = $"{random.Next(256)}.{random.Next(256)}.{random.Next(256)}.{random.Next(256)}";
+            _port = random.Next(65354);
+            _peerString = $"/ip4/{_host}/tcp/{_port}/p2p/{_identity.PeerId}";
+        }
+
         [Fact]
         public void Bencoded()
         {
-            var expected = new BoundPeer(
-                new PrivateKey().PublicKey, new DnsEndPoint("0.0.0.0", 1234));
+            var expected = new BoundPeer(_peerString);
             var deserialized = new BoundPeer(expected.Bencoded);
             Assert.Equal(expected, deserialized);
         }
 
         [Fact]
-        public void Serializable()
+        public void Constructor()
         {
-            var expected = new BoundPeer(
-                new PrivateKey().PublicKey, new DnsEndPoint("0.0.0.0", 1234));
-            var deserialized = Libplanet.Tests.TestUtils.BinarySerializeDeserialize<BoundPeer>(
-                expected);
-            Assert.Equal(expected, deserialized);
+            var fromPeerString = new BoundPeer(_peerString);
+            var fromPublicKey = new BoundPeer(_publicKey, new DnsEndPoint(_host, _port));
+            Assert.Equal(fromPeerString, fromPublicKey);
+
+            Assert.Equal(_host, fromPeerString.EndPoint.Host);
+            Assert.Equal(_port, fromPeerString.EndPoint.Port);
+            Assert.Equal(_peerString, fromPeerString.PeerString);
+            Assert.Equal(_publicKey, fromPeerString.PublicKey);
+            Assert.Equal(_publicKey.Address, fromPeerString.Address);
         }
 
         [Fact]
         public void ParsePeer()
         {
-#pragma warning disable MEN002 // Line is too long
-            var peerInfo = "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,3333";
-            var expected = new BoundPeer(
-                PublicKey.FromHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                new DnsEndPoint("192.168.0.1", 3333)
-            );
-#pragma warning restore MEN002 // Line is too long
+            var peerInfo = _peerString;
+            var expected = new BoundPeer(peerInfo);
             Assert.Equal(expected, BoundPeer.ParsePeer(peerInfo));
         }
 
         [Fact]
         public void PeerString()
         {
-#pragma warning disable MEN002 // Line is too long
-            var expected = "032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,3333";
-            var boundPeer = new BoundPeer(
-                PublicKey.FromHex("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"),
-                new DnsEndPoint("192.168.0.1", 3333)
-            );
-#pragma warning restore MEN002 // Line is too long
+            var expected = _peerString;
+            var boundPeer = new BoundPeer(_peerString);
             Assert.Equal(expected, boundPeer.PeerString);
         }
 
         [Fact]
         public void ParsePeerException()
         {
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer(string.Empty));
-#pragma warning disable MEN002 // Line is too long
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233"));
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1"));
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,192.168.0.1,999999"));
-            Assert.Throws<ArgumentException>(() => BoundPeer.ParsePeer("032038e153d344773986c039ba5dbff12ae70cfdf6ea8beb7c5ea9b361a72a9233,.ninodes.com,31234"));
-#pragma warning restore MEN002 // Line is too long
-        }
-
-        [Fact]
-        public void InvalidHostname()
-        {
-            Assert.Throws<ArgumentException>(() =>
-                new BoundPeer(new PrivateKey().PublicKey, new DnsEndPoint(".ninodes.com", 31234)));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer(string.Empty));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/ip4/{_host}/tcp/{_port}"));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/ip4/{_host}/tcp/{_port}/"));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/ip4/{_host}/tcp/{_port}/{_identity.PeerId}"));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/ip4/{_host}/{_port}/p2p/{_identity.PeerId}"));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/{_host}/{_port}/p2p/{_identity.PeerId}"));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/{_host}/{_port}/p2p/{_identity.PeerId}"));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/ip4/www.foo.com/tcp/{_port}/p2p/{_identity.PeerId}"));
+            Assert.Throws<ArgumentException>(
+                () => BoundPeer.ParsePeer($"/ip4/{_host}/tcp/p2p/{_identity.PeerId}"));
         }
     }
 }
