@@ -15811,15 +15811,14 @@ references:
   fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Decode
   nameWithType: IMessageCodec<T>.Decode
   nameWithType.vb: IMessageCodec(Of T).Decode
-- uid: Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.MessageContent,PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,DateTimeOffset,System.Byte[])
-  name: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
-  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_MessageContent_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_DateTimeOffset_System_Byte___
-  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.MessageContent,PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,DateTimeOffset,System.Byte[])
-  name.vb: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
-  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Encode(Libplanet.Net.Messages.MessageContent, PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, DateTimeOffset, System.Byte[])
-  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Encode(Libplanet.Net.Messages.MessageContent, PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, DateTimeOffset, System.Byte())
-  nameWithType: IMessageCodec<T>.Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
-  nameWithType.vb: IMessageCodec(Of T).Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
+- uid: Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,PrivateKey)
+  name: Encode(Message, PrivateKey)
+  href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_Libplanet_Net_Messages_Message_PrivateKey_
+  commentId: M:Libplanet.Net.Messages.IMessageCodec`1.Encode(Libplanet.Net.Messages.Message,PrivateKey)
+  fullName: Libplanet.Net.Messages.IMessageCodec<T>.Encode(Libplanet.Net.Messages.Message, PrivateKey)
+  fullName.vb: Libplanet.Net.Messages.IMessageCodec(Of T).Encode(Libplanet.Net.Messages.Message, PrivateKey)
+  nameWithType: IMessageCodec<T>.Encode(Message, PrivateKey)
+  nameWithType.vb: IMessageCodec(Of T).Encode(Message, PrivateKey)
 - uid: Libplanet.Net.Messages.IMessageCodec`1.Encode*
   name: Encode
   href: api/Libplanet.Net.Messages.IMessageCodec-1.html#Libplanet_Net_Messages_IMessageCodec_1_Encode_
@@ -16510,15 +16509,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.Decode
   nameWithType: NetMQMessageCodec.Decode
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent,PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,DateTimeOffset,System.Byte[])
-  name: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_MessageContent_PrivateKey_Libplanet_Net_AppProtocolVersion_Libplanet_Net_BoundPeer_DateTimeOffset_System_Byte___
-  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent,PrivateKey,Libplanet.Net.AppProtocolVersion,Libplanet.Net.BoundPeer,DateTimeOffset,System.Byte[])
-  name.vb: Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent, PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, DateTimeOffset, System.Byte[])
-  fullName.vb: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.MessageContent, PrivateKey, Libplanet.Net.AppProtocolVersion, Libplanet.Net.BoundPeer, DateTimeOffset, System.Byte())
-  nameWithType: NetMQMessageCodec.Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte[])
-  nameWithType.vb: NetMQMessageCodec.Encode(MessageContent, PrivateKey, AppProtocolVersion, BoundPeer, DateTimeOffset, Byte())
+- uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,PrivateKey)
+  name: Encode(Message, PrivateKey)
+  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_Libplanet_Net_Messages_Message_PrivateKey_
+  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message,PrivateKey)
+  fullName: Libplanet.Net.Messages.NetMQMessageCodec.Encode(Libplanet.Net.Messages.Message, PrivateKey)
+  nameWithType: NetMQMessageCodec.Encode(Message, PrivateKey)
 - uid: Libplanet.Net.Messages.NetMQMessageCodec.Encode*
   name: Encode
   href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_Encode_
@@ -16562,19 +16558,6 @@ references:
   commentId: F:Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Version
   fullName: Libplanet.Net.Messages.NetMQMessageCodec.MessageFrame.Version
   nameWithType: NetMQMessageCodec.MessageFrame.Version
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQMessage,System.Boolean)
-  name: ParseMessageType(NetMQMessage, Boolean)
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_NetMQMessage_System_Boolean_
-  commentId: M:Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQMessage,System.Boolean)
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType(NetMQMessage, System.Boolean)
-  nameWithType: NetMQMessageCodec.ParseMessageType(NetMQMessage, Boolean)
-- uid: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType*
-  name: ParseMessageType
-  href: api/Libplanet.Net.Messages.NetMQMessageCodec.html#Libplanet_Net_Messages_NetMQMessageCodec_ParseMessageType_
-  commentId: Overload:Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.NetMQMessageCodec.ParseMessageType
-  nameWithType: NetMQMessageCodec.ParseMessageType
 - uid: Libplanet.Net.Messages.PingMsg
   name: PingMsg
   href: api/Libplanet.Net.Messages.PingMsg.html
