@@ -75,20 +75,6 @@ namespace Libplanet.Store
         /// <returns>The index of the appended block.</returns>
         long AppendIndex(Guid chainId, BlockHash hash);
 
-        /// <summary>
-        /// Forks block indexes from
-        /// <paramref name="sourceChainId"/> to
-        /// <paramref name="destinationChainId"/>.
-        /// </summary>
-        /// <param name="sourceChainId">The chain ID of block indexes to
-        /// fork.</param>
-        /// <param name="destinationChainId">The chain ID of destination
-        /// block indexes.</param>
-        /// <param name="branchpoint">The branchpoint <see cref="Block"/> to fork.</param>
-        /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
-        /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
-        void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
-
         Transaction? GetTransaction(TxId txid);
 
         /// <summary>
@@ -270,17 +256,6 @@ namespace Libplanet.Store
         bool ContainsTransaction(TxId txId);
 
         long CountBlocks();
-
-        /// <summary>
-        /// Forks <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s from
-        /// <paramref name="sourceChainId"/> to
-        /// <paramref name="destinationChainId"/>.
-        /// </summary>
-        /// <param name="sourceChainId">The chain <see cref="BlockChain.Id"/> of
-        /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s to fork.</param>
-        /// <param name="destinationChainId">The chain <see cref="BlockChain.Id"/> of destination
-        /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s.</param>
-        void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
 
         /// <summary>
         /// Delete all non-canonical chains.

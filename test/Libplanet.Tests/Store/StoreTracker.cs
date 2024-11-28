@@ -156,15 +156,6 @@ namespace Libplanet.Tests.Store
             return _store.ContainsTransaction(txId);
         }
 
-        public void ForkBlockIndexes(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            BlockHash branchPoint)
-        {
-            Log(nameof(ForkBlockIndexes), sourceChainId, destinationChainId, branchPoint);
-            _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchPoint);
-        }
-
         public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
             Log(nameof(ListTxNonces), chainId);
@@ -181,12 +172,6 @@ namespace Libplanet.Tests.Store
         {
             Log(nameof(IncreaseTxNonce), chainId, address, delta);
             _store.IncreaseTxNonce(chainId, address, delta);
-        }
-
-        public void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
-        {
-            Log(nameof(ForkTxNonces), sourceChainId, destinationChainId);
-            _store.ForkTxNonces(sourceChainId, destinationChainId);
         }
 
         public void PruneOutdatedChains(bool noopWithoutCanon = false)

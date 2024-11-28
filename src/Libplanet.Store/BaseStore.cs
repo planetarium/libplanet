@@ -41,13 +41,6 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract long AppendIndex(Guid chainId, BlockHash hash);
 
-        /// <inheritdoc/>
-        public abstract void ForkBlockIndexes(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            BlockHash branchpoint
-        );
-
         public abstract Transaction? GetTransaction(TxId txid);
 
         public abstract void PutTransaction(Transaction tx);
@@ -170,9 +163,6 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void Dispose();
-
-        /// <inheritdoc/>
-        public abstract void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
 
         /// <inheritdoc/>
         public abstract void PruneOutdatedChains(bool noopWithoutCanon = false);
