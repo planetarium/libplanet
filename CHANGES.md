@@ -13,6 +13,8 @@ To be released.
  -  Changed `IMessageCodec.Encode(MessageContent, PrivateKey,
     AppProtocolVersion, BoundPeer, DateTimeOffset, byte[]?)` to
     `IMessageCodec.Encode(Message, PrivateKey)`.  [[#3997]]
+ -  Removed `IStore.ForkBlockIndexes()` and `IStore.ForkTxNonces()`
+    interface methods.  [[#4001]]
 
 ### Backward-incompatible network protocol changes
 
@@ -29,6 +31,7 @@ To be released.
 ### CLI tools
 
 [#3997]: https://github.com/planetarium/libplanet/pull/3997
+[#4001]: https://github.com/planetarium/libplanet/pull/3997
 
 
 Version 5.4.0
