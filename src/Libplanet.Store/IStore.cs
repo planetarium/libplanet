@@ -294,9 +294,25 @@ namespace Libplanet.Store
         /// there is no canonical chain.
         /// </param>
         /// <exception cref="InvalidOperationException">
-        /// Thrown when there is no canonical chain and
-        /// <paramref name="noopWithoutCanon"/> is false.
+        /// Thrown for any of the following reasons:
+        /// <list type="bullet">
+        ///     <item><description>
+        ///         Thrown when there is no canonical chain and <paramref name="noopWithoutCanon"/>
+        ///         is false.
+        ///     </description></item>
+        ///     <item><description>
+        ///         A <see cref="BlockHash"/> for a non-existent <see cref="Block"/> is encountered
+        ///         while iterating.
+        ///     </description></item>
+        ///     <item><description>
+        ///         If the chain in question is found to be "un-prunable" due to data corruption.
+        ///     </description></item>
+        /// </list>
         /// </exception>
+        /// <remarks>
+        /// If an <see cref="InvalidOperationException"/> is thrown, this results in
+        /// no-op for the <see cref="IStore"/>.
+        /// </remarks>
         void PruneOutdatedChains(bool noopWithoutCanon = false);
 
         /// <summary>
