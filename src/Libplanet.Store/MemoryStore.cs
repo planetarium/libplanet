@@ -133,19 +133,6 @@ namespace Libplanet.Store
             return list.Count - 1;
         }
 
-        public void ForkBlockIndexes(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            BlockHash branchpoint
-        )
-        {
-            if (_indices.TryGetValue(sourceChainId, out ImmutableTrieList<BlockHash>? source))
-            {
-                int bpIndex = source.FindIndex(branchpoint.Equals);
-                _indices[destinationChainId] = source.GetRange(0, bpIndex + 1);
-            }
-        }
-
         Transaction? IStore.GetTransaction(TxId txid) =>
             _txs.TryGetValue(txid, out Transaction? untyped) && untyped is Transaction tx
                 ? tx

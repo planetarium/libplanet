@@ -75,20 +75,6 @@ namespace Libplanet.Store
         /// <returns>The index of the appended block.</returns>
         long AppendIndex(Guid chainId, BlockHash hash);
 
-        /// <summary>
-        /// Forks block indexes from
-        /// <paramref name="sourceChainId"/> to
-        /// <paramref name="destinationChainId"/>.
-        /// </summary>
-        /// <param name="sourceChainId">The chain ID of block indexes to
-        /// fork.</param>
-        /// <param name="destinationChainId">The chain ID of destination
-        /// block indexes.</param>
-        /// <param name="branchpoint">The branchpoint <see cref="Block"/> to fork.</param>
-        /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
-        /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
-        void ForkBlockIndexes(Guid sourceChainId, Guid destinationChainId, BlockHash branchpoint);
-
         Transaction? GetTransaction(TxId txid);
 
         /// <summary>

@@ -648,8 +648,8 @@ namespace Libplanet.RocksDBStore
             return index;
         }
 
-        /// <inheritdoc cref="BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)"/>
-        public override void ForkBlockIndexes(
+        // FIXME: Temporarily left for testing only.
+        public void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
             BlockHash branchpoint

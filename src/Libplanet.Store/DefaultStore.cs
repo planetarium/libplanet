@@ -317,30 +317,6 @@ namespace Libplanet.Store
             return IndexCollection(chainId).Insert(new HashDoc { Hash = hash }) - 1;
         }
 
-        /// <inheritdoc cref="BaseStore.ForkBlockIndexes(Guid, Guid, BlockHash)"/>
-        public override void ForkBlockIndexes(
-            Guid sourceChainId,
-            Guid destinationChainId,
-            BlockHash branchpoint)
-        {
-            LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
-            LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
-
-            BlockHash? genesisHash = IterateIndexes(sourceChainId, 0, 1)
-                .Cast<BlockHash?>()
-                .FirstOrDefault();
-
-            if (genesisHash is null || branchpoint.Equals(genesisHash))
-            {
-                return;
-            }
-
-            destColl.Delete(Query.All());
-            destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchpoint)));
-
-            AppendIndex(destinationChainId, branchpoint);
-        }
-
         /// <inheritdoc/>
         public override Transaction? GetTransaction(TxId txid)
         {
