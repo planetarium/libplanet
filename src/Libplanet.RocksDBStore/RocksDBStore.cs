@@ -648,7 +648,15 @@ namespace Libplanet.RocksDBStore
             return index;
         }
 
-        // FIXME: Temporarily left for testing only.
+        /// <summary>
+        /// Forks block indexes from <paramref name="sourceChainId"/> to
+        /// <paramref name="destinationChainId"/>.
+        /// </summary>
+        /// <param name="sourceChainId">The chain ID of block indexes to fork.</param>
+        /// <param name="destinationChainId">The chain ID of destination block indexes.</param>
+        /// <param name="branchpoint">The branchpoint <see cref="Block"/> to fork.</param>
+        /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
+        /// <seealso cref="AppendIndex(Guid, BlockHash)"/>
         public void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
@@ -1137,6 +1145,14 @@ namespace Libplanet.RocksDBStore
             }
         }
 
+        /// <summary>
+        /// Forks <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s from
+        /// <paramref name="sourceChainId"/> to <paramref name="destinationChainId"/>.
+        /// </summary>
+        /// <param name="sourceChainId">The chain <see cref="BlockChain.Id"/> of
+        /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s to fork.</param>
+        /// <param name="destinationChainId">The chain <see cref="BlockChain.Id"/> of destination
+        /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s.</param>
         public void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
             var writeBatch = new WriteBatch();
