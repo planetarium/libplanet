@@ -324,5 +324,27 @@ namespace Libplanet.RocksDBStore.Tests
                 store.IterateIndexes(cid3, 0, null));
             Assert.Equal(3, store.CountIndex(cid3));
         }
+
+        [SkippableFact]
+        public void ForkTxNonces()
+        {
+            var path = Path.Combine(Path.GetTempPath(), $"rocksdb_test_{Guid.NewGuid()}");
+            var store = new RocksDBStore(path);
+            Guid sourceChainId = Guid.NewGuid();
+            Guid destinationChainId = Guid.NewGuid();
+            store.IncreaseTxNonce(sourceChainId, Fx.Address1, 1);
+            store.IncreaseTxNonce(sourceChainId, Fx.Address2, 2);
+            store.IncreaseTxNonce(sourceChainId, Fx.Address3, 3);
+
+            store.ForkTxNonces(sourceChainId, destinationChainId);
+
+            Assert.Equal(1, store.GetTxNonce(destinationChainId, Fx.Address1));
+            Assert.Equal(2, store.GetTxNonce(destinationChainId, Fx.Address2));
+            Assert.Equal(3, store.GetTxNonce(destinationChainId, Fx.Address3));
+
+            store.IncreaseTxNonce(sourceChainId, Fx.Address1, 1);
+            Assert.Equal(2, store.GetTxNonce(sourceChainId, Fx.Address1));
+            Assert.Equal(1, store.GetTxNonce(destinationChainId, Fx.Address1));
+        }
     }
 }

@@ -254,14 +254,6 @@ namespace Libplanet.Store
         long IStore.CountBlocks() =>
             _blocks.Count;
 
-        void IStore.ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
-        {
-            if (_txNonces.TryGetValue(sourceChainId, out ConcurrentDictionary<Address, long>? dict))
-            {
-                _txNonces[destinationChainId] = new ConcurrentDictionary<Address, long>(dict);
-            }
-        }
-
         void IStore.PruneOutdatedChains(bool noopWithoutCanon)
         {
             if (!(_canonicalChainId is { } ccid))

@@ -601,14 +601,6 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
-        {
-            LiteCollection<BsonDocument> srcColl = TxNonceCollection(sourceChainId);
-            LiteCollection<BsonDocument> destColl = TxNonceCollection(destinationChainId);
-            destColl.InsertBulk(srcColl.FindAll());
-        }
-
-        /// <inheritdoc/>
         public override void PruneOutdatedChains(bool noopWithoutCanon = false)
         {
             if (!(GetCanonicalChainId() is { } ccid))

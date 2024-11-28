@@ -258,17 +258,6 @@ namespace Libplanet.Store
         long CountBlocks();
 
         /// <summary>
-        /// Forks <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s from
-        /// <paramref name="sourceChainId"/> to
-        /// <paramref name="destinationChainId"/>.
-        /// </summary>
-        /// <param name="sourceChainId">The chain <see cref="BlockChain.Id"/> of
-        /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s to fork.</param>
-        /// <param name="destinationChainId">The chain <see cref="BlockChain.Id"/> of destination
-        /// <see cref="Transaction"/> <see cref="Transaction.Nonce"/>s.</param>
-        void ForkTxNonces(Guid sourceChainId, Guid destinationChainId);
-
-        /// <summary>
         /// Delete all non-canonical chains.
         /// </summary>
         /// <param name="noopWithoutCanon">

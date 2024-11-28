@@ -1137,8 +1137,7 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        /// <inheritdoc/>
-        public override void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
+        public void ForkTxNonces(Guid sourceChainId, Guid destinationChainId)
         {
             var writeBatch = new WriteBatch();
             bool exist = false;
