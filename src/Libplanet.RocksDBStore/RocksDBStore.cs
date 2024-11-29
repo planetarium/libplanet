@@ -153,7 +153,6 @@ namespace Libplanet.RocksDBStore
         private readonly ReaderWriterLockSlim _rwBlockCommitLock;
         private readonly ReaderWriterLockSlim _rwNextStateRootHashLock;
         private readonly ReaderWriterLockSlim _rwEvidenceLock;
-        private bool _pruned = false;
         private bool _disposed = false;
         private object _chainForkDeleteLock = new object();
         private LruCache<Guid, LruCache<(int, int?), List<BlockHash>>> _indexCache;
@@ -284,8 +283,6 @@ namespace Libplanet.RocksDBStore
                 new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _rwEvidenceLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-            _pruned = ListChainIds().Count() <= 1;
-
             _blockDbCache = new LruCache<string, RocksDb>(dbConnectionCacheSize);
             _blockDbCache.SetPreRemoveDataMethod(db =>
             {
@@ -299,6 +296,8 @@ namespace Libplanet.RocksDBStore
                 return true;
             });
         }
+
+        private bool IsPruned => ListChainIds().Count() <= 1;
 
         public static bool MigrateChainDBFromColumnFamilies(string path)
         {
@@ -1826,7 +1825,7 @@ namespace Libplanet.RocksDBStore
             Guid chainId,
             long offset,
             long? limit,
-            bool includeDeleted) => _pruned
+            bool includeDeleted) => IsPruned
                 ? IterateIndexesPruned(chainId, offset, limit, includeDeleted)
                 : IterateIndexesUnpruned(chainId, offset, limit, includeDeleted);
 
@@ -1842,15 +1841,25 @@ namespace Libplanet.RocksDBStore
             }
 
             long count = 0;
+            long limitUpperBound = CountIndex(chainId) - offset;
+            long actualLimit = limit is { } l
+                ? Math.Min(l, limitUpperBound)
+                : limitUpperBound;
+
+            if (actualLimit <= 0)
+            {
+                yield break;
+            }
+
             foreach (BlockHash hash in IterateIndexesInnerPruned(chainId, offset))
             {
-                if (count >= limit)
+                yield return hash;
+                count += 1;
+
+                if (count >= actualLimit)
                 {
                     yield break;
                 }
-
-                yield return hash;
-                count += 1;
             }
         }
 
