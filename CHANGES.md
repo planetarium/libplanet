@@ -25,6 +25,7 @@ To be released.
 ### Bug fixes
 
  -  Fixed a bug in `IStore.PruneOutdatedChains()`.  [[#3999]]
+ -  Optimized `IStore.IterateIndexes()`.  [[#4004]]
 
 ### Dependencies
 
@@ -32,6 +33,7 @@ To be released.
 
 [#3997]: https://github.com/planetarium/libplanet/pull/3997
 [#3999]: https://github.com/planetarium/libplanet/pull/3999
+[#4004]: https://github.com/planetarium/libplanet/pull/4004
 
 
 Version 5.4.0
