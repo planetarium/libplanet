@@ -297,6 +297,8 @@ namespace Libplanet.RocksDBStore
             });
         }
 
+        private bool IsPruned => ListChainIds().Count() <= 1;
+
         public static bool MigrateChainDBFromColumnFamilies(string path)
         {
             var opt = new DbOptions();
@@ -310,7 +312,7 @@ namespace Libplanet.RocksDBStore
             }
 
             RocksDb db = RocksDb.Open(opt, path, cfs);
-            if (cfs.Count() == 1 && IterateDb(db, ChainIdKeyPrefix).Any())
+            if (cfs.Count() == 1 && IterateDbUnpruned(db, ChainIdKeyPrefix).Any())
             {
                 // Already migrated.
                 db.Dispose();
@@ -419,7 +421,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<Guid> ListChainIds()
         {
-            foreach (var it in IterateDb(_chainDb, ChainIdKeyPrefix))
+            foreach (var it in IterateDbUnpruned(_chainDb, ChainIdKeyPrefix))
             {
                 var guid = new Guid(it.Value());
                 if (IsDeletionMarked(guid) && HasFork(guid))
@@ -444,7 +446,7 @@ namespace Libplanet.RocksDBStore
                 // FIXME: We should remove this code after adjusting .ForkTxNonces().
                 using var batch = new WriteBatch();
                 byte[] prefix = TxNonceKey(chainId);
-                foreach (Iterator k in IterateDb(_chainDb, prefix))
+                foreach (Iterator k in IterateDbUnpruned(_chainDb, prefix))
                 {
                     batch.Delete(k.Key());
                 }
@@ -460,12 +462,12 @@ namespace Libplanet.RocksDBStore
             try
             {
                 using var batch = new WriteBatch();
-                foreach (Iterator it in IterateDb(_chainDb, IndexKey(chainId)))
+                foreach (Iterator it in IterateDbUnpruned(_chainDb, IndexKey(chainId)))
                 {
                     batch.Delete(it.Key());
                 }
 
-                foreach (Iterator it in IterateDb(_chainDb, TxNonceKey(chainId)))
+                foreach (Iterator it in IterateDbUnpruned(_chainDb, TxNonceKey(chainId)))
                 {
                     batch.Delete(it.Key());
                 }
@@ -664,7 +666,7 @@ namespace Libplanet.RocksDBStore
             }
 
             using var batch = new WriteBatch();
-            foreach (Iterator k in IterateDb(_chainDb, IndexKey(destinationChainId)))
+            foreach (Iterator k in IterateDbUnpruned(_chainDb, IndexKey(destinationChainId)))
             {
                 batch.Delete(k.Key());
             }
@@ -817,7 +819,7 @@ namespace Libplanet.RocksDBStore
         {
             byte[] prefix = BlockKeyPrefix;
 
-            foreach (Iterator it in IterateDb(_blockIndexDb, prefix))
+            foreach (Iterator it in IterateDbUnpruned(_blockIndexDb, prefix))
             {
                 byte[] key = it.Key();
                 byte[] hashBytes = key.Skip(prefix.Length).ToArray();
@@ -1014,7 +1016,7 @@ namespace Libplanet.RocksDBStore
         public override IEnumerable<BlockHash> IterateTxIdBlockHashIndex(TxId txId)
         {
             var prefix = TxIdBlockHashIndexTxIdKey(txId);
-            foreach (var it in IterateDb(_txIdBlockHashIndexDb, prefix))
+            foreach (var it in IterateDbUnpruned(_txIdBlockHashIndexDb, prefix))
             {
                 yield return new BlockHash(it.Value());
             }
@@ -1043,7 +1045,7 @@ namespace Libplanet.RocksDBStore
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
             byte[] prefix = TxNonceKey(chainId);
-            foreach (Iterator it in IterateDb(_chainDb, prefix))
+            foreach (Iterator it in IterateDbUnpruned(_chainDb, prefix))
             {
                 byte[] addressBytes = it.Key()
                     .Skip(prefix.Length)
@@ -1145,7 +1147,7 @@ namespace Libplanet.RocksDBStore
             try
             {
                 byte[] prefix = TxNonceKey(sourceChainId);
-                foreach (Iterator it in IterateDb(_chainDb, prefix))
+                foreach (Iterator it in IterateDbUnpruned(_chainDb, prefix))
                 {
                     exist = true;
                     Address address = new Address(it.Key().Skip(prefix.Length).ToArray());
@@ -1296,7 +1298,8 @@ namespace Libplanet.RocksDBStore
         {
             try
             {
-                IEnumerable<Iterator> iterators = IterateDb(_blockCommitDb, Array.Empty<byte>());
+                IEnumerable<Iterator> iterators = IterateDbUnpruned(
+                    _blockCommitDb, Array.Empty<byte>());
 
                 // FIXME: Somehow key value comes with 0x76 prefix at the first index of
                 // byte array.
@@ -1396,7 +1399,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<EvidenceId> IteratePendingEvidenceIds()
         {
-            foreach (Iterator it in IterateDb(_pendingEvidenceDb, PendingEvidenceKeyPrefix))
+            foreach (Iterator it in IterateDbUnpruned(_pendingEvidenceDb, PendingEvidenceKeyPrefix))
             {
                 byte[] key = it.Key();
                 byte[] idBytes = key.Skip(PendingEvidenceKeyPrefix.Length).ToArray();
@@ -1756,10 +1759,16 @@ namespace Libplanet.RocksDBStore
         private static byte[] CommittedEvidenceKey(in EvidenceId evidenceId) =>
             CommittedEvidenceKeyPrefix.Concat(evidenceId.ByteArray).ToArray();
 
-        private static IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix)
+        private static IEnumerable<Iterator> IterateDbUnpruned(
+            RocksDb db,
+            byte[] prefix,
+            byte[]? start = null)
         {
             using Iterator it = db.NewIterator();
-            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
+            for (
+                it.Seek(start is { } s ? s : prefix);
+                it.Valid() && it.Key().StartsWith(prefix);
+                it.Next())
             {
                 yield return it;
             }
@@ -1816,6 +1825,48 @@ namespace Libplanet.RocksDBStore
             Guid chainId,
             long offset,
             long? limit,
+            bool includeDeleted) => IsPruned
+                ? IterateIndexesPruned(chainId, offset, limit, includeDeleted)
+                : IterateIndexesUnpruned(chainId, offset, limit, includeDeleted);
+
+        private IEnumerable<BlockHash> IterateIndexesPruned(
+            Guid chainId,
+            long offset,
+            long? limit,
+            bool includeDeleted)
+        {
+            if (!includeDeleted && IsDeletionMarked(chainId))
+            {
+                yield break;
+            }
+
+            long count = 0;
+            long limitUpperBound = CountIndex(chainId) - offset;
+            long actualLimit = limit is { } l
+                ? Math.Min(l, limitUpperBound)
+                : limitUpperBound;
+
+            if (actualLimit <= 0)
+            {
+                yield break;
+            }
+
+            foreach (BlockHash hash in IterateIndexesInnerPruned(chainId, offset))
+            {
+                yield return hash;
+                count += 1;
+
+                if (count >= actualLimit)
+                {
+                    yield break;
+                }
+            }
+        }
+
+        private IEnumerable<BlockHash> IterateIndexesUnpruned(
+            Guid chainId,
+            long offset,
+            long? limit,
             bool includeDeleted
         )
         {
@@ -1859,7 +1910,7 @@ namespace Libplanet.RocksDBStore
                 long expectedCount = chainTipIndex - previousChainTipIndex +
                                      (GetPreviousChainInfo(cid) is null ? 1 : 0);
 
-                foreach (BlockHash hash in IterateIndexesInner(cid, expectedCount))
+                foreach (BlockHash hash in IterateIndexesInnerUnpruned(cid, expectedCount))
                 {
                     if (offset > 0)
                     {
@@ -1880,11 +1931,28 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        private IEnumerable<BlockHash> IterateIndexesInner(Guid chainId, long expectedCount)
+        private IEnumerable<BlockHash> IterateIndexesInnerPruned(
+            Guid chainId,
+            long offset)
+        {
+            byte[] start = Concat(
+                IndexKeyPrefix,
+                chainId.ToByteArray(),
+                RocksDBStoreBitConverter.GetBytes(offset));
+            byte[] prefix = Concat(IndexKeyPrefix, chainId.ToByteArray());
+
+            foreach (Iterator it in IterateDbUnpruned(_chainDb, prefix, start))
+            {
+                byte[] value = it.Value();
+                yield return new BlockHash(value);
+            }
+        }
+
+        private IEnumerable<BlockHash> IterateIndexesInnerUnpruned(Guid chainId, long expectedCount)
         {
             long count = 0;
             byte[] prefix = Concat(IndexKeyPrefix, chainId.ToByteArray());
-            foreach (Iterator it in IterateDb(_chainDb, prefix))
+            foreach (Iterator it in IterateDbUnpruned(_chainDb, prefix))
             {
                 if (count >= expectedCount)
                 {
@@ -1910,7 +1978,7 @@ namespace Libplanet.RocksDBStore
         private bool HasFork(Guid chainId)
         {
             byte[] prefix = Concat(ForkedChainsKeyPrefix, chainId.ToByteArray());
-            return IterateDb(_chainDb, prefix).Any();
+            return IterateDbUnpruned(_chainDb, prefix).Any();
         }
 
         private bool IsDeletionMarked(Guid chainId)
