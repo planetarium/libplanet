@@ -176,7 +176,7 @@ namespace Libplanet.RocksDBStore
         private IEnumerable<BlockHash> IterateIndexesInnerForPrune(Guid chainId)
         {
             byte[] prefix = Concat(IndexKeyPrefix, chainId.ToByteArray());
-            foreach (Iterator it in IterateDb(_chainDb, prefix))
+            foreach (Iterator it in IterateDbUnpruned(_chainDb, prefix))
             {
                 byte[] value = it.Value();
                 yield return new BlockHash(value);

@@ -666,7 +666,7 @@ namespace Libplanet.RocksDBStore
             }
 
             using var batch = new WriteBatch();
-            foreach (Iterator k in IterateDb(_chainDb, IndexKey(destinationChainId)))
+            foreach (Iterator k in IterateDbUnpruned(_chainDb, IndexKey(destinationChainId)))
             {
                 batch.Delete(k.Key());
             }
@@ -1147,7 +1147,7 @@ namespace Libplanet.RocksDBStore
             try
             {
                 byte[] prefix = TxNonceKey(sourceChainId);
-                foreach (Iterator it in IterateDb(_chainDb, prefix))
+                foreach (Iterator it in IterateDbUnpruned(_chainDb, prefix))
                 {
                     exist = true;
                     Address address = new Address(it.Key().Skip(prefix.Length).ToArray());
