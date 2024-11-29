@@ -451,7 +451,7 @@ namespace Libplanet.Net.Consensus
                     Message[] replies = (await _transport.SendMessageAsync(
                         pair.Key,
                         want,
-                        TimeSpan.FromSeconds(1),
+                        TimeSpan.FromSeconds(5),
                         idsToGet.Length,
                         true,
                         ctx)).ToArray();
