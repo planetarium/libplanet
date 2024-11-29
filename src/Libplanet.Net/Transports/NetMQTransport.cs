@@ -513,7 +513,7 @@ namespace Libplanet.Net.Transports
                         .AddTag("Message", content.Type)
                         .AddTag("Peers", boundPeers.Select(x => x.PeerString));
                     await boundPeers.ParallelForEachAsync(
-                        peer => SendMessageAsync(peer, content, TimeSpan.FromSeconds(1), ct),
+                        peer => SendMessageAsync(peer, content, TimeSpan.FromSeconds(5), ct),
                         ct
                     );
 
@@ -734,7 +734,7 @@ namespace Libplanet.Net.Transports
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(1), message))
+            if (_router!.TrySendMultipartMessage(TimeSpan.FromSeconds(5), message))
             {
                 _logger.Debug(
                     "{Message} as a reply to {Identity} sent", messageType, reqId);
