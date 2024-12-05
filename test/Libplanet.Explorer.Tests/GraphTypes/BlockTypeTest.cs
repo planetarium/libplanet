@@ -122,7 +122,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                             { "blockHash", lastVotes[0].BlockHash.ToString() },
                             { "timestamp", new DateTimeOffsetGraphType().Serialize(lastVotes[0].Timestamp) },
                             { "validatorPublicKey", lastVotes[0].ValidatorPublicKey.ToString() },
-                            { "validatorPower", lastVotes[0].ValidatorPower },
+                            { "validatorPower", lastVotes[0].ValidatorPower?.ToString("N0") },
                             { "flag", lastVotes[0].Flag.ToString() },
                             { "signature", ByteUtil.Hex(lastVotes[0].Signature) },
                         }
