@@ -6,6 +6,11 @@ Version 5.4.2
 
 To be released.
 
+ -  (Libplanet.Explorer) Changed `ValidatorPower` type of `VoteType` from
+    `BigIntGraphType` to `StringGraphType`.  [[#4005]]
+
+[#4005]: https://github.com/planetarium/libplanet/pull/4005
+
 
 Version 5.4.1
 -------------
