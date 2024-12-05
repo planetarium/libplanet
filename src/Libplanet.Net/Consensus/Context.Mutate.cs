@@ -29,7 +29,7 @@ namespace Libplanet.Net.Consensus
             RoundStarted?.Invoke(this, Round);
             _heightVoteSet.SetRound(round);
 
-            Proposal = null;
+            SetProposal(null);
             Step = ConsensusStep.Propose;
             if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
             {
@@ -214,7 +214,7 @@ namespace Libplanet.Net.Consensus
 
             if (Proposal is null)
             {
-                Proposal = proposal;
+                SetProposal(proposal);
                 _logger.Debug("Proposal {BlockHash} is set", proposal.BlockHash);
             }
             else
@@ -245,17 +245,14 @@ namespace Libplanet.Net.Consensus
                     "Entering PreVote step due to proposal message with " +
                     "valid round -1. (context: {Context})",
                     ToString());
-                Step = ConsensusStep.PreVote;
 
                 if (IsValid(p1.Block) && (_lockedRound == -1 || _lockedValue == p1.Block))
                 {
-                    PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, p1.Block.Hash, VoteFlag.PreVote)));
+                    EnterPreVote(Round, p1.Block.Hash);
                 }
                 else
                 {
-                    PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
+                    EnterPreVote(Round, default);
                 }
             }
 
@@ -271,31 +268,20 @@ namespace Libplanet.Net.Consensus
                     "2/3+ PreVote for valid round {ValidRound}. (context: {Context})",
                     p2.ValidRound,
                     ToString());
-                Step = ConsensusStep.PreVote;
 
                 if (IsValid(p2.Block) &&
                     (_lockedRound <= p2.ValidRound || _lockedValue == p2.Block))
                 {
-                    PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, p2.Block.Hash, VoteFlag.PreVote)));
+                    EnterPreVote(Round, p2.Block.Hash);
                 }
                 else
                 {
-                    PublishMessage(
-                        new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
+                    EnterPreVote(Round, default);
                 }
             }
 
-            if (_heightVoteSet.PreVotes(Round).HasTwoThirdsAny() &&
-                Step == ConsensusStep.PreVote &&
-                !_preVoteTimeoutFlags.Contains(Round))
+            if (_heightVoteSet.PreVotes(Round).HasTwoThirdsAny() && Step == ConsensusStep.PreVote)
             {
-                _logger.Debug(
-                    "PreVote step in round {Round} is scheduled to be timed out because " +
-                    "2/3+ PreVotes are collected for the round. (context: {Context})",
-                    Round,
-                    ToString());
-                _preVoteTimeoutFlags.Add(Round);
                 _ = OnTimeoutPreVote(Round);
             }
 
@@ -319,12 +305,9 @@ namespace Libplanet.Net.Consensus
                         "2/3+ PreVote for current round {Round}. (context: {Context})",
                         Round,
                         ToString());
-                    Step = ConsensusStep.PreCommit;
                     _lockedValue = p3.Block;
                     _lockedRound = Round;
-                    PublishMessage(
-                        new ConsensusPreCommitMsg(
-                            MakeVote(Round, p3.Block.Hash, VoteFlag.PreCommit)));
+                    EnterPreCommit(Round, p3.Block.Hash);
 
                     // Maybe need to broadcast periodically?
                     PublishMessage(
@@ -346,9 +329,7 @@ namespace Libplanet.Net.Consensus
                         "were collected. (context: {Context})",
                         Round,
                         ToString());
-                    Step = ConsensusStep.PreCommit;
-                    PublishMessage(
-                        new ConsensusPreCommitMsg(MakeVote(Round, default, VoteFlag.PreCommit)));
+                    EnterPreCommit(Round, default);
                 }
                 else if (Proposal is { } proposal && !proposal.BlockHash.Equals(hash3))
                 {
@@ -360,7 +341,7 @@ namespace Libplanet.Net.Consensus
                         Round,
                         hash3,
                         ToString());
-                    Proposal = null;
+                    SetProposal(null);
                     PublishMessage(
                         new ConsensusProposalClaimMsg(
                             new ProposalClaimMetadata(
@@ -372,15 +353,8 @@ namespace Libplanet.Net.Consensus
                 }
             }
 
-            if (_heightVoteSet.PreCommits(Round).HasTwoThirdsAny() &&
-                !_preCommitTimeoutFlags.Contains(Round))
+            if (_heightVoteSet.PreCommits(Round).HasTwoThirdsAny())
             {
-                _logger.Debug(
-                    "PreCommit step in round {Round} is scheduled to be timed out because " +
-                    "2/3+ PreCommits are collected for the round. (context: {Context})",
-                    Round,
-                    ToString());
-                _preCommitTimeoutFlags.Add(Round);
                 _ = OnTimeoutPreCommit(Round);
             }
         }
@@ -406,7 +380,6 @@ namespace Libplanet.Net.Consensus
                 block4.Hash.Equals(hash) &&
                 IsValid(block4))
             {
-                Step = ConsensusStep.EndCommit;
                 _decision = block4;
                 _committedRound = round;
 
@@ -414,34 +387,7 @@ namespace Libplanet.Net.Consensus
                 PublishMessage(
                     new ConsensusMaj23Msg(
                         MakeMaj23(round, block4.Hash, VoteFlag.PreCommit)));
-
-                try
-                {
-                    _logger.Information(
-                        "Committing block #{Index} {Hash} (context: {Context})",
-                        block4.Index,
-                        block4.Hash,
-                        ToString());
-
-                    IsValid(block4);
-
-                    AppendBlock(block4);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(
-                        e,
-                        "Failed to commit block #{Index} {Hash}",
-                        block4.Index,
-                        block4.Hash);
-                    ExceptionOccurred?.Invoke(this, e);
-                    return;
-                }
-
-                _logger.Information(
-                    "Committed block #{Index} {Hash}",
-                    block4.Index,
-                    block4.Hash);
+                EnterEndCommit(Round);
                 return;
             }
 
@@ -461,6 +407,57 @@ namespace Libplanet.Net.Consensus
             }
         }
 
+        private void EnterPreVote(int round, BlockHash hash)
+        {
+            Step = ConsensusStep.PreVote;
+            PublishMessage(
+                new ConsensusPreVoteMsg(MakeVote(round, hash, VoteFlag.PreVote)));
+        }
+
+        private void EnterPreCommit(int round, BlockHash hash)
+        {
+            Step = ConsensusStep.PreCommit;
+            PublishMessage(
+                new ConsensusPreCommitMsg(MakeVote(round, hash, VoteFlag.PreCommit)));
+        }
+
+        private void EnterEndCommit(int round)
+        {
+            Step = ConsensusStep.EndCommit;
+            if (_decision is not { } block)
+            {
+                StartRound(Round + 1);
+                return;
+            }
+
+            try
+            {
+                _logger.Information(
+                    "Committing block #{Index} {Hash} (context: {Context})",
+                    block.Index,
+                    block.Hash,
+                    ToString());
+
+                IsValid(block);
+                AppendBlock(block);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    "Failed to commit block #{Index} {Hash}",
+                    block.Index,
+                    block.Hash);
+                ExceptionOccurred?.Invoke(this, e);
+                return;
+            }
+
+            _logger.Information(
+                "Committed block #{Index} {Hash}",
+                block.Index,
+                block.Hash);
+        }
+
         /// <summary>
         /// A timeout mutation to run if no <see cref="ConsensusProposalMsg"/> is received in
         /// <see cref="TimeoutPropose"/> and is still in <see cref="ConsensusStep.Propose"/> step.
@@ -470,9 +467,7 @@ namespace Libplanet.Net.Consensus
         {
             if (round == Round && Step == ConsensusStep.Propose)
             {
-                PublishMessage(
-                    new ConsensusPreVoteMsg(MakeVote(Round, default, VoteFlag.PreVote)));
-                Step = ConsensusStep.PreVote;
+                EnterPreVote(round, default);
                 TimeoutProcessed?.Invoke(this, (round, ConsensusStep.Propose));
             }
         }
@@ -487,9 +482,7 @@ namespace Libplanet.Net.Consensus
         {
             if (round == Round && Step == ConsensusStep.PreVote)
             {
-                PublishMessage(
-                    new ConsensusPreCommitMsg(MakeVote(Round, default, VoteFlag.PreCommit)));
-                Step = ConsensusStep.PreCommit;
+                EnterPreCommit(round, default);
                 TimeoutProcessed?.Invoke(this, (round, ConsensusStep.PreVote));
             }
         }
@@ -510,7 +503,7 @@ namespace Libplanet.Net.Consensus
 
             if (round == Round)
             {
-                StartRound(Round + 1);
+                EnterEndCommit(round);
                 TimeoutProcessed?.Invoke(this, (round, ConsensusStep.PreCommit));
             }
         }

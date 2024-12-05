@@ -98,6 +98,7 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
         private readonly LRUCache<BlockHash, bool> _blockValidationCache;
 
+        private Block? _proposalBlock;
         private Block? _lockedValue;
         private int _lockedRound;
         private Block? _validValue;
@@ -585,21 +586,30 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
+        /// Sets the proposal for the round.
+        /// </summary>
+        private void SetProposal(Proposal? proposal)
+        {
+            if (proposal is { } p)
+            {
+                Proposal = proposal;
+                _proposalBlock =
+                    BlockMarshaler.UnmarshalBlock((Dictionary)_codec.Decode(p.MarshaledBlock));
+            }
+            else
+            {
+                Proposal = null;
+                _proposalBlock = null;
+            }
+        }
+
+        /// <summary>
         /// Gets the proposed block and valid round of the given round.
         /// </summary>
         /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
         /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block, int)? GetProposal()
-        {
-            if (Proposal is { } p)
-            {
-                var block = BlockMarshaler.UnmarshalBlock(
-                    (Dictionary)_codec.Decode(p.MarshaledBlock));
-                return (block, p.ValidRound);
-            }
-
-            return null;
-        }
+        private (Block, int)? GetProposal() =>
+            Proposal is { } p && _proposalBlock is { } b ? (b, p.ValidRound) : null;
     }
 }
