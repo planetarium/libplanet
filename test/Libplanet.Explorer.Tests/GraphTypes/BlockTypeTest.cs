@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Security.Cryptography;
+using Bencodex;
+using Bencodex.Types;
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Types;
@@ -79,6 +81,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         }
                     }
                     protocolVersion
+                    raw
                 }";
 
             var store = new MemoryStore();
@@ -135,6 +138,11 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(
                 block.ProtocolVersion,
                 resultData["protocolVersion"]);
+
+            Assert.Equal(
+                block,
+                BlockMarshaler.UnmarshalBlock(
+                    (Dictionary)new Codec().Decode(ByteUtil.ParseHex((string)resultData["raw"]))));
         }
     }
 }
