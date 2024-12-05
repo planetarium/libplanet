@@ -13,6 +13,7 @@ To be released.
  -  Changed `IMessageCodec.Encode(MessageContent, PrivateKey,
     AppProtocolVersion, BoundPeer, DateTimeOffset, byte[]?)` to
     `IMessageCodec.Encode(Message, PrivateKey)`.  [[#3997]]
+ -  (Libplanet.Explorer) Added `raw` field to `BlockType`.  [[#4006]]
 
 ### Backward-incompatible network protocol changes
 
@@ -32,6 +33,7 @@ To be released.
 
 [#3997]: https://github.com/planetarium/libplanet/pull/3997
 [#3999]: https://github.com/planetarium/libplanet/pull/3999
+[#4006]: https://github.com/planetarium/libplanet/pull/4006
 
 
 Version 5.4.2

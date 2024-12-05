@@ -1,3 +1,4 @@
+using Bencodex;
 using GraphQL.Types;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Types.Blocks;
@@ -6,6 +7,8 @@ namespace Libplanet.Explorer.GraphTypes;
 
 public class BlockType : ObjectGraphType<Block>
 {
+    private static readonly Codec _codec = new();
+
     public BlockType(IBlockChainContext context)
     {
         Name = "Block";
@@ -93,5 +96,9 @@ public class BlockType : ObjectGraphType<Block>
             name: "ProtocolVersion",
             description: "The protocol version number of the block.",
             resolve: ctx => ctx.Source.ProtocolVersion);
+        Field<NonNullGraphType<ByteStringType>>(
+            name: "Raw",
+            description: "The bencodex serialization of the block",
+            resolve: ctx => _codec.Encode(ctx.Source.MarshalBlock()));
     }
 }
