@@ -340,7 +340,7 @@ namespace Libplanet.Net.Tests.Consensus
                 blockChain
                     .GetNextWorldState(0L)
                     .GetValidatorSet(),
-                contextTimeoutOptions: new ContextTimeoutOption());
+                contextOption: new ContextOption());
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             context.StateChanged += (_, eventArgs) =>
@@ -639,7 +639,7 @@ namespace Libplanet.Net.Tests.Consensus
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
-                new ContextTimeoutOption());
+                new ContextOption());
             Context context = consensusContext.CurrentContext;
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 

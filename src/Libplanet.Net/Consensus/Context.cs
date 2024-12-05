@@ -78,7 +78,7 @@ namespace Libplanet.Net.Consensus
     /// </remarks>
     public partial class Context : IDisposable
     {
-        private readonly ContextTimeoutOption _contextTimeoutOption;
+        private readonly ContextOption _contextOption;
 
         private readonly BlockChain _blockChain;
         private readonly Codec _codec;
@@ -122,15 +122,15 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="validators">The <see cref="ValidatorSet"/> for
         /// given <paramref name="height"/>.</param>
-        /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
-        /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
+        /// <param name="contextOption">A <see cref="ContextOption"/> for
+        /// configuring a timeout and delay for each <see cref="ConsensusStep"/>.</param>
         public Context(
             BlockChain blockChain,
             long height,
             BlockCommit? lastCommit,
             PrivateKey privateKey,
             ValidatorSet validators,
-            ContextTimeoutOption contextTimeoutOptions)
+            ContextOption contextOption)
             : this(
                 blockChain,
                 height,
@@ -140,7 +140,7 @@ namespace Libplanet.Net.Consensus
                 ConsensusStep.Default,
                 -1,
                 128,
-                contextTimeoutOptions)
+                contextOption)
         {
         }
 
@@ -153,7 +153,7 @@ namespace Libplanet.Net.Consensus
             ConsensusStep consensusStep,
             int round = -1,
             int cacheSize = 128,
-            ContextTimeoutOption? contextTimeoutOptions = null)
+            ContextOption? contextOption = null)
         {
             if (height < 1)
             {
@@ -191,7 +191,7 @@ namespace Libplanet.Net.Consensus
             _blockValidationCache =
                 new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
 
-            _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
+            _contextOption = contextOption ?? new ContextOption();
 
             _logger.Information(
                 "Created Context for height #{Height}, round #{Round}",
@@ -379,9 +379,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan TimeoutPreVote(long round)
         {
-            return TimeSpan.FromSeconds(
-                _contextTimeoutOption.PreVoteSecondBase +
-                round * _contextTimeoutOption.PreVoteMultiplier);
+            return TimeSpan.FromMilliseconds(
+                _contextOption.PreVoteTimeoutBase +
+                round * _contextOption.PreVoteTimeoutDelta);
         }
 
         /// <summary>
@@ -392,9 +392,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan TimeoutPreCommit(long round)
         {
-            return TimeSpan.FromSeconds(
-                _contextTimeoutOption.PreCommitSecondBase +
-                round * _contextTimeoutOption.PreCommitMultiplier);
+            return TimeSpan.FromMilliseconds(
+                _contextOption.PreCommitTimeoutBase +
+                round * _contextOption.PreCommitTimeoutDelta);
         }
 
         /// <summary>
@@ -405,9 +405,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan TimeoutPropose(long round)
         {
-            return TimeSpan.FromSeconds(
-                _contextTimeoutOption.ProposeSecondBase +
-                round * _contextTimeoutOption.ProposeMultiplier);
+            return TimeSpan.FromMilliseconds(
+                _contextOption.ProposeTimeoutBase +
+                round * _contextOption.ProposeTimeoutDelta);
         }
 
         /// <summary>
