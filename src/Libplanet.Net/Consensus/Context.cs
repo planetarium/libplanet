@@ -87,9 +87,11 @@ namespace Libplanet.Net.Consensus
         private readonly Channel<System.Action> _mutationRequests;
         private readonly HeightVoteSet _heightVoteSet;
         private readonly PrivateKey _privateKey;
-        private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _hasTwoThirdsPreVoteFlags;
+        private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _preCommitTimeoutFlags;
+        private readonly HashSet<int> _preCommitWaitFlags;
+        private readonly HashSet<int> _endCommitWaitFlags;
         private readonly EvidenceExceptionCollector _evidenceCollector
             = new EvidenceExceptionCollector();
 
@@ -184,9 +186,11 @@ namespace Libplanet.Net.Consensus
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
             _heightVoteSet = new HeightVoteSet(height, validators);
-            _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
+            _preVoteTimeoutFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
+            _preCommitWaitFlags = new HashSet<int>();
+            _endCommitWaitFlags = new HashSet<int>();
             _validatorSet = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             _blockValidationCache =

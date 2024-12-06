@@ -189,6 +189,40 @@ namespace Libplanet.Net.Consensus
             _ = Task.Run(() => _blockChain.Append(block, GetBlockCommit()));
         }
 
+        private async Task EnterPreCommitWait(int round, BlockHash hash)
+        {
+            if (!_preCommitWaitFlags.Add(round))
+            {
+                return;
+            }
+
+            if (_contextOption.EnterPreCommitDelay > 0)
+            {
+                await Task.Delay(
+                    _contextOption.EnterPreCommitDelay,
+                    _cancellationTokenSource.Token);
+            }
+
+            ProduceMutation(() => EnterPreCommit(round, hash));
+        }
+
+        private async Task EnterEndCommitWait(int round)
+        {
+            if (!_endCommitWaitFlags.Add(round))
+            {
+                return;
+            }
+
+            if (_contextOption.EnterEndCommitDelay > 0)
+            {
+                await Task.Delay(
+                    _contextOption.EnterEndCommitDelay,
+                    _cancellationTokenSource.Token);
+            }
+
+            ProduceMutation(() => EnterEndCommit(round));
+        }
+
         /// <summary>
         /// Schedules <see cref="ProcessTimeoutPropose"/> to be queued after
         /// <see cref="TimeoutPropose"/> amount of time.

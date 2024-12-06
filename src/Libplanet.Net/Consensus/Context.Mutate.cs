@@ -307,7 +307,7 @@ namespace Libplanet.Net.Consensus
                         ToString());
                     _lockedValue = p3.Block;
                     _lockedRound = Round;
-                    EnterPreCommit(Round, p3.Block.Hash);
+                    _ = EnterPreCommitWait(Round, p3.Block.Hash);
 
                     // Maybe need to broadcast periodically?
                     PublishMessage(
@@ -329,7 +329,7 @@ namespace Libplanet.Net.Consensus
                         "were collected. (context: {Context})",
                         Round,
                         ToString());
-                    EnterPreCommit(Round, default);
+                    _ = EnterPreCommitWait(Round, default);
                 }
                 else if (Proposal is { } proposal && !proposal.BlockHash.Equals(hash3))
                 {
@@ -387,12 +387,12 @@ namespace Libplanet.Net.Consensus
                 PublishMessage(
                     new ConsensusMaj23Msg(
                         MakeMaj23(round, block4.Hash, VoteFlag.PreCommit)));
-                EnterEndCommit(Round);
+                _ = EnterEndCommitWait(Round);
                 return;
             }
 
             // NOTE: +1/3 prevote received, skip round
-            // FIXME: Tendermint uses +2/3, should fixed?
+            // FIXME: Tendermint uses +2/3, should be fixed?
             if (round > Round &&
                 _heightVoteSet.PreVotes(round).HasOneThirdsAny())
             {
@@ -409,6 +409,12 @@ namespace Libplanet.Net.Consensus
 
         private void EnterPreVote(int round, BlockHash hash)
         {
+            if (Round != round || Step >= ConsensusStep.PreVote)
+            {
+                // Round and step mismatch
+                return;
+            }
+
             Step = ConsensusStep.PreVote;
             PublishMessage(
                 new ConsensusPreVoteMsg(MakeVote(round, hash, VoteFlag.PreVote)));
@@ -416,6 +422,12 @@ namespace Libplanet.Net.Consensus
 
         private void EnterPreCommit(int round, BlockHash hash)
         {
+            if (Round != round || Step >= ConsensusStep.PreCommit)
+            {
+                // Round and step mismatch
+                return;
+            }
+
             Step = ConsensusStep.PreCommit;
             PublishMessage(
                 new ConsensusPreCommitMsg(MakeVote(round, hash, VoteFlag.PreCommit)));
@@ -423,6 +435,14 @@ namespace Libplanet.Net.Consensus
 
         private void EnterEndCommit(int round)
         {
+            if (Round != round ||
+                Step == ConsensusStep.Default ||
+                Step == ConsensusStep.EndCommit)
+            {
+                // Round and step mismatch
+                return;
+            }
+
             Step = ConsensusStep.EndCommit;
             if (_decision is not { } block)
             {

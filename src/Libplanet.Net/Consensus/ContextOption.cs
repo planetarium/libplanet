@@ -23,7 +23,7 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(proposeTimeoutBase),
-                    "ProposeSecondBase must be greater than 0.");
+                    "ProposeTimeoutBase must be greater than 0.");
             }
 
             ProposeTimeoutBase = proposeTimeoutBase;
@@ -32,7 +32,7 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(preVoteTimeoutBase),
-                    "PreVoteSecondBase must be greater than 0.");
+                    "PreVoteTimeoutBase must be greater than 0.");
             }
 
             PreVoteTimeoutBase = preVoteTimeoutBase;
@@ -41,7 +41,7 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(preCommitTimeoutBase),
-                    "PreCommitSecondBase must be greater than 0.");
+                    "PreCommitTimeoutBase must be greater than 0.");
             }
 
             PreCommitTimeoutBase = preCommitTimeoutBase;
@@ -50,7 +50,7 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(proposeTimeoutDelta),
-                    "ProposeMultiplier must be greater than 0.");
+                    "ProposeTimeoutDelta must be greater than 0.");
             }
 
             ProposeTimeoutDelta = proposeTimeoutDelta;
@@ -59,7 +59,7 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(preVoteTimeoutDelta),
-                    "PreVoteMultiplier must be greater than 0.");
+                    "PreVoteTimeoutDelta must be greater than 0.");
             }
 
             PreVoteTimeoutDelta = preVoteTimeoutDelta;
@@ -68,34 +68,34 @@ namespace Libplanet.Net.Consensus
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(preCommitTimeoutDelta),
-                    "PreCommitMultiplier must be greater than 0.");
+                    "PreCommitTimeoutDelta must be greater than 0.");
             }
 
             PreCommitTimeoutDelta = preCommitTimeoutDelta;
 
-            if (enterPreVoteDelay <= 0)
+            if (enterPreVoteDelay < 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(enterPreVoteDelay),
-                    "PreCommitMultiplier must be greater than 0.");
+                    "EnterPreVoteDelay must be greater than or equal to 0.");
             }
 
             EnterPreVoteDelay = enterPreVoteDelay;
 
-            if (enterPreCommitDelay <= 0)
+            if (enterPreCommitDelay < 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(enterPreCommitDelay),
-                    "PreCommitMultiplier must be greater than 0.");
+                    "EnterPreCommitDelay must be greater than or equal to 0.");
             }
 
             EnterPreCommitDelay = enterPreCommitDelay;
 
-            if (enterEndCommitDelay <= 0)
+            if (enterEndCommitDelay < 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(enterEndCommitDelay),
-                    "PreCommitMultiplier must be greater than 0.");
+                    "EnterEndCommitDelay must be greater than or equal to 0.");
             }
 
             EnterEndCommitDelay = enterEndCommitDelay;
