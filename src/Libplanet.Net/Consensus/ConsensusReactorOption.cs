@@ -7,7 +7,7 @@ using Libplanet.Net.Transports;
 namespace Libplanet.Net.Consensus
 {
     /// <summary>
-    /// A option struct for initializing <see cref="ConsensusReactor"/>.
+    /// An option struct for initializing <see cref="ConsensusReactor"/>.
     /// </summary>
     public struct ConsensusReactorOption
     {
@@ -42,8 +42,8 @@ namespace Libplanet.Net.Consensus
         public TimeSpan TargetBlockInterval { get; set; }
 
         /// <summary>
-        /// A timeout second and multiplier value for used in <see cref="Context"/>.
+        /// A timeout and delay value for used in <see cref="Context"/> in milliseconds.
         /// </summary>
-        public ContextTimeoutOption ContextTimeoutOptions { get; set; }
+        public ContextOption ContextOption { get; set; }
     }
 }
