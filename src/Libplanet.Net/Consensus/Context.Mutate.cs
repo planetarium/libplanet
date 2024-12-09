@@ -301,8 +301,8 @@ namespace Libplanet.Net.Consensus
                 if (Step == ConsensusStep.PreVote)
                 {
                     _logger.Debug(
-                        "Entering PreCommit step due to proposal message and have collected " +
-                        "2/3+ PreVote for current round {Round}. (context: {Context})",
+                        "Schedule to enter PreCommit step due to proposal message and have " +
+                        "collected 2/3+ PreVote for current round {Round}. (context: {Context})",
                         Round,
                         ToString());
                     _lockedValue = p3.Block;
@@ -428,6 +428,10 @@ namespace Libplanet.Net.Consensus
                 return;
             }
 
+            _logger.Debug(
+                "Entering PreCommit step current round {Round}. (context: {Context})",
+                Round,
+                ToString());
             Step = ConsensusStep.PreCommit;
             PublishMessage(
                 new ConsensusPreCommitMsg(MakeVote(round, hash, VoteFlag.PreCommit)));
