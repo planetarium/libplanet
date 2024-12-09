@@ -189,6 +189,40 @@ namespace Libplanet.Net.Consensus
             _ = Task.Run(() => _blockChain.Append(block, GetBlockCommit()));
         }
 
+        private async Task EnterPreCommitWait(int round, BlockHash hash)
+        {
+            if (!_preCommitWaitFlags.Add(round))
+            {
+                return;
+            }
+
+            if (_contextOption.EnterPreCommitDelay > 0)
+            {
+                await Task.Delay(
+                    _contextOption.EnterPreCommitDelay,
+                    _cancellationTokenSource.Token);
+            }
+
+            ProduceMutation(() => EnterPreCommit(round, hash));
+        }
+
+        private async Task EnterEndCommitWait(int round)
+        {
+            if (!_endCommitWaitFlags.Add(round))
+            {
+                return;
+            }
+
+            if (_contextOption.EnterEndCommitDelay > 0)
+            {
+                await Task.Delay(
+                    _contextOption.EnterEndCommitDelay,
+                    _cancellationTokenSource.Token);
+            }
+
+            ProduceMutation(() => EnterEndCommit(round));
+        }
+
         /// <summary>
         /// Schedules <see cref="ProcessTimeoutPropose"/> to be queued after
         /// <see cref="TimeoutPropose"/> amount of time.
@@ -212,7 +246,18 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">A round that the timeout task is scheduled for.</param>
         private async Task OnTimeoutPreVote(int round)
         {
+            if (_preCommitTimeoutFlags.Contains(round) || !_preVoteTimeoutFlags.Add(round))
+            {
+                return;
+            }
+
             TimeSpan timeout = TimeoutPreVote(round);
+            _logger.Debug(
+                "PreVote step in round {Round} is scheduled to be timed out after {Timeout} " +
+                "because 2/3+ PreVotes are collected for the round. (context: {Context})",
+                round,
+                timeout,
+                ToString());
             await Task.Delay(timeout, _cancellationTokenSource.Token);
             _logger.Information(
                 "TimeoutPreVote has occurred in {Timeout}. {Info}",
@@ -228,7 +273,18 @@ namespace Libplanet.Net.Consensus
         /// <param name="round">The round that the timeout task is scheduled for.</param>
         private async Task OnTimeoutPreCommit(int round)
         {
+            if (!_preCommitTimeoutFlags.Add(round))
+            {
+                return;
+            }
+
             TimeSpan timeout = TimeoutPreCommit(round);
+            _logger.Debug(
+                "PreCommit step in round {Round} is scheduled to be timed out in {Timeout} " +
+                "because 2/3+ PreCommits are collected for the round. (context: {Context})",
+                round,
+                timeout,
+                ToString());
             await Task.Delay(timeout, _cancellationTokenSource.Token);
             _logger.Information(
                 "TimeoutPreCommit has occurred in {Timeout}. {Info}",

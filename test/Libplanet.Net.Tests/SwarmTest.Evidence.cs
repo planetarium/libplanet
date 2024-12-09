@@ -41,7 +41,7 @@ namespace Libplanet.Net.Tests
                     ConsensusPrivateKey = privateKeys[i],
                     ConsensusWorkers = 100,
                     TargetBlockInterval = TimeSpan.FromSeconds(4),
-                    ContextTimeoutOptions = new ContextTimeoutOption(),
+                    ContextOption = new ContextOption(),
                 }).ToList();
 
             var swarmTasks = privateKeys.Select(
