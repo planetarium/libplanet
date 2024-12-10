@@ -131,18 +131,18 @@ namespace Libplanet.Explorer.Queries
             return evidence;
         }
 
-        internal static IEnumerable<EvidenceBase> ListCommitEvidence(
-            BlockHash? blockHash, bool desc, int offset, int? limit)
+        internal static IEnumerable<EvidenceBase> ListCommitEvidence(BlockHash blockHash)
         {
             var blockChain = Chain;
-            var block = blockHash != null ? blockChain[blockHash.Value] : blockChain.Tip;
-            var comparer = desc ? EvidenceIdComparer.Descending : EvidenceIdComparer.Ascending;
-            var evidence = block.Evidence
-                                 .Skip(offset)
-                                 .Take(limit ?? int.MaxValue)
-                                 .OrderBy(ev => ev.Id, comparer);
+            var block = blockChain[blockHash];
+            return block.Evidence;
+        }
 
-            return evidence;
+        internal static IEnumerable<EvidenceBase> ListCommitEvidence(long index)
+        {
+            var blockChain = Chain;
+            var block = blockChain[index];
+            return block.Evidence;
         }
 
         internal static Block? GetBlockByHash(BlockHash hash) => Store.GetBlock(hash);

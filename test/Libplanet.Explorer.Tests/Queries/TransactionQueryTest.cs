@@ -21,6 +21,7 @@ using Libplanet.Store.Trie;
 using Xunit;
 using static Libplanet.Explorer.Tests.GraphQLTestUtils;
 using Libplanet.Action.Loader;
+using Libplanet.Types.Evidence;
 
 namespace Libplanet.Explorer.Tests.Queries;
 

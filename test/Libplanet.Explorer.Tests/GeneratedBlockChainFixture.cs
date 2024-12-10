@@ -16,6 +16,7 @@ using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+using Libplanet.Tests.Blockchain.Evidence;
 
 namespace Libplanet.Explorer.Tests;
 
@@ -28,6 +29,8 @@ public class GeneratedBlockChainFixture
     public ImmutableArray<PrivateKey> PrivateKeys { get; }
 
     public int MaxTxCount { get; }
+
+    public int MaxEvidenceCount { get; }
 
     public ImmutableDictionary<Address, ImmutableArray<Block>>
         MinedBlocks { get; private set; }
@@ -43,7 +46,8 @@ public class GeneratedBlockChainFixture
         int maxTxCount = 20,
         int privateKeyCount = 10,
         ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>?
-            txActionsForSuffixBlocks = null)
+            txActionsForSuffixBlocks = null,
+        int maxEvidenceCount = 2)
     {
         txActionsForSuffixBlocks ??=
             ImmutableArray<ImmutableArray<ImmutableArray<SimpleAction>>>.Empty;
@@ -65,6 +69,7 @@ public class GeneratedBlockChainFixture
             .ToImmutableDictionary(
                 key => key.Address,
                 key => ImmutableArray<Transaction>.Empty);
+        MaxEvidenceCount = maxEvidenceCount;
 
         var privateKey = new PrivateKey();
         var policy = new BlockPolicy(
@@ -105,7 +110,7 @@ public class GeneratedBlockChainFixture
 
         while (Chain.Count < blockCount)
         {
-            AddBlock(GetRandomTransactions());
+            AddBlock(GetRandomTransactions(), GetRandomEvidence(height: Chain.Count - 1));
         }
 
         if (txActionsForSuffixBlocks is { } txActionsForSuffixBlocksVal)
@@ -113,14 +118,16 @@ public class GeneratedBlockChainFixture
             foreach (var actionsForTransactions in txActionsForSuffixBlocksVal)
             {
                 var pk = PrivateKeys[Random.Next(PrivateKeys.Length)];
-                AddBlock(actionsForTransactions
+                var txs = actionsForTransactions
                     .Select(actions =>
                         Transaction.Create(
                             nonce: Chain.GetNextTxNonce(pk.Address),
                             privateKey: pk,
                             genesisHash: Chain.Genesis.Hash,
                             actions: actions.ToPlainValues()))
-                    .ToImmutableArray());
+                    .ToImmutableArray();
+                var evs = ImmutableArray<EvidenceBase>.Empty;
+                AddBlock(txs, evs);
             }
         }
     }
@@ -159,6 +166,21 @@ public class GeneratedBlockChainFixture
             gasLimit: null);
     }
 
+    private ImmutableArray<EvidenceBase> GetRandomEvidence(long height)
+    {
+        return Enumerable
+            .Range(0, Random.Next(MaxEvidenceCount))
+            .Select<int, EvidenceBase>(_ =>
+            {
+                return new TestEvidence(
+                    height: height,
+                    validatorAddress: new PrivateKey().Address,
+                    timestamp: DateTimeOffset.UtcNow);
+            })
+            .OrderBy(ev => ev.Id)
+            .ToImmutableArray();
+    }
+
     private ImmutableArray<SimpleAction> GetRandomActions()
     {
         return Enumerable
@@ -167,7 +189,8 @@ public class GeneratedBlockChainFixture
             .ToImmutableArray();
     }
 
-    private void AddBlock(ImmutableArray<Transaction> transactions)
+    private void AddBlock(
+        ImmutableArray<Transaction> transactions, ImmutableArray<EvidenceBase> evidence)
     {
         var proposer = PrivateKeys[Random.Next(PrivateKeys.Length)];
         var block = Chain.EvaluateAndSign(
@@ -179,9 +202,9 @@ public class GeneratedBlockChainFixture
                     Chain.Tip.Hash,
                     BlockContent.DeriveTxHash(transactions),
                     Chain.Store.GetChainBlockCommit(Chain.Store.GetCanonicalChainId()!.Value),
-                    evidenceHash: null),
+                    evidenceHash: BlockContent.DeriveEvidenceHash(evidence)),
                 transactions,
-                evidence: Array.Empty<EvidenceBase>()).Propose(),
+                evidence: evidence).Propose(),
             proposer);
         Chain.Append(
             block,
