@@ -715,6 +715,23 @@ namespace Libplanet.Net.Transports
                                     exc,
                                     "Something went wrong during message processing. {@Frames}",
                                     copied.ToArray());
+
+                                if (e.Socket.TrySendMultipartMessage(
+                                        _messageCodec.Encode(
+                                            new PongMsg(),
+                                            _privateKey,
+                                            _appProtocolVersionOptions.AppProtocolVersion,
+                                            AsPeer,
+                                            DateTimeOffset.UtcNow)))
+                                {
+                                    _logger.Debug("Socket reply has sent to {Socket}", e.Socket);
+                                }
+                                else
+                                {
+                                    _logger.Debug(
+                                        "Socket reply failed to send to {Socket}",
+                                        e.Socket);
+                                }
                             }
                         },
                         CancellationToken.None,
