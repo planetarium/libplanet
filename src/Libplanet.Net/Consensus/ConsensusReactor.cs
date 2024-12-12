@@ -43,7 +43,7 @@ namespace Libplanet.Net.Consensus
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block.
         /// </param>
-        /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
+        /// <param name="contextOption">A <see cref="ContextOption"/> for
         /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
         public ConsensusReactor(
             ITransport consensusTransport,
@@ -52,7 +52,7 @@ namespace Libplanet.Net.Consensus
             ImmutableList<BoundPeer> validatorPeers,
             ImmutableList<BoundPeer> seedPeers,
             TimeSpan newHeightDelay,
-            ContextTimeoutOption contextTimeoutOption)
+            ContextOption contextOption)
         {
             validatorPeers ??= ImmutableList<BoundPeer>.Empty;
             seedPeers ??= ImmutableList<BoundPeer>.Empty;
@@ -71,7 +71,7 @@ namespace Libplanet.Net.Consensus
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                contextTimeoutOption);
+                contextOption);
 
             _logger = Log
                 .ForContext("Tag", "Consensus")

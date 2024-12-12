@@ -252,7 +252,7 @@ namespace Libplanet.Net.Tests
                 IBlockPolicy? policy = null,
                 IActionLoader? actionLoader = null,
                 PrivateKey? privateKey = null,
-                ContextTimeoutOption? contextTimeoutOptions = null)
+                ContextOption? contextOption = null)
         {
             policy ??= Policy;
             var blockChain = CreateDummyBlockChain(policy, actionLoader);
@@ -272,7 +272,7 @@ namespace Libplanet.Net.Tests
                 blockChain,
                 privateKey,
                 newHeightDelay,
-                contextTimeoutOptions ?? new ContextTimeoutOption());
+                contextOption ?? new ContextOption());
 
             return (blockChain, consensusContext);
         }
@@ -282,7 +282,7 @@ namespace Libplanet.Net.Tests
             long height = 1,
             BlockCommit? lastCommit = null,
             PrivateKey? privateKey = null,
-            ContextTimeoutOption? contextTimeoutOptions = null,
+            ContextOption? contextOption = null,
             ValidatorSet? validatorSet = null)
         {
             Context? context = null;
@@ -295,7 +295,7 @@ namespace Libplanet.Net.Tests
                 validatorSet ?? blockChain
                     .GetNextWorldState(height - 1)
                     .GetValidatorSet(),
-                contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
+                contextOption: contextOption ?? new ContextOption());
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
             return context;
         }
@@ -307,7 +307,7 @@ namespace Libplanet.Net.Tests
                 IBlockPolicy? policy = null,
                 IActionLoader? actionLoader = null,
                 PrivateKey? privateKey = null,
-                ContextTimeoutOption? contextTimeoutOptions = null,
+                ContextOption? contextOption = null,
                 ValidatorSet? validatorSet = null)
         {
             Context? context = null;
@@ -323,7 +323,7 @@ namespace Libplanet.Net.Tests
                 validatorSet ?? blockChain
                     .GetNextWorldState(height - 1)
                     .GetValidatorSet(),
-                contextTimeoutOptions: contextTimeoutOptions ?? new ContextTimeoutOption());
+                contextOption: contextOption ?? new ContextOption());
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             return (blockChain, context);
@@ -336,7 +336,7 @@ namespace Libplanet.Net.Tests
             int consensusPort = 5101,
             List<BoundPeer>? validatorPeers = null,
             int newHeightDelayMilliseconds = 10_000,
-            ContextTimeoutOption? contextTimeoutOptions = null)
+            ContextOption? contextOption = null)
         {
             key ??= PrivateKeys[1];
             validatorPeers ??= Peers;
@@ -356,7 +356,7 @@ namespace Libplanet.Net.Tests
                 validatorPeers.ToImmutableList(),
                 new List<BoundPeer>().ToImmutableList(),
                 TimeSpan.FromMilliseconds(newHeightDelayMilliseconds),
-                contextTimeoutOption: contextTimeoutOptions ?? new ContextTimeoutOption());
+                contextOption: contextOption ?? new ContextOption());
         }
 
         public static byte[] GetRandomBytes(int size)

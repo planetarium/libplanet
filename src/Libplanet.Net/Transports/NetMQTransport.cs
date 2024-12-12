@@ -609,6 +609,7 @@ namespace Libplanet.Net.Transports
         {
             try
             {
+                _logger.Debug("{FName} has triggered. {Sender}", nameof(ReceiveMessage), sender);
                 var raw = new NetMQMessage();
 
                 // execution limit to avoid starvation.
@@ -616,6 +617,12 @@ namespace Libplanet.Net.Transports
                 {
                     if (!e.Socket.TryReceiveMultipartMessage(TimeSpan.Zero, ref raw))
                     {
+                        if (i == 0)
+                        {
+                            throw new NetMQException(
+                                "ReceiveMessage occurred but no data to receive");
+                        }
+
                         break;
                     }
 
@@ -633,6 +640,8 @@ namespace Libplanet.Net.Transports
 
                     // Duplicate received message before distributing.
                     var copied = new NetMQMessage(raw.Select(f => f.Duplicate()));
+
+                    _logger.Debug("Received message is {@Frames}", copied.ToArray());
 
                     Task.Factory.StartNew(
                         async () =>
@@ -704,7 +713,25 @@ namespace Libplanet.Net.Transports
                             {
                                 _logger.Error(
                                     exc,
-                                    "Something went wrong during message processing");
+                                    "Something went wrong during message processing. {@Frames}",
+                                    copied.ToArray());
+
+                                if (e.Socket.TrySendMultipartMessage(
+                                        _messageCodec.Encode(
+                                            new PongMsg(),
+                                            _privateKey,
+                                            _appProtocolVersionOptions.AppProtocolVersion,
+                                            AsPeer,
+                                            DateTimeOffset.UtcNow)))
+                                {
+                                    _logger.Debug("Socket reply has sent to {Socket}", e.Socket);
+                                }
+                                else
+                                {
+                                    _logger.Debug(
+                                        "Socket reply failed to send to {Socket}",
+                                        e.Socket);
+                                }
                             }
                         },
                         CancellationToken.None,
@@ -717,8 +744,9 @@ namespace Libplanet.Net.Transports
             {
                 _logger.Error(
                     ex,
-                    "An unexpected exception occurred during {MethodName}()",
-                    nameof(ReceiveMessage));
+                    "An unexpected exception occurred during {MethodName}() {Sender}",
+                    nameof(ReceiveMessage),
+                    sender);
             }
         }
 

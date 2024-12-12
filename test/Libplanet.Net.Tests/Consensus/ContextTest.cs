@@ -28,6 +28,7 @@ using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Libplanet.Net.Tests.Consensus
 {
@@ -340,7 +341,7 @@ namespace Libplanet.Net.Tests.Consensus
                 blockChain
                     .GetNextWorldState(0L)
                     .GetValidatorSet(),
-                contextTimeoutOptions: new ContextTimeoutOption());
+                contextOption: new ContextOption());
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
             context.StateChanged += (_, eventArgs) =>
@@ -639,7 +640,7 @@ namespace Libplanet.Net.Tests.Consensus
                 blockChain,
                 TestUtils.PrivateKeys[0],
                 newHeightDelay,
-                new ContextTimeoutOption());
+                new ContextOption());
             Context context = consensusContext.CurrentContext;
             context.MessageToPublish += (sender, message) => context.ProduceMessage(message);
 
@@ -713,6 +714,91 @@ namespace Libplanet.Net.Tests.Consensus
                     vote => vote.Flag.Equals(VoteFlag.PreCommit)));
             Assert.True(watch.ElapsedMilliseconds > (actionDelay * 0.5));
             Assert.Equal(2, consensusContext.Height);
+        }
+
+        [Theory(Timeout = Timeout)]
+        [InlineData(0)]
+        [InlineData(100)]
+        [InlineData(500)]
+        public async Task CanCollectPreVoteAfterMajority(int delay)
+        {
+            var stepChangedToPreVote = new AsyncAutoResetEvent();
+            var stepChangedToPreCommit = new AsyncAutoResetEvent();
+            Block? proposedBlock = null;
+            int numPreVotes = 0;
+            var (_, context) = TestUtils.CreateDummyContext(
+                contextOption: new ContextOption(
+                    enterPreCommitDelay: delay));
+            context.StateChanged += (_, eventArgs) =>
+            {
+                if (eventArgs.Step == ConsensusStep.PreVote)
+                {
+                    stepChangedToPreVote.Set();
+                }
+                else if (eventArgs.Step == ConsensusStep.PreCommit)
+                {
+                    stepChangedToPreCommit.Set();
+                }
+            };
+            context.MessageToPublish += (_, message) =>
+            {
+                if (message is ConsensusProposalMsg proposalMsg)
+                {
+                    proposedBlock = BlockMarshaler.UnmarshalBlock(
+                        (Dictionary)new Codec().Decode(proposalMsg!.Proposal.MarshaledBlock));
+                }
+            };
+            context.VoteSetModified += (_, tuple) =>
+            {
+                if (tuple.Flag == VoteFlag.PreVote)
+                {
+                    numPreVotes = tuple.Votes.Count();
+                }
+            };
+            context.Start();
+            await stepChangedToPreVote.WaitAsync();
+            Assert.Equal(ConsensusStep.PreVote, context.Step);
+            if (proposedBlock is not { } block)
+            {
+                throw new XunitException("No proposal is made");
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                context.ProduceMessage(
+                    new ConsensusPreVoteMsg(
+                        new VoteMetadata(
+                            block.Index,
+                            0,
+                            block.Hash,
+                            DateTimeOffset.UtcNow,
+                            TestUtils.PrivateKeys[i].PublicKey,
+                            TestUtils.ValidatorSet[i].Power,
+                            VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[i])));
+            }
+
+            // Send delayed PreVote message after sending preCommit message
+            var cts = new CancellationTokenSource();
+            const int preVoteDelay = 300;
+            _ = Task.Run(
+                async () =>
+                {
+                    await Task.Delay(preVoteDelay, cts.Token);
+                    context.ProduceMessage(
+                        new ConsensusPreVoteMsg(
+                            new VoteMetadata(
+                                block.Index,
+                                0,
+                                block.Hash,
+                                DateTimeOffset.UtcNow,
+                                TestUtils.PrivateKeys[3].PublicKey,
+                                TestUtils.ValidatorSet[3].Power,
+                                VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[3])));
+                }, cts.Token);
+
+            await stepChangedToPreCommit.WaitAsync();
+            cts.Cancel();
+            Assert.Equal(delay < preVoteDelay ? 3 : 4, numPreVotes);
         }
 
         public struct ContextJson
