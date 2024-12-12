@@ -29,7 +29,7 @@ namespace Libplanet.Net.Consensus
             RoundStarted?.Invoke(this, Round);
             _heightVoteSet.SetRound(round);
 
-            SetProposal(null);
+            Proposal = null;
             Step = ConsensusStep.Propose;
             if (_validatorSet.GetProposer(Height, Round).PublicKey == _privateKey.PublicKey)
             {
@@ -214,7 +214,7 @@ namespace Libplanet.Net.Consensus
 
             if (Proposal is null)
             {
-                SetProposal(proposal);
+                Proposal = proposal;
                 _logger.Debug("Proposal {BlockHash} is set", proposal.BlockHash);
             }
             else
@@ -341,7 +341,7 @@ namespace Libplanet.Net.Consensus
                         Round,
                         hash3,
                         ToString());
-                    SetProposal(null);
+                    Proposal = null;
                     PublishMessage(
                         new ConsensusProposalClaimMsg(
                             new ProposalClaimMetadata(

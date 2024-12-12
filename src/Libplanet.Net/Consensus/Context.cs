@@ -100,6 +100,7 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
         private readonly LRUCache<BlockHash, bool> _blockValidationCache;
 
+        private Proposal? _proposal;
         private Block? _proposalBlock;
         private Block? _lockedValue;
         private int _lockedRound;
@@ -219,7 +220,24 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public ConsensusStep Step { get; private set; }
 
-        public Proposal? Proposal { get; private set; }
+        public Proposal? Proposal
+        {
+            get => _proposal;
+            private set
+            {
+                if (value is { } p)
+                {
+                    _proposal = p;
+                    _proposalBlock =
+                        BlockMarshaler.UnmarshalBlock((Dictionary)_codec.Decode(p.MarshaledBlock));
+                }
+                else
+                {
+                    _proposal = null;
+                    _proposalBlock = null;
+                }
+            }
+        }
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
@@ -587,24 +605,6 @@ namespace Libplanet.Net.Consensus
                 DateTimeOffset.UtcNow,
                 _privateKey.PublicKey,
                 flag).Sign(_privateKey);
-        }
-
-        /// <summary>
-        /// Sets the proposal for the round.
-        /// </summary>
-        private void SetProposal(Proposal? proposal)
-        {
-            if (proposal is { } p)
-            {
-                Proposal = proposal;
-                _proposalBlock =
-                    BlockMarshaler.UnmarshalBlock((Dictionary)_codec.Decode(p.MarshaledBlock));
-            }
-            else
-            {
-                Proposal = null;
-                _proposalBlock = null;
-            }
         }
 
         /// <summary>
