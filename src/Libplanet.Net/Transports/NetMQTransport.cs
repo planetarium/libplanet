@@ -641,6 +641,8 @@ namespace Libplanet.Net.Transports
                     // Duplicate received message before distributing.
                     var copied = new NetMQMessage(raw.Select(f => f.Duplicate()));
 
+                    _logger.Debug("Received message is {@Frames}", copied.ToArray());
+
                     Task.Factory.StartNew(
                         async () =>
                         {
@@ -711,7 +713,8 @@ namespace Libplanet.Net.Transports
                             {
                                 _logger.Error(
                                     exc,
-                                    "Something went wrong during message processing");
+                                    "Something went wrong during message processing. {@Frames}",
+                                    copied.ToArray());
                             }
                         },
                         CancellationToken.None,
