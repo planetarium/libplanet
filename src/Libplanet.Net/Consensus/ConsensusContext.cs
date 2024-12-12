@@ -32,7 +32,7 @@ namespace Libplanet.Net.Consensus
     public partial class ConsensusContext : IDisposable
     {
         private readonly object _contextLock;
-        private readonly ContextTimeoutOption _contextTimeoutOption;
+        private readonly ContextOption _contextOption;
         private readonly IConsensusMessageCommunicator _consensusMessageCommunicator;
         private readonly BlockChain _blockChain;
         private readonly PrivateKey _privateKey;
@@ -58,14 +58,14 @@ namespace Libplanet.Net.Consensus
         /// <param name="newHeightDelay">A time delay in starting the consensus for the next height
         /// block. <seealso cref="OnTipChanged"/>
         /// </param>
-        /// <param name="contextTimeoutOption">A <see cref="ContextTimeoutOption"/> for
-        /// configuring a timeout for each <see cref="Step"/>.</param>
+        /// <param name="contextOption">A <see cref="ContextOption"/> for
+        /// configuring a timeout or delay for each <see cref="Step"/>.</param>
         public ConsensusContext(
             IConsensusMessageCommunicator consensusMessageCommunicator,
             BlockChain blockChain,
             PrivateKey privateKey,
             TimeSpan newHeightDelay,
-            ContextTimeoutOption contextTimeoutOption)
+            ContextOption contextOption)
         {
             _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
@@ -73,7 +73,7 @@ namespace Libplanet.Net.Consensus
             Running = false;
             _newHeightDelay = newHeightDelay;
 
-            _contextTimeoutOption = contextTimeoutOption;
+            _contextOption = contextOption;
             _currentContext = CreateContext(
                 _blockChain.Tip.Index + 1,
                 _blockChain.GetBlockCommit(_blockChain.Tip.Index));
@@ -498,7 +498,7 @@ namespace Libplanet.Net.Consensus
                 lastCommit,
                 _privateKey,
                 validatorSet,
-                contextTimeoutOptions: _contextTimeoutOption);
+                contextOption: _contextOption);
             return context;
         }
 
