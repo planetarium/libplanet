@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.4.2
 -------------
 
-To be released.
+Released on December 13, 2024.
 
 ### Backward-incompatible API changes
 
@@ -20,7 +20,6 @@ To be released.
 
  -  `Gossip.RebuildTableAsync()` now bootstrap peers from the seed peers.
     [[#4007]]
-
 
 [#4007]: https://github.com/planetarium/libplanet/pull/4007
 
