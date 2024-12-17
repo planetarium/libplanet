@@ -79,9 +79,31 @@
 </ul>
 <h3 id="dependencies">Dependencies</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-542">Version 5.4.2</h2>
+<p>Released on December 13, 2024.</p>
+<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<ul>
+<li>Removed <code>ContextTimeoutOption</code> class. Instead, added <code>ContextOption</code> class.
+The unit of the time-related options in <code>ContextOption</code> is millisecond,
+whereas <code>ContextTimeoutOption</code> was second.  [<a href="https://github.com/planetarium/libplanet/pull/4007">#4007</a>]</li>
+<li>Removed <code>ConsensusReactorOption.ContextTimeoutOptions</code> property.
+Instead, added <code>ConsensusReactorOption.ContextOption</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/4007">#4007</a>]</li>
+<li><code>ConsensusReactor</code> constructor requires <code>ContextOption</code> parameter
+instead of the <code>ContextTimeoutOption</code> parameter.  [<a href="https://github.com/planetarium/libplanet/pull/4007">#4007</a>]</li>
+</ul>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<ul>
+<li><code>Gossip.RebuildTableAsync()</code> now bootstrap peers from the seed peers.
+[<a href="https://github.com/planetarium/libplanet/pull/4007">#4007</a>]</li>
+</ul>
+<h2 id="version-541">Version 5.4.1</h2>
+<p>Released on November 22, 2024.</p>
+<ul>
+<li>Ported changes from [Libplanet 5.3.2] release.  [<a href="https://github.com/planetarium/libplanet/pull/3973">#3973</a>]</li>
+</ul>
 <h2 id="version-540">Version 5.4.0</h2>
 <p>Released on November 13, 2024.</p>
-<h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) Added <code>MaxGasPrice</code> property to <code>IActionContext</code>
 interface and its implementations.  [<a href="https://github.com/planetarium/libplanet/pull/3912">#3912</a>]</li>
@@ -120,7 +142,7 @@ if the actions contained in a block are interpretable. [<a href="https://github.
 </ul>
 <h2 id="version-530">Version 5.3.0</h2>
 <p>Released on October 10, 2024.</p>
-<h3 id="backward-incompatible-api-changes-2">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed <code>threshold</code> parameter from <code>BlockChain.GetBlockLocator()</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
@@ -149,7 +171,7 @@ from <code>PolicyActionsRegistry</code>.  [<a href="https://github.com/planetari
 <li>(Libplanet.Net) Changed the encoding for <code>GetBlockHashesMsg</code> and
 <code>BlockHashesMsg</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3949">#3949</a>]</li>
 </ul>
-<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<h3 id="behavioral-changes-2">Behavioral changes</h3>
 <ul>
 <li>Changed <code>BlockChain.FindBranchPoint()</code> to only check for the first
 <code>BlockHash</code> in a given <code>BlockLocator</code>.  [<a href="https://github.com/planetarium/libplanet/pull/3913">#3913</a>]</li>
@@ -175,7 +197,7 @@ when querying blocks [<a href="https://github.com/planetarium/libplanet/pull/389
 </ul>
 <h2 id="version-520">Version 5.2.0</h2>
 <p>Released on July 23, 2024.</p>
-<h3 id="backward-incompatible-api-changes-3">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
 <ul>
 <li>Removed <code>IBlockPolicy.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
 <li>Added <code>IBlockPolicy.PolicyActionsRegistry</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/3701">#3701</a>]</li>
@@ -215,7 +237,7 @@ parameter instead of the <code>blockAction</code> parameter.  [<a href="https://
 </ul>
 <h2 id="version-510">Version 5.1.0</h2>
 <p>Released on July 11, 2024.</p>
-<h3 id="backward-incompatible-api-changes-4">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-5">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Explorer) Added <code>ValidatorPower</code> field to <code>VoteType</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/3737">#3737</a>, <a href="https://github.com/planetarium/libplanet/pull/3813">#3813</a>]</li>
@@ -340,7 +362,7 @@ projects using <code>netstandard2.0</code> will be deprecated.</p>
 <li><code>BlockChain.DetermineBlockStateRootHash()</code> has been removed.
 [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 </ul>
-<h3 id="backward-incompatible-api-changes-5">Backward-incompatible API changes</h3>
+<h3 id="backward-incompatible-api-changes-6">Backward-incompatible API changes</h3>
 <ul>
 <li>(Libplanet.Action) <code>IBlockChainStates.GetWorldState(BlockHash?)</code>
 does not accept null parameter any more.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
@@ -372,7 +394,7 @@ if it is called while its internal <code>BlockChain</code> is in an invalid stat
 <ul>
 <li>Added <code>BlockChain.DetermineNextBlockStateRootHash()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/3811">#3811</a>]</li>
 </ul>
-<h3 id="behavioral-changes-2">Behavioral changes</h3>
+<h3 id="behavioral-changes-3">Behavioral changes</h3>
 <ul>
 <li><code>Context.ProcessHeightOrRoundUponRules()</code> now appends block asynchronously,
 as a manner of fire-and-forget.  [<a href="https://github.com/planetarium/libplanet/pull/3808">#3808</a>]</li>

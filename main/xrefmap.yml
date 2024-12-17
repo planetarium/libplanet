@@ -12766,12 +12766,12 @@ references:
   commentId: T:Libplanet.Net.Consensus.ConsensusContext
   fullName: Libplanet.Net.Consensus.ConsensusContext
   nameWithType: ConsensusContext
-- uid: Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,PrivateKey,TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_PrivateKey_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,PrivateKey,TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.ConsensusContext.ConsensusContext(Libplanet.Net.Consensus.IConsensusMessageCommunicator, Libplanet.Blockchain.BlockChain, PrivateKey, TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: ConsensusContext.ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,PrivateKey,TimeSpan,Libplanet.Net.Consensus.ContextOption)
+  name: ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextOption)
+  href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_PrivateKey_TimeSpan_Libplanet_Net_Consensus_ContextOption_
+  commentId: M:Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,PrivateKey,TimeSpan,Libplanet.Net.Consensus.ContextOption)
+  fullName: Libplanet.Net.Consensus.ConsensusContext.ConsensusContext(Libplanet.Net.Consensus.IConsensusMessageCommunicator, Libplanet.Blockchain.BlockChain, PrivateKey, TimeSpan, Libplanet.Net.Consensus.ContextOption)
+  nameWithType: ConsensusContext.ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextOption)
 - uid: Libplanet.Net.Consensus.ConsensusContext.#ctor*
   name: ConsensusContext
   href: api/Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext__ctor_
@@ -12941,15 +12941,15 @@ references:
   commentId: T:Libplanet.Net.Consensus.ConsensusReactor
   fullName: Libplanet.Net.Consensus.ConsensusReactor
   nameWithType: ConsensusReactor
-- uid: Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,PrivateKey,ImmutableList{Libplanet.Net.BoundPeer},ImmutableList{Libplanet.Net.BoundPeer},TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,PrivateKey,ImmutableList{Libplanet.Net.BoundPeer},ImmutableList{Libplanet.Net.BoundPeer},TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name.vb: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.ConsensusReactor.ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, PrivateKey, ImmutableList<Libplanet.Net.BoundPeer>, ImmutableList<Libplanet.Net.BoundPeer>, TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor.ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, PrivateKey, ImmutableList(Of Libplanet.Net.BoundPeer), ImmutableList(Of Libplanet.Net.BoundPeer), TimeSpan, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: ConsensusReactor.ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextTimeoutOption)
-  nameWithType.vb: ConsensusReactor.ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,PrivateKey,ImmutableList{Libplanet.Net.BoundPeer},ImmutableList{Libplanet.Net.BoundPeer},TimeSpan,Libplanet.Net.Consensus.ContextOption)
+  name: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextOption)
+  href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextOption_
+  commentId: M:Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,PrivateKey,ImmutableList{Libplanet.Net.BoundPeer},ImmutableList{Libplanet.Net.BoundPeer},TimeSpan,Libplanet.Net.Consensus.ContextOption)
+  name.vb: ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextOption)
+  fullName: Libplanet.Net.Consensus.ConsensusReactor.ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, PrivateKey, ImmutableList<Libplanet.Net.BoundPeer>, ImmutableList<Libplanet.Net.BoundPeer>, TimeSpan, Libplanet.Net.Consensus.ContextOption)
+  fullName.vb: Libplanet.Net.Consensus.ConsensusReactor.ConsensusReactor(Libplanet.Net.Transports.ITransport, Libplanet.Blockchain.BlockChain, PrivateKey, ImmutableList(Of Libplanet.Net.BoundPeer), ImmutableList(Of Libplanet.Net.BoundPeer), TimeSpan, Libplanet.Net.Consensus.ContextOption)
+  nameWithType: ConsensusReactor.ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList<BoundPeer>, ImmutableList<BoundPeer>, TimeSpan, ContextOption)
+  nameWithType.vb: ConsensusReactor.ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList(Of BoundPeer), ImmutableList(Of BoundPeer), TimeSpan, ContextOption)
 - uid: Libplanet.Net.Consensus.ConsensusReactor.#ctor*
   name: ConsensusReactor
   href: api/Libplanet.Net.Consensus.ConsensusReactor.html#Libplanet_Net_Consensus_ConsensusReactor__ctor_
@@ -13106,19 +13106,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.ConsensusReactorOption.ConsensusWorkers
   nameWithType: ConsensusReactorOption.ConsensusWorkers
-- uid: Libplanet.Net.Consensus.ConsensusReactorOption.ContextTimeoutOptions
-  name: ContextTimeoutOptions
-  href: api/Libplanet.Net.Consensus.ConsensusReactorOption.html#Libplanet_Net_Consensus_ConsensusReactorOption_ContextTimeoutOptions
-  commentId: P:Libplanet.Net.Consensus.ConsensusReactorOption.ContextTimeoutOptions
-  fullName: Libplanet.Net.Consensus.ConsensusReactorOption.ContextTimeoutOptions
-  nameWithType: ConsensusReactorOption.ContextTimeoutOptions
-- uid: Libplanet.Net.Consensus.ConsensusReactorOption.ContextTimeoutOptions*
-  name: ContextTimeoutOptions
-  href: api/Libplanet.Net.Consensus.ConsensusReactorOption.html#Libplanet_Net_Consensus_ConsensusReactorOption_ContextTimeoutOptions_
-  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactorOption.ContextTimeoutOptions
+- uid: Libplanet.Net.Consensus.ConsensusReactorOption.ContextOption
+  name: ContextOption
+  href: api/Libplanet.Net.Consensus.ConsensusReactorOption.html#Libplanet_Net_Consensus_ConsensusReactorOption_ContextOption
+  commentId: P:Libplanet.Net.Consensus.ConsensusReactorOption.ContextOption
+  fullName: Libplanet.Net.Consensus.ConsensusReactorOption.ContextOption
+  nameWithType: ConsensusReactorOption.ContextOption
+- uid: Libplanet.Net.Consensus.ConsensusReactorOption.ContextOption*
+  name: ContextOption
+  href: api/Libplanet.Net.Consensus.ConsensusReactorOption.html#Libplanet_Net_Consensus_ConsensusReactorOption_ContextOption_
+  commentId: Overload:Libplanet.Net.Consensus.ConsensusReactorOption.ContextOption
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ConsensusReactorOption.ContextTimeoutOptions
-  nameWithType: ConsensusReactorOption.ContextTimeoutOptions
+  fullName: Libplanet.Net.Consensus.ConsensusReactorOption.ContextOption
+  nameWithType: ConsensusReactorOption.ContextOption
 - uid: Libplanet.Net.Consensus.ConsensusReactorOption.SeedPeers
   name: SeedPeers
   href: api/Libplanet.Net.Consensus.ConsensusReactorOption.html#Libplanet_Net_Consensus_ConsensusReactorOption_SeedPeers
@@ -13187,15 +13187,15 @@ references:
   commentId: T:Libplanet.Net.Consensus.Context
   fullName: Libplanet.Net.Consensus.Context
   nameWithType: Context
-- uid: Libplanet.Net.Consensus.Context.#ctor(Libplanet.Blockchain.BlockChain,System.Int64,System.Nullable{BlockCommit},PrivateKey,ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name: Context(BlockChain, Int64, Nullable<BlockCommit>, PrivateKey, ValidatorSet, ContextTimeoutOption)
-  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_Libplanet_Blockchain_BlockChain_System_Int64_System_Nullable_BlockCommit__PrivateKey_ValidatorSet_Libplanet_Net_Consensus_ContextTimeoutOption_
-  commentId: M:Libplanet.Net.Consensus.Context.#ctor(Libplanet.Blockchain.BlockChain,System.Int64,System.Nullable{BlockCommit},PrivateKey,ValidatorSet,Libplanet.Net.Consensus.ContextTimeoutOption)
-  name.vb: Context(BlockChain, Int64, Nullable(Of BlockCommit), PrivateKey, ValidatorSet, ContextTimeoutOption)
-  fullName: Libplanet.Net.Consensus.Context.Context(Libplanet.Blockchain.BlockChain, System.Int64, System.Nullable<BlockCommit>, PrivateKey, ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
-  fullName.vb: Libplanet.Net.Consensus.Context.Context(Libplanet.Blockchain.BlockChain, System.Int64, System.Nullable(Of BlockCommit), PrivateKey, ValidatorSet, Libplanet.Net.Consensus.ContextTimeoutOption)
-  nameWithType: Context.Context(BlockChain, Int64, Nullable<BlockCommit>, PrivateKey, ValidatorSet, ContextTimeoutOption)
-  nameWithType.vb: Context.Context(BlockChain, Int64, Nullable(Of BlockCommit), PrivateKey, ValidatorSet, ContextTimeoutOption)
+- uid: Libplanet.Net.Consensus.Context.#ctor(Libplanet.Blockchain.BlockChain,System.Int64,System.Nullable{BlockCommit},PrivateKey,ValidatorSet,Libplanet.Net.Consensus.ContextOption)
+  name: Context(BlockChain, Int64, Nullable<BlockCommit>, PrivateKey, ValidatorSet, ContextOption)
+  href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_Libplanet_Blockchain_BlockChain_System_Int64_System_Nullable_BlockCommit__PrivateKey_ValidatorSet_Libplanet_Net_Consensus_ContextOption_
+  commentId: M:Libplanet.Net.Consensus.Context.#ctor(Libplanet.Blockchain.BlockChain,System.Int64,System.Nullable{BlockCommit},PrivateKey,ValidatorSet,Libplanet.Net.Consensus.ContextOption)
+  name.vb: Context(BlockChain, Int64, Nullable(Of BlockCommit), PrivateKey, ValidatorSet, ContextOption)
+  fullName: Libplanet.Net.Consensus.Context.Context(Libplanet.Blockchain.BlockChain, System.Int64, System.Nullable<BlockCommit>, PrivateKey, ValidatorSet, Libplanet.Net.Consensus.ContextOption)
+  fullName.vb: Libplanet.Net.Consensus.Context.Context(Libplanet.Blockchain.BlockChain, System.Int64, System.Nullable(Of BlockCommit), PrivateKey, ValidatorSet, Libplanet.Net.Consensus.ContextOption)
+  nameWithType: Context.Context(BlockChain, Int64, Nullable<BlockCommit>, PrivateKey, ValidatorSet, ContextOption)
+  nameWithType.vb: Context.Context(BlockChain, Int64, Nullable(Of BlockCommit), PrivateKey, ValidatorSet, ContextOption)
 - uid: Libplanet.Net.Consensus.Context.#ctor*
   name: Context
   href: api/Libplanet.Net.Consensus.Context.html#Libplanet_Net_Consensus_Context__ctor_
@@ -13359,103 +13359,142 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.Context.ToString
   nameWithType: Context.ToString
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption
-  name: ContextTimeoutOption
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html
-  commentId: T:Libplanet.Net.Consensus.ContextTimeoutOption
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption
-  nameWithType: ContextTimeoutOption
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
-  name: ContextTimeoutOption(Int32, Int32, Int32, Int32, Int32, Int32)
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption__ctor_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
-  commentId: M:Libplanet.Net.Consensus.ContextTimeoutOption.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.ContextTimeoutOption(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)
-  nameWithType: ContextTimeoutOption.ContextTimeoutOption(Int32, Int32, Int32, Int32, Int32, Int32)
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.#ctor*
-  name: ContextTimeoutOption
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption__ctor_
-  commentId: Overload:Libplanet.Net.Consensus.ContextTimeoutOption.#ctor
+- uid: Libplanet.Net.Consensus.ContextOption
+  name: ContextOption
+  href: api/Libplanet.Net.Consensus.ContextOption.html
+  commentId: T:Libplanet.Net.Consensus.ContextOption
+  fullName: Libplanet.Net.Consensus.ContextOption
+  nameWithType: ContextOption
+- uid: Libplanet.Net.Consensus.ContextOption.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  name: ContextOption(Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32)
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption__ctor_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_System_Int32_
+  commentId: M:Libplanet.Net.Consensus.ContextOption.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)
+  fullName: Libplanet.Net.Consensus.ContextOption.ContextOption(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)
+  nameWithType: ContextOption.ContextOption(Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32)
+- uid: Libplanet.Net.Consensus.ContextOption.#ctor*
+  name: ContextOption
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption__ctor_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.ContextTimeoutOption
-  nameWithType: ContextTimeoutOption.ContextTimeoutOption
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitMultiplier
-  name: PreCommitMultiplier
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreCommitMultiplier
-  commentId: P:Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitMultiplier
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitMultiplier
-  nameWithType: ContextTimeoutOption.PreCommitMultiplier
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitMultiplier*
-  name: PreCommitMultiplier
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreCommitMultiplier_
-  commentId: Overload:Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitMultiplier
+  fullName: Libplanet.Net.Consensus.ContextOption.ContextOption
+  nameWithType: ContextOption.ContextOption
+- uid: Libplanet.Net.Consensus.ContextOption.EnterEndCommitDelay
+  name: EnterEndCommitDelay
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_EnterEndCommitDelay
+  commentId: P:Libplanet.Net.Consensus.ContextOption.EnterEndCommitDelay
+  fullName: Libplanet.Net.Consensus.ContextOption.EnterEndCommitDelay
+  nameWithType: ContextOption.EnterEndCommitDelay
+- uid: Libplanet.Net.Consensus.ContextOption.EnterEndCommitDelay*
+  name: EnterEndCommitDelay
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_EnterEndCommitDelay_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.EnterEndCommitDelay
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitMultiplier
-  nameWithType: ContextTimeoutOption.PreCommitMultiplier
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitSecondBase
-  name: PreCommitSecondBase
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreCommitSecondBase
-  commentId: P:Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitSecondBase
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitSecondBase
-  nameWithType: ContextTimeoutOption.PreCommitSecondBase
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitSecondBase*
-  name: PreCommitSecondBase
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreCommitSecondBase_
-  commentId: Overload:Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitSecondBase
+  fullName: Libplanet.Net.Consensus.ContextOption.EnterEndCommitDelay
+  nameWithType: ContextOption.EnterEndCommitDelay
+- uid: Libplanet.Net.Consensus.ContextOption.EnterPreCommitDelay
+  name: EnterPreCommitDelay
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_EnterPreCommitDelay
+  commentId: P:Libplanet.Net.Consensus.ContextOption.EnterPreCommitDelay
+  fullName: Libplanet.Net.Consensus.ContextOption.EnterPreCommitDelay
+  nameWithType: ContextOption.EnterPreCommitDelay
+- uid: Libplanet.Net.Consensus.ContextOption.EnterPreCommitDelay*
+  name: EnterPreCommitDelay
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_EnterPreCommitDelay_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.EnterPreCommitDelay
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreCommitSecondBase
-  nameWithType: ContextTimeoutOption.PreCommitSecondBase
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteMultiplier
-  name: PreVoteMultiplier
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreVoteMultiplier
-  commentId: P:Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteMultiplier
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteMultiplier
-  nameWithType: ContextTimeoutOption.PreVoteMultiplier
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteMultiplier*
-  name: PreVoteMultiplier
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreVoteMultiplier_
-  commentId: Overload:Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteMultiplier
+  fullName: Libplanet.Net.Consensus.ContextOption.EnterPreCommitDelay
+  nameWithType: ContextOption.EnterPreCommitDelay
+- uid: Libplanet.Net.Consensus.ContextOption.EnterPreVoteDelay
+  name: EnterPreVoteDelay
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_EnterPreVoteDelay
+  commentId: P:Libplanet.Net.Consensus.ContextOption.EnterPreVoteDelay
+  fullName: Libplanet.Net.Consensus.ContextOption.EnterPreVoteDelay
+  nameWithType: ContextOption.EnterPreVoteDelay
+- uid: Libplanet.Net.Consensus.ContextOption.EnterPreVoteDelay*
+  name: EnterPreVoteDelay
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_EnterPreVoteDelay_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.EnterPreVoteDelay
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteMultiplier
-  nameWithType: ContextTimeoutOption.PreVoteMultiplier
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteSecondBase
-  name: PreVoteSecondBase
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreVoteSecondBase
-  commentId: P:Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteSecondBase
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteSecondBase
-  nameWithType: ContextTimeoutOption.PreVoteSecondBase
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteSecondBase*
-  name: PreVoteSecondBase
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_PreVoteSecondBase_
-  commentId: Overload:Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteSecondBase
+  fullName: Libplanet.Net.Consensus.ContextOption.EnterPreVoteDelay
+  nameWithType: ContextOption.EnterPreVoteDelay
+- uid: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutBase
+  name: PreCommitTimeoutBase
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreCommitTimeoutBase
+  commentId: P:Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutBase
+  fullName: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutBase
+  nameWithType: ContextOption.PreCommitTimeoutBase
+- uid: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutBase*
+  name: PreCommitTimeoutBase
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreCommitTimeoutBase_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutBase
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.PreVoteSecondBase
-  nameWithType: ContextTimeoutOption.PreVoteSecondBase
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeMultiplier
-  name: ProposeMultiplier
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_ProposeMultiplier
-  commentId: P:Libplanet.Net.Consensus.ContextTimeoutOption.ProposeMultiplier
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeMultiplier
-  nameWithType: ContextTimeoutOption.ProposeMultiplier
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeMultiplier*
-  name: ProposeMultiplier
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_ProposeMultiplier_
-  commentId: Overload:Libplanet.Net.Consensus.ContextTimeoutOption.ProposeMultiplier
+  fullName: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutBase
+  nameWithType: ContextOption.PreCommitTimeoutBase
+- uid: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutDelta
+  name: PreCommitTimeoutDelta
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreCommitTimeoutDelta
+  commentId: P:Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutDelta
+  fullName: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutDelta
+  nameWithType: ContextOption.PreCommitTimeoutDelta
+- uid: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutDelta*
+  name: PreCommitTimeoutDelta
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreCommitTimeoutDelta_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutDelta
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeMultiplier
-  nameWithType: ContextTimeoutOption.ProposeMultiplier
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeSecondBase
-  name: ProposeSecondBase
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_ProposeSecondBase
-  commentId: P:Libplanet.Net.Consensus.ContextTimeoutOption.ProposeSecondBase
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeSecondBase
-  nameWithType: ContextTimeoutOption.ProposeSecondBase
-- uid: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeSecondBase*
-  name: ProposeSecondBase
-  href: api/Libplanet.Net.Consensus.ContextTimeoutOption.html#Libplanet_Net_Consensus_ContextTimeoutOption_ProposeSecondBase_
-  commentId: Overload:Libplanet.Net.Consensus.ContextTimeoutOption.ProposeSecondBase
+  fullName: Libplanet.Net.Consensus.ContextOption.PreCommitTimeoutDelta
+  nameWithType: ContextOption.PreCommitTimeoutDelta
+- uid: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutBase
+  name: PreVoteTimeoutBase
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreVoteTimeoutBase
+  commentId: P:Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutBase
+  fullName: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutBase
+  nameWithType: ContextOption.PreVoteTimeoutBase
+- uid: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutBase*
+  name: PreVoteTimeoutBase
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreVoteTimeoutBase_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutBase
   isSpec: "True"
-  fullName: Libplanet.Net.Consensus.ContextTimeoutOption.ProposeSecondBase
-  nameWithType: ContextTimeoutOption.ProposeSecondBase
+  fullName: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutBase
+  nameWithType: ContextOption.PreVoteTimeoutBase
+- uid: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutDelta
+  name: PreVoteTimeoutDelta
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreVoteTimeoutDelta
+  commentId: P:Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutDelta
+  fullName: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutDelta
+  nameWithType: ContextOption.PreVoteTimeoutDelta
+- uid: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutDelta*
+  name: PreVoteTimeoutDelta
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_PreVoteTimeoutDelta_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutDelta
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.ContextOption.PreVoteTimeoutDelta
+  nameWithType: ContextOption.PreVoteTimeoutDelta
+- uid: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutBase
+  name: ProposeTimeoutBase
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_ProposeTimeoutBase
+  commentId: P:Libplanet.Net.Consensus.ContextOption.ProposeTimeoutBase
+  fullName: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutBase
+  nameWithType: ContextOption.ProposeTimeoutBase
+- uid: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutBase*
+  name: ProposeTimeoutBase
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_ProposeTimeoutBase_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.ProposeTimeoutBase
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutBase
+  nameWithType: ContextOption.ProposeTimeoutBase
+- uid: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutDelta
+  name: ProposeTimeoutDelta
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_ProposeTimeoutDelta
+  commentId: P:Libplanet.Net.Consensus.ContextOption.ProposeTimeoutDelta
+  fullName: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutDelta
+  nameWithType: ContextOption.ProposeTimeoutDelta
+- uid: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutDelta*
+  name: ProposeTimeoutDelta
+  href: api/Libplanet.Net.Consensus.ContextOption.html#Libplanet_Net_Consensus_ContextOption_ProposeTimeoutDelta_
+  commentId: Overload:Libplanet.Net.Consensus.ContextOption.ProposeTimeoutDelta
+  isSpec: "True"
+  fullName: Libplanet.Net.Consensus.ContextOption.ProposeTimeoutDelta
+  nameWithType: ContextOption.ProposeTimeoutDelta
 - uid: Libplanet.Net.Consensus.Gossip
   name: Gossip
   href: api/Libplanet.Net.Consensus.Gossip.html

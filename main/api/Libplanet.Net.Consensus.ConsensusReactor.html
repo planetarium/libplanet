@@ -96,19 +96,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.%23ctor(Libplanet.Net.Transports.ITransport%2CLibplanet.Blockchain.BlockChain%2CPrivateKey%2CImmutableList%7BLibplanet.Net.BoundPeer%7D%2CImmutableList%7BLibplanet.Net.BoundPeer%7D%2CTimeSpan%2CLibplanet.Net.Consensus.ContextTimeoutOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusReactor.%23ctor(Libplanet.Net.Transports.ITransport%2CLibplanet.Blockchain.BlockChain%2CPrivateKey%2CImmutableList%7BLibplanet.Net.BoundPeer%7D%2CImmutableList%7BLibplanet.Net.BoundPeer%7D%2CTimeSpan%2CLibplanet.Net.Consensus.ContextOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/ConsensusReactor.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_ConsensusReactor__ctor_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.#ctor*"></a>
-  <h4 id="Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,PrivateKey,ImmutableList{Libplanet.Net.BoundPeer},ImmutableList{Libplanet.Net.BoundPeer},TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)">ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList&lt;BoundPeer&gt;, ImmutableList&lt;BoundPeer&gt;, TimeSpan, ContextTimeoutOption)</h4>
+  <h4 id="Libplanet_Net_Consensus_ConsensusReactor__ctor_Libplanet_Net_Transports_ITransport_Libplanet_Blockchain_BlockChain_PrivateKey_ImmutableList_Libplanet_Net_BoundPeer__ImmutableList_Libplanet_Net_BoundPeer__TimeSpan_Libplanet_Net_Consensus_ContextOption_" data-uid="Libplanet.Net.Consensus.ConsensusReactor.#ctor(Libplanet.Net.Transports.ITransport,Libplanet.Blockchain.BlockChain,PrivateKey,ImmutableList{Libplanet.Net.BoundPeer},ImmutableList{Libplanet.Net.BoundPeer},TimeSpan,Libplanet.Net.Consensus.ContextOption)">ConsensusReactor(ITransport, BlockChain, PrivateKey, ImmutableList&lt;BoundPeer&gt;, ImmutableList&lt;BoundPeer&gt;, TimeSpan, ContextOption)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Net.Consensus.ConsensusReactor.html">ConsensusReactor</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ConsensusReactor(ITransport consensusTransport, BlockChain blockChain, PrivateKey privateKey, ImmutableList&lt;BoundPeer&gt; validatorPeers, ImmutableList&lt;BoundPeer&gt; seedPeers, TimeSpan newHeightDelay, ContextTimeoutOption contextTimeoutOption)</code></pre>
+    <pre><code class="lang-csharp hljs">public ConsensusReactor(ITransport consensusTransport, BlockChain blockChain, PrivateKey privateKey, ImmutableList&lt;BoundPeer&gt; validatorPeers, ImmutableList&lt;BoundPeer&gt; seedPeers, TimeSpan newHeightDelay, ContextOption contextOption)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -162,9 +162,9 @@ block.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a></td>
-        <td><span class="parametername">contextTimeoutOption</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a> for
+        <td><a class="xref" href="Libplanet.Net.Consensus.ContextOption.html">ContextOption</a></td>
+        <td><span class="parametername">contextOption</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Consensus.ContextOption.html">ContextOption</a> for
 configuring a timeout for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusStep.html">ConsensusStep</a>.</p>
 </td>
       </tr>

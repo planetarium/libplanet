@@ -101,19 +101,19 @@ when <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplan
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_PrivateKey_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext.%23ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator%2CLibplanet.Blockchain.BlockChain%2CPrivateKey%2CTimeSpan%2CLibplanet.Net.Consensus.ContextTimeoutOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_PrivateKey_TimeSpan_Libplanet_Net_Consensus_ContextOption_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Consensus.ConsensusContext.%23ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator%2CLibplanet.Blockchain.BlockChain%2CPrivateKey%2CTimeSpan%2CLibplanet.Net.Consensus.ContextOption)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Net/Consensus/ConsensusContext.cs/#L63">View Source</a>
   </span>
   <a id="Libplanet_Net_Consensus_ConsensusContext__ctor_" data-uid="Libplanet.Net.Consensus.ConsensusContext.#ctor*"></a>
-  <h4 id="Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_PrivateKey_TimeSpan_Libplanet_Net_Consensus_ContextTimeoutOption_" data-uid="Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,PrivateKey,TimeSpan,Libplanet.Net.Consensus.ContextTimeoutOption)">ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextTimeoutOption)</h4>
+  <h4 id="Libplanet_Net_Consensus_ConsensusContext__ctor_Libplanet_Net_Consensus_IConsensusMessageCommunicator_Libplanet_Blockchain_BlockChain_PrivateKey_TimeSpan_Libplanet_Net_Consensus_ContextOption_" data-uid="Libplanet.Net.Consensus.ConsensusContext.#ctor(Libplanet.Net.Consensus.IConsensusMessageCommunicator,Libplanet.Blockchain.BlockChain,PrivateKey,TimeSpan,Libplanet.Net.Consensus.ContextOption)">ConsensusContext(IConsensusMessageCommunicator, BlockChain, PrivateKey, TimeSpan, ContextOption)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html">ConsensusContext</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ConsensusContext(IConsensusMessageCommunicator consensusMessageCommunicator, BlockChain blockChain, PrivateKey privateKey, TimeSpan newHeightDelay, ContextTimeoutOption contextTimeoutOption)</code></pre>
+    <pre><code class="lang-csharp hljs">public ConsensusContext(IConsensusMessageCommunicator consensusMessageCommunicator, BlockChain blockChain, PrivateKey privateKey, TimeSpan newHeightDelay, ContextOption contextOption)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,10 +153,10 @@ block. <span class="xref">Libplanet.Net.Consensus.ConsensusContext.OnTipChanged(
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a></td>
-        <td><span class="parametername">contextTimeoutOption</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Net.Consensus.ContextTimeoutOption.html">ContextTimeoutOption</a> for
-configuring a timeout for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Step">Step</a>.</p>
+        <td><a class="xref" href="Libplanet.Net.Consensus.ContextOption.html">ContextOption</a></td>
+        <td><span class="parametername">contextOption</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Net.Consensus.ContextOption.html">ContextOption</a> for
+configuring a timeout or delay for each <a class="xref" href="Libplanet.Net.Consensus.ConsensusContext.html#Libplanet_Net_Consensus_ConsensusContext_Step">Step</a>.</p>
 </td>
       </tr>
     </tbody>
