@@ -78,7 +78,7 @@ namespace Libplanet.Net.Consensus
     /// </remarks>
     public partial class Context : IDisposable
     {
-        private readonly ContextTimeoutOption _contextTimeoutOption;
+        private readonly ContextOption _contextOption;
 
         private readonly BlockChain _blockChain;
         private readonly Codec _codec;
@@ -87,9 +87,11 @@ namespace Libplanet.Net.Consensus
         private readonly Channel<System.Action> _mutationRequests;
         private readonly HeightVoteSet _heightVoteSet;
         private readonly PrivateKey _privateKey;
-        private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _hasTwoThirdsPreVoteFlags;
+        private readonly HashSet<int> _preVoteTimeoutFlags;
         private readonly HashSet<int> _preCommitTimeoutFlags;
+        private readonly HashSet<int> _preCommitWaitFlags;
+        private readonly HashSet<int> _endCommitWaitFlags;
         private readonly EvidenceExceptionCollector _evidenceCollector
             = new EvidenceExceptionCollector();
 
@@ -98,6 +100,8 @@ namespace Libplanet.Net.Consensus
         private readonly ILogger _logger;
         private readonly LRUCache<BlockHash, bool> _blockValidationCache;
 
+        private Proposal? _proposal;
+        private Block? _proposalBlock;
         private Block? _lockedValue;
         private int _lockedRound;
         private Block? _validValue;
@@ -122,15 +126,15 @@ namespace Libplanet.Net.Consensus
         /// </param>
         /// <param name="validators">The <see cref="ValidatorSet"/> for
         /// given <paramref name="height"/>.</param>
-        /// <param name="contextTimeoutOptions">A <see cref="ContextTimeoutOption"/> for
-        /// configuring a timeout for each <see cref="ConsensusStep"/>.</param>
+        /// <param name="contextOption">A <see cref="ContextOption"/> for
+        /// configuring a timeout and delay for each <see cref="ConsensusStep"/>.</param>
         public Context(
             BlockChain blockChain,
             long height,
             BlockCommit? lastCommit,
             PrivateKey privateKey,
             ValidatorSet validators,
-            ContextTimeoutOption contextTimeoutOptions)
+            ContextOption contextOption)
             : this(
                 blockChain,
                 height,
@@ -140,7 +144,7 @@ namespace Libplanet.Net.Consensus
                 ConsensusStep.Default,
                 -1,
                 128,
-                contextTimeoutOptions)
+                contextOption)
         {
         }
 
@@ -153,7 +157,7 @@ namespace Libplanet.Net.Consensus
             ConsensusStep consensusStep,
             int round = -1,
             int cacheSize = 128,
-            ContextTimeoutOption? contextTimeoutOptions = null)
+            ContextOption? contextOption = null)
         {
             if (height < 1)
             {
@@ -183,15 +187,17 @@ namespace Libplanet.Net.Consensus
             _messageRequests = Channel.CreateUnbounded<ConsensusMsg>();
             _mutationRequests = Channel.CreateUnbounded<System.Action>();
             _heightVoteSet = new HeightVoteSet(height, validators);
-            _preVoteTimeoutFlags = new HashSet<int>();
             _hasTwoThirdsPreVoteFlags = new HashSet<int>();
+            _preVoteTimeoutFlags = new HashSet<int>();
             _preCommitTimeoutFlags = new HashSet<int>();
+            _preCommitWaitFlags = new HashSet<int>();
+            _endCommitWaitFlags = new HashSet<int>();
             _validatorSet = validators;
             _cancellationTokenSource = new CancellationTokenSource();
             _blockValidationCache =
                 new LRUCache<BlockHash, bool>(cacheSize, Math.Max(cacheSize / 64, 8));
 
-            _contextTimeoutOption = contextTimeoutOptions ?? new ContextTimeoutOption();
+            _contextOption = contextOption ?? new ContextOption();
 
             _logger.Information(
                 "Created Context for height #{Height}, round #{Round}",
@@ -214,7 +220,24 @@ namespace Libplanet.Net.Consensus
         /// </summary>
         public ConsensusStep Step { get; private set; }
 
-        public Proposal? Proposal { get; private set; }
+        public Proposal? Proposal
+        {
+            get => _proposal;
+            private set
+            {
+                if (value is { } p)
+                {
+                    _proposal = p;
+                    _proposalBlock =
+                        BlockMarshaler.UnmarshalBlock((Dictionary)_codec.Decode(p.MarshaledBlock));
+                }
+                else
+                {
+                    _proposal = null;
+                    _proposalBlock = null;
+                }
+            }
+        }
 
         /// <inheritdoc cref="IDisposable.Dispose()"/>
         public void Dispose()
@@ -379,9 +402,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan TimeoutPreVote(long round)
         {
-            return TimeSpan.FromSeconds(
-                _contextTimeoutOption.PreVoteSecondBase +
-                round * _contextTimeoutOption.PreVoteMultiplier);
+            return TimeSpan.FromMilliseconds(
+                _contextOption.PreVoteTimeoutBase +
+                round * _contextOption.PreVoteTimeoutDelta);
         }
 
         /// <summary>
@@ -392,9 +415,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan TimeoutPreCommit(long round)
         {
-            return TimeSpan.FromSeconds(
-                _contextTimeoutOption.PreCommitSecondBase +
-                round * _contextTimeoutOption.PreCommitMultiplier);
+            return TimeSpan.FromMilliseconds(
+                _contextOption.PreCommitTimeoutBase +
+                round * _contextOption.PreCommitTimeoutDelta);
         }
 
         /// <summary>
@@ -405,9 +428,9 @@ namespace Libplanet.Net.Consensus
         /// <returns>A duration in <see cref="TimeSpan"/>.</returns>
         private TimeSpan TimeoutPropose(long round)
         {
-            return TimeSpan.FromSeconds(
-                _contextTimeoutOption.ProposeSecondBase +
-                round * _contextTimeoutOption.ProposeMultiplier);
+            return TimeSpan.FromMilliseconds(
+                _contextOption.ProposeTimeoutBase +
+                round * _contextOption.ProposeTimeoutDelta);
         }
 
         /// <summary>
@@ -590,16 +613,7 @@ namespace Libplanet.Net.Consensus
         /// <returns>Returns a tuple of proposer and valid round.  If proposal for the round
         /// does not exist, returns <see langword="null"/> instead.
         /// </returns>
-        private (Block, int)? GetProposal()
-        {
-            if (Proposal is { } p)
-            {
-                var block = BlockMarshaler.UnmarshalBlock(
-                    (Dictionary)_codec.Decode(p.MarshaledBlock));
-                return (block, p.ValidRound);
-            }
-
-            return null;
-        }
+        private (Block, int)? GetProposal() =>
+            Proposal is { } p && _proposalBlock is { } b ? (b, p.ValidRound) : null;
     }
 }

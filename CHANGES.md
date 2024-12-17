@@ -34,6 +34,39 @@ To be released.
 [#3999]: https://github.com/planetarium/libplanet/pull/3999
 
 
+Version 5.4.2
+-------------
+
+Released on December 13, 2024.
+
+### Backward-incompatible API changes
+
+ -  Removed `ContextTimeoutOption` class. Instead, added `ContextOption` class.
+    The unit of the time-related options in `ContextOption` is millisecond,
+    whereas `ContextTimeoutOption` was second.  [[#4007]]
+ -  Removed `ConsensusReactorOption.ContextTimeoutOptions` property.
+    Instead, added `ConsensusReactorOption.ContextOption` property.  [[#4007]]
+ -  `ConsensusReactor` constructor requires `ContextOption` parameter
+    instead of the `ContextTimeoutOption` parameter.  [[#4007]]
+
+### Behavioral changes
+
+ -  `Gossip.RebuildTableAsync()` now bootstrap peers from the seed peers.
+    [[#4007]]
+
+[#4007]: https://github.com/planetarium/libplanet/pull/4007
+
+
+Version 5.4.1
+-------------
+
+Released on November 22, 2024.
+
+ -  Ported changes from [Libplanet 5.3.2] release.  [[#3973]]
+
+[Libplanet 5.4.1]: https://www.nuget.org/packages/Libplanet/5.4.1
+
+
 Version 5.4.0
 -------------
 

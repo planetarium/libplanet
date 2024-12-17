@@ -531,7 +531,7 @@ namespace Libplanet.Net.Tests.Consensus
 
             var (_, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
-                contextTimeoutOptions: new ContextTimeoutOption(proposeSecondBase: 1));
+                contextOption: new ContextOption(proposeTimeoutBase: 1_000));
 
             context.StateChanged += (_, eventArgs) =>
             {
@@ -560,9 +560,9 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
-                contextTimeoutOptions: new ContextTimeoutOption(
-                    preVoteSecondBase: 1,
-                    preCommitSecondBase: 1));
+                contextOption: new ContextOption(
+                    preVoteTimeoutBase: 1_000,
+                    preCommitTimeoutBase: 1_000));
 
             var block1 = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var block2 = blockChain.ProposeBlock(TestUtils.PrivateKeys[2]);
@@ -642,7 +642,7 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
-                contextTimeoutOptions: new ContextTimeoutOption(preVoteSecondBase: 1));
+                contextOption: new ContextOption(preVoteTimeoutBase: 1_000));
 
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var timeoutProcessed = new AsyncAutoResetEvent();
@@ -693,7 +693,7 @@ namespace Libplanet.Net.Tests.Consensus
         {
             var (blockChain, context) = TestUtils.CreateDummyContext(
                 privateKey: TestUtils.PrivateKeys[0],
-                contextTimeoutOptions: new ContextTimeoutOption(preCommitSecondBase: 1));
+                contextOption: new ContextOption(preCommitTimeoutBase: 1_000));
 
             var block = blockChain.ProposeBlock(TestUtils.PrivateKeys[1]);
             var timeoutProcessed = new AsyncAutoResetEvent();
