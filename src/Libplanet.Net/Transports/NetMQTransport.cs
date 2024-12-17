@@ -8,7 +8,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using AsyncIO;
 using Dasync.Collections;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -52,12 +51,6 @@ namespace Libplanet.Net.Transports
         private long _requestCount;
         private long _socketCount;
         private bool _disposed = false;
-
-        static NetMQTransport()
-        {
-            NetMQConfig.ThreadPoolSize = 3;
-            ForceDotNet.Force();
-        }
 
         /// <summary>
         /// Creates a <see cref="NetMQTransport"/> instance.
