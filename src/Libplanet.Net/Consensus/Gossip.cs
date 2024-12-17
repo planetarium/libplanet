@@ -542,7 +542,21 @@ namespace Libplanet.Net.Consensus
                     "{FName}: Updating peer table from seed(s) {Seeds}...",
                     nameof(RebuildTableAsync),
                     _seeds.Select(s => s.Address.ToHex()));
-                await _protocol.RebuildConnectionAsync(Kademlia.MaxDepth, ctx);
+                try
+                {
+                    await _protocol.BootstrapAsync(
+                        _seeds,
+                        TimeSpan.FromSeconds(1),
+                        Kademlia.MaxDepth,
+                        ctx);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        "Peer discovery exception occurred during {FName}.",
+                        nameof(RebuildTableAsync));
+                }
             }
         }
 
