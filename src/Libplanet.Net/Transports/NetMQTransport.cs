@@ -343,6 +343,7 @@ namespace Libplanet.Net.Transports
 
                 await foreach (var raw in channel.SendMessageAsync(
                                    rawMessage,
+                                   timeout,
                                    expectedResponses,
                                    linkedCt))
                 {

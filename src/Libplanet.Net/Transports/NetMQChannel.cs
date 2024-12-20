@@ -65,6 +65,7 @@ namespace Libplanet.Net.Transports
 
         public async IAsyncEnumerable<NetMQMessage> SendMessageAsync(
             NetMQMessage message,
+            TimeSpan? timeout,
             int expectedResponses,
             [EnumeratorCancellation] CancellationToken cancellationToken)
         {
@@ -72,6 +73,7 @@ namespace Libplanet.Net.Transports
             await _requests.Writer.WriteAsync(
                 new MessageRequest(
                     message,
+                    timeout,
                     expectedResponses,
                     channel,
                     cancellationToken),
@@ -88,14 +90,19 @@ namespace Libplanet.Net.Transports
         {
             using var dealer = new DealerSocket();
             dealer.Options.DisableTimeWait = true;
-            dealer.Connect(await _peer.ResolveNetMQAddressAsync());
+            var address = await _peer.ResolveNetMQAddressAsync();
+            _logger.Debug("[NetMQChannel] Connecting {Address}", address);
+            dealer.Connect(address);
             while (!ct.IsCancellationRequested)
             {
                 MessageRequest req = await _requests.Reader.ReadAsync(ct);
                 _lastUpdated = DateTimeOffset.UtcNow;
                 CancellationTokenSource linked =
                     CancellationTokenSource.CreateLinkedTokenSource(ct, req.CancellationToken);
-                _logger.Debug("[NetMQChannel] Trying to send message {Message}", req.Message);
+                _logger.Debug(
+                    "[NetMQChannel] Trying to send message {Message} (count: {ExpectedResponses})",
+                    req.Message,
+                    req.ExpectedResponses);
                 if (!dealer.TrySendMultipartMessage(req.Message))
                 {
                     _logger.Debug(
@@ -109,9 +116,18 @@ namespace Libplanet.Net.Transports
 
                 foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
-                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        cancellationToken: linked.Token
-                    );
+                    _logger.Debug(
+                        "[NetMQChannel] Waiting for replies... (#{Index})", i);
+                    var raw = new NetMQMessage();
+                    if (!dealer.TryReceiveMultipartMessage(
+                            req.Timeout ?? TimeSpan.FromSeconds(1),
+                            ref raw))
+                    {
+                        break;
+                    }
+
+                    _logger.Debug(
+                        "[NetMQChannel] Successfully received replies #{Index}", i);
                     _lastUpdated = DateTimeOffset.UtcNow;
 
                     await req.Channel.Writer.WriteAsync(raw, linked.Token);
@@ -125,17 +141,21 @@ namespace Libplanet.Net.Transports
         {
             public MessageRequest(
                 NetMQMessage message,
+                TimeSpan? timeout,
                 in int expectedResponses,
                 Channel<NetMQMessage> channel,
                 CancellationToken cancellationToken)
             {
                 Message = message;
+                Timeout = timeout;
                 ExpectedResponses = expectedResponses;
                 Channel = channel;
                 CancellationToken = cancellationToken;
             }
 
             public NetMQMessage Message { get; }
+
+            public TimeSpan? Timeout { get; }
 
             public int ExpectedResponses { get; }
 
