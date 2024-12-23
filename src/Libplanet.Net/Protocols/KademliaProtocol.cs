@@ -95,7 +95,7 @@ namespace Libplanet.Net.Protocols
                             dialTimeout,
                             cancellationToken));
                 }
-                catch (PingTimeoutException)
+                catch (PingFailedException)
                 {
                     _logger.Warning("A timeout exception occurred connecting to seed peer");
                     RemovePeer(peer);
@@ -140,19 +140,25 @@ namespace Libplanet.Net.Protocols
                 var tasks = new List<Task>();
                 foreach (BoundPeer peer in peers)
                 {
-                    tasks.Add(PingAsync(
-                        peer,
-                        timeout: timeout,
-                        cancellationToken: cancellationToken));
+                    tasks.Add(
+                        PingAsync(
+                            peer,
+                            timeout: timeout,
+                            cancellationToken: cancellationToken));
                 }
 
                 _logger.Verbose("Trying to ping {PeerCount} peers", tasks.Count);
                 await Task.WhenAll(tasks).ConfigureAwait(false);
                 _logger.Verbose("Update complete");
             }
-            catch (PingTimeoutException e)
+            catch (PingFailedException pfe)
             {
-                _logger.Debug(e, "Ping timed out");
+                if (pfe.InnerException is { } e)
+                {
+                    throw e;
+                }
+
+                throw;
             }
             catch (TaskCanceledException e)
             {
@@ -284,7 +290,7 @@ namespace Libplanet.Net.Protocols
                         await PingAsync(replacement, _requestTimeout, cancellationToken)
                             .ConfigureAwait(false);
                     }
-                    catch (PingTimeoutException)
+                    catch (PingFailedException)
                     {
                         _logger.Verbose(
                             "Removed stale peer {Peer} from replacement cache",
@@ -327,7 +333,7 @@ namespace Libplanet.Net.Protocols
                     await PingAsync(boundPeer, _requestTimeout, cancellationToken)
                         .ConfigureAwait(false);
                 }
-                catch (PingTimeoutException)
+                catch (PingFailedException)
                 {
                     var msg =
                         "{BoundPeer}, a target peer, is in the routing table does not respond";
@@ -394,7 +400,7 @@ namespace Libplanet.Net.Protocols
                         throw new TaskCanceledException(
                             $"Task is cancelled during {nameof(FindSpecificPeerAsync)}()");
                     }
-                    catch (PingTimeoutException)
+                    catch (PingFailedException)
                     {
                         // Ignore peer not responding
                     }
@@ -439,11 +445,9 @@ namespace Libplanet.Net.Protocols
 
                 AddPeer(peer);
             }
-            catch (CommunicationFailException)
+            catch (Exception e)
             {
-                throw new PingTimeoutException(
-                    $"Failed to send Ping to {peer}.",
-                    peer);
+                throw new PingFailedException(peer, e);
             }
         }
 
@@ -497,7 +501,7 @@ namespace Libplanet.Net.Protocols
                 await PingAsync(peer, timeout, cancellationToken).ConfigureAwait(false);
                 _table.Check(peer, check, DateTimeOffset.UtcNow);
             }
-            catch (PingTimeoutException)
+            catch (PingFailedException)
             {
                 _logger.Verbose("Removing invalid peer {Peer}...", peer);
                 RemovePeer(peer);
@@ -711,7 +715,7 @@ namespace Libplanet.Net.Protocols
                 AggregateException aggregateException = aggregateTask.Exception!;
                 foreach (Exception e in aggregateException.InnerExceptions)
                 {
-                    if (e is PingTimeoutException pte)
+                    if (e is PingFailedException pte)
                     {
                         peers.Remove(pte.Target);
                     }
