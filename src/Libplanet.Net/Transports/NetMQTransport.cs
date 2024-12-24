@@ -328,6 +328,8 @@ namespace Libplanet.Net.Transports
                     AsPeer,
                     DateTimeOffset.UtcNow
                 );
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
 
                 NetMQChannel channel;
                 if (_channels.TryGetValue(peer, out var c))
@@ -341,11 +343,12 @@ namespace Libplanet.Net.Transports
                     _channels[peer] = channel;
                 }
 
-                await foreach (var raw in channel.SendMessageAsync(
-                                   rawMessage,
-                                   timeout,
-                                   expectedResponses,
-                                   linkedCt))
+                await foreach (
+                    var raw in channel.SendMessageAsync(
+                        rawMessage,
+                        timeout,
+                        expectedResponses,
+                        linkedCt))
                 {
                     Message reply = _messageCodec.Decode(raw, true);
 
@@ -400,6 +403,18 @@ namespace Libplanet.Net.Transports
                     reqId,
                     peer,
                     replies.Select(reply => reply.Content.Type));
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "OutboundMessageReport")
+                    .Information(
+                        "Request {RequestId} {Message} " +
+                        "processed in {DurationMs} ms with {ReceivedCount} replies received " +
+                        "out of {ExpectedCount} expected replies",
+                        reqId,
+                        content.Type,
+                        stopwatch.ElapsedMilliseconds,
+                        replies.Count,
+                        expectedResponses);
                 a?.SetStatus(ActivityStatusCode.Ok);
                 return replies;
             }

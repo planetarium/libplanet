@@ -19,6 +19,7 @@ namespace Libplanet.Net.Transports
         private readonly ILogger _logger;
 
         private DateTimeOffset _lastUpdated;
+        private bool _opened;
 
         public NetMQChannel(BoundPeer peer)
         {
@@ -32,35 +33,38 @@ namespace Libplanet.Net.Transports
 
         public event EventHandler? Closed;
 
-#pragma warning disable SA1005, SA1515, S125
-        //public event EventHandler? Faulted;
-#pragma warning restore SA1005, SA1515, S125
+        public event EventHandler<Exception>? Faulted;
 
         public event EventHandler? Opened;
 
         public void Abort()
         {
+            if (!_opened)
+            {
+                throw new InvalidOperationException("Cannot abort an unopened channel.");
+            }
+
+            _opened = false;
             _cancellationTokenSource.Cancel();
         }
 
         public void Close()
         {
+            if (!_opened)
+            {
+                throw new InvalidOperationException("Cannot close an unopened channel.");
+            }
+
+            _opened = false;
             _cancellationTokenSource.Cancel();
             Closed?.Invoke(this, EventArgs.Empty);
         }
 
         public void Open()
         {
-            TaskCreationOptions taskCreationOptions =
-                TaskCreationOptions.DenyChildAttach |
-                TaskCreationOptions.LongRunning |
-                TaskCreationOptions.HideScheduler;
-            Task.Factory.StartNew(
-                () => ProcessRuntime(_cancellationTokenSource.Token),
-                _cancellationTokenSource.Token,
-                taskCreationOptions,
-                TaskScheduler.Default);
+            _opened = true;
             Opened?.Invoke(this, EventArgs.Empty);
+            DoOpen();
         }
 
         public async IAsyncEnumerable<NetMQMessage> SendMessageAsync(
@@ -69,6 +73,12 @@ namespace Libplanet.Net.Transports
             int expectedResponses,
             [EnumeratorCancellation] CancellationToken cancellationToken)
         {
+            if (!_opened)
+            {
+                throw new InvalidOperationException(
+                    "Cannot send message with an unopened channel.");
+            }
+
             var channel = Channel.CreateUnbounded<NetMQMessage>();
             await _requests.Writer.WriteAsync(
                 new MessageRequest(
@@ -86,55 +96,82 @@ namespace Libplanet.Net.Transports
             }
         }
 
-        private async Task ProcessRuntime(CancellationToken ct)
+        private void DoOpen()
         {
+            TaskCreationOptions taskCreationOptions =
+                TaskCreationOptions.DenyChildAttach |
+                TaskCreationOptions.LongRunning |
+                TaskCreationOptions.HideScheduler;
+            Task.Factory.StartNew(
+                ProcessRuntime,
+                _cancellationTokenSource.Token,
+                taskCreationOptions,
+                TaskScheduler.Default);
+        }
+
+        private async Task ProcessRuntime()
+        {
+            var ct = _cancellationTokenSource.Token;
             using var dealer = new DealerSocket();
             dealer.Options.DisableTimeWait = true;
             var address = await _peer.ResolveNetMQAddressAsync();
-            _logger.Debug("[NetMQChannel] Connecting {Address}", address);
-            dealer.Connect(address);
+            try
+            {
+                dealer.Connect(address);
+            }
+            catch (Exception e)
+            {
+                Faulted?.Invoke(this, e);
+                Close();
+            }
+
             while (!ct.IsCancellationRequested)
             {
                 MessageRequest req = await _requests.Reader.ReadAsync(ct);
-                _lastUpdated = DateTimeOffset.UtcNow;
-                CancellationTokenSource linked =
-                    CancellationTokenSource.CreateLinkedTokenSource(ct, req.CancellationToken);
-                _logger.Debug(
-                    "[NetMQChannel] Trying to send message {Message} (count: {ExpectedResponses})",
-                    req.Message,
-                    req.ExpectedResponses);
-                if (!dealer.TrySendMultipartMessage(req.Message))
+                try
                 {
-                    _logger.Debug(
-                        "[NetMQChannel] Failed to send {Message} to {Peer}",
-                        req.Message,
-                        _peer);
-                    continue;
-                }
-
-                _logger.Debug("[NetMQChannel] Message {Message} successfully sent.", req.Message);
-
-                foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
-                {
-                    _logger.Debug(
-                        "[NetMQChannel] Waiting for replies... (#{Index})", i);
-                    var raw = new NetMQMessage();
-                    if (!dealer.TryReceiveMultipartMessage(
-                            req.Timeout ?? TimeSpan.FromSeconds(1),
-                            ref raw))
+                    _lastUpdated = DateTimeOffset.UtcNow;
+                    CancellationTokenSource linked =
+                        CancellationTokenSource.CreateLinkedTokenSource(ct, req.CancellationToken);
+                    if (!dealer.TrySendMultipartMessage(req.Message))
                     {
+                        _requests.Writer.Complete();
+                        dealer.Close();
+                        DoOpen();
                         break;
                     }
 
-                    _logger.Debug(
-                        "[NetMQChannel] Successfully received replies #{Index}", i);
-                    _lastUpdated = DateTimeOffset.UtcNow;
+                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
+                    {
+                        var raw = new NetMQMessage();
+                        if (!dealer.TryReceiveMultipartMessage(
+                                req.Timeout ?? TimeSpan.FromSeconds(1),
+                                ref raw))
+                        {
+                            break;
+                        }
 
-                    await req.Channel.Writer.WriteAsync(raw, linked.Token);
+                        _lastUpdated = DateTimeOffset.UtcNow;
+
+                        await req.Channel.Writer.WriteAsync(raw, linked.Token);
+                    }
+
+                    req.Channel.Writer.Complete();
                 }
-
-                req.Channel.Writer.Complete();
+                catch (Exception)
+                {
+                    req.Channel.Writer.Complete();
+                    dealer.Close();
+                    DoOpen();
+                    break;
+                }
             }
+        }
+
+        private bool HandShake(DealerSocket dealerSocket)
+        {
+            var msg = default(Msg);
+            return dealerSocket.TrySend(ref msg, TimeSpan.Zero, false);
         }
 
         private readonly struct MessageRequest
