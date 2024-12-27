@@ -160,7 +160,7 @@ namespace Libplanet.Blockchain.Policies
                     if (block.Evidence.Any(evidence => evidence.Height < evidenceExpirationHeight))
                     {
                         return new InvalidBlockEvidencePendingDurationException(
-                            $"Block #{block.Index} {block.Hash} includes evidence" +
+                            $"Block #{block.Index} {block.Hash} includes evidence " +
                             $"that is older than expiration height {evidenceExpirationHeight}");
                     }
 

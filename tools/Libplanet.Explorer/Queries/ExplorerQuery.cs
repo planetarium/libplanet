@@ -111,38 +111,24 @@ namespace Libplanet.Explorer.Queries
             return stagedTxs;
         }
 
-        internal static IEnumerable<EvidenceBase> ListPendingEvidence(
-            bool desc, int offset, int? limit)
+        internal static IEnumerable<EvidenceBase> ListPendingEvidence()
         {
-            if (offset < 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(offset),
-                    $"{nameof(ListPendingEvidence)} doesn't support negative offset.");
-            }
-
             var blockChain = Chain;
-            var comparer = desc ? EvidenceIdComparer.Descending : EvidenceIdComparer.Ascending;
-            var evidence = blockChain.GetPendingEvidence()
-                                      .Skip(offset)
-                                      .Take(limit ?? int.MaxValue)
-                                      .OrderBy(ev => ev.Id, comparer);
-
-            return evidence;
+            return blockChain.GetPendingEvidence();
         }
 
-        internal static IEnumerable<EvidenceBase> ListCommitEvidence(
-            BlockHash? blockHash, bool desc, int offset, int? limit)
+        internal static IEnumerable<EvidenceBase> ListCommitEvidence(BlockHash blockHash)
         {
             var blockChain = Chain;
-            var block = blockHash != null ? blockChain[blockHash.Value] : blockChain.Tip;
-            var comparer = desc ? EvidenceIdComparer.Descending : EvidenceIdComparer.Ascending;
-            var evidence = block.Evidence
-                                 .Skip(offset)
-                                 .Take(limit ?? int.MaxValue)
-                                 .OrderBy(ev => ev.Id, comparer);
+            var block = blockChain[blockHash];
+            return block.Evidence;
+        }
 
-            return evidence;
+        internal static IEnumerable<EvidenceBase> ListCommitEvidence(long index)
+        {
+            var blockChain = Chain;
+            var block = blockChain[index];
+            return block.Evidence;
         }
 
         internal static Block? GetBlockByHash(BlockHash hash) => Store.GetBlock(hash);

@@ -4,7 +4,16 @@ Libplanet changelog
 Version 5.4.3
 -------------
 
-To be released.
+### Backward-incompatible API changes
+
+ -  (Libplanet.Explorer) The parameter required by the `committedEvidence` query
+    was changed to hash or index.  [[#4014]]
+ -  (Libplanet.Explorer) The `desc`, `offset`, and `limit` parameters were
+    removed from the `committedEvidence` query.  [[#4014]]
+ -  (Libplanet.Explorer) Fixed an issue where an exception was thrown when
+    running evidence queries with id.  [[#4014]]
+
+[#4014]: https://github.com/planetarium/libplanet/pull/4014
 
 
 Version 5.4.2
