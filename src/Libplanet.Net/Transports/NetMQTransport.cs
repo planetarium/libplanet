@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -32,10 +33,10 @@ namespace Libplanet.Net.Transports
         private readonly HostOptions _hostOptions;
         private readonly MessageValidator _messageValidator;
         private readonly NetMQMessageCodec _messageCodec;
-        private readonly Channel<MessageRequest> _requests;
-        private readonly Task _runtimeProcessor;
         private readonly AsyncManualResetEvent _runningEvent;
         private readonly ActivitySource _activitySource;
+
+        private ConcurrentDictionary<BoundPeer, NetMQChannel> _channels;
 
         private NetMQQueue<(AsyncManualResetEvent, NetMQMessage)>? _replyQueue;
 
@@ -47,9 +48,6 @@ namespace Libplanet.Net.Transports
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationTokenSource _turnCancellationTokenSource;
 
-        // Used only for logging.
-        private long _requestCount;
-        private long _socketCount;
         private bool _disposed = false;
 
         /// <summary>
@@ -76,7 +74,6 @@ namespace Libplanet.Net.Transports
                 .ForContext<NetMQTransport>()
                 .ForContext("Source", nameof(NetMQTransport));
 
-            _socketCount = 0;
             _privateKey = privateKey;
             _hostOptions = hostOptions;
             _appProtocolVersionOptions = appProtocolVersionOptions;
@@ -84,35 +81,10 @@ namespace Libplanet.Net.Transports
                 _appProtocolVersionOptions, messageTimestampBuffer);
             _messageCodec = new NetMQMessageCodec();
 
-            _requests = Channel.CreateUnbounded<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
             _turnCancellationTokenSource = new CancellationTokenSource();
             _activitySource = new ActivitySource("Libplanet.Net.Transports.NetMQTransport");
-            _requestCount = 0;
-            CancellationToken runtimeCt = _runtimeCancellationTokenSource.Token;
-            _runtimeProcessor = Task.Factory.StartNew(
-                () =>
-                {
-                    // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize
-                    // tests
-                    try
-                    {
-                        using var runtime = new NetMQRuntime();
-                        runtime.Run(ProcessRuntime(runtimeCt));
-                    }
-                    catch (Exception e)
-                        when (e is NetMQException || e is ObjectDisposedException)
-                    {
-                        _logger.Error(
-                            e,
-                            "An exception has occurred while running {TaskName}",
-                            nameof(_runtimeProcessor));
-                    }
-                },
-                runtimeCt,
-                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
-                TaskScheduler.Default
-            );
+            _channels = new ConcurrentDictionary<BoundPeer, NetMQChannel>();
 
             _runningEvent = new AsyncManualResetEvent();
             ProcessMessageHandler = new AsyncDelegate<Message>();
@@ -191,6 +163,7 @@ namespace Libplanet.Net.Transports
                 throw new TransportException("Transport is already running.");
             }
 
+            _channels = new ConcurrentDictionary<BoundPeer, NetMQChannel>();
             _runtimeCancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _turnCancellationTokenSource =
@@ -239,6 +212,11 @@ namespace Libplanet.Net.Transports
                     _routerPoller.Stop();
                 }
 
+                foreach (var channel in _channels.Values)
+                {
+                    channel.Abort();
+                }
+
                 _replyQueue.Dispose();
 
                 _runtimeCancellationTokenSource.Cancel();
@@ -256,10 +234,8 @@ namespace Libplanet.Net.Transports
 
             if (!_disposed)
             {
-                _requests.Writer.TryComplete();
                 _runtimeCancellationTokenSource.Cancel();
                 _turnCancellationTokenSource.Cancel();
-                _runtimeProcessor.WaitWithoutException();
 
                 _runtimeCancellationTokenSource.Dispose();
                 _turnCancellationTokenSource.Dispose();
@@ -270,6 +246,11 @@ namespace Libplanet.Net.Transports
                     // See also: https://github.com/planetarium/libplanet/pull/2311
                     _router.Dispose();
                     _turnClient?.Dispose();
+                }
+
+                foreach (var channel in _channels.Values)
+                {
+                    channel.Abort();
                 }
 
                 _routerPoller?.Dispose();
@@ -338,11 +319,8 @@ namespace Libplanet.Net.Transports
             Guid reqId = Guid.NewGuid();
             var replies = new List<Message>();
 
-            Channel<NetMQMessage> channel = Channel.CreateUnbounded<NetMQMessage>();
-
             try
             {
-                DateTimeOffset now = DateTimeOffset.UtcNow;
                 NetMQMessage rawMessage = _messageCodec.Encode(
                     content,
                     _privateKey,
@@ -350,39 +328,35 @@ namespace Libplanet.Net.Transports
                     AsPeer,
                     DateTimeOffset.UtcNow
                 );
-                var req = new MessageRequest(
-                    reqId,
-                    rawMessage,
-                    peer,
-                    now,
-                    expectedResponses,
-                    channel,
-                    linkedCt);
-                Interlocked.Increment(ref _requestCount);
-                await _requests.Writer.WriteAsync(
-                    req,
-                    linkedCt).ConfigureAwait(false);
-                _logger.Verbose(
-                    "Enqueued a request {RequestId} to the peer {Peer}: {@Message}; " +
-                    "{LeftRequests} left",
-                    reqId,
-                    peer,
-                    content,
-                    Interlocked.Read(ref _requestCount)
-                );
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
 
-                foreach (var i in Enumerable.Range(0, expectedResponses))
+                NetMQChannel channel;
+                if (_channels.TryGetValue(peer, out var c))
                 {
-                    NetMQMessage raw = await channel.Reader
-                        .ReadAsync(linkedCt)
-                        .ConfigureAwait(false);
+                    channel = c!;
+                }
+                else
+                {
+                    channel = new NetMQChannel(peer);
+                    channel.Open();
+                    _channels[peer] = channel;
+                }
+
+                await foreach (
+                    var raw in channel.SendMessageAsync(
+                        rawMessage,
+                        timeout,
+                        expectedResponses,
+                        linkedCt))
+                {
                     Message reply = _messageCodec.Decode(raw, true);
 
                     _logger.Information(
                         "Received {Reply} as a reply to request {Request} {RequestId} from {Peer}",
                         reply.Content.Type,
                         content.Type,
-                        req.Id,
+                        reqId,
                         reply.Remote);
                     try
                     {
@@ -400,8 +374,8 @@ namespace Libplanet.Net.Transports
                             reply.Content.Type,
                             reply.Remote,
                             content.Type,
-                            req.Id);
-                        channel.Writer.Complete(imte);
+                            reqId);
+                        linkedCts.Cancel();
                     }
                     catch (DifferentAppProtocolVersionException dapve)
                     {
@@ -414,8 +388,8 @@ namespace Libplanet.Net.Transports
                             reply.Content.Type,
                             reply.Remote,
                             content.Type,
-                            req.Id);
-                        channel.Writer.Complete(dapve);
+                            reqId);
+                        linkedCts.Cancel();
                     }
 
                     replies.Add(reply);
@@ -429,6 +403,18 @@ namespace Libplanet.Net.Transports
                     reqId,
                     peer,
                     replies.Select(reply => reply.Content.Type));
+                _logger
+                    .ForContext("Tag", "Metric")
+                    .ForContext("Subtag", "OutboundMessageReport")
+                    .Information(
+                        "Request {RequestId} {Message} " +
+                        "processed in {DurationMs} ms with {ReceivedCount} replies received " +
+                        "out of {ExpectedCount} expected replies",
+                        reqId,
+                        content.Type,
+                        stopwatch.ElapsedMilliseconds,
+                        replies.Count,
+                        expectedResponses);
                 a?.SetStatus(ActivityStatusCode.Ok);
                 return replies;
             }
@@ -457,7 +443,12 @@ namespace Libplanet.Net.Transports
                     "{MethodName}() was cancelled while waiting for a reply to " +
                     "{Content} {RequestId} from {Peer}";
                 _logger.Debug(
-                    oce2, dbgMsg, nameof(SendMessageAsync), content, reqId, peer);
+                    oce2,
+                    dbgMsg,
+                    nameof(SendMessageAsync),
+                    content,
+                    reqId,
+                    peer);
 
                 a?.SetStatus(ActivityStatusCode.Error);
                 a?.AddTag("Exception", nameof(TaskCanceledException));
@@ -477,14 +468,15 @@ namespace Libplanet.Net.Transports
                     "{MethodName}() encountered an unexpected exception while waiting for " +
                     "a reply to {Content} {RequestId} from {Peer}";
                 _logger.Error(
-                    e, errMsg, nameof(SendMessageAsync), content, reqId, peer.Address);
+                    e,
+                    errMsg,
+                    nameof(SendMessageAsync),
+                    content,
+                    reqId,
+                    peer.Address);
                 a?.SetStatus(ActivityStatusCode.Error);
                 a?.AddTag("Exception", e.GetType().ToString());
                 throw;
-            }
-            finally
-            {
-                channel.Writer.TryComplete();
             }
         }
 
@@ -741,183 +733,6 @@ namespace Libplanet.Net.Transports
             ev.Set();
         }
 
-        private async Task ProcessRuntime(CancellationToken cancellationToken)
-        {
-            const string waitMsg = "Waiting for a new request...";
-            ChannelReader<MessageRequest> reader = _requests.Reader;
-#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
-            _logger.Verbose(waitMsg);
-            await foreach (MessageRequest req in reader.ReadAllAsync(cancellationToken))
-            {
-#else
-            while (true)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                _logger.Verbose(waitMsg);
-                MessageRequest req = await reader.ReadAsync(cancellationToken);
-#endif
-                string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
-                long left = Interlocked.Decrement(ref _requestCount);
-                _logger.Debug(
-                    "Request {Message} {RequestId} taken for processing; {Count} requests left",
-                    messageType,
-                    req.Id,
-                    left);
-
-                _ = SynchronizationContext.Current.PostAsync(
-                    () => ProcessRequest(req, req.CancellationToken)
-                );
-
-#if NETCOREAPP3_0 || NETCOREAPP3_1 || NET
-                _logger.Verbose(waitMsg);
-#endif
-            }
-        }
-
-        private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
-        {
-            string messageType = _messageCodec.ParseMessageType(req.Message, true).ToString();
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            _logger.Debug(
-                "Request {Message} {RequestId} is ready to be processed in {TimeSpan}",
-                messageType,
-                req.Id,
-                DateTimeOffset.UtcNow - req.RequestedTime);
-
-            Channel<NetMQMessage> channel = req.Channel;
-
-            _logger.Debug(
-                "Trying to send request {Message} {RequestId} to {Peer}",
-                messageType,
-                req.Id,
-                req.Peer
-            );
-            int receivedCount = 0;
-            long? incrementedSocketCount = null;
-
-            // Normal OperationCanceledException initiated from outside should bubble up.
-            try
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                using var dealer = new DealerSocket();
-                dealer.Options.DisableTimeWait = true;
-                dealer.Options.Identity = req.Id.ToByteArray();
-                try
-                {
-                    _logger.Debug(
-                        "Trying to connect to {Peer} for request {Message} {RequestId}",
-                        req.Peer,
-                        messageType,
-                        req.Id);
-                    dealer.Connect(await req.Peer.ResolveNetMQAddressAsync());
-                    incrementedSocketCount = Interlocked.Increment(ref _socketCount);
-                    _logger
-                        .ForContext("Tag", "Metric")
-                        .ForContext("Subtag", "SocketCount")
-                        .Debug(
-                            "{SocketCount} sockets open for processing request " +
-                            "{Message} {RequestId}",
-                            incrementedSocketCount,
-                            messageType,
-                            req.Id);
-                }
-                catch (NetMQException nme)
-                {
-                    const string logMsg =
-                        "{SocketCount} sockets open for processing requests; " +
-                        "failed to create an additional socket for request {Message} {RequestId}";
-                    _logger
-                        .ForContext("Tag", "Metric")
-                        .ForContext("Subtag", "SocketCount")
-                        .Debug(
-                            nme,
-                            logMsg,
-                            Interlocked.Read(ref _socketCount),
-                            messageType,
-                            req.Id);
-                    throw;
-                }
-
-                if (dealer.TrySendMultipartMessage(req.Message))
-                {
-                    _logger.Debug(
-                        "Request {RequestId} {Message} sent to {Peer}",
-                        req.Id,
-                        messageType,
-                        req.Peer);
-                }
-                else
-                {
-                    _logger.Debug(
-                        "Failed to send {RequestId} {Message} to {Peer}",
-                        req.Id,
-                        messageType,
-                        req.Peer);
-
-                    throw new SendMessageFailException(
-                        $"Failed to send {messageType} to {req.Peer}.",
-                        req.Peer);
-                }
-
-                foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
-                {
-                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        cancellationToken: cancellationToken
-                    );
-
-                    _logger.Verbose(
-                        "Received a raw message with {FrameCount} frames as a reply to " +
-                        "request {RequestId} from {Peer}",
-                        raw.FrameCount,
-                        req.Id,
-                        req.Peer
-                    );
-                    await channel.Writer.WriteAsync(raw, cancellationToken);
-                    receivedCount += 1;
-                }
-
-                channel.Writer.Complete();
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    "Failed to process {Message} {RequestId}; discarding it",
-                    messageType,
-                    req.Id);
-                channel.Writer.TryComplete(e);
-            }
-            finally
-            {
-                if (req.ExpectedResponses == 0)
-                {
-                    // FIXME: Temporary fix to wait for a message to be sent.
-                    await Task.Delay(1000);
-                }
-
-                if (incrementedSocketCount is { })
-                {
-                    Interlocked.Decrement(ref _socketCount);
-                }
-
-                _logger
-                    .ForContext("Tag", "Metric")
-                    .ForContext("Subtag", "OutboundMessageReport")
-                    .Information(
-                        "Request {RequestId} {Message} " +
-                        "processed in {DurationMs} ms with {ReceivedCount} replies received " +
-                        "out of {ExpectedCount} expected replies",
-                        req.Id,
-                        messageType,
-                        stopwatch.ElapsedMilliseconds,
-                        receivedCount,
-                        req.ExpectedResponses);
-            }
-        }
-
         private async Task RunPoller(NetMQPoller poller)
         {
             TaskCreationOptions taskCreationOptions =
@@ -971,41 +786,6 @@ namespace Libplanet.Net.Transports
                 peer,
                 innerException
             );
-        }
-
-        private readonly struct MessageRequest
-        {
-            public MessageRequest(
-                in Guid id,
-                NetMQMessage message,
-                BoundPeer peer,
-                DateTimeOffset requestedTime,
-                in int expectedResponses,
-                Channel<NetMQMessage> channel,
-                CancellationToken cancellationToken)
-            {
-                Id = id;
-                Message = message;
-                Peer = peer;
-                RequestedTime = requestedTime;
-                ExpectedResponses = expectedResponses;
-                Channel = channel;
-                CancellationToken = cancellationToken;
-            }
-
-            public Guid Id { get; }
-
-            public NetMQMessage Message { get; }
-
-            public BoundPeer Peer { get; }
-
-            public DateTimeOffset RequestedTime { get; }
-
-            public int ExpectedResponses { get; }
-
-            public Channel<NetMQMessage> Channel { get; }
-
-            public CancellationToken CancellationToken { get; }
         }
     }
 }

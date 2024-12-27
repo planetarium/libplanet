@@ -4,27 +4,21 @@ using System.Runtime.Serialization;
 namespace Libplanet.Net.Protocols
 {
     [Serializable]
-    public class PingTimeoutException : TimeoutException
+    public class PingFailedException : Exception
     {
-        public PingTimeoutException(BoundPeer target)
-            : base()
+        public PingFailedException(BoundPeer target, Exception innerException)
+            : base($"Failed to send ping to target peer {target}", innerException)
         {
             Target = target;
         }
 
-        public PingTimeoutException(string message, BoundPeer target)
-            : base(message)
-        {
-            Target = target;
-        }
-
-        public PingTimeoutException(string message, BoundPeer target, Exception innerException)
+        public PingFailedException(string message, BoundPeer target, Exception innerException)
             : base(message, innerException)
         {
             Target = target;
         }
 
-        protected PingTimeoutException(SerializationInfo info, StreamingContext context)
+        protected PingFailedException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Target = info.GetValue(nameof(Target), typeof(BoundPeer)) is BoundPeer target

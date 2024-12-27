@@ -31,13 +31,12 @@ namespace Libplanet.Net.Tests
                 await StartAsync(c);
                 await StartAsync(d);
 
-                var peers = new[] { c.AsPeer, d.AsPeer };
-
-                foreach (var peer in peers)
-                {
-                    await a.AddPeersAsync(new[] { peer }, null);
-                    await b.AddPeersAsync(new[] { peer }, null);
-                }
+                await a.AddPeersAsync(new[] { c.AsPeer }, null);
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => a.AddPeersAsync(new[] { d.AsPeer }, null));
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => b.AddPeersAsync(new[] { c.AsPeer }, null));
+                await b.AddPeersAsync(new[] { d.AsPeer }, null);
 
                 Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
                 Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());
@@ -163,14 +162,20 @@ namespace Libplanet.Net.Tests
                 await StartAsync(f);
 
                 await a.AddPeersAsync(new[] { c.AsPeer }, TimeSpan.FromSeconds(1));
-                await a.AddPeersAsync(new[] { d.AsPeer }, TimeSpan.FromSeconds(1));
-                await a.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1));
-                await a.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1));
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => a.AddPeersAsync(new[] { d.AsPeer }, TimeSpan.FromSeconds(1)));
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => a.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1)));
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => a.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1)));
 
-                await b.AddPeersAsync(new[] { c.AsPeer }, TimeSpan.FromSeconds(1));
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => b.AddPeersAsync(new[] { c.AsPeer }, TimeSpan.FromSeconds(1)));
                 await b.AddPeersAsync(new[] { d.AsPeer }, TimeSpan.FromSeconds(1));
-                await b.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1));
-                await b.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1));
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => b.AddPeersAsync(new[] { e.AsPeer }, TimeSpan.FromSeconds(1)));
+                await Assert.ThrowsAsync<InvalidMessageContentException>(
+                    () => b.AddPeersAsync(new[] { f.AsPeer }, TimeSpan.FromSeconds(1)));
 
                 Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
                 Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());

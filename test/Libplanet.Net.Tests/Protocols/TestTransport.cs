@@ -255,7 +255,7 @@ namespace Libplanet.Net.Tests.Protocols
                         "Different version encountered during {MethodName}()",
                         nameof(AddPeersAsync));
                 }
-                catch (PingTimeoutException)
+                catch (PingFailedException)
                 {
                     var msg =
                         $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}";
