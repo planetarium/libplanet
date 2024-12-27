@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BitFaster.Caching;
 using BitFaster.Caching.Lru;
-using Caching;
 using Libplanet.Types.Blocks;
 
 namespace Libplanet.Store
@@ -157,7 +156,7 @@ namespace Libplanet.Store
 
         private Block? GetBlock(BlockHash key)
         {
-            if (_cache.TryGet(key, out Block cached))
+            if (_cache.TryGet(key, out Block? cached))
             {
                 if (_store.ContainsBlock(key))
                 {
