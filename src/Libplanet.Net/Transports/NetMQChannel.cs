@@ -114,6 +114,7 @@ namespace Libplanet.Net.Transports
             var ct = _cancellationTokenSource.Token;
             using var dealer = new DealerSocket();
             dealer.Options.DisableTimeWait = true;
+            dealer.Options.Identity = Guid.NewGuid().ToByteArray();
             var address = await _peer.ResolveNetMQAddressAsync();
             try
             {
