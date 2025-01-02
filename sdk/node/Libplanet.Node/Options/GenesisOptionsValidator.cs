@@ -18,6 +18,16 @@ internal sealed class GenesisOptionsValidator : OptionsValidatorBase<GenesisOpti
                     failureMessages: [message]);
             }
 
+            if (options.GenesisConfigurationPath != string.Empty)
+            {
+                var message = $"{nameof(options.GenesisConfigurationPath)} cannot be used with " +
+                              $"{nameof(options.GenesisBlockPath)}.";
+                throw new OptionsValidationException(
+                    optionsName: name ?? string.Empty,
+                    optionsType: typeof(GenesisOptions),
+                    failureMessages: [message]);
+            }
+
             if (options.Validators.Length > 0)
             {
                 var message = $"{nameof(options.Validators)} cannot be used with " +
@@ -33,6 +43,40 @@ internal sealed class GenesisOptionsValidator : OptionsValidatorBase<GenesisOpti
             {
                 var message = $"{nameof(options.GenesisBlockPath)} must be a Uri or a existing " +
                               $"file path.";
+                throw new OptionsValidationException(
+                    optionsName: name ?? string.Empty,
+                    optionsType: typeof(GenesisOptions),
+                    failureMessages: [message]);
+            }
+        }
+
+        if (options.GenesisConfigurationPath != string.Empty)
+        {
+            if (options.GenesisBlockPath != string.Empty)
+            {
+                var message = $"{nameof(options.GenesisBlockPath)} cannot be used with " +
+                              $"{nameof(options.GenesisConfigurationPath)}.";
+                throw new OptionsValidationException(
+                    optionsName: name ?? string.Empty,
+                    optionsType: typeof(GenesisOptions),
+                    failureMessages: [message]);
+            }
+
+            if (options.GenesisKey == string.Empty)
+            {
+                var message = $"{nameof(options.GenesisConfigurationPath)} must be used with " +
+                              $"{nameof(options.GenesisKey)}.";
+                throw new OptionsValidationException(
+                    optionsName: name ?? string.Empty,
+                    optionsType: typeof(GenesisOptions),
+                    failureMessages: [message]);
+            }
+
+            if (!Uri.TryCreate(options.GenesisConfigurationPath, UriKind.Absolute, out _)
+                && !File.Exists(options.GenesisConfigurationPath))
+            {
+                var message = $"{nameof(options.GenesisConfigurationPath)} must be a Uri or a " +
+                              $"existing file path.";
                 throw new OptionsValidationException(
                     optionsName: name ?? string.Empty,
                     optionsType: typeof(GenesisOptions),

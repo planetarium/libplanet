@@ -12,7 +12,8 @@ public sealed class GenesisOptions : OptionsBase<GenesisOptions>
     [PrivateKey]
     [Description(
         $"The PrivateKey used to generate the genesis block. " +
-        $"This property cannot be used with {nameof(GenesisBlockPath)}.")]
+        $"This property cannot be used with {nameof(GenesisBlockPath)} and " +
+        $"{nameof(GenesisConfigurationPath)}.")]
     public string GenesisKey { get; set; } = string.Empty;
 
     [PublicKeyArray]
@@ -26,6 +27,12 @@ public sealed class GenesisOptions : OptionsBase<GenesisOptions>
 
     [Description(
         $"The path of the genesis block, which can be a file path or a URI." +
-        $"This property cannot be used with {nameof(GenesisKey)}.")]
+        $"This property cannot be used with {nameof(GenesisKey)} and " +
+        $"{nameof(GenesisConfigurationPath)}.")]
     public string GenesisBlockPath { get; set; } = string.Empty;
+
+    [Description(
+        $"The path of the genesis configuration, which can be a file path or a URI." +
+        $"This property cannot be used with {nameof(GenesisKey)} and {nameof(GenesisBlockPath)}.")]
+    public string GenesisConfigurationPath { get; set; } = string.Empty;
 }

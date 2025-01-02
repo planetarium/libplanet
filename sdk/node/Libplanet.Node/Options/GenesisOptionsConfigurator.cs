@@ -11,7 +11,8 @@ internal sealed class GenesisOptionsConfigurator(
 {
     protected override void OnConfigure(GenesisOptions options)
     {
-        if (options.GenesisBlockPath == string.Empty)
+        if (options.GenesisBlockPath == string.Empty &&
+            options.GenesisConfigurationPath == string.Empty)
         {
             if (options.GenesisKey == string.Empty)
             {
