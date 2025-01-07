@@ -445,7 +445,7 @@ namespace Libplanet.Action
                     actions.Add(evaluation.Action);
                 }
 
-                // FIXME: This is dependant on when the returned value is enumerated.
+                // FIXME: This is dependent on when the returned value is enumerated.
                 ILogger logger = _logger
                     .ForContext("Tag", "Metric")
                     .ForContext("Subtag", "TxEvaluationDuration");
