@@ -24,7 +24,7 @@ jobs:
         ref: ${{ github.pull_request.head.sha }}
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
     - name: Run benchmark
       run: dotnet run --project tools/Libplanet.Benchmarks -c Release -- --exporters json --filter '*'
 
