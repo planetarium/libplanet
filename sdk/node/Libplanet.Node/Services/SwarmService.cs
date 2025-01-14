@@ -209,7 +209,7 @@ internal sealed class SwarmService(
             ConsensusPort = consensusEndPoint.Port,
             ConsensusPrivateKey = privateKey,
             TargetBlockInterval = TimeSpan.FromSeconds(2),
-            ContextTimeoutOptions = new(),
+            ContextOption = new(),
         };
     }
 
