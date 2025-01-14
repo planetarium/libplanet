@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 using Libplanet.Consensus;
 
 namespace Libplanet.Net.Consensus
@@ -13,7 +12,7 @@ namespace Libplanet.Net.Consensus
     public class InvalidProposalException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidProposalException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -31,7 +30,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidProposalException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -43,31 +42,6 @@ namespace Libplanet.Net.Consensus
             Proposal = proposal;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/>
-        /// class with serialized data.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/>
-        /// that holds the serialized object data about the exception being thrown.
-        /// </param>
-        /// <param name="context">The <see cref="StreamingContext"/>
-        /// that contains contextual information about the source or destination.
-        /// </param>
-        protected InvalidProposalException(SerializationInfo info, StreamingContext context)
-        {
-            Proposal =
-                info.GetValue(nameof(Proposal), typeof(Proposal)) as Proposal ??
-                throw new SerializationException(
-                    $"{nameof(Proposal)} is expected to be a non-null {nameof(Proposal)}.");
-        }
-
         public Proposal Proposal { get; }
-
-        public override void GetObjectData(
-            SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Proposal), Proposal);
-        }
     }
 }

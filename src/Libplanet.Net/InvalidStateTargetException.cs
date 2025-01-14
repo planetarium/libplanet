@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Net
 {
@@ -17,11 +16,6 @@ namespace Libplanet.Net
 
         public InvalidStateTargetException(string message, Exception innerException)
             : base(message, innerException)
-        {
-        }
-
-        protected InvalidStateTargetException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }
