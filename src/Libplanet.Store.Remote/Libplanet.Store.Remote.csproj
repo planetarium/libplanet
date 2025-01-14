@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(_IsPacking)'=='true'">net6.0</TargetFrameworks>
+    <TargetFrameworks Condition="'$(_IsPacking)'=='true'">net8.0</TargetFrameworks>
     <LangVersion>10</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
