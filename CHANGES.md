@@ -4,9 +4,7 @@ Libplanet changelog
 Version 5.5.0
 -------------
 
-To be released.
-
-### Deprecated APIs
+Released on January 15, 2025.
 
 ### Backward-incompatible API changes
 
@@ -15,21 +13,10 @@ To be released.
     `IMessageCodec.Encode(Message, PrivateKey)`.  [[#3997]]
  -  (Libplanet.Explorer) Added `raw` field to `BlockType`.  [[#4006]]
 
-### Backward-incompatible network protocol changes
-
-### Backward-incompatible storage format changes
-
-### Added APIs
-
-### Behavioral changes
-
 ### Bug fixes
 
  -  Fixed a bug in `IStore.PruneOutdatedChains()`.  [[#3999]]
 
-### Dependencies
-
-### CLI tools
 
 [#3997]: https://github.com/planetarium/libplanet/pull/3997
 [#3999]: https://github.com/planetarium/libplanet/pull/3999
