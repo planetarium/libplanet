@@ -6,6 +6,15 @@ Version 6.0.0
 
 To be released.
 
+Added new projects:
+ -  Libplanet.Node
+ -  Libplanet.Node.Executable
+ -  Libplanet.Node.Extensions
+ -  Libplanet.Node.Tests
+
+Libplanet.Node is a project that helps users easily configure
+Libplanet-based nodes.
+
 ### Deprecated APIs
 
 ### Backward-incompatible API changes
