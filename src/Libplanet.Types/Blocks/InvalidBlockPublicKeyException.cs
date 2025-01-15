@@ -1,7 +1,4 @@
-using System;
 using System.Diagnostics.Contracts;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 
 namespace Libplanet.Types.Blocks
@@ -9,7 +6,6 @@ namespace Libplanet.Types.Blocks
     /// <summary>
     /// An exception thrown when a block's public key is invalid.
     /// </summary>
-    [Serializable]
     public class InvalidBlockPublicKeyException : InvalidBlockException
     {
         /// <summary>
@@ -27,39 +23,10 @@ namespace Libplanet.Types.Blocks
             InvalidPublicKey = invalidPublicKey;
         }
 
-        protected InvalidBlockPublicKeyException(
-            SerializationInfo info,
-            StreamingContext context
-        )
-            : base(info, context)
-        {
-            byte[] pubKeyBytes;
-            try
-            {
-                pubKeyBytes = info.GetValue<byte[]>(nameof(InvalidPublicKey));
-            }
-            catch (SerializationException)
-            {
-                InvalidPublicKey = null;
-                return;
-            }
-
-            InvalidPublicKey = new PublicKey(pubKeyBytes);
-        }
-
         /// <summary>
         /// The invalid public key tried to be used in the block.
         /// </summary>
         [Pure]
         public PublicKey? InvalidPublicKey { get; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            if (InvalidPublicKey is { } pubKey)
-            {
-                info.AddValue(nameof(InvalidPublicKey), pubKey.Format(true));
-            }
-        }
     }
 }

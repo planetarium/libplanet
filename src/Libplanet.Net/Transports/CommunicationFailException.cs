@@ -8,7 +8,6 @@ namespace Libplanet.Net.Transports
     /// cycle via <see cref="ITransport"/> for one of the expected reasons such as normal timeout,
     /// receiving an invalid reply, etc.
     /// </summary>
-    [Serializable]
     public class CommunicationFailException : Exception
     {
         public CommunicationFailException(

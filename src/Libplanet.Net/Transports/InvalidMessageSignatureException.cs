@@ -8,7 +8,6 @@ namespace Libplanet.Net.Transports
     /// An exception that is thrown when the signature of an encoded <see cref="Message"/> is
     /// invalid.
     /// </summary>
-    [Serializable]
     public class InvalidMessageSignatureException : Exception
     {
         internal InvalidMessageSignatureException(

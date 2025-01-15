@@ -10,7 +10,6 @@ namespace Libplanet.Action
     /// <see cref="IActionLoader"/>.
     /// </summary>
     /// <seealso cref="IActionLoader"/>
-    [Serializable]
     public sealed class InvalidActionException : Exception
     {
         /// <summary>

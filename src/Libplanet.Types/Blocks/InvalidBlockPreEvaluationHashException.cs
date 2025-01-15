@@ -2,8 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 
 namespace Libplanet.Types.Blocks
 {
@@ -11,7 +9,6 @@ namespace Libplanet.Types.Blocks
     /// The exception that is thrown when the a <see cref="Block"/>'s
     /// <see cref="Block.PreEvaluationHash"/> is invalid.
     /// </summary>
-    [Serializable]
     public class InvalidBlockPreEvaluationHashException
         : InvalidBlockException, IEquatable<InvalidBlockPreEvaluationHashException>
     {
@@ -32,16 +29,6 @@ namespace Libplanet.Types.Blocks
         {
             ActualPreEvaluationHash = actualPreEvaluationHash;
             ExpectedPreEvaluationHash = expectedPreEvaluationHash;
-        }
-
-        private InvalidBlockPreEvaluationHashException(
-            SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            ActualPreEvaluationHash =
-                info.GetValue<byte[]>(nameof(ActualPreEvaluationHash)).ToImmutableArray();
-            ExpectedPreEvaluationHash =
-                info.GetValue<byte[]>(nameof(ExpectedPreEvaluationHash)).ToImmutableArray();
         }
 
         /// <summary>
@@ -65,14 +52,6 @@ namespace Libplanet.Types.Blocks
             InvalidBlockPreEvaluationHashException left,
             InvalidBlockPreEvaluationHashException right
         ) => !left.Equals(right);
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue(nameof(ActualPreEvaluationHash), ActualPreEvaluationHash.ToArray());
-            info.AddValue(nameof(ExpectedPreEvaluationHash), ExpectedPreEvaluationHash.ToArray());
-        }
 
         public bool Equals(InvalidBlockPreEvaluationHashException? other)
         {

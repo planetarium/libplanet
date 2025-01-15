@@ -9,7 +9,6 @@ namespace Libplanet.Types.Tx
     /// is different from the <see cref="HashDigest{T}"/> of
     /// <see cref="BlockChain.Genesis"/>.
     /// </summary>
-    [Serializable]
     public sealed class InvalidTxGenesisHashException : InvalidTxException
     {
         /// <summary>

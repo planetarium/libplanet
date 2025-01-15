@@ -3,7 +3,6 @@ using Libplanet.Net.Messages;
 
 namespace Libplanet.Net
 {
-    [Serializable]
     public class InvalidMessageContentException : Exception
     {
         internal InvalidMessageContentException(

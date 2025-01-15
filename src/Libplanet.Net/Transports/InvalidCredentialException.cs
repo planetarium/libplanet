@@ -8,7 +8,6 @@ namespace Libplanet.Net.Transports
     /// An <see cref="Exception"/> that is thrown when a provided credential is invalid
     /// when signing an encoded <see cref="Message"/>.
     /// </summary>
-    [Serializable]
     public class InvalidCredentialException : Exception
     {
         internal InvalidCredentialException(

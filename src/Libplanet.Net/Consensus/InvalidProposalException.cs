@@ -8,7 +8,6 @@ namespace Libplanet.Net.Consensus
     /// this is thrown pre-emptively before a <see cref="Proposal"/> is processed, i.e.
     /// does not change the state of a <see cref="Context"/> in a meaningful way.
     /// </summary>
-    [Serializable]
     public class InvalidProposalException : Exception
     {
         /// <summary>

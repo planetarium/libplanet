@@ -2,7 +2,6 @@ using System;
 
 namespace Libplanet.Net.Protocols
 {
-    [Serializable]
     public class PingTimeoutException : TimeoutException
     {
         public PingTimeoutException(BoundPeer target)

@@ -2,7 +2,6 @@ using System;
 
 namespace Libplanet.Net
 {
-    [Serializable]
     public class InvalidStateTargetException : SwarmException
     {
         public InvalidStateTargetException()

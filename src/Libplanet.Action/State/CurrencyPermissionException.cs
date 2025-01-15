@@ -10,7 +10,6 @@ namespace Libplanet.Action.State
     /// </summary>
     /// <seealso cref="IWorld.MintAsset"/>
     /// <seealso cref="IWorld.BurnAsset"/>
-    [Serializable]
     public sealed class CurrencyPermissionException : Exception
     {
         /// <summary>

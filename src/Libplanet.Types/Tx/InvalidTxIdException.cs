@@ -9,7 +9,6 @@ namespace Libplanet.Types.Tx
     /// <remarks>This does <em>not</em> mean a given value is an invalid
     /// encoding of <see cref="TxId"/>, but there is no corresponding entry to
     /// a given <see cref="TxId"/>, which is <em>valid</em>.</remarks>
-    [Serializable]
     public class InvalidTxIdException : InvalidTxException
     {
         /// <summary>

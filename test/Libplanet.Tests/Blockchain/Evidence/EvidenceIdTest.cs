@@ -248,22 +248,6 @@ namespace Libplanet.Tests.Blockchain.Evidence
             Assert.Equal(expectedEvidenceId, actualEvidenceId);
         }
 
-        [Fact]
-        public void Serializable_Test()
-        {
-            var expectedEvidenceId = new EvidenceId(GetRandomBytes(EvidenceId.Size));
-            var actualEvidenceId = BinarySerializeDeserialize(expectedEvidenceId);
-            Assert.Equal(expectedEvidenceId, actualEvidenceId);
-        }
-
-        [Fact]
-        public void Serializable_WithDefaultInstance_Test()
-        {
-            var expectedEvidenceId = default(EvidenceId);
-            var actualEvidenceId = BinarySerializeDeserialize(expectedEvidenceId);
-            Assert.Equal(expectedEvidenceId, actualEvidenceId);
-        }
-
         [SkippableFact]
         public void JsonSerialization()
         {

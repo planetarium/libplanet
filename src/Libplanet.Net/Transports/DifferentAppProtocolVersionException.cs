@@ -8,7 +8,6 @@ namespace Libplanet.Net.Transports
     /// <see cref="Message"/> that <see cref="Swarm"/> received
     /// is different.
     /// </summary>
-    [Serializable]
     public class DifferentAppProtocolVersionException : Exception
     {
         /// <summary>

@@ -9,7 +9,6 @@ namespace Libplanet.Types.Tx
     /// is inconsistent with the expected nonce for the <see cref="Transaction.Signer"/>
     /// when appending to a <see cref="BlockChain"/>.
     /// </summary>
-    [Serializable]
     public sealed class InvalidTxNonceException : InvalidTxException
     {
         /// <summary>

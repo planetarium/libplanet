@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Types.Tx;
 
@@ -10,7 +7,6 @@ namespace Libplanet.Types.Blocks
     /// An exception thrown when the count of <see cref="Block.Transactions"/>
     /// does not follow the constraint provided by <see cref="IBlockPolicy"/>.
     /// </summary>
-    [Serializable]
     public sealed class InvalidBlockTxCountPerSignerException : BlockPolicyViolationException
     {
         /// <summary>
@@ -28,23 +24,8 @@ namespace Libplanet.Types.Blocks
             TxCount = txCount;
         }
 
-        private InvalidBlockTxCountPerSignerException(
-            SerializationInfo info, StreamingContext context)
-                : base(info, context)
-        {
-            Signer = info.GetValue<Address>(nameof(Signer));
-            TxCount = info.GetInt32(nameof(TxCount));
-        }
-
         public Address Signer { get; private set; }
 
         public int TxCount { get; private set; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Signer), Signer);
-            info.AddValue(nameof(TxCount), TxCount);
-        }
     }
 }

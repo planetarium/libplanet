@@ -7,7 +7,6 @@ namespace Libplanet.Blocks
     /// An exception thrown when the height of <see cref="Consensus.Evidence"/>
     /// has been expired by the constraint provided by <see cref="IBlockPolicy"/>.
     /// </summary>
-    [Serializable]
     public sealed class InvalidBlockEvidencePendingDurationException
         : BlockPolicyViolationException
     {

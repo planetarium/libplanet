@@ -6,7 +6,6 @@ namespace Libplanet.Net.Transports
     /// <summary>
     /// An <see cref="Exception"/> thrown when fail to send a <see cref="Message"/>.
     /// </summary>
-    [Serializable]
     public class SendMessageFailException : Exception
     {
         internal SendMessageFailException(string message, BoundPeer peer)

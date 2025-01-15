@@ -7,7 +7,6 @@ namespace Libplanet.Net.Transports
     /// An exception that is thrown when the timestamp of an encoded <see cref="Message"/> is
     /// invalid.
     /// </summary>
-    [Serializable]
     public class InvalidMessageTimestampException : Exception
     {
         internal InvalidMessageTimestampException(

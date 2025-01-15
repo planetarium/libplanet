@@ -2,7 +2,6 @@ using System;
 
 namespace Libplanet.Net.Transports
 {
-    [Serializable]
     public class TransportException : Exception
     {
         public TransportException()

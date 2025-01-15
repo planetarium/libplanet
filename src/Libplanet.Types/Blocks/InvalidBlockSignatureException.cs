@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Runtime.Serialization;
 using Libplanet.Common;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 
 namespace Libplanet.Types.Blocks
@@ -11,7 +9,6 @@ namespace Libplanet.Types.Blocks
     /// <summary>
     /// An exception thrown when a block's signature is invalid.
     /// </summary>
-    [Serializable]
     public class InvalidBlockSignatureException : InvalidBlockException
     {
         /// <summary>
@@ -37,38 +34,6 @@ namespace Libplanet.Types.Blocks
             InvalidSignature = invalidSignature;
         }
 
-        protected InvalidBlockSignatureException(
-            SerializationInfo info,
-            StreamingContext context
-        )
-            : base(info, context)
-        {
-            byte[]? pubKeyBytes;
-            try
-            {
-                pubKeyBytes = info.GetValue<byte[]>(nameof(PublicKey));
-            }
-            catch (SerializationException)
-            {
-                pubKeyBytes = null;
-            }
-
-            byte[]? sig;
-            try
-            {
-                sig = info.GetValue<byte[]>(nameof(InvalidSignature));
-            }
-            catch (SerializationException)
-            {
-                sig = null;
-            }
-
-            PublicKey = pubKeyBytes is { } p ? new PublicKey(p) : null;
-            InvalidSignature = sig is { } s
-                ? ImmutableArray.Create(s)
-                : (ImmutableArray<byte>?)null;
-        }
-
         /// <summary>
         /// The public key used for signing the block.
         /// </summary>
@@ -80,19 +45,5 @@ namespace Libplanet.Types.Blocks
         /// </summary>
         [Pure]
         public ImmutableArray<byte>? InvalidSignature { get; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            if (PublicKey is { } pubKey)
-            {
-                info.AddValue(nameof(PublicKey), pubKey.Format(true));
-            }
-
-            if (InvalidSignature is { } sig)
-            {
-                info.AddValue(nameof(InvalidSignature), sig.ToBuilder().ToArray());
-            }
-        }
     }
 }

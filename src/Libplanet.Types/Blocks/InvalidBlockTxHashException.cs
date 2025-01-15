@@ -1,11 +1,9 @@
 using System;
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Common;
 
 namespace Libplanet.Types.Blocks
 {
-    [Serializable]
     public class InvalidBlockTxHashException
         : InvalidBlockException, IEquatable<InvalidBlockTxHashException>
     {
@@ -29,21 +27,6 @@ namespace Libplanet.Types.Blocks
             CalculatedTxHash = calculatedTxHash;
         }
 
-        protected InvalidBlockTxHashException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            if ((byte[])info.GetValue(nameof(BlockTxHash), typeof(byte[]))! is { } bTxHashBytes)
-            {
-                BlockTxHash = new HashDigest<SHA256>(bTxHashBytes);
-            }
-
-            if ((byte[])info.GetValue(nameof(CalculatedTxHash), typeof(byte[]))! is
-                { } cTxHashBytes)
-            {
-                CalculatedTxHash = new HashDigest<SHA256>(cTxHashBytes);
-            }
-        }
-
         /// <summary>
         /// The hash digest from actual block.
         /// </summary>
@@ -63,13 +46,6 @@ namespace Libplanet.Types.Blocks
             InvalidBlockTxHashException left,
             InvalidBlockTxHashException right
         ) => !left.Equals(right);
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(BlockTxHash), BlockTxHash?.ToByteArray());
-            info.AddValue(nameof(CalculatedTxHash), CalculatedTxHash?.ToByteArray());
-        }
 
         public bool Equals(InvalidBlockTxHashException? other)
         {
