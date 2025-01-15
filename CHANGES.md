@@ -10,6 +10,12 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  (Libplanet.Types) Changed `Currency` from a `struct` to a `class`.
+    [[#3888]]
+ -  (Libplanet.Types) Changed `Currency()` to throw an `ArgumentException`
+    if an argument for `ticker` has leading and/or trailing white spaces.
+    [[#3888]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
@@ -20,9 +26,14 @@ To be released.
 
 ### Bug fixes
 
+ -  (Libplanet.Types) Fixed several bugs where an invalid `Currency` object
+    could be created through deserialization.  [[#3888]]
+
 ### Dependencies
 
 ### CLI tools
+
+[#3888]: https://github.com/planetarium/libplanet/pull/3888
 
 
 Previous version changes

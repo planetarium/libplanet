@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
@@ -13,7 +12,6 @@ using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 
 namespace Libplanet.Types.Assets
@@ -49,46 +47,13 @@ namespace Libplanet.Types.Assets
     /// </remarks>
     /// <seealso cref="FungibleAssetValue"/>
     [Serializable]
-    public readonly struct Currency : IEquatable<Currency>, ISerializable
+    public sealed class Currency : IEquatable<Currency>, ISerializable
     {
-        /// <summary>
-        /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
-        /// </summary>
-        [JsonInclude]
-        public readonly string Ticker;
-
-        /// <summary>
-        /// The number of digits to treat as <a
-        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
-        /// units (i.e., exponent)</a>.
-        /// </summary>
-        [JsonInclude]
-        public readonly byte DecimalPlaces;
-
-        /// <summary>
-        /// The <see cref="Address"/>es who can mint the currency.
-        /// If this is <see langword="null"/> <em>anyone</em> can mint the currency.
-        /// </summary>
-        /// <remarks>
-        /// Unlike <see langword="null"/>, an empty set means <em>no one</em> can mint the currency.
-        /// </remarks>
-        /// <seealso cref="Libplanet.Action.State.IAccount.MintAsset"/>
-        [JsonInclude]
-        public readonly IImmutableSet<Address>? Minters;
-
-        /// <summary>
-        /// The deterministic hash derived from other fields.
-        /// </summary>
-        [JsonInclude]
-        public readonly HashDigest<SHA1> Hash;
-
-        /// <summary>
-        /// Whether the total supply of this instance of <see cref="Currency"/> is trackable.
-        /// </summary>
-        [JsonInclude]
-        public readonly bool TotalSupplyTrackable;
+        private static readonly Codec _codec = new Codec();
 
         private readonly (BigInteger Major, BigInteger Minor)? _maximumSupply;
+
+        private HashDigest<SHA1>? _hash;
 
         /// <summary>
         /// Deserializes a <see cref="Currency"/> type from a Bencodex value.
@@ -97,153 +62,13 @@ namespace Libplanet.Types.Assets
         /// method.</param>
         /// <seealso cref="Serialize()"/>
         public Currency(IValue serialized)
+            : this(serialized is Dictionary dictionary
+                ? dictionary
+                : throw new ArgumentException(
+                    $"Given {nameof(serialized)} must be of type " +
+                    $"{typeof(Dictionary)}: {serialized.GetType()}",
+                    nameof(serialized)))
         {
-            BigInteger? maximumSupplyMajor = null, maximumSupplyMinor = null;
-
-            if (!(serialized is Dictionary d))
-            {
-                throw new ArgumentException("Expected a Bencodex dictionary.", nameof(serialized));
-            }
-
-            if (!(d.ContainsKey("ticker") && d["ticker"] is Text ticker))
-            {
-                throw new ArgumentException(
-                    "Expected a text field named \"ticker\".",
-                    nameof(serialized)
-                );
-            }
-
-            byte? nullableDecimals = null;
-            if (d.ContainsKey("decimals") && d["decimals"] is Integer decimals)
-            {
-                nullableDecimals = (byte)(long)decimals;
-            }
-
-            if (d.ContainsKey("decimalPlaces") && d["decimalPlaces"] is Binary decimalPlacesBinary)
-            {
-                nullableDecimals = decimalPlacesBinary.ByteArray[0];
-            }
-
-            if (!(nullableDecimals is { } decimalPlaces))
-            {
-                throw new ArgumentException(
-                    "Expected a byte field named \"decimalPlaces\" or \"decimals\".",
-                    nameof(serialized)
-                );
-            }
-
-            if (!d.ContainsKey("minters") ||
-                !(d["minters"] is { } minters) ||
-                !(minters is Null || minters is List))
-            {
-                throw new ArgumentException(
-                    "Expected a nullable list field named \"minters\".",
-                    nameof(serialized)
-                );
-            }
-
-            TotalSupplyTrackable = false;
-            if (d.ContainsKey("totalSupplyTrackable"))
-            {
-                if (d["totalSupplyTrackable"] is Bencodex.Types.Boolean totalSupplyTrackable
-                    && totalSupplyTrackable)
-                {
-                    TotalSupplyTrackable = totalSupplyTrackable;
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        "Field \"totalSupplyTrackable\" must have a boolean value of true"
-                        + " if it exists.",
-                        nameof(serialized));
-                }
-            }
-
-            if (d.ContainsKey("maximumSupplyMajor"))
-            {
-                if (d["maximumSupplyMajor"] is Integer maximumSupplyMajorValue
-                    && maximumSupplyMajorValue >= 0)
-                {
-                    maximumSupplyMajor = maximumSupplyMajorValue.Value;
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        "Field \"maximumSupplyMajor\" must be of non-negative integer type"
-                        + " if it exists.",
-                        nameof(serialized)
-                    );
-                }
-            }
-
-            if (d.ContainsKey("maximumSupplyMinor"))
-            {
-                if (d["maximumSupplyMinor"] is Integer maximumSupplyMinorValue
-                    && maximumSupplyMinorValue >= 0)
-                {
-                    maximumSupplyMinor = maximumSupplyMinorValue.Value;
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        "Field \"maximumSupplyMinor\" must be of non-negative integer type"
-                        + " if it exists.",
-                        nameof(serialized)
-                    );
-                }
-            }
-
-            if (maximumSupplyMajor is { } && maximumSupplyMinor is { })
-            {
-                if (!TotalSupplyTrackable)
-                {
-                    throw new ArgumentException(
-                        $"Maximum supply is not available for legacy untracked currencies.",
-                        nameof(serialized));
-                }
-
-                _maximumSupply = (maximumSupplyMajor.Value, maximumSupplyMinor.Value);
-            }
-            else if (maximumSupplyMajor is null && maximumSupplyMinor is null)
-            {
-                _maximumSupply = null;
-            }
-            else
-            {
-                throw new ArgumentException(
-                    "Both \"maximumSupplyMajor\" and \"maximumSupplyMinor\" must be "
-                    + " omitted or be non-negative integers.",
-                    nameof(serialized)
-                );
-            }
-
-            Ticker = ticker;
-            DecimalPlaces = decimalPlaces;
-
-            if (_maximumSupply is var (_, minor) && minor > 0 &&
-                Math.Floor(BigInteger.Log10(minor)) >= DecimalPlaces)
-            {
-                var msg = $"The given minor unit {minor} of the maximum supply value is too"
-                          + $" big for the given decimal places {DecimalPlaces}.";
-                throw new ArgumentException(msg, nameof(minor));
-            }
-
-            if (minters is List l)
-            {
-                Minters = l.Select(
-                    m => m is Binary b
-                        ? new Address(b.ByteArray)
-                        : throw new ArgumentException(
-                            "Expected \"minters\" to be a list of binary arrays.",
-                            nameof(serialized))
-                ).ToImmutableHashSet();
-            }
-            else
-            {
-                Minters = null;
-            }
-
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
@@ -268,11 +93,10 @@ namespace Libplanet.Types.Assets
                 maximumSupply is { } v
                     ? (v.MajorUnit, v.MinorUnit)
                     : ((BigInteger, BigInteger)?)null,
-                minters
-            )
+                minters,
+                totalSupplyTrackable)
 #pragma warning restore SA1118
         {
-            TotalSupplyTrackable = totalSupplyTrackable;
             HashDigest<SHA1> expectedHash = GetHash(
                 Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
             if (!expectedHash.Equals(hash))
@@ -285,124 +109,10 @@ namespace Libplanet.Types.Assets
                       $"  maximumSupply: {MaximumSupply?.ToString() ?? "N/A"}";
                 throw new JsonException(msg);
             }
-
-            Hash = hash;
-        }
-
-        private Currency(SerializationInfo info, StreamingContext context)
-        {
-            Ticker = info.GetValue<string>(nameof(Ticker));
-            DecimalPlaces = info.GetValue<byte>(nameof(DecimalPlaces));
-
-            if (info.TryGetValue(nameof(Minters), out List<byte[]> minters))
-            {
-                Minters = minters.Select(m => new Address(m)).ToImmutableHashSet();
-            }
-            else
-            {
-                Minters = default;
-            }
-
-            TotalSupplyTrackable = false;
-            if (info.TryGetValue(nameof(TotalSupplyTrackable), out bool totalSupplyTrackable))
-            {
-                if (!totalSupplyTrackable)
-                {
-                    throw new ArgumentException(
-                        $"{nameof(TotalSupplyTrackable)} must be true if it exists in the"
-                        + "SerializationInfo.",
-                        nameof(TotalSupplyTrackable));
-                }
-
-                TotalSupplyTrackable = totalSupplyTrackable;
-            }
-
-            if (info.TryGetValue(nameof(MaximumSupply), out (BigInteger, BigInteger) maximumSupply))
-            {
-                if (!TotalSupplyTrackable)
-                {
-                    throw new ArgumentException(
-                        $"Maximum supply is not available for legacy untracked currencies.",
-                        nameof(info));
-                }
-
-                _maximumSupply = maximumSupply;
-            }
-            else
-            {
-                _maximumSupply = null;
-            }
-
-            if (_maximumSupply is var (major, minor))
-            {
-                if (major < 0 || minor < 0)
-                {
-                    var msg = $"Both the major ({major}) and minor ({minor}) units of"
-                              + $" {nameof(maximumSupply)} must not be a negative number.";
-                    throw new ArgumentException(msg, nameof(maximumSupply));
-                }
-
-                if (minor > 0 && Math.Floor(BigInteger.Log10(minor)) >= DecimalPlaces)
-                {
-                    var msg = $"The given minor unit {minor} of the maximum supply value is too"
-                              + $" big for the given decimal places {DecimalPlaces}.";
-                    throw new ArgumentException(msg, nameof(minor));
-                }
-            }
-
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
 
         /// <summary>
-        /// Private implementation to create a capped instance of <see cref="Currency"/> or
-        /// a deserialized instance.
-        /// </summary>
-        /// <param name="ticker">The ticker symbol, e.g., <c>&quot;USD&quot;</c>.</param>
-        /// <param name="decimalPlaces">The number of digits to treat as <a
-        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
-        /// units (i.e., exponent)</a>.</param>
-        /// <param name="maximumSupply">The uppermost quantity of currency allowed to exist. For
-        /// example, a <paramref name="maximumSupply"/> parameter of <c>(123, 45)</c> means that the
-        /// token of the currency can be minted up to <c>123.45</c>. See also
-        /// <see cref="MaximumSupply"/> field which corresponds to this.</param>
-        /// <param name="minters">The <see cref="Address"/>es who can mint the currency.
-        /// See also <see cref="Minters"/> field which corresponds to this.</param>
-        /// <exception cref="ArgumentException">Thrown when the given <paramref name="ticker"/>
-        /// is an empty string, or when either the Major or the Minor values of
-        /// <paramref name="maximumSupply"/> is a negative number, or when the given Minor unit for
-        /// the <paramref name="maximumSupply"/> is too big for the given
-        /// <paramref name="decimalPlaces"/>.</exception>
-        private Currency(
-            string ticker,
-            byte decimalPlaces,
-            (BigInteger Major, BigInteger Minor)? maximumSupply,
-            IImmutableSet<Address>? minters)
-            : this(ticker, decimalPlaces, minters, true)
-        {
-            if (maximumSupply is var (major, minor))
-            {
-                if (major < 0 || minor < 0)
-                {
-                    var msg = $"Both the major ({major}) and minor ({minor}) units of"
-                              + $" {nameof(maximumSupply)} must not be a negative number.";
-                    throw new ArgumentException(msg, nameof(maximumSupply));
-                }
-
-                if (minor > 0 && Math.Floor(BigInteger.Log10(minor)) >= decimalPlaces)
-                {
-                    var msg = $"The given minor unit {minor} of the maximum supply value is too"
-                              + $" big for the given decimal places {decimalPlaces}.";
-                    throw new ArgumentException(msg, nameof(minor));
-                }
-
-                _maximumSupply = maximumSupply;
-            }
-
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
-        }
-
-        /// <summary>
-        /// Private implementation to create a general instance of <see cref="Currency"/>.
+        /// Private implementation to create an instance of <see cref="Currency"/>.
         /// </summary>
         /// <param name="ticker">The ticker symbol, e.g., <c>&quot;USD&quot;</c>.</param>
         /// <param name="decimalPlaces">The number of digits to treat as <a
@@ -418,26 +128,70 @@ namespace Libplanet.Types.Assets
         private Currency(
             string ticker,
             byte decimalPlaces,
+            (BigInteger Major, BigInteger Minor)? maximumSupply,
             IImmutableSet<Address>? minters,
             bool totalSupplyTrackable)
         {
-            ticker = ticker.Trim();
-
-            if (string.IsNullOrEmpty(ticker))
-            {
-                throw new ArgumentException(
-                    "Currency ticker symbol cannot be empty.",
-                    nameof(ticker)
-                );
-            }
-
+            ValidateArguments(ticker, decimalPlaces, maximumSupply, minters, totalSupplyTrackable);
             Ticker = ticker;
             Minters = minters;
             DecimalPlaces = decimalPlaces;
-            _maximumSupply = null;
+            _maximumSupply = maximumSupply;
             TotalSupplyTrackable = totalSupplyTrackable;
-            Hash = GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
         }
+
+        private Currency(Dictionary dictionary)
+            : this(
+                ExtractTicker(dictionary),
+                ExtractDecimalPlaces(dictionary),
+                ExtractMaximumSupply(dictionary),
+                ExtractMinters(dictionary),
+                ExtractTotalSupplyTrackable(dictionary))
+        {
+        }
+
+        private Currency(SerializationInfo info, StreamingContext context)
+            : this(_codec.Decode((byte[])info.GetValue("ByteEncoded", typeof(byte[]))!))
+        {
+        }
+
+        /// <summary>
+        /// The ticker symbol, e.g., <c>&quot;USD&quot;</c>.
+        /// </summary>
+        [JsonInclude]
+        public string Ticker { get; }
+
+        /// <summary>
+        /// The number of digits to treat as <a
+        /// href="https://w.wiki/ZXv#Treatment_of_minor_currency_units_(the_%22exponent%22)">minor
+        /// units (i.e., exponent)</a>.
+        /// </summary>
+        [JsonInclude]
+        public byte DecimalPlaces { get; }
+
+        /// <summary>
+        /// The <see cref="Address"/>es who can mint the currency.
+        /// If this is <see langword="null"/> <em>anyone</em> can mint the currency.
+        /// </summary>
+        /// <remarks>
+        /// Unlike <see langword="null"/>, an empty set means <em>no one</em> can mint the currency.
+        /// </remarks>
+        /// <seealso cref="Libplanet.Action.State.IAccount.MintAsset"/>
+        [JsonInclude]
+        public IImmutableSet<Address>? Minters { get; }
+
+        /// <summary>
+        /// The deterministic hash derived from other fields.
+        /// </summary>
+        [JsonInclude]
+        public HashDigest<SHA1> Hash => _hash ??=
+            GetHash(Minters, Ticker, DecimalPlaces, _maximumSupply, TotalSupplyTrackable);
+
+        /// <summary>
+        /// Whether the total supply of this instance of <see cref="Currency"/> is trackable.
+        /// </summary>
+        [JsonInclude]
+        public bool TotalSupplyTrackable { get; }
 
         /// <summary>
         /// The uppermost quantity of currency allowed to exist.
@@ -509,7 +263,7 @@ namespace Libplanet.Types.Assets
             byte decimalPlaces,
             (BigInteger Major, BigInteger Minor) maximumSupply,
             IImmutableSet<Address>? minters) =>
-            new Currency(ticker, decimalPlaces, maximumSupply, minters);
+            new Currency(ticker, decimalPlaces, maximumSupply, minters, true);
 
         /// <summary>
         /// Define a <see cref="Currency"/> with a maximum supply limit.
@@ -557,7 +311,7 @@ namespace Libplanet.Types.Assets
             string ticker,
             byte decimalPlaces,
             IImmutableSet<Address>? minters) =>
-            new Currency(ticker, decimalPlaces, minters, true);
+            new Currency(ticker, decimalPlaces, null, minters, true);
 
         /// <summary>
         /// Define a <see cref="Currency"/> without a maximum supply limit.
@@ -601,7 +355,7 @@ namespace Libplanet.Types.Assets
             string ticker,
             byte decimalPlaces,
             IImmutableSet<Address>? minters) =>
-            new Currency(ticker, decimalPlaces, minters, false);
+            new Currency(ticker, decimalPlaces, null, minters, false);
 
         /// <summary>
         /// <b>OBSOLETE! DO NOT USE.</b><br/><br/>(unless you are upgrading your project from an old
@@ -644,23 +398,7 @@ namespace Libplanet.Types.Assets
         /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(nameof(Ticker), Ticker);
-            info.AddValue(nameof(DecimalPlaces), DecimalPlaces);
-
-            if (Minters is IImmutableSet<Address> minters)
-            {
-                info.AddValue(nameof(Minters), minters.Select(m => m.ToByteArray()).ToList());
-            }
-
-            if (_maximumSupply is { } maximumSupply)
-            {
-                info.AddValue(nameof(MaximumSupply), maximumSupply);
-            }
-
-            if (TotalSupplyTrackable)
-            {
-                info.AddValue(nameof(TotalSupplyTrackable), TotalSupplyTrackable);
-            }
+            info.AddValue("ByteEncoded", _codec.Encode(Serialize()));
         }
 
         /// <inheritdoc cref="object.ToString()"/>
@@ -678,8 +416,8 @@ namespace Libplanet.Types.Assets
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
-        public bool Equals(Currency other) =>
-            Hash.Equals(other.Hash);
+        public bool Equals(Currency? other) =>
+            other is Currency currency && Hash.Equals(currency.Hash);
 
         /// <summary>
         /// Serializes the currency into a Bencodex value.
@@ -700,16 +438,127 @@ namespace Libplanet.Types.Assets
                 serialized = serialized.Add("totalSupplyTrackable", true);
                 if (MaximumSupply is { } maximumSupply)
                 {
-                    serialized = serialized.Add(
-                        "maximumSupplyMajor",
-                        (IValue)new Integer(maximumSupply.MajorUnit)
-                    ).Add(
-                        "maximumSupplyMinor",
-                        (IValue)new Integer(maximumSupply.MinorUnit));
+                    serialized = serialized
+                        .Add("maximumSupplyMajor", new Integer(maximumSupply.MajorUnit))
+                        .Add("maximumSupplyMinor", new Integer(maximumSupply.MinorUnit));
                 }
             }
 
             return serialized;
+        }
+
+        private static string ExtractTicker(Dictionary dict) =>
+            ((Text)dict["ticker"]).Value;
+
+        private static byte ExtractDecimalPlaces(Dictionary dict)
+        {
+            if (!(dict.ContainsKey("decimals") ^ dict.ContainsKey("decimalPlaces")))
+            {
+                throw new ArgumentException(
+                    "Serialized value should contain exactly one of the two keys " +
+                    "\"decimals\" and \"decimalPlaces\".");
+            }
+
+            return dict.ContainsKey("decimals")
+                ? (byte)(long)((Integer)dict["decimals"])
+                : ((Binary)dict["decimalPlaces"]).ByteArray[0];
+        }
+
+        private static (BigInteger Major, BigInteger Minor)? ExtractMaximumSupply(
+            Dictionary dict)
+        {
+            if (dict.ContainsKey("maximumSupplyMajor") ^ dict.ContainsKey("maximumSupplyMinor"))
+            {
+                throw new ArgumentException(
+                    "Serialized value should either contain both or non of the two keys " +
+                    "\"maximumSupplyMajor\" and \"maximumSupplyMinor\".");
+            }
+
+            if (dict.ContainsKey("maximumSupplyMajor"))
+            {
+                return (
+                    ((Integer)dict["maximumSupplyMajor"]).Value,
+                    ((Integer)dict["maximumSupplyMinor"]).Value);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static IImmutableSet<Address>? ExtractMinters(Dictionary dict)
+        {
+            switch (dict["minters"])
+            {
+                case List list:
+                    return list
+                        .Select(minter => new Address(((Binary)minter).ByteArray))
+                        .ToImmutableHashSet();
+                case Null _:
+                    return null;
+                default:
+                    throw new ArgumentException(
+                    $"The value associated with key \"minters\" should be either " +
+                    $"{nameof(List)} or {nameof(Null)}.");
+            }
+        }
+
+        private static bool ExtractTotalSupplyTrackable(Dictionary dict) =>
+            dict.ContainsKey("totalSupplyTrackable")
+                ? ((Bencodex.Types.Boolean)dict["totalSupplyTrackable"]).Value
+                    ? true
+                    : throw new ArgumentException(
+                        $"The value associated with key \"totalSupplyTrackable\" cannot be false.")
+                : false;
+
+        private static void ValidateArguments(
+            string ticker,
+            byte decimalPlaces,
+            (BigInteger Major, BigInteger Minor)? maximumSupply,
+            IImmutableSet<Address>? minters,
+            bool totalSupplyTrackable)
+        {
+            if (!ticker.Equals(ticker.Trim()))
+            {
+                throw new ArgumentException(
+                    $"Currency ticker should not have any leading and/or trailing white spaces.",
+                    nameof(ticker));
+            }
+
+            if (string.IsNullOrEmpty(ticker))
+            {
+                throw new ArgumentException(
+                    "Currency ticker symbol cannot be empty.",
+                    nameof(ticker));
+            }
+
+            if (maximumSupply is { } && !totalSupplyTrackable)
+            {
+                throw new ArgumentException(
+                    $"Either {nameof(totalSupplyTrackable)} {totalSupplyTrackable} and " +
+                    $"{nameof(maximumSupply)} {maximumSupply} " +
+                    $"should be both null or both non-null.",
+                    nameof(totalSupplyTrackable));
+            }
+
+            if (maximumSupply is { } supply)
+            {
+                if (supply.Major < 0 || supply.Minor < 0)
+                {
+                    var msg = $"Both the major value {supply.Major} and " +
+                              $"minor value {supply.Minor} of {nameof(maximumSupply)} " +
+                              $"cannot be a negative number.";
+                    throw new ArgumentException(msg, nameof(maximumSupply));
+                }
+
+                if (supply.Major > 0 &&
+                    Math.Floor(BigInteger.Log10(supply.Minor)) >= decimalPlaces)
+                {
+                    var msg = $"Given minor value {supply.Minor} of {nameof(maximumSupply)} is " +
+                              $"too big for given decimal places {decimalPlaces}.";
+                    throw new ArgumentException(msg, nameof(maximumSupply));
+                }
+            }
         }
 
         private static SHA1 GetSHA1()
@@ -752,7 +601,8 @@ namespace Libplanet.Types.Assets
 
             if (maximumSupply is var (major, minor))
             {
-                serialized = serialized.Add("maximumSupplyMajor", new Integer(major))
+                serialized = serialized
+                    .Add("maximumSupplyMajor", new Integer(major))
                     .Add("maximumSupplyMinor", new Integer(minor));
             }
 
