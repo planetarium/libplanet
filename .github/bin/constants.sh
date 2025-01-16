@@ -3,6 +3,9 @@
 # shellcheck disable=SC2034
 solution="Libplanet"
 projects=(
+  "sdk/node/Libplanet.Node"
+  "sdk/node/Libplanet.Node.Executable"
+  "sdk/node/Libplanet.Node.Extensions"
   "src/Libplanet"
   "src/Libplanet.Action"
   "src/Libplanet.Common"
@@ -24,6 +27,7 @@ projects=(
 )
 configuration=Release
 executables=(
+  "sdk/node/Libplanet.Node.Executable"
   "tools/Libplanet.Tools"
   "tools/Libplanet.Explorer.Executable"
 )
