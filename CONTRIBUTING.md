@@ -151,7 +151,7 @@ on GitHub consists of several projects.  There are two types of projects:
 
  -  *Libplanet.Tools*: The CLI tools for Libplanet.  This project is distributed
     as a distinct NuGet package: *[Libplanet.Tools]*. See its own
-    [README.md](Libplanet.Tools/README.md).
+    [README.md](tools/Libplanet.Tools/README.md).
 
  -  *Libplanet.Explorer*: Libplanet Explorer, a web server that exposes
     a Libplanet blockchain as a [GraphQL] endpoint.  There is the official
@@ -165,6 +165,16 @@ on GitHub consists of several projects.  There are two types of projects:
 
  -  *Libplanet.Explorer.Executable*: (**DEPRECATED**) Turns Libplanet Explorer
     into a single executable binary so that it is easy to distribute.
+
+ -  *Libplanet.Node*: Library used to build libplanet node easily.
+    This project is distributed as a distinct NuGet package: *[Libplanet.Node]*.
+    See its own [README.md](sdk/node/Libplanet.Node/README.md).
+
+ -  *Libplanet.Node.Extensions*: Provides extensions methods for
+    *Libplanet.Node*.
+
+ -  *Libplanet.Node.Executable*: Turns Libplanet Node into a single executable
+    binary so that it is easy to distribute.
 
  -  *Libplanet.Benchmarks*: Performance benchmarks.
     See the [*Benchmarks*](#benchmarks) section below.
@@ -199,6 +209,8 @@ on GitHub consists of several projects.  There are two types of projects:
  -  *Libplanet.Extensions.Cocona.Tests*: Unit tests for the
     *Libplanet.Extensions.Cocona* project.
 
+ -  *Libplanet.Node.Tests*: Unit tests for the *Libplanet.Node* project.
+
 
 [NuGet package]: https://www.nuget.org/packages/Libplanet/
 [Libplanet.Net]: https://www.nuget.org/packages/Libplanet.Net/
@@ -211,6 +223,7 @@ on GitHub consists of several projects.  There are two types of projects:
 [Libplanet.RocksDBStore]: https://www.nuget.org/packages/Libplanet.RocksDBStore/
 [Libplanet.Analyzers]: https://www.nuget.org/packages/Libplanet.Analyzers/
 [Cocona]: https://www.nuget.org/packages/Cocona
+[Libplanet.Node]: https://www.nuget.org/packages/Libplanet.Node
 [Libplanet.Extensions.Cocona]: https://www.nuget.org/packages/Libplanet.Extensions.Cocona
 [Libplanet.Tools]: https://www.nuget.org/packages/Libplanet.Tools/
 [GraphQL]: https://graphql.org/

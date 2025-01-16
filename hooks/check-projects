@@ -9,7 +9,7 @@ if ! [[ -f "$SOLUTION" ]]; then
 fi
 
 list-projects() {
-  dotnet sln "$SOLUTION" list | grep -E $'(src|tools|test).+\\...proj\r?$' | sed 's/[/][^/]*$//'
+  dotnet sln "$SOLUTION" list | grep -E $'(src|tools|"sdk\/node"|test).+\\...proj\r?$' | sed 's/[/][^/]*$//'
 }
 
 # shellcheck source=.github/bin/constants.sh
@@ -26,7 +26,7 @@ check-github-actions() {
 }
 
 check-contributing() {
-  name=$(echo "$1" | sed -re 's/(src|tools|test)\///')
+  name=$(echo "$1" | sed -re 's/(src|tools|"sdk\/node"|test)\///')
   if ! grep -E "^ -  \*$name\*: " CONTRIBUTING.md > /dev/null; then
     echo "The project $1 is not documented in the CONTRIBUTING.md file." \
       > /dev/stderr
