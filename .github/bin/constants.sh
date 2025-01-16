@@ -27,9 +27,7 @@ projects=(
 )
 configuration=Release
 executables=(
-  "sdk/node/Libplanet.Node.Executable"
   "tools/Libplanet.Tools"
-  "tools/Libplanet.Explorer.Executable"
 )
 npm_packages=(
   "@planetarium/cli"
