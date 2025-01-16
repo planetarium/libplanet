@@ -63,7 +63,22 @@
 
 <h2 id="version-600">Version 6.0.0</h2>
 <p>To be released.</p>
+<p>From this version Libplanet projects use .NET 8.0 as target framework.
+Therefore <code>BinaryFormatter</code> related methods are removed
+since it has been deprecated. See also: <a href="https://learn.microsoft.com/en-us/dotnet/core/compatibility/serialization/8.0/binaryformatter-disabled">.NET Document</a></p>
+<p>Added new projects:</p>
+<ul>
+<li>Libplanet.Node</li>
+<li>Libplanet.Node.Executable</li>
+<li>Libplanet.Node.Extensions</li>
+<li>Libplanet.Node.Tests</li>
+</ul>
+<p>Libplanet.Node is a project that helps users easily configure
+Libplanet-based nodes.</p>
 <h3 id="deprecated-apis">Deprecated APIs</h3>
+<ul>
+<li>All classes became not to inherit <code>ISerializable</code> anymore.</li>
+</ul>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>

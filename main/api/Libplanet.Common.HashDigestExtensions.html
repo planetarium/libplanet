@@ -81,35 +81,11 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">HashDigestExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Common.html">Libplanet.Common</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Common.dll</h6>
   <h5 id="Libplanet_Common_HashDigestExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class HashDigestExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class HashDigestExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
@@ -118,7 +94,7 @@
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigestExtensions_ToHashDigest__1_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigestExtensions.ToHashDigest%60%601(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L355">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L339">View Source</a>
   </span>
   <a id="Libplanet_Common_HashDigestExtensions_ToHashDigest_" data-uid="Libplanet.Common.HashDigestExtensions.ToHashDigest*"></a>
   <h4 id="Libplanet_Common_HashDigestExtensions_ToHashDigest__1_System_String_" data-uid="Libplanet.Common.HashDigestExtensions.ToHashDigest``1(System.String)">ToHashDigest&lt;T&gt;(String)</h4>
@@ -181,33 +157,8 @@ a <a class="xref" href="Libplanet.Common.HashDigest-1.html">HashDigest&lt;T&gt;<
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>A <span class="xref">System.Security.Cryptography.HashAlgorithm</span> which corresponds
+        <td><p>A <see cref="!:HashAlgorithm"></see> which corresponds
 to a digest.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hexDigest</code> is <span class="xref">null</span>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hexDigest</code>'s length is not the double of
-the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size">Size</a>, the hash algorithm
-(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
 </td>
       </tr>
     </tbody>
@@ -228,7 +179,7 @@ the <a class="xref" href="Libplanet.Common.HashDigest-1.html#Libplanet_Common_Ha
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_HashDigestExtensions.md&amp;value=---%0Auid%3A%20Libplanet.Common.HashDigestExtensions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L331" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/HashDigest.cs/#L315" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

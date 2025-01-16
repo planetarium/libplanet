@@ -83,7 +83,7 @@
   <h6><strong>Assembly</strong>: Libplanet.Common.dll</h6>
   <h5 id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ByteArrayJsonConverter : JsonConverter&lt;IReadOnlyList&lt;byte&gt;&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class ByteArrayJsonConverter : JsonConverter&lt;IReadOnlyList&lt;byte&gt;?&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
 </h3>
@@ -121,13 +121,13 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_JsonConverters_ByteArrayJsonConverter_CanConvert_System_Type_.md&amp;value=---%0Auid%3A%20Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(System.Type)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_JsonConverters_ByteArrayJsonConverter_CanConvert_Type_.md&amp;value=---%0Auid%3A%20Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(Type)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/JsonConverters/ByteArrayJsonConverter.cs/#L14">View Source</a>
   </span>
   <a id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_CanConvert_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert*"></a>
-  <h4 id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_CanConvert_System_Type_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(System.Type)">CanConvert(Type)</h4>
+  <h4 id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_CanConvert_Type_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(Type)">CanConvert(Type)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -145,7 +145,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Type</span></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">typeToConvert</span></td>
         <td></td>
       </tr>
@@ -168,18 +168,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Read_Utf8JsonReader__System_Type_JsonSerializerOptions_.md&amp;value=---%0Auid%3A%20Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader%40%2CSystem.Type%2CJsonSerializerOptions)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Read_Utf8JsonReader__Type_JsonSerializerOptions_.md&amp;value=---%0Auid%3A%20Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader%40%2CType%2CJsonSerializerOptions)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/JsonConverters/ByteArrayJsonConverter.cs/#L19">View Source</a>
   </span>
   <a id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Read_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read*"></a>
-  <h4 id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Read_Utf8JsonReader__System_Type_JsonSerializerOptions_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader@,System.Type,JsonSerializerOptions)">Read(ref Utf8JsonReader, Type, JsonSerializerOptions)</h4>
+  <h4 id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Read_Utf8JsonReader__Type_JsonSerializerOptions_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader@,Type,JsonSerializerOptions)">Read(ref Utf8JsonReader, Type, JsonSerializerOptions)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IReadOnlyList&lt;byte&gt; Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)</code></pre>
+    <pre><code class="lang-csharp hljs">public override IReadOnlyList&lt;byte&gt;? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,7 +197,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Type</span></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">typeToConvert</span></td>
         <td></td>
       </tr>
@@ -218,25 +218,25 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_Utf8JsonWriter_System_Collections_Generic_IReadOnlyList_System_Byte__JsonSerializerOptions_.md&amp;value=---%0Auid%3A%20Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.Byte%7D%2CJsonSerializerOptions)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_Utf8JsonWriter_System_Nullable_IReadOnlyList_System_Byte___JsonSerializerOptions_.md&amp;value=---%0Auid%3A%20Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter%2CSystem.Nullable%7BIReadOnlyList%7BSystem.Byte%7D%7D%2CJsonSerializerOptions)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/JsonConverters/ByteArrayJsonConverter.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write*"></a>
-  <h4 id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_Utf8JsonWriter_System_Collections_Generic_IReadOnlyList_System_Byte__JsonSerializerOptions_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter,System.Collections.Generic.IReadOnlyList{System.Byte},JsonSerializerOptions)">Write(Utf8JsonWriter, IReadOnlyList&lt;Byte&gt;, JsonSerializerOptions)</h4>
+  <h4 id="Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_Utf8JsonWriter_System_Nullable_IReadOnlyList_System_Byte___JsonSerializerOptions_" data-uid="Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter,System.Nullable{IReadOnlyList{System.Byte}},JsonSerializerOptions)">Write(Utf8JsonWriter, Nullable&lt;IReadOnlyList&lt;Byte&gt;&gt;, JsonSerializerOptions)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Write(Utf8JsonWriter writer, IReadOnlyList&lt;byte&gt; value, JsonSerializerOptions options)</code></pre>
+    <pre><code class="lang-csharp hljs">public override void Write(Utf8JsonWriter writer, IReadOnlyList&lt;byte&gt;? value, JsonSerializerOptions options)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -254,7 +254,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IReadOnlyList</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
         <td><span class="parametername">value</span></td>
         <td></td>
       </tr>

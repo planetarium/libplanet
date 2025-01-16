@@ -82,37 +82,13 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Stun.IStunContext.html">IStunContext</a></div>
-    <div><span class="xref">System.IDisposable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div><span class="xref">IDisposable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Stun.html">Libplanet.Stun</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Stun.dll</h6>
   <h5 id="Libplanet_Stun_TurnClient_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TurnClient : IStunContext, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class TurnClient : object, IStunContext</code></pre>
   </div>
   <h3 id="fields">Fields
 </h3>
@@ -128,7 +104,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int TurnDefaultPort = 3478</code></pre>
+    <pre><code class="lang-csharp hljs">public const int TurnDefaultPort = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,7 +178,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.DnsEndPoint</span></td>
+        <td><span class="xref">DnsEndPoint</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -292,7 +268,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPAddress</span></td>
+        <td><span class="xref">IPAddress</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -361,18 +337,18 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(System.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L232">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_" data-uid="Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(System.Threading.CancellationToken)">AcceptRelayedStreamAsync(CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(CancellationToken)">AcceptRelayedStreamAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task&lt;NetworkStream&gt; AcceptRelayedStreamAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;NetworkStream&gt; AcceptRelayedStreamAsync(CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -385,7 +361,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -401,25 +377,25 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Net.Sockets.NetworkStream</span>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<span class="xref">NetworkStream</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_AllocateRequestAsync_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.AllocateRequestAsync(System.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_AllocateRequestAsync_TimeSpan_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.AllocateRequestAsync(TimeSpan%2CCancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L180">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_AllocateRequestAsync_" data-uid="Libplanet.Stun.TurnClient.AllocateRequestAsync*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_AllocateRequestAsync_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.AllocateRequestAsync(System.TimeSpan,System.Threading.CancellationToken)">AllocateRequestAsync(TimeSpan, CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_AllocateRequestAsync_TimeSpan_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.AllocateRequestAsync(TimeSpan,CancellationToken)">AllocateRequestAsync(TimeSpan, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task&lt;IPEndPoint&gt; AllocateRequestAsync(TimeSpan lifetime, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;IPEndPoint&gt; AllocateRequestAsync(TimeSpan lifetime, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -432,12 +408,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">lifetime</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -453,27 +429,27 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Net.IPEndPoint</span>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IPEndPoint</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_Create_System_Collections_Generic_IEnumerable_Libplanet_Stun_IIceServer__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.Create(System.Collections.Generic.IEnumerable%7BLibplanet.Stun.IIceServer%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_Create_IEnumerable_Libplanet_Stun_IIceServer__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.Create(IEnumerable%7BLibplanet.Stun.IIceServer%7D%2CCancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L94">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_Create_" data-uid="Libplanet.Stun.TurnClient.Create*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_Create_System_Collections_Generic_IEnumerable_Libplanet_Stun_IIceServer__System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.Create(System.Collections.Generic.IEnumerable{Libplanet.Stun.IIceServer},System.Threading.CancellationToken)">Create(IEnumerable&lt;IIceServer&gt;, CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_Create_IEnumerable_Libplanet_Stun_IIceServer__CancellationToken_" data-uid="Libplanet.Stun.TurnClient.Create(IEnumerable{Libplanet.Stun.IIceServer},CancellationToken)">Create(IEnumerable&lt;IIceServer&gt;, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Stun.TurnClient.html">TurnClient</a> that is connectable to one of
 the <see cref="!:IceServer"></see>s given.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;TurnClient&gt; Create(IEnumerable&lt;IIceServer&gt; iceServers, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;TurnClient&gt; Create(IEnumerable&lt;IIceServer&gt; iceServers, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -486,13 +462,13 @@ the <see cref="!:IceServer"></see>s given.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Stun.IIceServer.html">IIceServer</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Stun.IIceServer.html">IIceServer</a>&gt;</td>
         <td><span class="parametername">iceServers</span></td>
         <td><p>The list of <a class="xref" href="Libplanet.Stun.IIceServer.html">IIceServer</a>s to check.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification
 that this operation should be canceled.</p>
@@ -510,14 +486,14 @@ that this operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Libplanet.Stun.TurnClient.html">TurnClient</a>&gt;</td>
-        <td><p>An awaitable <span class="xref">System.Threading.Tasks.Task</span> that returns <a class="xref" href="Libplanet.Stun.TurnClient.html">TurnClient</a>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="Libplanet.Stun.TurnClient.html">TurnClient</a>&gt;</td>
+        <td><p>An awaitable <see cref="!:Task"></see> that returns <a class="xref" href="Libplanet.Stun.TurnClient.html">TurnClient</a>
 pointing to a connectable <a class="xref" href="Libplanet.Stun.IIceServer.html">IIceServer</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Stun_TurnClient_Create_System_Collections_Generic_IEnumerable_Libplanet_Stun_IIceServer__System_Threading_CancellationToken__remarks">Remarks</h5>
+  <h5 id="Libplanet_Stun_TurnClient_Create_IEnumerable_Libplanet_Stun_IIceServer__CancellationToken__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This is a blocking operation with a non-negligible amount of execution time as
 each <see cref="!:IceServer"></see> in <code data-dev-comment-type="paramref" class="paramref">iceServers</code> is checked over
 the network to see if it can be connected to.</p>
@@ -542,18 +518,18 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_CreatePermissionAsync_System_Net_IPEndPoint_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.CreatePermissionAsync(System.Net.IPEndPoint%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_CreatePermissionAsync_IPEndPoint_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.CreatePermissionAsync(IPEndPoint%2CCancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L213">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_CreatePermissionAsync_" data-uid="Libplanet.Stun.TurnClient.CreatePermissionAsync*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_CreatePermissionAsync_System_Net_IPEndPoint_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.CreatePermissionAsync(System.Net.IPEndPoint,System.Threading.CancellationToken)">CreatePermissionAsync(IPEndPoint, CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_CreatePermissionAsync_IPEndPoint_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.CreatePermissionAsync(IPEndPoint,CancellationToken)">CreatePermissionAsync(IPEndPoint, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task CreatePermissionAsync(IPEndPoint peerAddress, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task CreatePermissionAsync(IPEndPoint peerAddress, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -566,12 +542,12 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Net.IPEndPoint</span></td>
+        <td><span class="xref">IPEndPoint</span></td>
         <td><span class="parametername">peerAddress</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -587,7 +563,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">Task</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -609,18 +585,18 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_GetMappedAddressAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.GetMappedAddressAsync(System.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_GetMappedAddressAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.GetMappedAddressAsync(CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L269">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_GetMappedAddressAsync_" data-uid="Libplanet.Stun.TurnClient.GetMappedAddressAsync*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_GetMappedAddressAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.GetMappedAddressAsync(System.Threading.CancellationToken)">GetMappedAddressAsync(CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_GetMappedAddressAsync_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.GetMappedAddressAsync(CancellationToken)">GetMappedAddressAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task&lt;IPEndPoint&gt; GetMappedAddressAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;IPEndPoint&gt; GetMappedAddressAsync(CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -633,7 +609,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -649,20 +625,20 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Net.IPEndPoint</span>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<span class="xref">IPEndPoint</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_InitializeTurnAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.InitializeTurnAsync(System.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_InitializeTurnAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.InitializeTurnAsync(CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L120">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_InitializeTurnAsync_" data-uid="Libplanet.Stun.TurnClient.InitializeTurnAsync*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_InitializeTurnAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.InitializeTurnAsync(System.Threading.CancellationToken)">InitializeTurnAsync(CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_InitializeTurnAsync_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.InitializeTurnAsync(CancellationToken)">InitializeTurnAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -680,7 +656,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -696,25 +672,25 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">Task</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_IsBehindNAT_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.IsBehindNAT(System.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_IsBehindNAT_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.IsBehindNAT(CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L317">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_IsBehindNAT_" data-uid="Libplanet.Stun.TurnClient.IsBehindNAT*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_IsBehindNAT_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.IsBehindNAT(System.Threading.CancellationToken)">IsBehindNAT(CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_IsBehindNAT_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.IsBehindNAT(CancellationToken)">IsBehindNAT(CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task&lt;bool&gt; IsBehindNAT(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;bool&gt; IsBehindNAT(CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -727,7 +703,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -743,20 +719,20 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<span class="xref">System.Boolean</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_ReconnectTurn_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_ReconnectTurn_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32%2CCancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L139">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_ReconnectTurn_" data-uid="Libplanet.Stun.TurnClient.ReconnectTurn*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_ReconnectTurn_System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32,System.Threading.CancellationToken)">ReconnectTurn(Int32, CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_ReconnectTurn_System_Int32_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32,CancellationToken)">ReconnectTurn(Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -779,7 +755,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -795,25 +771,25 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">Task</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_RefreshAllocationAsync_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.RefreshAllocationAsync(System.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_RefreshAllocationAsync_TimeSpan_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.RefreshAllocationAsync(TimeSpan%2CCancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L290">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_RefreshAllocationAsync_" data-uid="Libplanet.Stun.TurnClient.RefreshAllocationAsync*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_RefreshAllocationAsync_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.RefreshAllocationAsync(System.TimeSpan,System.Threading.CancellationToken)">RefreshAllocationAsync(TimeSpan, CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_RefreshAllocationAsync_TimeSpan_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.RefreshAllocationAsync(TimeSpan,CancellationToken)">RefreshAllocationAsync(TimeSpan, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public async Task&lt;TimeSpan&gt; RefreshAllocationAsync(TimeSpan lifetime, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public async Task&lt;TimeSpan&gt; RefreshAllocationAsync(TimeSpan lifetime, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -826,12 +802,12 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.TimeSpan</span></td>
+        <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">lifetime</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -847,20 +823,20 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<span class="xref">TimeSpan</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_StartAsync_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.StartAsync(System.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_TurnClient_StartAsync_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.TurnClient.StartAsync(System.Int32%2CCancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/TurnClient.cs/#L133">View Source</a>
   </span>
   <a id="Libplanet_Stun_TurnClient_StartAsync_" data-uid="Libplanet.Stun.TurnClient.StartAsync*"></a>
-  <h4 id="Libplanet_Stun_TurnClient_StartAsync_System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.StartAsync(System.Int32,System.Threading.CancellationToken)">StartAsync(Int32, CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_TurnClient_StartAsync_System_Int32_CancellationToken_" data-uid="Libplanet.Stun.TurnClient.StartAsync(System.Int32,CancellationToken)">StartAsync(Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -883,7 +859,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -899,7 +875,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="xref">Task</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -909,7 +885,7 @@ be created that can connect to any <a class="xref" href="Libplanet.Stun.IIceServ
       <a class="xref" href="Libplanet.Stun.IStunContext.html">IStunContext</a>
   </div>
   <div>
-      <span class="xref">System.IDisposable</span>
+      <span class="xref">IDisposable</span>
   </div>
 </article>
           </div>

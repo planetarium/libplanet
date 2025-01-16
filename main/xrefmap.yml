@@ -285,19 +285,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.BlockProtocolVersion
   nameWithType: BlockProtocolVersionNotSupportedException.BlockProtocolVersion
-- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: BlockProtocolVersionNotSupportedException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.BlockProtocolVersionNotSupportedException.html#Libplanet_Action_BlockProtocolVersionNotSupportedException_GetObjectData_
-  commentId: Overload:Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.BlockProtocolVersionNotSupportedException.GetObjectData
-  nameWithType: BlockProtocolVersionNotSupportedException.GetObjectData
 - uid: Libplanet.Action.CommittedActionContext
   name: CommittedActionContext
   href: api/Libplanet.Action.CommittedActionContext.html
@@ -1433,6 +1420,105 @@ references:
   commentId: N:Libplanet.Action.Loader
   fullName: Libplanet.Action.Loader
   nameWithType: Libplanet.Action.Loader
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader
+  name: AggregateTypedActionLoader
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html
+  commentId: T:Libplanet.Action.Loader.AggregateTypedActionLoader
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader
+  nameWithType: AggregateTypedActionLoader
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader.#ctor
+  name: AggregateTypedActionLoader()
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html#Libplanet_Action_Loader_AggregateTypedActionLoader__ctor
+  commentId: M:Libplanet.Action.Loader.AggregateTypedActionLoader.#ctor
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader.AggregateTypedActionLoader()
+  nameWithType: AggregateTypedActionLoader.AggregateTypedActionLoader()
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader.#ctor(Libplanet.Action.Loader.IActionLoader[])
+  name: AggregateTypedActionLoader(IActionLoader[])
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html#Libplanet_Action_Loader_AggregateTypedActionLoader__ctor_Libplanet_Action_Loader_IActionLoader___
+  commentId: M:Libplanet.Action.Loader.AggregateTypedActionLoader.#ctor(Libplanet.Action.Loader.IActionLoader[])
+  name.vb: AggregateTypedActionLoader(IActionLoader())
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader.AggregateTypedActionLoader(Libplanet.Action.Loader.IActionLoader[])
+  fullName.vb: Libplanet.Action.Loader.AggregateTypedActionLoader.AggregateTypedActionLoader(Libplanet.Action.Loader.IActionLoader())
+  nameWithType: AggregateTypedActionLoader.AggregateTypedActionLoader(IActionLoader[])
+  nameWithType.vb: AggregateTypedActionLoader.AggregateTypedActionLoader(IActionLoader())
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader.#ctor*
+  name: AggregateTypedActionLoader
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html#Libplanet_Action_Loader_AggregateTypedActionLoader__ctor_
+  commentId: Overload:Libplanet.Action.Loader.AggregateTypedActionLoader.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader.AggregateTypedActionLoader
+  nameWithType: AggregateTypedActionLoader.AggregateTypedActionLoader
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader.Add(Libplanet.Action.Loader.IActionLoader)
+  name: Add(IActionLoader)
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html#Libplanet_Action_Loader_AggregateTypedActionLoader_Add_Libplanet_Action_Loader_IActionLoader_
+  commentId: M:Libplanet.Action.Loader.AggregateTypedActionLoader.Add(Libplanet.Action.Loader.IActionLoader)
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader.Add(Libplanet.Action.Loader.IActionLoader)
+  nameWithType: AggregateTypedActionLoader.Add(IActionLoader)
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader.Add*
+  name: Add
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html#Libplanet_Action_Loader_AggregateTypedActionLoader_Add_
+  commentId: Overload:Libplanet.Action.Loader.AggregateTypedActionLoader.Add
+  isSpec: "True"
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader.Add
+  nameWithType: AggregateTypedActionLoader.Add
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader.LoadAction(System.Int64,IValue)
+  name: LoadAction(Int64, IValue)
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html#Libplanet_Action_Loader_AggregateTypedActionLoader_LoadAction_System_Int64_IValue_
+  commentId: M:Libplanet.Action.Loader.AggregateTypedActionLoader.LoadAction(System.Int64,IValue)
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader.LoadAction(System.Int64, IValue)
+  nameWithType: AggregateTypedActionLoader.LoadAction(Int64, IValue)
+- uid: Libplanet.Action.Loader.AggregateTypedActionLoader.LoadAction*
+  name: LoadAction
+  href: api/Libplanet.Action.Loader.AggregateTypedActionLoader.html#Libplanet_Action_Loader_AggregateTypedActionLoader_LoadAction_
+  commentId: Overload:Libplanet.Action.Loader.AggregateTypedActionLoader.LoadAction
+  isSpec: "True"
+  fullName: Libplanet.Action.Loader.AggregateTypedActionLoader.LoadAction
+  nameWithType: AggregateTypedActionLoader.LoadAction
+- uid: Libplanet.Action.Loader.AssemblyActionLoader
+  name: AssemblyActionLoader
+  href: api/Libplanet.Action.Loader.AssemblyActionLoader.html
+  commentId: T:Libplanet.Action.Loader.AssemblyActionLoader
+  fullName: Libplanet.Action.Loader.AssemblyActionLoader
+  nameWithType: AssemblyActionLoader
+- uid: Libplanet.Action.Loader.AssemblyActionLoader.#ctor(Assembly)
+  name: AssemblyActionLoader(Assembly)
+  href: api/Libplanet.Action.Loader.AssemblyActionLoader.html#Libplanet_Action_Loader_AssemblyActionLoader__ctor_Assembly_
+  commentId: M:Libplanet.Action.Loader.AssemblyActionLoader.#ctor(Assembly)
+  fullName: Libplanet.Action.Loader.AssemblyActionLoader.AssemblyActionLoader(Assembly)
+  nameWithType: AssemblyActionLoader.AssemblyActionLoader(Assembly)
+- uid: Libplanet.Action.Loader.AssemblyActionLoader.#ctor*
+  name: AssemblyActionLoader
+  href: api/Libplanet.Action.Loader.AssemblyActionLoader.html#Libplanet_Action_Loader_AssemblyActionLoader__ctor_
+  commentId: Overload:Libplanet.Action.Loader.AssemblyActionLoader.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.Loader.AssemblyActionLoader.AssemblyActionLoader
+  nameWithType: AssemblyActionLoader.AssemblyActionLoader
+- uid: Libplanet.Action.Loader.AssemblyActionLoader.LoadAction(System.Int64,IValue)
+  name: LoadAction(Int64, IValue)
+  href: api/Libplanet.Action.Loader.AssemblyActionLoader.html#Libplanet_Action_Loader_AssemblyActionLoader_LoadAction_System_Int64_IValue_
+  commentId: M:Libplanet.Action.Loader.AssemblyActionLoader.LoadAction(System.Int64,IValue)
+  fullName: Libplanet.Action.Loader.AssemblyActionLoader.LoadAction(System.Int64, IValue)
+  nameWithType: AssemblyActionLoader.LoadAction(Int64, IValue)
+- uid: Libplanet.Action.Loader.AssemblyActionLoader.LoadAction*
+  name: LoadAction
+  href: api/Libplanet.Action.Loader.AssemblyActionLoader.html#Libplanet_Action_Loader_AssemblyActionLoader_LoadAction_
+  commentId: Overload:Libplanet.Action.Loader.AssemblyActionLoader.LoadAction
+  isSpec: "True"
+  fullName: Libplanet.Action.Loader.AssemblyActionLoader.LoadAction
+  nameWithType: AssemblyActionLoader.LoadAction
+- uid: Libplanet.Action.Loader.AssemblyActionLoader.Types
+  name: Types
+  href: api/Libplanet.Action.Loader.AssemblyActionLoader.html#Libplanet_Action_Loader_AssemblyActionLoader_Types
+  commentId: P:Libplanet.Action.Loader.AssemblyActionLoader.Types
+  fullName: Libplanet.Action.Loader.AssemblyActionLoader.Types
+  nameWithType: AssemblyActionLoader.Types
+- uid: Libplanet.Action.Loader.AssemblyActionLoader.Types*
+  name: Types
+  href: api/Libplanet.Action.Loader.AssemblyActionLoader.html#Libplanet_Action_Loader_AssemblyActionLoader_Types_
+  commentId: Overload:Libplanet.Action.Loader.AssemblyActionLoader.Types
+  isSpec: "True"
+  fullName: Libplanet.Action.Loader.AssemblyActionLoader.Types
+  nameWithType: AssemblyActionLoader.Types
 - uid: Libplanet.Action.Loader.IActionLoader
   name: IActionLoader
   href: api/Libplanet.Action.Loader.IActionLoader.html
@@ -2311,19 +2397,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.InsufficientBalanceException.Balance
   nameWithType: InsufficientBalanceException.Balance
-- uid: Libplanet.Action.State.InsufficientBalanceException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Action.State.InsufficientBalanceException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Action.State.InsufficientBalanceException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InsufficientBalanceException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.State.InsufficientBalanceException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.State.InsufficientBalanceException.html#Libplanet_Action_State_InsufficientBalanceException_GetObjectData_
-  commentId: Overload:Libplanet.Action.State.InsufficientBalanceException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.State.InsufficientBalanceException.GetObjectData
-  nameWithType: InsufficientBalanceException.GetObjectData
 - uid: Libplanet.Action.State.IWorld
   name: IWorld
   href: api/Libplanet.Action.State.IWorld.html
@@ -2556,6 +2629,66 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.IWorldState.Version
   nameWithType: IWorldState.Version
+- uid: Libplanet.Action.State.KeyConverters
+  name: KeyConverters
+  href: api/Libplanet.Action.State.KeyConverters.html
+  commentId: T:Libplanet.Action.State.KeyConverters
+  fullName: Libplanet.Action.State.KeyConverters
+  nameWithType: KeyConverters
+- uid: Libplanet.Action.State.KeyConverters.ToFungibleAssetKey(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  name: ToFungibleAssetKey(Address, Currency)
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ToFungibleAssetKey_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.KeyConverters.ToFungibleAssetKey(Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.KeyConverters.ToFungibleAssetKey(Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency)
+  nameWithType: KeyConverters.ToFungibleAssetKey(Address, Currency)
+- uid: Libplanet.Action.State.KeyConverters.ToFungibleAssetKey(System.ValueTuple{Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency})
+  name: ToFungibleAssetKey((Address Address, Currency Currency))
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ToFungibleAssetKey_System_ValueTuple_Libplanet_Crypto_Address_Libplanet_Types_Assets_Currency__
+  commentId: M:Libplanet.Action.State.KeyConverters.ToFungibleAssetKey(System.ValueTuple{Libplanet.Crypto.Address,Libplanet.Types.Assets.Currency})
+  name.vb: ToFungibleAssetKey((Address As Address, Currency As Currency)(Of Address, Currency))
+  fullName: Libplanet.Action.State.KeyConverters.ToFungibleAssetKey(System.ValueTuple<Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency>)
+  fullName.vb: Libplanet.Action.State.KeyConverters.ToFungibleAssetKey(System.ValueTuple(Of Libplanet.Crypto.Address, Libplanet.Types.Assets.Currency))
+  nameWithType: KeyConverters.ToFungibleAssetKey((Address Address, Currency Currency))
+  nameWithType.vb: KeyConverters.ToFungibleAssetKey((Address As Address, Currency As Currency)(Of Address, Currency))
+- uid: Libplanet.Action.State.KeyConverters.ToFungibleAssetKey*
+  name: ToFungibleAssetKey
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ToFungibleAssetKey_
+  commentId: Overload:Libplanet.Action.State.KeyConverters.ToFungibleAssetKey
+  isSpec: "True"
+  fullName: Libplanet.Action.State.KeyConverters.ToFungibleAssetKey
+  nameWithType: KeyConverters.ToFungibleAssetKey
+- uid: Libplanet.Action.State.KeyConverters.ToStateKey(Libplanet.Crypto.Address)
+  name: ToStateKey(Address)
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ToStateKey_Libplanet_Crypto_Address_
+  commentId: M:Libplanet.Action.State.KeyConverters.ToStateKey(Libplanet.Crypto.Address)
+  fullName: Libplanet.Action.State.KeyConverters.ToStateKey(Libplanet.Crypto.Address)
+  nameWithType: KeyConverters.ToStateKey(Address)
+- uid: Libplanet.Action.State.KeyConverters.ToStateKey*
+  name: ToStateKey
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ToStateKey_
+  commentId: Overload:Libplanet.Action.State.KeyConverters.ToStateKey
+  isSpec: "True"
+  fullName: Libplanet.Action.State.KeyConverters.ToStateKey
+  nameWithType: KeyConverters.ToStateKey
+- uid: Libplanet.Action.State.KeyConverters.ToTotalSupplyKey(Libplanet.Types.Assets.Currency)
+  name: ToTotalSupplyKey(Currency)
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ToTotalSupplyKey_Libplanet_Types_Assets_Currency_
+  commentId: M:Libplanet.Action.State.KeyConverters.ToTotalSupplyKey(Libplanet.Types.Assets.Currency)
+  fullName: Libplanet.Action.State.KeyConverters.ToTotalSupplyKey(Libplanet.Types.Assets.Currency)
+  nameWithType: KeyConverters.ToTotalSupplyKey(Currency)
+- uid: Libplanet.Action.State.KeyConverters.ToTotalSupplyKey*
+  name: ToTotalSupplyKey
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ToTotalSupplyKey_
+  commentId: Overload:Libplanet.Action.State.KeyConverters.ToTotalSupplyKey
+  isSpec: "True"
+  fullName: Libplanet.Action.State.KeyConverters.ToTotalSupplyKey
+  nameWithType: KeyConverters.ToTotalSupplyKey
+- uid: Libplanet.Action.State.KeyConverters.ValidatorSetKey
+  name: ValidatorSetKey
+  href: api/Libplanet.Action.State.KeyConverters.html#Libplanet_Action_State_KeyConverters_ValidatorSetKey
+  commentId: F:Libplanet.Action.State.KeyConverters.ValidatorSetKey
+  fullName: Libplanet.Action.State.KeyConverters.ValidatorSetKey
+  nameWithType: KeyConverters.ValidatorSetKey
 - uid: Libplanet.Action.State.ReservedAddresses
   name: ReservedAddresses
   href: api/Libplanet.Action.State.ReservedAddresses.html
@@ -2609,19 +2742,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.State.SupplyOverflowException.Amount
   nameWithType: SupplyOverflowException.Amount
-- uid: Libplanet.Action.State.SupplyOverflowException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.State.SupplyOverflowException.html#Libplanet_Action_State_SupplyOverflowException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Action.State.SupplyOverflowException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Action.State.SupplyOverflowException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: SupplyOverflowException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.State.SupplyOverflowException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.State.SupplyOverflowException.html#Libplanet_Action_State_SupplyOverflowException_GetObjectData_
-  commentId: Overload:Libplanet.Action.State.SupplyOverflowException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.State.SupplyOverflowException.GetObjectData
-  nameWithType: SupplyOverflowException.GetObjectData
 - uid: Libplanet.Action.State.ValidatorSetAccount
   name: ValidatorSetAccount
   href: api/Libplanet.Action.State.ValidatorSetAccount.html
@@ -3142,19 +3262,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.BlockIndex
   nameWithType: UnexpectedlyTerminatedActionException.BlockIndex
-- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: UnexpectedlyTerminatedActionException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_GetObjectData_
-  commentId: Overload:Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.UnexpectedlyTerminatedActionException.GetObjectData
-  nameWithType: UnexpectedlyTerminatedActionException.GetObjectData
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException.PreEvaluationHash
   name: PreEvaluationHash
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_PreEvaluationHash
@@ -3248,12 +3355,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blockchain.BlockChain.AddEvidence
   nameWithType: BlockChain.AddEvidence
-- uid: Libplanet.Blockchain.BlockChain.Append(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockCommit)
-  name: Append(Block, BlockCommit)
-  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Append_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockCommit_
-  commentId: M:Libplanet.Blockchain.BlockChain.Append(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockCommit)
-  fullName: Libplanet.Blockchain.BlockChain.Append(Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockCommit)
-  nameWithType: BlockChain.Append(Block, BlockCommit)
+- uid: Libplanet.Blockchain.BlockChain.Append(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockCommit,System.Boolean)
+  name: Append(Block, BlockCommit, Boolean)
+  href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Append_Libplanet_Types_Blocks_Block_Libplanet_Types_Blocks_BlockCommit_System_Boolean_
+  commentId: M:Libplanet.Blockchain.BlockChain.Append(Libplanet.Types.Blocks.Block,Libplanet.Types.Blocks.BlockCommit,System.Boolean)
+  fullName: Libplanet.Blockchain.BlockChain.Append(Libplanet.Types.Blocks.Block, Libplanet.Types.Blocks.BlockCommit, System.Boolean)
+  nameWithType: BlockChain.Append(Block, BlockCommit, Boolean)
 - uid: Libplanet.Blockchain.BlockChain.Append*
   name: Append
   href: api/Libplanet.Blockchain.BlockChain.html#Libplanet_Blockchain_BlockChain_Append_
@@ -5604,15 +5711,15 @@ references:
   fullName.vb: Libplanet.Common.ArrayEqualityComparer(Of T)
   nameWithType: ArrayEqualityComparer<T>
   nameWithType.vb: ArrayEqualityComparer(Of T)
-- uid: Libplanet.Common.ArrayEqualityComparer`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
-  name: ArrayEqualityComparer(IEqualityComparer<T>)
-  href: api/Libplanet.Common.ArrayEqualityComparer-1.html#Libplanet_Common_ArrayEqualityComparer_1__ctor_System_Collections_Generic_IEqualityComparer__0__
-  commentId: M:Libplanet.Common.ArrayEqualityComparer`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})
-  name.vb: ArrayEqualityComparer(IEqualityComparer(Of T))
-  fullName: Libplanet.Common.ArrayEqualityComparer<T>.ArrayEqualityComparer(System.Collections.Generic.IEqualityComparer<T>)
-  fullName.vb: Libplanet.Common.ArrayEqualityComparer(Of T).ArrayEqualityComparer(System.Collections.Generic.IEqualityComparer(Of T))
-  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer(IEqualityComparer<T>)
-  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer(IEqualityComparer(Of T))
+- uid: Libplanet.Common.ArrayEqualityComparer`1.#ctor(System.Nullable{IEqualityComparer{`0}})
+  name: ArrayEqualityComparer(Nullable<IEqualityComparer<T>>)
+  href: api/Libplanet.Common.ArrayEqualityComparer-1.html#Libplanet_Common_ArrayEqualityComparer_1__ctor_System_Nullable_IEqualityComparer__0___
+  commentId: M:Libplanet.Common.ArrayEqualityComparer`1.#ctor(System.Nullable{IEqualityComparer{`0}})
+  name.vb: ArrayEqualityComparer(Nullable(Of IEqualityComparer(Of T)))
+  fullName: Libplanet.Common.ArrayEqualityComparer<T>.ArrayEqualityComparer(System.Nullable<IEqualityComparer<T>>)
+  fullName.vb: Libplanet.Common.ArrayEqualityComparer(Of T).ArrayEqualityComparer(System.Nullable(Of IEqualityComparer(Of T)))
+  nameWithType: ArrayEqualityComparer<T>.ArrayEqualityComparer(Nullable<IEqualityComparer<T>>)
+  nameWithType.vb: ArrayEqualityComparer(Of T).ArrayEqualityComparer(Nullable(Of IEqualityComparer(Of T)))
 - uid: Libplanet.Common.ArrayEqualityComparer`1.#ctor*
   name: ArrayEqualityComparer
   href: api/Libplanet.Common.ArrayEqualityComparer-1.html#Libplanet_Common_ArrayEqualityComparer_1__ctor_
@@ -5786,13 +5893,13 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.ByteUtil.ParseHexToImmutable
   nameWithType: ByteUtil.ParseHexToImmutable
-- uid: Libplanet.Common.ByteUtil.Satisfies(System.Collections.Generic.IReadOnlyList{System.Byte},System.Int64)
+- uid: Libplanet.Common.ByteUtil.Satisfies(IReadOnlyList{System.Byte},System.Int64)
   name: Satisfies(IReadOnlyList<Byte>, Int64)
-  href: api/Libplanet.Common.ByteUtil.html#Libplanet_Common_ByteUtil_Satisfies_System_Collections_Generic_IReadOnlyList_System_Byte__System_Int64_
-  commentId: M:Libplanet.Common.ByteUtil.Satisfies(System.Collections.Generic.IReadOnlyList{System.Byte},System.Int64)
+  href: api/Libplanet.Common.ByteUtil.html#Libplanet_Common_ByteUtil_Satisfies_IReadOnlyList_System_Byte__System_Int64_
+  commentId: M:Libplanet.Common.ByteUtil.Satisfies(IReadOnlyList{System.Byte},System.Int64)
   name.vb: Satisfies(IReadOnlyList(Of Byte), Int64)
-  fullName: Libplanet.Common.ByteUtil.Satisfies(System.Collections.Generic.IReadOnlyList<System.Byte>, System.Int64)
-  fullName.vb: Libplanet.Common.ByteUtil.Satisfies(System.Collections.Generic.IReadOnlyList(Of System.Byte), System.Int64)
+  fullName: Libplanet.Common.ByteUtil.Satisfies(IReadOnlyList<System.Byte>, System.Int64)
+  fullName.vb: Libplanet.Common.ByteUtil.Satisfies(IReadOnlyList(Of System.Byte), System.Int64)
   nameWithType: ByteUtil.Satisfies(IReadOnlyList<Byte>, Int64)
   nameWithType.vb: ByteUtil.Satisfies(IReadOnlyList(Of Byte), Int64)
 - uid: Libplanet.Common.ByteUtil.Satisfies*
@@ -5802,13 +5909,13 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.ByteUtil.Satisfies
   nameWithType: ByteUtil.Satisfies
-- uid: Libplanet.Common.ByteUtil.TimingSafelyCompare(System.Collections.Generic.IReadOnlyList{System.Byte},System.Collections.Generic.IReadOnlyList{System.Byte})
+- uid: Libplanet.Common.ByteUtil.TimingSafelyCompare(IReadOnlyList{System.Byte},IReadOnlyList{System.Byte})
   name: TimingSafelyCompare(IReadOnlyList<Byte>, IReadOnlyList<Byte>)
-  href: api/Libplanet.Common.ByteUtil.html#Libplanet_Common_ByteUtil_TimingSafelyCompare_System_Collections_Generic_IReadOnlyList_System_Byte__System_Collections_Generic_IReadOnlyList_System_Byte__
-  commentId: M:Libplanet.Common.ByteUtil.TimingSafelyCompare(System.Collections.Generic.IReadOnlyList{System.Byte},System.Collections.Generic.IReadOnlyList{System.Byte})
+  href: api/Libplanet.Common.ByteUtil.html#Libplanet_Common_ByteUtil_TimingSafelyCompare_IReadOnlyList_System_Byte__IReadOnlyList_System_Byte__
+  commentId: M:Libplanet.Common.ByteUtil.TimingSafelyCompare(IReadOnlyList{System.Byte},IReadOnlyList{System.Byte})
   name.vb: TimingSafelyCompare(IReadOnlyList(Of Byte), IReadOnlyList(Of Byte))
-  fullName: Libplanet.Common.ByteUtil.TimingSafelyCompare(System.Collections.Generic.IReadOnlyList<System.Byte>, System.Collections.Generic.IReadOnlyList<System.Byte>)
-  fullName.vb: Libplanet.Common.ByteUtil.TimingSafelyCompare(System.Collections.Generic.IReadOnlyList(Of System.Byte), System.Collections.Generic.IReadOnlyList(Of System.Byte))
+  fullName: Libplanet.Common.ByteUtil.TimingSafelyCompare(IReadOnlyList<System.Byte>, IReadOnlyList<System.Byte>)
+  fullName.vb: Libplanet.Common.ByteUtil.TimingSafelyCompare(IReadOnlyList(Of System.Byte), IReadOnlyList(Of System.Byte))
   nameWithType: ByteUtil.TimingSafelyCompare(IReadOnlyList<Byte>, IReadOnlyList<Byte>)
   nameWithType.vb: ByteUtil.TimingSafelyCompare(IReadOnlyList(Of Byte), IReadOnlyList(Of Byte))
 - uid: Libplanet.Common.ByteUtil.TimingSafelyCompare*
@@ -5965,6 +6072,15 @@ references:
   fullName.vb: Libplanet.Common.HashDigest(Of T).DeriveFrom(ImmutableArray(Of System.Byte))
   nameWithType: HashDigest<T>.DeriveFrom(ImmutableArray<Byte>)
   nameWithType.vb: HashDigest(Of T).DeriveFrom(ImmutableArray(Of Byte))
+- uid: Libplanet.Common.HashDigest`1.DeriveFrom(ReadOnlySpan{System.Byte})
+  name: DeriveFrom(ReadOnlySpan<Byte>)
+  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_DeriveFrom_ReadOnlySpan_System_Byte__
+  commentId: M:Libplanet.Common.HashDigest`1.DeriveFrom(ReadOnlySpan{System.Byte})
+  name.vb: DeriveFrom(ReadOnlySpan(Of Byte))
+  fullName: Libplanet.Common.HashDigest<T>.DeriveFrom(ReadOnlySpan<System.Byte>)
+  fullName.vb: Libplanet.Common.HashDigest(Of T).DeriveFrom(ReadOnlySpan(Of System.Byte))
+  nameWithType: HashDigest<T>.DeriveFrom(ReadOnlySpan<Byte>)
+  nameWithType.vb: HashDigest(Of T).DeriveFrom(ReadOnlySpan(Of Byte))
 - uid: Libplanet.Common.HashDigest`1.DeriveFrom(System.Byte[])
   name: DeriveFrom(Byte[])
   href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_DeriveFrom_System_Byte___
@@ -5974,15 +6090,6 @@ references:
   fullName.vb: Libplanet.Common.HashDigest(Of T).DeriveFrom(System.Byte())
   nameWithType: HashDigest<T>.DeriveFrom(Byte[])
   nameWithType.vb: HashDigest(Of T).DeriveFrom(Byte())
-- uid: Libplanet.Common.HashDigest`1.DeriveFrom(System.ReadOnlySpan{System.Byte})
-  name: DeriveFrom(ReadOnlySpan<Byte>)
-  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_DeriveFrom_System_ReadOnlySpan_System_Byte__
-  commentId: M:Libplanet.Common.HashDigest`1.DeriveFrom(System.ReadOnlySpan{System.Byte})
-  name.vb: DeriveFrom(ReadOnlySpan(Of Byte))
-  fullName: Libplanet.Common.HashDigest<T>.DeriveFrom(System.ReadOnlySpan<System.Byte>)
-  fullName.vb: Libplanet.Common.HashDigest(Of T).DeriveFrom(System.ReadOnlySpan(Of System.Byte))
-  nameWithType: HashDigest<T>.DeriveFrom(ReadOnlySpan<Byte>)
-  nameWithType.vb: HashDigest(Of T).DeriveFrom(ReadOnlySpan(Of Byte))
 - uid: Libplanet.Common.HashDigest`1.DeriveFrom*
   name: DeriveFrom
   href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_DeriveFrom_
@@ -6001,14 +6108,15 @@ references:
   fullName.vb: Libplanet.Common.HashDigest(Of T).Equals(Libplanet.Common.HashDigest(Of T))
   nameWithType: HashDigest<T>.Equals(HashDigest<T>)
   nameWithType.vb: HashDigest(Of T).Equals(HashDigest(Of T))
-- uid: Libplanet.Common.HashDigest`1.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Equals_System_Object_
-  commentId: M:Libplanet.Common.HashDigest`1.Equals(System.Object)
-  fullName: Libplanet.Common.HashDigest<T>.Equals(System.Object)
-  fullName.vb: Libplanet.Common.HashDigest(Of T).Equals(System.Object)
-  nameWithType: HashDigest<T>.Equals(Object)
-  nameWithType.vb: HashDigest(Of T).Equals(Object)
+- uid: Libplanet.Common.HashDigest`1.Equals(System.Nullable{System.Object})
+  name: Equals(Nullable<Object>)
+  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Equals_System_Nullable_System_Object__
+  commentId: M:Libplanet.Common.HashDigest`1.Equals(System.Nullable{System.Object})
+  name.vb: Equals(Nullable(Of Object))
+  fullName: Libplanet.Common.HashDigest<T>.Equals(System.Nullable<System.Object>)
+  fullName.vb: Libplanet.Common.HashDigest(Of T).Equals(System.Nullable(Of System.Object))
+  nameWithType: HashDigest<T>.Equals(Nullable<Object>)
+  nameWithType.vb: HashDigest(Of T).Equals(Nullable(Of Object))
 - uid: Libplanet.Common.HashDigest`1.Equals*
   name: Equals
   href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Equals_
@@ -6052,23 +6160,6 @@ references:
   fullName.vb: Libplanet.Common.HashDigest(Of T).GetHashCode
   nameWithType: HashDigest<T>.GetHashCode
   nameWithType.vb: HashDigest(Of T).GetHashCode
-- uid: Libplanet.Common.HashDigest`1.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Common.HashDigest`1.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Common.HashDigest<T>.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  fullName.vb: Libplanet.Common.HashDigest(Of T).GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: HashDigest<T>.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType.vb: HashDigest(Of T).GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Common.HashDigest`1.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_GetObjectData_
-  commentId: Overload:Libplanet.Common.HashDigest`1.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Common.HashDigest<T>.GetObjectData
-  fullName.vb: Libplanet.Common.HashDigest(Of T).GetObjectData
-  nameWithType: HashDigest<T>.GetObjectData
-  nameWithType.vb: HashDigest(Of T).GetObjectData
 - uid: Libplanet.Common.HashDigest`1.Size
   name: Size
   href: api/Libplanet.Common.HashDigest-1.html#Libplanet_Common_HashDigest_1_Size
@@ -6145,13 +6236,13 @@ references:
   commentId: T:Libplanet.Common.JsonConverters.BigIntegerJsonConverter
   fullName: Libplanet.Common.JsonConverters.BigIntegerJsonConverter
   nameWithType: BigIntegerJsonConverter
-- uid: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(Utf8JsonReader@,System.Type,JsonSerializerOptions)
+- uid: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(Utf8JsonReader@,Type,JsonSerializerOptions)
   name: Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
-  href: api/Libplanet.Common.JsonConverters.BigIntegerJsonConverter.html#Libplanet_Common_JsonConverters_BigIntegerJsonConverter_Read_Utf8JsonReader__System_Type_JsonSerializerOptions_
-  commentId: M:Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(Utf8JsonReader@,System.Type,JsonSerializerOptions)
+  href: api/Libplanet.Common.JsonConverters.BigIntegerJsonConverter.html#Libplanet_Common_JsonConverters_BigIntegerJsonConverter_Read_Utf8JsonReader__Type_JsonSerializerOptions_
+  commentId: M:Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(Utf8JsonReader@,Type,JsonSerializerOptions)
   name.vb: Read(ByRef Utf8JsonReader, Type, JsonSerializerOptions)
-  fullName: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(ref Utf8JsonReader, System.Type, JsonSerializerOptions)
-  fullName.vb: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(ByRef Utf8JsonReader, System.Type, JsonSerializerOptions)
+  fullName: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName.vb: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read(ByRef Utf8JsonReader, Type, JsonSerializerOptions)
   nameWithType: BigIntegerJsonConverter.Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
   nameWithType.vb: BigIntegerJsonConverter.Read(ByRef Utf8JsonReader, Type, JsonSerializerOptions)
 - uid: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read*
@@ -6161,11 +6252,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Read
   nameWithType: BigIntegerJsonConverter.Read
-- uid: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Write(Utf8JsonWriter,System.Numerics.BigInteger,JsonSerializerOptions)
+- uid: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Write(Utf8JsonWriter,BigInteger,JsonSerializerOptions)
   name: Write(Utf8JsonWriter, BigInteger, JsonSerializerOptions)
-  href: api/Libplanet.Common.JsonConverters.BigIntegerJsonConverter.html#Libplanet_Common_JsonConverters_BigIntegerJsonConverter_Write_Utf8JsonWriter_System_Numerics_BigInteger_JsonSerializerOptions_
-  commentId: M:Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Write(Utf8JsonWriter,System.Numerics.BigInteger,JsonSerializerOptions)
-  fullName: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Write(Utf8JsonWriter, System.Numerics.BigInteger, JsonSerializerOptions)
+  href: api/Libplanet.Common.JsonConverters.BigIntegerJsonConverter.html#Libplanet_Common_JsonConverters_BigIntegerJsonConverter_Write_Utf8JsonWriter_BigInteger_JsonSerializerOptions_
+  commentId: M:Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Write(Utf8JsonWriter,BigInteger,JsonSerializerOptions)
+  fullName: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Write(Utf8JsonWriter, BigInteger, JsonSerializerOptions)
   nameWithType: BigIntegerJsonConverter.Write(Utf8JsonWriter, BigInteger, JsonSerializerOptions)
 - uid: Libplanet.Common.JsonConverters.BigIntegerJsonConverter.Write*
   name: Write
@@ -6180,11 +6271,11 @@ references:
   commentId: T:Libplanet.Common.JsonConverters.ByteArrayJsonConverter
   fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter
   nameWithType: ByteArrayJsonConverter
-- uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(System.Type)
+- uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(Type)
   name: CanConvert(Type)
-  href: api/Libplanet.Common.JsonConverters.ByteArrayJsonConverter.html#Libplanet_Common_JsonConverters_ByteArrayJsonConverter_CanConvert_System_Type_
-  commentId: M:Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(System.Type)
-  fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(System.Type)
+  href: api/Libplanet.Common.JsonConverters.ByteArrayJsonConverter.html#Libplanet_Common_JsonConverters_ByteArrayJsonConverter_CanConvert_Type_
+  commentId: M:Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(Type)
+  fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert(Type)
   nameWithType: ByteArrayJsonConverter.CanConvert(Type)
 - uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.CanConvert*
   name: CanConvert
@@ -6206,13 +6297,13 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.HandleNull
   nameWithType: ByteArrayJsonConverter.HandleNull
-- uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader@,System.Type,JsonSerializerOptions)
+- uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader@,Type,JsonSerializerOptions)
   name: Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
-  href: api/Libplanet.Common.JsonConverters.ByteArrayJsonConverter.html#Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Read_Utf8JsonReader__System_Type_JsonSerializerOptions_
-  commentId: M:Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader@,System.Type,JsonSerializerOptions)
+  href: api/Libplanet.Common.JsonConverters.ByteArrayJsonConverter.html#Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Read_Utf8JsonReader__Type_JsonSerializerOptions_
+  commentId: M:Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(Utf8JsonReader@,Type,JsonSerializerOptions)
   name.vb: Read(ByRef Utf8JsonReader, Type, JsonSerializerOptions)
-  fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(ref Utf8JsonReader, System.Type, JsonSerializerOptions)
-  fullName.vb: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(ByRef Utf8JsonReader, System.Type, JsonSerializerOptions)
+  fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
+  fullName.vb: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read(ByRef Utf8JsonReader, Type, JsonSerializerOptions)
   nameWithType: ByteArrayJsonConverter.Read(ref Utf8JsonReader, Type, JsonSerializerOptions)
   nameWithType.vb: ByteArrayJsonConverter.Read(ByRef Utf8JsonReader, Type, JsonSerializerOptions)
 - uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read*
@@ -6222,15 +6313,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Read
   nameWithType: ByteArrayJsonConverter.Read
-- uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter,System.Collections.Generic.IReadOnlyList{System.Byte},JsonSerializerOptions)
-  name: Write(Utf8JsonWriter, IReadOnlyList<Byte>, JsonSerializerOptions)
-  href: api/Libplanet.Common.JsonConverters.ByteArrayJsonConverter.html#Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_Utf8JsonWriter_System_Collections_Generic_IReadOnlyList_System_Byte__JsonSerializerOptions_
-  commentId: M:Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter,System.Collections.Generic.IReadOnlyList{System.Byte},JsonSerializerOptions)
-  name.vb: Write(Utf8JsonWriter, IReadOnlyList(Of Byte), JsonSerializerOptions)
-  fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter, System.Collections.Generic.IReadOnlyList<System.Byte>, JsonSerializerOptions)
-  fullName.vb: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter, System.Collections.Generic.IReadOnlyList(Of System.Byte), JsonSerializerOptions)
-  nameWithType: ByteArrayJsonConverter.Write(Utf8JsonWriter, IReadOnlyList<Byte>, JsonSerializerOptions)
-  nameWithType.vb: ByteArrayJsonConverter.Write(Utf8JsonWriter, IReadOnlyList(Of Byte), JsonSerializerOptions)
+- uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter,System.Nullable{IReadOnlyList{System.Byte}},JsonSerializerOptions)
+  name: Write(Utf8JsonWriter, Nullable<IReadOnlyList<Byte>>, JsonSerializerOptions)
+  href: api/Libplanet.Common.JsonConverters.ByteArrayJsonConverter.html#Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_Utf8JsonWriter_System_Nullable_IReadOnlyList_System_Byte___JsonSerializerOptions_
+  commentId: M:Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter,System.Nullable{IReadOnlyList{System.Byte}},JsonSerializerOptions)
+  name.vb: Write(Utf8JsonWriter, Nullable(Of IReadOnlyList(Of Byte)), JsonSerializerOptions)
+  fullName: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter, System.Nullable<IReadOnlyList<System.Byte>>, JsonSerializerOptions)
+  fullName.vb: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write(Utf8JsonWriter, System.Nullable(Of IReadOnlyList(Of System.Byte)), JsonSerializerOptions)
+  nameWithType: ByteArrayJsonConverter.Write(Utf8JsonWriter, Nullable<IReadOnlyList<Byte>>, JsonSerializerOptions)
+  nameWithType.vb: ByteArrayJsonConverter.Write(Utf8JsonWriter, Nullable(Of IReadOnlyList(Of Byte)), JsonSerializerOptions)
 - uid: Libplanet.Common.JsonConverters.ByteArrayJsonConverter.Write*
   name: Write
   href: api/Libplanet.Common.JsonConverters.ByteArrayJsonConverter.html#Libplanet_Common_JsonConverters_ByteArrayJsonConverter_Write_
@@ -6244,11 +6335,11 @@ references:
   commentId: T:Libplanet.Common.NameValueCollectionExtensions
   fullName: Libplanet.Common.NameValueCollectionExtensions
   nameWithType: NameValueCollectionExtensions
-- uid: Libplanet.Common.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetBoolean(NameValueCollection,System.String,System.Boolean)
   name: GetBoolean(NameValueCollection, String, Boolean)
-  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetBoolean_System_Collections_Specialized_NameValueCollection_System_String_System_Boolean_
-  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)
-  fullName: Libplanet.Common.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection, System.String, System.Boolean)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetBoolean_NameValueCollection_System_String_System_Boolean_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetBoolean(NameValueCollection,System.String,System.Boolean)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetBoolean(NameValueCollection, System.String, System.Boolean)
   nameWithType: NameValueCollectionExtensions.GetBoolean(NameValueCollection, String, Boolean)
 - uid: Libplanet.Common.NameValueCollectionExtensions.GetBoolean*
   name: GetBoolean
@@ -6264,35 +6355,35 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum
   nameWithType: NameValueCollectionExtensions.GetEnum
-- uid: Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String,``0)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(NameValueCollection,System.String,``0)
   name: GetEnum<T>(NameValueCollection, String, T)
-  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String___0_
-  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String,``0)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_NameValueCollection_System_String___0_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(NameValueCollection,System.String,``0)
   name.vb: GetEnum(Of T)(NameValueCollection, String, T)
-  fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum<T>(System.Collections.Specialized.NameValueCollection, System.String, T)
-  fullName.vb: Libplanet.Common.NameValueCollectionExtensions.GetEnum(Of T)(System.Collections.Specialized.NameValueCollection, System.String, T)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum<T>(NameValueCollection, System.String, T)
+  fullName.vb: Libplanet.Common.NameValueCollectionExtensions.GetEnum(Of T)(NameValueCollection, System.String, T)
   nameWithType: NameValueCollectionExtensions.GetEnum<T>(NameValueCollection, String, T)
   nameWithType.vb: NameValueCollectionExtensions.GetEnum(Of T)(NameValueCollection, String, T)
-- uid: Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(NameValueCollection,System.String)
   name: GetEnum<T>(NameValueCollection, String)
-  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String_
-  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_NameValueCollection_System_String_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(NameValueCollection,System.String)
   name.vb: GetEnum(Of T)(NameValueCollection, String)
-  fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum<T>(System.Collections.Specialized.NameValueCollection, System.String)
-  fullName.vb: Libplanet.Common.NameValueCollectionExtensions.GetEnum(Of T)(System.Collections.Specialized.NameValueCollection, System.String)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetEnum<T>(NameValueCollection, System.String)
+  fullName.vb: Libplanet.Common.NameValueCollectionExtensions.GetEnum(Of T)(NameValueCollection, System.String)
   nameWithType: NameValueCollectionExtensions.GetEnum<T>(NameValueCollection, String)
   nameWithType.vb: NameValueCollectionExtensions.GetEnum(Of T)(NameValueCollection, String)
-- uid: Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String,System.Int32)
   name: GetInt32(NameValueCollection, String, Int32)
-  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_System_Int32_
-  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)
-  fullName: Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection, System.String, System.Int32)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_System_Int32_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String,System.Int32)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection, System.String, System.Int32)
   nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String, Int32)
-- uid: Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String)
   name: GetInt32(NameValueCollection, String)
-  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_
-  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String)
-  fullName: Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection, System.String)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection, System.String)
   nameWithType: NameValueCollectionExtensions.GetInt32(NameValueCollection, String)
 - uid: Libplanet.Common.NameValueCollectionExtensions.GetInt32*
   name: GetInt32
@@ -6301,17 +6392,17 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.NameValueCollectionExtensions.GetInt32
   nameWithType: NameValueCollectionExtensions.GetInt32
-- uid: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String,System.UInt64)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String,System.UInt64)
   name: GetUInt64(NameValueCollection, String, UInt64)
-  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_System_UInt64_
-  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String,System.UInt64)
-  fullName: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection, System.String, System.UInt64)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_System_UInt64_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String,System.UInt64)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection, System.String, System.UInt64)
   nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String, UInt64)
-- uid: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String)
+- uid: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String)
   name: GetUInt64(NameValueCollection, String)
-  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_
-  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String)
-  fullName: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection, System.String)
+  href: api/Libplanet.Common.NameValueCollectionExtensions.html#Libplanet_Common_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_
+  commentId: M:Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String)
+  fullName: Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection, System.String)
   nameWithType: NameValueCollectionExtensions.GetUInt64(NameValueCollection, String)
 - uid: Libplanet.Common.NameValueCollectionExtensions.GetUInt64*
   name: GetUInt64
@@ -6320,61 +6411,17 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.NameValueCollectionExtensions.GetUInt64
   nameWithType: NameValueCollectionExtensions.GetUInt64
-- uid: Libplanet.Common.Serialization
-  name: Libplanet.Common.Serialization
-  href: api/Libplanet.Common.Serialization.html
-  commentId: N:Libplanet.Common.Serialization
-  fullName: Libplanet.Common.Serialization
-  nameWithType: Libplanet.Common.Serialization
-- uid: Libplanet.Common.Serialization.SerializationInfoExtensions
-  name: SerializationInfoExtensions
-  href: api/Libplanet.Common.Serialization.SerializationInfoExtensions.html
-  commentId: T:Libplanet.Common.Serialization.SerializationInfoExtensions
-  fullName: Libplanet.Common.Serialization.SerializationInfoExtensions
-  nameWithType: SerializationInfoExtensions
-- uid: Libplanet.Common.Serialization.SerializationInfoExtensions.GetValue*
-  name: GetValue
-  href: api/Libplanet.Common.Serialization.SerializationInfoExtensions.html#Libplanet_Common_Serialization_SerializationInfoExtensions_GetValue_
-  commentId: Overload:Libplanet.Common.Serialization.SerializationInfoExtensions.GetValue
-  isSpec: "True"
-  fullName: Libplanet.Common.Serialization.SerializationInfoExtensions.GetValue
-  nameWithType: SerializationInfoExtensions.GetValue
-- uid: Libplanet.Common.Serialization.SerializationInfoExtensions.GetValue``1(System.Runtime.Serialization.SerializationInfo,System.String)
-  name: GetValue<T>(SerializationInfo, String)
-  href: api/Libplanet.Common.Serialization.SerializationInfoExtensions.html#Libplanet_Common_Serialization_SerializationInfoExtensions_GetValue__1_System_Runtime_Serialization_SerializationInfo_System_String_
-  commentId: M:Libplanet.Common.Serialization.SerializationInfoExtensions.GetValue``1(System.Runtime.Serialization.SerializationInfo,System.String)
-  name.vb: GetValue(Of T)(SerializationInfo, String)
-  fullName: Libplanet.Common.Serialization.SerializationInfoExtensions.GetValue<T>(System.Runtime.Serialization.SerializationInfo, System.String)
-  fullName.vb: Libplanet.Common.Serialization.SerializationInfoExtensions.GetValue(Of T)(System.Runtime.Serialization.SerializationInfo, System.String)
-  nameWithType: SerializationInfoExtensions.GetValue<T>(SerializationInfo, String)
-  nameWithType.vb: SerializationInfoExtensions.GetValue(Of T)(SerializationInfo, String)
-- uid: Libplanet.Common.Serialization.SerializationInfoExtensions.TryGetValue*
-  name: TryGetValue
-  href: api/Libplanet.Common.Serialization.SerializationInfoExtensions.html#Libplanet_Common_Serialization_SerializationInfoExtensions_TryGetValue_
-  commentId: Overload:Libplanet.Common.Serialization.SerializationInfoExtensions.TryGetValue
-  isSpec: "True"
-  fullName: Libplanet.Common.Serialization.SerializationInfoExtensions.TryGetValue
-  nameWithType: SerializationInfoExtensions.TryGetValue
-- uid: Libplanet.Common.Serialization.SerializationInfoExtensions.TryGetValue``1(System.Runtime.Serialization.SerializationInfo,System.String,``0@)
-  name: TryGetValue<T>(SerializationInfo, String, out T)
-  href: api/Libplanet.Common.Serialization.SerializationInfoExtensions.html#Libplanet_Common_Serialization_SerializationInfoExtensions_TryGetValue__1_System_Runtime_Serialization_SerializationInfo_System_String___0__
-  commentId: M:Libplanet.Common.Serialization.SerializationInfoExtensions.TryGetValue``1(System.Runtime.Serialization.SerializationInfo,System.String,``0@)
-  name.vb: TryGetValue(Of T)(SerializationInfo, String, ByRef T)
-  fullName: Libplanet.Common.Serialization.SerializationInfoExtensions.TryGetValue<T>(System.Runtime.Serialization.SerializationInfo, System.String, out T)
-  fullName.vb: Libplanet.Common.Serialization.SerializationInfoExtensions.TryGetValue(Of T)(System.Runtime.Serialization.SerializationInfo, System.String, ByRef T)
-  nameWithType: SerializationInfoExtensions.TryGetValue<T>(SerializationInfo, String, out T)
-  nameWithType.vb: SerializationInfoExtensions.TryGetValue(Of T)(SerializationInfo, String, ByRef T)
 - uid: Libplanet.Common.TimeSpanExtensions
   name: TimeSpanExtensions
   href: api/Libplanet.Common.TimeSpanExtensions.html
   commentId: T:Libplanet.Common.TimeSpanExtensions
   fullName: Libplanet.Common.TimeSpanExtensions
   nameWithType: TimeSpanExtensions
-- uid: Libplanet.Common.TimeSpanExtensions.Divide(System.TimeSpan,System.Double)
+- uid: Libplanet.Common.TimeSpanExtensions.Divide(TimeSpan,System.Double)
   name: Divide(TimeSpan, Double)
-  href: api/Libplanet.Common.TimeSpanExtensions.html#Libplanet_Common_TimeSpanExtensions_Divide_System_TimeSpan_System_Double_
-  commentId: M:Libplanet.Common.TimeSpanExtensions.Divide(System.TimeSpan,System.Double)
-  fullName: Libplanet.Common.TimeSpanExtensions.Divide(System.TimeSpan, System.Double)
+  href: api/Libplanet.Common.TimeSpanExtensions.html#Libplanet_Common_TimeSpanExtensions_Divide_TimeSpan_System_Double_
+  commentId: M:Libplanet.Common.TimeSpanExtensions.Divide(TimeSpan,System.Double)
+  fullName: Libplanet.Common.TimeSpanExtensions.Divide(TimeSpan, System.Double)
   nameWithType: TimeSpanExtensions.Divide(TimeSpan, Double)
 - uid: Libplanet.Common.TimeSpanExtensions.Divide*
   name: Divide
@@ -6383,11 +6430,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Common.TimeSpanExtensions.Divide
   nameWithType: TimeSpanExtensions.Divide
-- uid: Libplanet.Common.TimeSpanExtensions.Multiply(System.TimeSpan,System.Double)
+- uid: Libplanet.Common.TimeSpanExtensions.Multiply(TimeSpan,System.Double)
   name: Multiply(TimeSpan, Double)
-  href: api/Libplanet.Common.TimeSpanExtensions.html#Libplanet_Common_TimeSpanExtensions_Multiply_System_TimeSpan_System_Double_
-  commentId: M:Libplanet.Common.TimeSpanExtensions.Multiply(System.TimeSpan,System.Double)
-  fullName: Libplanet.Common.TimeSpanExtensions.Multiply(System.TimeSpan, System.Double)
+  href: api/Libplanet.Common.TimeSpanExtensions.html#Libplanet_Common_TimeSpanExtensions_Multiply_TimeSpan_System_Double_
+  commentId: M:Libplanet.Common.TimeSpanExtensions.Multiply(TimeSpan,System.Double)
+  fullName: Libplanet.Common.TimeSpanExtensions.Multiply(TimeSpan, System.Double)
   nameWithType: TimeSpanExtensions.Multiply(TimeSpan, Double)
 - uid: Libplanet.Common.TimeSpanExtensions.Multiply*
   name: Multiply
@@ -8192,19 +8239,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.Address.GetHashCode
   nameWithType: Address.GetHashCode
-- uid: Libplanet.Crypto.Address.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Crypto.Address.html#Libplanet_Crypto_Address_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Crypto.Address.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Crypto.Address.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: Address.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Crypto.Address.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Crypto.Address.html#Libplanet_Crypto_Address_GetObjectData_
-  commentId: Overload:Libplanet.Crypto.Address.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Crypto.Address.GetObjectData
-  nameWithType: Address.GetObjectData
 - uid: Libplanet.Crypto.Address.op_Equality(Libplanet.Crypto.Address,Libplanet.Crypto.Address)
   name: Equality(Address, Address)
   href: api/Libplanet.Crypto.Address.html#Libplanet_Crypto_Address_op_Equality_Libplanet_Crypto_Address_Libplanet_Crypto_Address_
@@ -8352,12 +8386,6 @@ references:
   commentId: M:Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor
   fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException()
   nameWithType: GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException()
-- uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(SerializationInfo,StreamingContext)
-  name: GenerateKeyParamTriesExceedException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html#Libplanet_Crypto_GenerateKeyParamTriesExceedException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Crypto.GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(SerializationInfo, StreamingContext)
-  nameWithType: GenerateKeyParamTriesExceedException.GenerateKeyParamTriesExceedException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Crypto.GenerateKeyParamTriesExceedException.#ctor(System.String,Exception)
   name: GenerateKeyParamTriesExceedException(String, Exception)
   href: api/Libplanet.Crypto.GenerateKeyParamTriesExceedException.html#Libplanet_Crypto_GenerateKeyParamTriesExceedException__ctor_System_String_Exception_
@@ -8434,12 +8462,6 @@ references:
   commentId: M:Libplanet.Crypto.InvalidCiphertextException.#ctor
   fullName: Libplanet.Crypto.InvalidCiphertextException.InvalidCiphertextException()
   nameWithType: InvalidCiphertextException.InvalidCiphertextException()
-- uid: Libplanet.Crypto.InvalidCiphertextException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidCiphertextException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Crypto.InvalidCiphertextException.html#Libplanet_Crypto_InvalidCiphertextException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Crypto.InvalidCiphertextException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Crypto.InvalidCiphertextException.InvalidCiphertextException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidCiphertextException.InvalidCiphertextException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Crypto.InvalidCiphertextException.#ctor(System.String,Exception)
   name: InvalidCiphertextException(String, Exception)
   href: api/Libplanet.Crypto.InvalidCiphertextException.html#Libplanet_Crypto_InvalidCiphertextException__ctor_System_String_Exception_
@@ -12650,19 +12672,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.GetHashCode
   nameWithType: BoundPeer.GetHashCode
-- uid: Libplanet.Net.BoundPeer.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.BoundPeer.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.BoundPeer.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: BoundPeer.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.BoundPeer.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_GetObjectData_
-  commentId: Overload:Libplanet.Net.BoundPeer.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.BoundPeer.GetObjectData
-  nameWithType: BoundPeer.GetObjectData
 - uid: Libplanet.Net.BoundPeer.op_Equality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)
   name: Equality(BoundPeer, BoundPeer)
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_op_Equality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_
@@ -14011,12 +14020,6 @@ references:
   commentId: T:Libplanet.Net.Consensus.InvalidConsensusMessageException
   fullName: Libplanet.Net.Consensus.InvalidConsensusMessageException
   nameWithType: InvalidConsensusMessageException
-- uid: Libplanet.Net.Consensus.InvalidConsensusMessageException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidConsensusMessageException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidConsensusMessageException.html#Libplanet_Net_Consensus_InvalidConsensusMessageException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidConsensusMessageException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidConsensusMessageException.InvalidConsensusMessageException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidConsensusMessageException.InvalidConsensusMessageException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Consensus.InvalidConsensusMessageException.#ctor(System.String,Libplanet.Net.Messages.MessageContent,Exception)
   name: InvalidConsensusMessageException(String, MessageContent, Exception)
   href: api/Libplanet.Net.Consensus.InvalidConsensusMessageException.html#Libplanet_Net_Consensus_InvalidConsensusMessageException__ctor_System_String_Libplanet_Net_Messages_MessageContent_Exception_
@@ -14042,12 +14045,6 @@ references:
   commentId: T:Libplanet.Net.Consensus.InvalidHeightIncreasingException
   fullName: Libplanet.Net.Consensus.InvalidHeightIncreasingException
   nameWithType: InvalidHeightIncreasingException
-- uid: Libplanet.Net.Consensus.InvalidHeightIncreasingException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidHeightIncreasingException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidHeightIncreasingException.html#Libplanet_Net_Consensus_InvalidHeightIncreasingException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidHeightIncreasingException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidHeightIncreasingException.InvalidHeightIncreasingException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidHeightIncreasingException.InvalidHeightIncreasingException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Consensus.InvalidHeightIncreasingException.#ctor(System.String)
   name: InvalidHeightIncreasingException(String)
   href: api/Libplanet.Net.Consensus.InvalidHeightIncreasingException.html#Libplanet_Net_Consensus_InvalidHeightIncreasingException__ctor_System_String_
@@ -14067,12 +14064,6 @@ references:
   commentId: T:Libplanet.Net.Consensus.InvalidMaj23Exception
   fullName: Libplanet.Net.Consensus.InvalidMaj23Exception
   nameWithType: InvalidMaj23Exception
-- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidMaj23Exception(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.InvalidMaj23Exception(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMaj23Exception.InvalidMaj23Exception(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Consensus.InvalidMaj23Exception.#ctor(System.String,Libplanet.Consensus.Maj23,Exception)
   name: InvalidMaj23Exception(String, Maj23, Exception)
   href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception__ctor_System_String_Libplanet_Consensus_Maj23_Exception_
@@ -14092,19 +14083,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.InvalidMaj23Exception
   nameWithType: InvalidMaj23Exception.InvalidMaj23Exception
-- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMaj23Exception.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_GetObjectData_
-  commentId: Overload:Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Consensus.InvalidMaj23Exception.GetObjectData
-  nameWithType: InvalidMaj23Exception.GetObjectData
 - uid: Libplanet.Net.Consensus.InvalidMaj23Exception.Maj23
   name: Maj23
   href: api/Libplanet.Net.Consensus.InvalidMaj23Exception.html#Libplanet_Net_Consensus_InvalidMaj23Exception_Maj23
@@ -14124,12 +14102,6 @@ references:
   commentId: T:Libplanet.Net.Consensus.InvalidProposalException
   fullName: Libplanet.Net.Consensus.InvalidProposalException
   nameWithType: InvalidProposalException
-- uid: Libplanet.Net.Consensus.InvalidProposalException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidProposalException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidProposalException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidProposalException.InvalidProposalException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidProposalException.InvalidProposalException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Consensus.InvalidProposalException.#ctor(System.String,Libplanet.Consensus.Proposal,Exception)
   name: InvalidProposalException(String, Proposal, Exception)
   href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException__ctor_System_String_Libplanet_Consensus_Proposal_Exception_
@@ -14149,19 +14121,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.InvalidProposalException.InvalidProposalException
   nameWithType: InvalidProposalException.InvalidProposalException
-- uid: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidProposalException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidProposalException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Consensus.InvalidProposalException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Consensus.InvalidProposalException.GetObjectData
-  nameWithType: InvalidProposalException.GetObjectData
 - uid: Libplanet.Net.Consensus.InvalidProposalException.Proposal
   name: Proposal
   href: api/Libplanet.Net.Consensus.InvalidProposalException.html#Libplanet_Net_Consensus_InvalidProposalException_Proposal
@@ -14181,12 +14140,6 @@ references:
   commentId: T:Libplanet.Net.Consensus.InvalidVoteException
   fullName: Libplanet.Net.Consensus.InvalidVoteException
   nameWithType: InvalidVoteException
-- uid: Libplanet.Net.Consensus.InvalidVoteException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidVoteException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidVoteException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidVoteException.InvalidVoteException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidVoteException.InvalidVoteException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Consensus.InvalidVoteException.#ctor(System.String,Vote,Exception)
   name: InvalidVoteException(String, Vote, Exception)
   href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException__ctor_System_String_Vote_Exception_
@@ -14206,19 +14159,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Consensus.InvalidVoteException.InvalidVoteException
   nameWithType: InvalidVoteException.InvalidVoteException
-- uid: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Consensus.InvalidVoteException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidVoteException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Consensus.InvalidVoteException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Consensus.InvalidVoteException.GetObjectData
-  nameWithType: InvalidVoteException.GetObjectData
 - uid: Libplanet.Net.Consensus.InvalidVoteException.Vote
   name: Vote
   href: api/Libplanet.Net.Consensus.InvalidVoteException.html#Libplanet_Net_Consensus_InvalidVoteException_Vote
@@ -14810,32 +14750,6 @@ references:
   commentId: T:Libplanet.Net.InvalidMessageContentException
   fullName: Libplanet.Net.InvalidMessageContentException
   nameWithType: InvalidMessageContentException
-- uid: Libplanet.Net.InvalidMessageContentException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidMessageContentException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageContentException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageContentException.InvalidMessageContentException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageContentException.InvalidMessageContentException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageContentException.#ctor*
-  name: InvalidMessageContentException
-  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException__ctor_
-  commentId: Overload:Libplanet.Net.InvalidMessageContentException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageContentException.InvalidMessageContentException
-  nameWithType: InvalidMessageContentException.InvalidMessageContentException
-- uid: Libplanet.Net.InvalidMessageContentException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidMessageContentException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidMessageContentException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageContentException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.InvalidMessageContentException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.InvalidMessageContentException.html#Libplanet_Net_InvalidMessageContentException_GetObjectData_
-  commentId: Overload:Libplanet.Net.InvalidMessageContentException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidMessageContentException.GetObjectData
-  nameWithType: InvalidMessageContentException.GetObjectData
 - uid: Libplanet.Net.InvalidStateTargetException
   name: InvalidStateTargetException
   href: api/Libplanet.Net.InvalidStateTargetException.html
@@ -14848,12 +14762,6 @@ references:
   commentId: M:Libplanet.Net.InvalidStateTargetException.#ctor
   fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException()
   nameWithType: InvalidStateTargetException.InvalidStateTargetException()
-- uid: Libplanet.Net.InvalidStateTargetException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidStateTargetException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.InvalidStateTargetException.html#Libplanet_Net_InvalidStateTargetException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.InvalidStateTargetException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.InvalidStateTargetException.InvalidStateTargetException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidStateTargetException.InvalidStateTargetException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.InvalidStateTargetException.#ctor(System.String,Exception)
   name: InvalidStateTargetException(String, Exception)
   href: api/Libplanet.Net.InvalidStateTargetException.html#Libplanet_Net_InvalidStateTargetException__ctor_System_String_Exception_
@@ -16167,12 +16075,6 @@ references:
   commentId: T:Libplanet.Net.Messages.MessageId
   fullName: Libplanet.Net.Messages.MessageId
   nameWithType: MessageId
-- uid: Libplanet.Net.Messages.MessageId.#ctor(SerializationInfo,StreamingContext)
-  name: MessageId(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Messages.MessageId.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Messages.MessageId.MessageId(SerializationInfo, StreamingContext)
-  nameWithType: MessageId.MessageId(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Messages.MessageId.#ctor(System.Byte[])
   name: MessageId(Byte[])
   href: api/Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId__ctor_System_Byte___
@@ -16272,19 +16174,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Messages.MessageId.GetHashCode
   nameWithType: MessageId.GetHashCode
-- uid: Libplanet.Net.Messages.MessageId.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Messages.MessageId.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Messages.MessageId.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: MessageId.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Messages.MessageId.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_GetObjectData_
-  commentId: Overload:Libplanet.Net.Messages.MessageId.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Messages.MessageId.GetObjectData
-  nameWithType: MessageId.GetObjectData
 - uid: Libplanet.Net.Messages.MessageId.op_Equality(Libplanet.Net.Messages.MessageId,Libplanet.Net.Messages.MessageId)
   name: Equality(MessageId, MessageId)
   href: api/Libplanet.Net.Messages.MessageId.html#Libplanet_Net_Messages_MessageId_op_Equality_Libplanet_Net_Messages_MessageId_Libplanet_Net_Messages_MessageId_
@@ -16743,12 +16632,6 @@ references:
   commentId: M:Libplanet.Net.NoSwarmContextException.#ctor
   fullName: Libplanet.Net.NoSwarmContextException.NoSwarmContextException()
   nameWithType: NoSwarmContextException.NoSwarmContextException()
-- uid: Libplanet.Net.NoSwarmContextException.#ctor(SerializationInfo,StreamingContext)
-  name: NoSwarmContextException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.NoSwarmContextException.html#Libplanet_Net_NoSwarmContextException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.NoSwarmContextException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.NoSwarmContextException.NoSwarmContextException(SerializationInfo, StreamingContext)
-  nameWithType: NoSwarmContextException.NoSwarmContextException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.NoSwarmContextException.#ctor(System.String,Exception)
   name: NoSwarmContextException(String, Exception)
   href: api/Libplanet.Net.NoSwarmContextException.html#Libplanet_Net_NoSwarmContextException__ctor_System_String_Exception_
@@ -17443,12 +17326,6 @@ references:
   commentId: M:Libplanet.Net.PeerNotFoundException.#ctor
   fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException()
   nameWithType: PeerNotFoundException.PeerNotFoundException()
-- uid: Libplanet.Net.PeerNotFoundException.#ctor(SerializationInfo,StreamingContext)
-  name: PeerNotFoundException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.PeerNotFoundException.html#Libplanet_Net_PeerNotFoundException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.PeerNotFoundException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException(SerializationInfo, StreamingContext)
-  nameWithType: PeerNotFoundException.PeerNotFoundException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.PeerNotFoundException.#ctor(System.String,Exception)
   name: PeerNotFoundException(String, Exception)
   href: api/Libplanet.Net.PeerNotFoundException.html#Libplanet_Net_PeerNotFoundException__ctor_System_String_Exception_
@@ -17902,12 +17779,6 @@ references:
   commentId: M:Libplanet.Net.Protocols.PeerDiscoveryException.#ctor
   fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException()
   nameWithType: PeerDiscoveryException.PeerDiscoveryException()
-- uid: Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(SerializationInfo,StreamingContext)
-  name: PeerDiscoveryException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html#Libplanet_Net_Protocols_PeerDiscoveryException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException(SerializationInfo, StreamingContext)
-  nameWithType: PeerDiscoveryException.PeerDiscoveryException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(System.String,Exception)
   name: PeerDiscoveryException(String, Exception)
   href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html#Libplanet_Net_Protocols_PeerDiscoveryException__ctor_System_String_Exception_
@@ -17939,12 +17810,6 @@ references:
   commentId: M:Libplanet.Net.Protocols.PingTimeoutException.#ctor(Libplanet.Net.BoundPeer)
   fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException(Libplanet.Net.BoundPeer)
   nameWithType: PingTimeoutException.PingTimeoutException(BoundPeer)
-- uid: Libplanet.Net.Protocols.PingTimeoutException.#ctor(SerializationInfo,StreamingContext)
-  name: PingTimeoutException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Protocols.PingTimeoutException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException(SerializationInfo, StreamingContext)
-  nameWithType: PingTimeoutException.PingTimeoutException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Protocols.PingTimeoutException.#ctor(System.String,Libplanet.Net.BoundPeer,Exception)
   name: PingTimeoutException(String, BoundPeer, Exception)
   href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException__ctor_System_String_Libplanet_Net_BoundPeer_Exception_
@@ -17964,19 +17829,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.PingTimeoutException.PingTimeoutException
   nameWithType: PingTimeoutException.PingTimeoutException
-- uid: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Protocols.PingTimeoutException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: PingTimeoutException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Protocols.PingTimeoutException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Protocols.PingTimeoutException.GetObjectData
-  nameWithType: PingTimeoutException.GetObjectData
 - uid: Libplanet.Net.Protocols.PingTimeoutException.Target
   name: Target
   href: api/Libplanet.Net.Protocols.PingTimeoutException.html#Libplanet_Net_Protocols_PingTimeoutException_Target
@@ -18665,12 +18517,6 @@ references:
   commentId: M:Libplanet.Net.SwarmException.#ctor
   fullName: Libplanet.Net.SwarmException.SwarmException()
   nameWithType: SwarmException.SwarmException()
-- uid: Libplanet.Net.SwarmException.#ctor(SerializationInfo,StreamingContext)
-  name: SwarmException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.SwarmException.html#Libplanet_Net_SwarmException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.SwarmException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.SwarmException.SwarmException(SerializationInfo, StreamingContext)
-  nameWithType: SwarmException.SwarmException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.SwarmException.#ctor(System.String,Exception)
   name: SwarmException(String, Exception)
   href: api/Libplanet.Net.SwarmException.html#Libplanet_Net_SwarmException__ctor_System_String_Exception_
@@ -18724,12 +18570,6 @@ references:
   commentId: T:Libplanet.Net.Transports.CommunicationFailException
   fullName: Libplanet.Net.Transports.CommunicationFailException
   nameWithType: CommunicationFailException
-- uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(SerializationInfo,StreamingContext)
-  name: CommunicationFailException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.CommunicationFailException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException(SerializationInfo, StreamingContext)
-  nameWithType: CommunicationFailException.CommunicationFailException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Transports.CommunicationFailException.#ctor(System.String,Libplanet.Net.Messages.MessageContent.MessageType,Libplanet.Net.BoundPeer,Exception)
   name: CommunicationFailException(String, MessageContent.MessageType, BoundPeer, Exception)
   href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException__ctor_System_String_Libplanet_Net_Messages_MessageContent_MessageType_Libplanet_Net_BoundPeer_Exception_
@@ -18749,19 +18589,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.CommunicationFailException.CommunicationFailException
   nameWithType: CommunicationFailException.CommunicationFailException
-- uid: Libplanet.Net.Transports.CommunicationFailException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.CommunicationFailException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.CommunicationFailException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: CommunicationFailException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.CommunicationFailException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.CommunicationFailException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.CommunicationFailException.GetObjectData
-  nameWithType: CommunicationFailException.GetObjectData
 - uid: Libplanet.Net.Transports.CommunicationFailException.MessageType
   name: MessageType
   href: api/Libplanet.Net.Transports.CommunicationFailException.html#Libplanet_Net_Transports_CommunicationFailException_MessageType
@@ -18794,12 +18621,6 @@ references:
   commentId: T:Libplanet.Net.Transports.DifferentAppProtocolVersionException
   fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException
   nameWithType: DifferentAppProtocolVersionException
-- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor(SerializationInfo,StreamingContext)
-  name: DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
-  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion,System.Boolean)
   name: DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion, Boolean)
   href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException__ctor_System_String_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_System_Boolean_
@@ -18839,19 +18660,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.ExpectedApv
   nameWithType: DifferentAppProtocolVersionException.ExpectedApv
-- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: DifferentAppProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.DifferentAppProtocolVersionException.GetObjectData
-  nameWithType: DifferentAppProtocolVersionException.GetObjectData
 - uid: Libplanet.Net.Transports.DifferentAppProtocolVersionException.Trusted
   name: Trusted
   href: api/Libplanet.Net.Transports.DifferentAppProtocolVersionException.html#Libplanet_Net_Transports_DifferentAppProtocolVersionException_Trusted
@@ -18871,19 +18679,6 @@ references:
   commentId: T:Libplanet.Net.Transports.InvalidCredentialException
   fullName: Libplanet.Net.Transports.InvalidCredentialException
   nameWithType: InvalidCredentialException
-- uid: Libplanet.Net.Transports.InvalidCredentialException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidCredentialException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidCredentialException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidCredentialException.InvalidCredentialException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidCredentialException.InvalidCredentialException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidCredentialException.#ctor*
-  name: InvalidCredentialException
-  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException__ctor_
-  commentId: Overload:Libplanet.Net.Transports.InvalidCredentialException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidCredentialException.InvalidCredentialException
-  nameWithType: InvalidCredentialException.InvalidCredentialException
 - uid: Libplanet.Net.Transports.InvalidCredentialException.Actual
   name: Actual
   href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_Actual
@@ -18910,51 +18705,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Transports.InvalidCredentialException.Expected
   nameWithType: InvalidCredentialException.Expected
-- uid: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidCredentialException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidCredentialException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.InvalidCredentialException.html#Libplanet_Net_Transports_InvalidCredentialException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.InvalidCredentialException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidCredentialException.GetObjectData
-  nameWithType: InvalidCredentialException.GetObjectData
 - uid: Libplanet.Net.Transports.InvalidMessageSignatureException
   name: InvalidMessageSignatureException
   href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html
   commentId: T:Libplanet.Net.Transports.InvalidMessageSignatureException
   fullName: Libplanet.Net.Transports.InvalidMessageSignatureException
   nameWithType: InvalidMessageSignatureException
-- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidMessageSignatureException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.InvalidMessageSignatureException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageSignatureException.InvalidMessageSignatureException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor*
-  name: InvalidMessageSignatureException
-  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException__ctor_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.InvalidMessageSignatureException
-  nameWithType: InvalidMessageSignatureException.InvalidMessageSignatureException
-- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageSignatureException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMessageSignatureException.GetObjectData
-  nameWithType: InvalidMessageSignatureException.GetObjectData
 - uid: Libplanet.Net.Transports.InvalidMessageSignatureException.MessageToVerify
   name: MessageToVerify
   href: api/Libplanet.Net.Transports.InvalidMessageSignatureException.html#Libplanet_Net_Transports_InvalidMessageSignatureException_MessageToVerify
@@ -19013,32 +18769,6 @@ references:
   commentId: T:Libplanet.Net.Transports.InvalidMessageTimestampException
   fullName: Libplanet.Net.Transports.InvalidMessageTimestampException
   nameWithType: InvalidMessageTimestampException
-- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidMessageTimestampException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.InvalidMessageTimestampException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageTimestampException.InvalidMessageTimestampException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor*
-  name: InvalidMessageTimestampException
-  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException__ctor_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMessageTimestampException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.InvalidMessageTimestampException
-  nameWithType: InvalidMessageTimestampException.InvalidMessageTimestampException
-- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidMessageTimestampException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.InvalidMessageTimestampException.html#Libplanet_Net_Transports_InvalidMessageTimestampException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.InvalidMessageTimestampException.GetObjectData
-  nameWithType: InvalidMessageTimestampException.GetObjectData
 - uid: Libplanet.Net.Transports.ITransport
   name: ITransport
   href: api/Libplanet.Net.Transports.ITransport.html
@@ -19460,32 +19190,6 @@ references:
   commentId: T:Libplanet.Net.Transports.SendMessageFailException
   fullName: Libplanet.Net.Transports.SendMessageFailException
   nameWithType: SendMessageFailException
-- uid: Libplanet.Net.Transports.SendMessageFailException.#ctor(SerializationInfo,StreamingContext)
-  name: SendMessageFailException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.SendMessageFailException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.SendMessageFailException.SendMessageFailException(SerializationInfo, StreamingContext)
-  nameWithType: SendMessageFailException.SendMessageFailException(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.SendMessageFailException.#ctor*
-  name: SendMessageFailException
-  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException__ctor_
-  commentId: Overload:Libplanet.Net.Transports.SendMessageFailException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.SendMessageFailException.SendMessageFailException
-  nameWithType: SendMessageFailException.SendMessageFailException
-- uid: Libplanet.Net.Transports.SendMessageFailException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.SendMessageFailException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.SendMessageFailException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: SendMessageFailException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Net.Transports.SendMessageFailException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException_GetObjectData_
-  commentId: Overload:Libplanet.Net.Transports.SendMessageFailException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Net.Transports.SendMessageFailException.GetObjectData
-  nameWithType: SendMessageFailException.GetObjectData
 - uid: Libplanet.Net.Transports.SendMessageFailException.Peer
   name: Peer
   href: api/Libplanet.Net.Transports.SendMessageFailException.html#Libplanet_Net_Transports_SendMessageFailException_Peer
@@ -19511,12 +19215,6 @@ references:
   commentId: M:Libplanet.Net.Transports.TransportException.#ctor
   fullName: Libplanet.Net.Transports.TransportException.TransportException()
   nameWithType: TransportException.TransportException()
-- uid: Libplanet.Net.Transports.TransportException.#ctor(SerializationInfo,StreamingContext)
-  name: TransportException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Net.Transports.TransportException.html#Libplanet_Net_Transports_TransportException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Net.Transports.TransportException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Net.Transports.TransportException.TransportException(SerializationInfo, StreamingContext)
-  nameWithType: TransportException.TransportException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Net.Transports.TransportException.#ctor(System.String,Exception)
   name: TransportException(String, Exception)
   href: api/Libplanet.Net.Transports.TransportException.html#Libplanet_Net_Transports_TransportException__ctor_System_String_Exception_
@@ -24557,12 +24255,6 @@ references:
   commentId: T:Libplanet.Store.Trie.InvalidTrieNodeException
   fullName: Libplanet.Store.Trie.InvalidTrieNodeException
   nameWithType: InvalidTrieNodeException
-- uid: Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidTrieNodeException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Store.Trie.InvalidTrieNodeException.html#Libplanet_Store_Trie_InvalidTrieNodeException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Store.Trie.InvalidTrieNodeException.InvalidTrieNodeException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidTrieNodeException.InvalidTrieNodeException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Store.Trie.InvalidTrieNodeException.#ctor(System.String,Exception)
   name: InvalidTrieNodeException(String, Exception)
   href: api/Libplanet.Store.Trie.InvalidTrieNodeException.html#Libplanet_Store_Trie_InvalidTrieNodeException__ctor_System_String_Exception_
@@ -27214,11 +26906,11 @@ references:
   commentId: T:Libplanet.Stun.Attributes.XorMappedAddress
   fullName: Libplanet.Stun.Attributes.XorMappedAddress
   nameWithType: XorMappedAddress
-- uid: Libplanet.Stun.Attributes.XorMappedAddress.#ctor(System.Net.IPEndPoint)
+- uid: Libplanet.Stun.Attributes.XorMappedAddress.#ctor(IPEndPoint)
   name: XorMappedAddress(IPEndPoint)
-  href: api/Libplanet.Stun.Attributes.XorMappedAddress.html#Libplanet_Stun_Attributes_XorMappedAddress__ctor_System_Net_IPEndPoint_
-  commentId: M:Libplanet.Stun.Attributes.XorMappedAddress.#ctor(System.Net.IPEndPoint)
-  fullName: Libplanet.Stun.Attributes.XorMappedAddress.XorMappedAddress(System.Net.IPEndPoint)
+  href: api/Libplanet.Stun.Attributes.XorMappedAddress.html#Libplanet_Stun_Attributes_XorMappedAddress__ctor_IPEndPoint_
+  commentId: M:Libplanet.Stun.Attributes.XorMappedAddress.#ctor(IPEndPoint)
+  fullName: Libplanet.Stun.Attributes.XorMappedAddress.XorMappedAddress(IPEndPoint)
   nameWithType: XorMappedAddress.XorMappedAddress(IPEndPoint)
 - uid: Libplanet.Stun.Attributes.XorMappedAddress.#ctor*
   name: XorMappedAddress
@@ -27291,11 +26983,11 @@ references:
   commentId: T:Libplanet.Stun.Attributes.XorPeerAddress
   fullName: Libplanet.Stun.Attributes.XorPeerAddress
   nameWithType: XorPeerAddress
-- uid: Libplanet.Stun.Attributes.XorPeerAddress.#ctor(System.Net.IPEndPoint)
+- uid: Libplanet.Stun.Attributes.XorPeerAddress.#ctor(IPEndPoint)
   name: XorPeerAddress(IPEndPoint)
-  href: api/Libplanet.Stun.Attributes.XorPeerAddress.html#Libplanet_Stun_Attributes_XorPeerAddress__ctor_System_Net_IPEndPoint_
-  commentId: M:Libplanet.Stun.Attributes.XorPeerAddress.#ctor(System.Net.IPEndPoint)
-  fullName: Libplanet.Stun.Attributes.XorPeerAddress.XorPeerAddress(System.Net.IPEndPoint)
+  href: api/Libplanet.Stun.Attributes.XorPeerAddress.html#Libplanet_Stun_Attributes_XorPeerAddress__ctor_IPEndPoint_
+  commentId: M:Libplanet.Stun.Attributes.XorPeerAddress.#ctor(IPEndPoint)
+  fullName: Libplanet.Stun.Attributes.XorPeerAddress.XorPeerAddress(IPEndPoint)
   nameWithType: XorPeerAddress.XorPeerAddress(IPEndPoint)
 - uid: Libplanet.Stun.Attributes.XorPeerAddress.#ctor*
   name: XorPeerAddress
@@ -27368,11 +27060,11 @@ references:
   commentId: T:Libplanet.Stun.Attributes.XorRelayedAddress
   fullName: Libplanet.Stun.Attributes.XorRelayedAddress
   nameWithType: XorRelayedAddress
-- uid: Libplanet.Stun.Attributes.XorRelayedAddress.#ctor(System.Net.IPEndPoint)
+- uid: Libplanet.Stun.Attributes.XorRelayedAddress.#ctor(IPEndPoint)
   name: XorRelayedAddress(IPEndPoint)
-  href: api/Libplanet.Stun.Attributes.XorRelayedAddress.html#Libplanet_Stun_Attributes_XorRelayedAddress__ctor_System_Net_IPEndPoint_
-  commentId: M:Libplanet.Stun.Attributes.XorRelayedAddress.#ctor(System.Net.IPEndPoint)
-  fullName: Libplanet.Stun.Attributes.XorRelayedAddress.XorRelayedAddress(System.Net.IPEndPoint)
+  href: api/Libplanet.Stun.Attributes.XorRelayedAddress.html#Libplanet_Stun_Attributes_XorRelayedAddress__ctor_IPEndPoint_
+  commentId: M:Libplanet.Stun.Attributes.XorRelayedAddress.#ctor(IPEndPoint)
+  fullName: Libplanet.Stun.Attributes.XorRelayedAddress.XorRelayedAddress(IPEndPoint)
   nameWithType: XorRelayedAddress.XorRelayedAddress(IPEndPoint)
 - uid: Libplanet.Stun.Attributes.XorRelayedAddress.#ctor*
   name: XorRelayedAddress
@@ -27445,13 +27137,13 @@ references:
   commentId: T:Libplanet.Stun.Crc32
   fullName: Libplanet.Stun.Crc32
   nameWithType: Crc32
-- uid: Libplanet.Stun.Crc32.Calculate(System.Collections.Generic.IEnumerable{System.Byte})
+- uid: Libplanet.Stun.Crc32.Calculate(IEnumerable{System.Byte})
   name: Calculate(IEnumerable<Byte>)
-  href: api/Libplanet.Stun.Crc32.html#Libplanet_Stun_Crc32_Calculate_System_Collections_Generic_IEnumerable_System_Byte__
-  commentId: M:Libplanet.Stun.Crc32.Calculate(System.Collections.Generic.IEnumerable{System.Byte})
+  href: api/Libplanet.Stun.Crc32.html#Libplanet_Stun_Crc32_Calculate_IEnumerable_System_Byte__
+  commentId: M:Libplanet.Stun.Crc32.Calculate(IEnumerable{System.Byte})
   name.vb: Calculate(IEnumerable(Of Byte))
-  fullName: Libplanet.Stun.Crc32.Calculate(System.Collections.Generic.IEnumerable<System.Byte>)
-  fullName.vb: Libplanet.Stun.Crc32.Calculate(System.Collections.Generic.IEnumerable(Of System.Byte))
+  fullName: Libplanet.Stun.Crc32.Calculate(IEnumerable<System.Byte>)
+  fullName.vb: Libplanet.Stun.Crc32.Calculate(IEnumerable(Of System.Byte))
   nameWithType: Crc32.Calculate(IEnumerable<Byte>)
   nameWithType.vb: Crc32.Calculate(IEnumerable(Of Byte))
 - uid: Libplanet.Stun.Crc32.Calculate*
@@ -27984,11 +27676,11 @@ references:
   commentId: T:Libplanet.Stun.Messages.ConnectRequest
   fullName: Libplanet.Stun.Messages.ConnectRequest
   nameWithType: ConnectRequest
-- uid: Libplanet.Stun.Messages.ConnectRequest.#ctor(System.Net.IPEndPoint)
+- uid: Libplanet.Stun.Messages.ConnectRequest.#ctor(IPEndPoint)
   name: ConnectRequest(IPEndPoint)
-  href: api/Libplanet.Stun.Messages.ConnectRequest.html#Libplanet_Stun_Messages_ConnectRequest__ctor_System_Net_IPEndPoint_
-  commentId: M:Libplanet.Stun.Messages.ConnectRequest.#ctor(System.Net.IPEndPoint)
-  fullName: Libplanet.Stun.Messages.ConnectRequest.ConnectRequest(System.Net.IPEndPoint)
+  href: api/Libplanet.Stun.Messages.ConnectRequest.html#Libplanet_Stun_Messages_ConnectRequest__ctor_IPEndPoint_
+  commentId: M:Libplanet.Stun.Messages.ConnectRequest.#ctor(IPEndPoint)
+  fullName: Libplanet.Stun.Messages.ConnectRequest.ConnectRequest(IPEndPoint)
   nameWithType: ConnectRequest.ConnectRequest(IPEndPoint)
 - uid: Libplanet.Stun.Messages.ConnectRequest.#ctor*
   name: ConnectRequest
@@ -28093,11 +27785,11 @@ references:
   commentId: T:Libplanet.Stun.Messages.CreatePermissionRequest
   fullName: Libplanet.Stun.Messages.CreatePermissionRequest
   nameWithType: CreatePermissionRequest
-- uid: Libplanet.Stun.Messages.CreatePermissionRequest.#ctor(System.Net.IPEndPoint)
+- uid: Libplanet.Stun.Messages.CreatePermissionRequest.#ctor(IPEndPoint)
   name: CreatePermissionRequest(IPEndPoint)
-  href: api/Libplanet.Stun.Messages.CreatePermissionRequest.html#Libplanet_Stun_Messages_CreatePermissionRequest__ctor_System_Net_IPEndPoint_
-  commentId: M:Libplanet.Stun.Messages.CreatePermissionRequest.#ctor(System.Net.IPEndPoint)
-  fullName: Libplanet.Stun.Messages.CreatePermissionRequest.CreatePermissionRequest(System.Net.IPEndPoint)
+  href: api/Libplanet.Stun.Messages.CreatePermissionRequest.html#Libplanet_Stun_Messages_CreatePermissionRequest__ctor_IPEndPoint_
+  commentId: M:Libplanet.Stun.Messages.CreatePermissionRequest.#ctor(IPEndPoint)
+  fullName: Libplanet.Stun.Messages.CreatePermissionRequest.CreatePermissionRequest(IPEndPoint)
   nameWithType: CreatePermissionRequest.CreatePermissionRequest(IPEndPoint)
 - uid: Libplanet.Stun.Messages.CreatePermissionRequest.#ctor*
   name: CreatePermissionRequest
@@ -28495,11 +28187,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.Messages.StunMessage.Method
   nameWithType: StunMessage.Method
-- uid: Libplanet.Stun.Messages.StunMessage.ParseAsync(System.IO.Stream,System.Threading.CancellationToken)
+- uid: Libplanet.Stun.Messages.StunMessage.ParseAsync(Stream,CancellationToken)
   name: ParseAsync(Stream, CancellationToken)
-  href: api/Libplanet.Stun.Messages.StunMessage.html#Libplanet_Stun_Messages_StunMessage_ParseAsync_System_IO_Stream_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.Messages.StunMessage.ParseAsync(System.IO.Stream,System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.Messages.StunMessage.ParseAsync(System.IO.Stream, System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.Messages.StunMessage.html#Libplanet_Stun_Messages_StunMessage_ParseAsync_Stream_CancellationToken_
+  commentId: M:Libplanet.Stun.Messages.StunMessage.ParseAsync(Stream,CancellationToken)
+  fullName: Libplanet.Stun.Messages.StunMessage.ParseAsync(Stream, CancellationToken)
   nameWithType: StunMessage.ParseAsync(Stream, CancellationToken)
 - uid: Libplanet.Stun.Messages.StunMessage.ParseAsync*
   name: ParseAsync
@@ -28527,11 +28219,11 @@ references:
   commentId: T:Libplanet.Stun.TurnClient
   fullName: Libplanet.Stun.TurnClient
   nameWithType: TurnClient
-- uid: Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(CancellationToken)
   name: AcceptRelayedStreamAsync(CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_AcceptRelayedStreamAsync_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync(CancellationToken)
   nameWithType: TurnClient.AcceptRelayedStreamAsync(CancellationToken)
 - uid: Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync*
   name: AcceptRelayedStreamAsync
@@ -28540,11 +28232,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.AcceptRelayedStreamAsync
   nameWithType: TurnClient.AcceptRelayedStreamAsync
-- uid: Libplanet.Stun.TurnClient.AllocateRequestAsync(System.TimeSpan,System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.AllocateRequestAsync(TimeSpan,CancellationToken)
   name: AllocateRequestAsync(TimeSpan, CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_AllocateRequestAsync_System_TimeSpan_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.AllocateRequestAsync(System.TimeSpan,System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.AllocateRequestAsync(System.TimeSpan, System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_AllocateRequestAsync_TimeSpan_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.AllocateRequestAsync(TimeSpan,CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.AllocateRequestAsync(TimeSpan, CancellationToken)
   nameWithType: TurnClient.AllocateRequestAsync(TimeSpan, CancellationToken)
 - uid: Libplanet.Stun.TurnClient.AllocateRequestAsync*
   name: AllocateRequestAsync
@@ -28566,13 +28258,13 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.BehindNAT
   nameWithType: TurnClient.BehindNAT
-- uid: Libplanet.Stun.TurnClient.Create(System.Collections.Generic.IEnumerable{Libplanet.Stun.IIceServer},System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.Create(IEnumerable{Libplanet.Stun.IIceServer},CancellationToken)
   name: Create(IEnumerable<IIceServer>, CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_Create_System_Collections_Generic_IEnumerable_Libplanet_Stun_IIceServer__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.Create(System.Collections.Generic.IEnumerable{Libplanet.Stun.IIceServer},System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_Create_IEnumerable_Libplanet_Stun_IIceServer__CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.Create(IEnumerable{Libplanet.Stun.IIceServer},CancellationToken)
   name.vb: Create(IEnumerable(Of IIceServer), CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.Create(System.Collections.Generic.IEnumerable<Libplanet.Stun.IIceServer>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Stun.TurnClient.Create(System.Collections.Generic.IEnumerable(Of Libplanet.Stun.IIceServer), System.Threading.CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.Create(IEnumerable<Libplanet.Stun.IIceServer>, CancellationToken)
+  fullName.vb: Libplanet.Stun.TurnClient.Create(IEnumerable(Of Libplanet.Stun.IIceServer), CancellationToken)
   nameWithType: TurnClient.Create(IEnumerable<IIceServer>, CancellationToken)
   nameWithType.vb: TurnClient.Create(IEnumerable(Of IIceServer), CancellationToken)
 - uid: Libplanet.Stun.TurnClient.Create*
@@ -28582,11 +28274,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.Create
   nameWithType: TurnClient.Create
-- uid: Libplanet.Stun.TurnClient.CreatePermissionAsync(System.Net.IPEndPoint,System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.CreatePermissionAsync(IPEndPoint,CancellationToken)
   name: CreatePermissionAsync(IPEndPoint, CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_CreatePermissionAsync_System_Net_IPEndPoint_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.CreatePermissionAsync(System.Net.IPEndPoint,System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.CreatePermissionAsync(System.Net.IPEndPoint, System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_CreatePermissionAsync_IPEndPoint_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.CreatePermissionAsync(IPEndPoint,CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.CreatePermissionAsync(IPEndPoint, CancellationToken)
   nameWithType: TurnClient.CreatePermissionAsync(IPEndPoint, CancellationToken)
 - uid: Libplanet.Stun.TurnClient.CreatePermissionAsync*
   name: CreatePermissionAsync
@@ -28621,11 +28313,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.EndPoint
   nameWithType: TurnClient.EndPoint
-- uid: Libplanet.Stun.TurnClient.GetMappedAddressAsync(System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.GetMappedAddressAsync(CancellationToken)
   name: GetMappedAddressAsync(CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_GetMappedAddressAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.GetMappedAddressAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.GetMappedAddressAsync(System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_GetMappedAddressAsync_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.GetMappedAddressAsync(CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.GetMappedAddressAsync(CancellationToken)
   nameWithType: TurnClient.GetMappedAddressAsync(CancellationToken)
 - uid: Libplanet.Stun.TurnClient.GetMappedAddressAsync*
   name: GetMappedAddressAsync
@@ -28634,11 +28326,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.GetMappedAddressAsync
   nameWithType: TurnClient.GetMappedAddressAsync
-- uid: Libplanet.Stun.TurnClient.InitializeTurnAsync(System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.InitializeTurnAsync(CancellationToken)
   name: InitializeTurnAsync(CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_InitializeTurnAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.InitializeTurnAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.InitializeTurnAsync(System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_InitializeTurnAsync_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.InitializeTurnAsync(CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.InitializeTurnAsync(CancellationToken)
   nameWithType: TurnClient.InitializeTurnAsync(CancellationToken)
 - uid: Libplanet.Stun.TurnClient.InitializeTurnAsync*
   name: InitializeTurnAsync
@@ -28647,11 +28339,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.InitializeTurnAsync
   nameWithType: TurnClient.InitializeTurnAsync
-- uid: Libplanet.Stun.TurnClient.IsBehindNAT(System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.IsBehindNAT(CancellationToken)
   name: IsBehindNAT(CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_IsBehindNAT_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.IsBehindNAT(System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.IsBehindNAT(System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_IsBehindNAT_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.IsBehindNAT(CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.IsBehindNAT(CancellationToken)
   nameWithType: TurnClient.IsBehindNAT(CancellationToken)
 - uid: Libplanet.Stun.TurnClient.IsBehindNAT*
   name: IsBehindNAT
@@ -28712,11 +28404,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.Realm
   nameWithType: TurnClient.Realm
-- uid: Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32,System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32,CancellationToken)
   name: ReconnectTurn(Int32, CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_ReconnectTurn_System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32,System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32, System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_ReconnectTurn_System_Int32_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32,CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.ReconnectTurn(System.Int32, CancellationToken)
   nameWithType: TurnClient.ReconnectTurn(Int32, CancellationToken)
 - uid: Libplanet.Stun.TurnClient.ReconnectTurn*
   name: ReconnectTurn
@@ -28725,11 +28417,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.ReconnectTurn
   nameWithType: TurnClient.ReconnectTurn
-- uid: Libplanet.Stun.TurnClient.RefreshAllocationAsync(System.TimeSpan,System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.RefreshAllocationAsync(TimeSpan,CancellationToken)
   name: RefreshAllocationAsync(TimeSpan, CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_RefreshAllocationAsync_System_TimeSpan_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.RefreshAllocationAsync(System.TimeSpan,System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.RefreshAllocationAsync(System.TimeSpan, System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_RefreshAllocationAsync_TimeSpan_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.RefreshAllocationAsync(TimeSpan,CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.RefreshAllocationAsync(TimeSpan, CancellationToken)
   nameWithType: TurnClient.RefreshAllocationAsync(TimeSpan, CancellationToken)
 - uid: Libplanet.Stun.TurnClient.RefreshAllocationAsync*
   name: RefreshAllocationAsync
@@ -28738,11 +28430,11 @@ references:
   isSpec: "True"
   fullName: Libplanet.Stun.TurnClient.RefreshAllocationAsync
   nameWithType: TurnClient.RefreshAllocationAsync
-- uid: Libplanet.Stun.TurnClient.StartAsync(System.Int32,System.Threading.CancellationToken)
+- uid: Libplanet.Stun.TurnClient.StartAsync(System.Int32,CancellationToken)
   name: StartAsync(Int32, CancellationToken)
-  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_StartAsync_System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Stun.TurnClient.StartAsync(System.Int32,System.Threading.CancellationToken)
-  fullName: Libplanet.Stun.TurnClient.StartAsync(System.Int32, System.Threading.CancellationToken)
+  href: api/Libplanet.Stun.TurnClient.html#Libplanet_Stun_TurnClient_StartAsync_System_Int32_CancellationToken_
+  commentId: M:Libplanet.Stun.TurnClient.StartAsync(System.Int32,CancellationToken)
+  fullName: Libplanet.Stun.TurnClient.StartAsync(System.Int32, CancellationToken)
   nameWithType: TurnClient.StartAsync(Int32, CancellationToken)
 - uid: Libplanet.Stun.TurnClient.StartAsync*
   name: StartAsync
@@ -30404,19 +30096,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.BlockHash.GetHashCode
   nameWithType: BlockHash.GetHashCode
-- uid: Libplanet.Types.Blocks.BlockHash.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.BlockHash.html#Libplanet_Types_Blocks_BlockHash_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.BlockHash.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.BlockHash.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: BlockHash.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.BlockHash.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.BlockHash.html#Libplanet_Types_Blocks_BlockHash_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.BlockHash.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.BlockHash.GetObjectData
-  nameWithType: BlockHash.GetObjectData
 - uid: Libplanet.Types.Blocks.BlockHash.Size
   name: Size
   href: api/Libplanet.Types.Blocks.BlockHash.html#Libplanet_Types_Blocks_BlockHash_Size
@@ -31242,12 +30921,6 @@ references:
   commentId: T:Libplanet.Types.Blocks.BlockPolicyViolationException
   fullName: Libplanet.Types.Blocks.BlockPolicyViolationException
   nameWithType: BlockPolicyViolationException
-- uid: Libplanet.Types.Blocks.BlockPolicyViolationException.#ctor(SerializationInfo,StreamingContext)
-  name: BlockPolicyViolationException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.BlockPolicyViolationException.html#Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.BlockPolicyViolationException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.BlockPolicyViolationException.BlockPolicyViolationException(SerializationInfo, StreamingContext)
-  nameWithType: BlockPolicyViolationException.BlockPolicyViolationException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Blocks.BlockPolicyViolationException.#ctor(System.String)
   name: BlockPolicyViolationException(String)
   href: api/Libplanet.Types.Blocks.BlockPolicyViolationException.html#Libplanet_Types_Blocks_BlockPolicyViolationException__ctor_System_String_
@@ -31550,19 +31223,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockBytesLengthException.BytesLength
   nameWithType: InvalidBlockBytesLengthException.BytesLength
-- uid: Libplanet.Types.Blocks.InvalidBlockBytesLengthException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Types_Blocks_InvalidBlockBytesLengthException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockBytesLengthException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockBytesLengthException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockBytesLengthException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockBytesLengthException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockBytesLengthException.html#Libplanet_Types_Blocks_InvalidBlockBytesLengthException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockBytesLengthException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockBytesLengthException.GetObjectData
-  nameWithType: InvalidBlockBytesLengthException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockCommitException
   name: InvalidBlockCommitException
   href: api/Libplanet.Types.Blocks.InvalidBlockCommitException.html
@@ -31588,12 +31248,6 @@ references:
   commentId: T:Libplanet.Types.Blocks.InvalidBlockEvidenceHashException
   fullName: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException
   nameWithType: InvalidBlockEvidenceHashException
-- uid: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidBlockEvidenceHashException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.html#Libplanet_Types_Blocks_InvalidBlockEvidenceHashException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.InvalidBlockEvidenceHashException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockEvidenceHashException.InvalidBlockEvidenceHashException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.#ctor(System.String,System.Nullable{Libplanet.Common.HashDigest{SHA256}},System.Nullable{Libplanet.Common.HashDigest{SHA256}})
   name: InvalidBlockEvidenceHashException(String, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
   href: api/Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.html#Libplanet_Types_Blocks_InvalidBlockEvidenceHashException__ctor_System_String_System_Nullable_Libplanet_Common_HashDigest_SHA256___System_Nullable_Libplanet_Common_HashDigest_SHA256___
@@ -31671,19 +31325,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.GetHashCode
   nameWithType: InvalidBlockEvidenceHashException.GetHashCode
-- uid: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.html#Libplanet_Types_Blocks_InvalidBlockEvidenceHashException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockEvidenceHashException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.html#Libplanet_Types_Blocks_InvalidBlockEvidenceHashException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.GetObjectData
-  nameWithType: InvalidBlockEvidenceHashException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.op_Equality(Libplanet.Types.Blocks.InvalidBlockEvidenceHashException,Libplanet.Types.Blocks.InvalidBlockEvidenceHashException)
   name: Equality(InvalidBlockEvidenceHashException, InvalidBlockEvidenceHashException)
   href: api/Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.html#Libplanet_Types_Blocks_InvalidBlockEvidenceHashException_op_Equality_Libplanet_Types_Blocks_InvalidBlockEvidenceHashException_Libplanet_Types_Blocks_InvalidBlockEvidenceHashException_
@@ -31716,12 +31357,6 @@ references:
   commentId: T:Libplanet.Types.Blocks.InvalidBlockException
   fullName: Libplanet.Types.Blocks.InvalidBlockException
   nameWithType: InvalidBlockException
-- uid: Libplanet.Types.Blocks.InvalidBlockException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidBlockException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockException.html#Libplanet_Types_Blocks_InvalidBlockException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockException.InvalidBlockException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockException.InvalidBlockException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Blocks.InvalidBlockException.#ctor(System.String)
   name: InvalidBlockException(String)
   href: api/Libplanet.Types.Blocks.InvalidBlockException.html#Libplanet_Types_Blocks_InvalidBlockException__ctor_System_String_
@@ -31875,19 +31510,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.GetHashCode
   nameWithType: InvalidBlockPreEvaluationHashException.GetHashCode
-- uid: Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Types_Blocks_InvalidBlockPreEvaluationHashException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockPreEvaluationHashException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Types_Blocks_InvalidBlockPreEvaluationHashException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.GetObjectData
-  nameWithType: InvalidBlockPreEvaluationHashException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.op_Equality(Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException,Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException)
   name: Equality(InvalidBlockPreEvaluationHashException, InvalidBlockPreEvaluationHashException)
   href: api/Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.html#Libplanet_Types_Blocks_InvalidBlockPreEvaluationHashException_op_Equality_Libplanet_Types_Blocks_InvalidBlockPreEvaluationHashException_Libplanet_Types_Blocks_InvalidBlockPreEvaluationHashException_
@@ -31965,31 +31587,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.ActualProtocolVersion
   nameWithType: InvalidBlockProtocolVersionException.ActualProtocolVersion
-- uid: Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.html#Libplanet_Types_Blocks_InvalidBlockProtocolVersionException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockProtocolVersionException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.html#Libplanet_Types_Blocks_InvalidBlockProtocolVersionException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.GetObjectData
-  nameWithType: InvalidBlockProtocolVersionException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockPublicKeyException
   name: InvalidBlockPublicKeyException
   href: api/Libplanet.Types.Blocks.InvalidBlockPublicKeyException.html
   commentId: T:Libplanet.Types.Blocks.InvalidBlockPublicKeyException
   fullName: Libplanet.Types.Blocks.InvalidBlockPublicKeyException
   nameWithType: InvalidBlockPublicKeyException
-- uid: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidBlockPublicKeyException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Types_Blocks_InvalidBlockPublicKeyException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockPublicKeyException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.InvalidBlockPublicKeyException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockPublicKeyException.InvalidBlockPublicKeyException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.#ctor(System.String,Libplanet.Crypto.PublicKey)
   name: InvalidBlockPublicKeyException(String, PublicKey)
   href: api/Libplanet.Types.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Types_Blocks_InvalidBlockPublicKeyException__ctor_System_String_Libplanet_Crypto_PublicKey_
@@ -32003,19 +31606,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.InvalidBlockPublicKeyException
   nameWithType: InvalidBlockPublicKeyException.InvalidBlockPublicKeyException
-- uid: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Types_Blocks_InvalidBlockPublicKeyException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockPublicKeyException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockPublicKeyException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Types_Blocks_InvalidBlockPublicKeyException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockPublicKeyException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.GetObjectData
-  nameWithType: InvalidBlockPublicKeyException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockPublicKeyException.InvalidPublicKey
   name: InvalidPublicKey
   href: api/Libplanet.Types.Blocks.InvalidBlockPublicKeyException.html#Libplanet_Types_Blocks_InvalidBlockPublicKeyException_InvalidPublicKey
@@ -32035,12 +31625,6 @@ references:
   commentId: T:Libplanet.Types.Blocks.InvalidBlockSignatureException
   fullName: Libplanet.Types.Blocks.InvalidBlockSignatureException
   nameWithType: InvalidBlockSignatureException
-- uid: Libplanet.Types.Blocks.InvalidBlockSignatureException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidBlockSignatureException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockSignatureException.html#Libplanet_Types_Blocks_InvalidBlockSignatureException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockSignatureException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockSignatureException.InvalidBlockSignatureException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockSignatureException.InvalidBlockSignatureException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Blocks.InvalidBlockSignatureException.#ctor(System.String,Libplanet.Crypto.PublicKey,System.Nullable{ImmutableArray{System.Byte}})
   name: InvalidBlockSignatureException(String, PublicKey, Nullable<ImmutableArray<Byte>>)
   href: api/Libplanet.Types.Blocks.InvalidBlockSignatureException.html#Libplanet_Types_Blocks_InvalidBlockSignatureException__ctor_System_String_Libplanet_Crypto_PublicKey_System_Nullable_ImmutableArray_System_Byte___
@@ -32057,19 +31641,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockSignatureException.InvalidBlockSignatureException
   nameWithType: InvalidBlockSignatureException.InvalidBlockSignatureException
-- uid: Libplanet.Types.Blocks.InvalidBlockSignatureException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockSignatureException.html#Libplanet_Types_Blocks_InvalidBlockSignatureException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockSignatureException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockSignatureException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockSignatureException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockSignatureException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockSignatureException.html#Libplanet_Types_Blocks_InvalidBlockSignatureException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockSignatureException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockSignatureException.GetObjectData
-  nameWithType: InvalidBlockSignatureException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockSignatureException.InvalidSignature
   name: InvalidSignature
   href: api/Libplanet.Types.Blocks.InvalidBlockSignatureException.html#Libplanet_Types_Blocks_InvalidBlockSignatureException_InvalidSignature
@@ -32144,19 +31715,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockStateRootHashException.ExpectedStateRootHash
   nameWithType: InvalidBlockStateRootHashException.ExpectedStateRootHash
-- uid: Libplanet.Types.Blocks.InvalidBlockStateRootHashException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Types_Blocks_InvalidBlockStateRootHashException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockStateRootHashException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockStateRootHashException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockStateRootHashException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockStateRootHashException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockStateRootHashException.html#Libplanet_Types_Blocks_InvalidBlockStateRootHashException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockStateRootHashException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockStateRootHashException.GetObjectData
-  nameWithType: InvalidBlockStateRootHashException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockTimestampException
   name: InvalidBlockTimestampException
   href: api/Libplanet.Types.Blocks.InvalidBlockTimestampException.html
@@ -32195,19 +31753,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockTxCountException.InvalidBlockTxCountException
   nameWithType: InvalidBlockTxCountException.InvalidBlockTxCountException
-- uid: Libplanet.Types.Blocks.InvalidBlockTxCountException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockTxCountException.html#Libplanet_Types_Blocks_InvalidBlockTxCountException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockTxCountException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockTxCountException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockTxCountException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockTxCountException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockTxCountException.html#Libplanet_Types_Blocks_InvalidBlockTxCountException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockTxCountException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockTxCountException.GetObjectData
-  nameWithType: InvalidBlockTxCountException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockTxCountException.TxCount
   name: TxCount
   href: api/Libplanet.Types.Blocks.InvalidBlockTxCountException.html#Libplanet_Types_Blocks_InvalidBlockTxCountException_TxCount
@@ -32240,19 +31785,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.InvalidBlockTxCountPerSignerException
   nameWithType: InvalidBlockTxCountPerSignerException.InvalidBlockTxCountPerSignerException
-- uid: Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Types_Blocks_InvalidBlockTxCountPerSignerException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockTxCountPerSignerException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Types_Blocks_InvalidBlockTxCountPerSignerException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.GetObjectData
-  nameWithType: InvalidBlockTxCountPerSignerException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.Signer
   name: Signer
   href: api/Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.html#Libplanet_Types_Blocks_InvalidBlockTxCountPerSignerException_Signer
@@ -32285,12 +31817,6 @@ references:
   commentId: T:Libplanet.Types.Blocks.InvalidBlockTxHashException
   fullName: Libplanet.Types.Blocks.InvalidBlockTxHashException
   nameWithType: InvalidBlockTxHashException
-- uid: Libplanet.Types.Blocks.InvalidBlockTxHashException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidBlockTxHashException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockTxHashException.html#Libplanet_Types_Blocks_InvalidBlockTxHashException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockTxHashException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockTxHashException.InvalidBlockTxHashException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockTxHashException.InvalidBlockTxHashException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Blocks.InvalidBlockTxHashException.#ctor(System.String,System.Nullable{Libplanet.Common.HashDigest{SHA256}},System.Nullable{Libplanet.Common.HashDigest{SHA256}})
   name: InvalidBlockTxHashException(String, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
   href: api/Libplanet.Types.Blocks.InvalidBlockTxHashException.html#Libplanet_Types_Blocks_InvalidBlockTxHashException__ctor_System_String_System_Nullable_Libplanet_Common_HashDigest_SHA256___System_Nullable_Libplanet_Common_HashDigest_SHA256___
@@ -32368,19 +31894,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Blocks.InvalidBlockTxHashException.GetHashCode
   nameWithType: InvalidBlockTxHashException.GetHashCode
-- uid: Libplanet.Types.Blocks.InvalidBlockTxHashException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Blocks.InvalidBlockTxHashException.html#Libplanet_Types_Blocks_InvalidBlockTxHashException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Blocks.InvalidBlockTxHashException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Blocks.InvalidBlockTxHashException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: InvalidBlockTxHashException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Blocks.InvalidBlockTxHashException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Blocks.InvalidBlockTxHashException.html#Libplanet_Types_Blocks_InvalidBlockTxHashException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Blocks.InvalidBlockTxHashException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Blocks.InvalidBlockTxHashException.GetObjectData
-  nameWithType: InvalidBlockTxHashException.GetObjectData
 - uid: Libplanet.Types.Blocks.InvalidBlockTxHashException.op_Equality(Libplanet.Types.Blocks.InvalidBlockTxHashException,Libplanet.Types.Blocks.InvalidBlockTxHashException)
   name: Equality(InvalidBlockTxHashException, InvalidBlockTxHashException)
   href: api/Libplanet.Types.Blocks.InvalidBlockTxHashException.html#Libplanet_Types_Blocks_InvalidBlockTxHashException_op_Equality_Libplanet_Types_Blocks_InvalidBlockTxHashException_Libplanet_Types_Blocks_InvalidBlockTxHashException_
@@ -34113,12 +33626,6 @@ references:
   commentId: T:Libplanet.Types.Evidence.DuplicateVoteException
   fullName: Libplanet.Types.Evidence.DuplicateVoteException
   nameWithType: DuplicateVoteException
-- uid: Libplanet.Types.Evidence.DuplicateVoteException.#ctor(SerializationInfo,StreamingContext)
-  name: DuplicateVoteException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Evidence.DuplicateVoteException.html#Libplanet_Types_Evidence_DuplicateVoteException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Evidence.DuplicateVoteException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Evidence.DuplicateVoteException.DuplicateVoteException(SerializationInfo, StreamingContext)
-  nameWithType: DuplicateVoteException.DuplicateVoteException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Evidence.DuplicateVoteException.#ctor(System.String,Libplanet.Types.Consensus.Vote,Libplanet.Types.Consensus.Vote,Exception)
   name: DuplicateVoteException(String, Vote, Vote, Exception)
   href: api/Libplanet.Types.Evidence.DuplicateVoteException.html#Libplanet_Types_Evidence_DuplicateVoteException__ctor_System_String_Libplanet_Types_Consensus_Vote_Libplanet_Types_Consensus_Vote_Exception_
@@ -34138,19 +33645,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Evidence.DuplicateVoteException.DuplicateVoteException
   nameWithType: DuplicateVoteException.DuplicateVoteException
-- uid: Libplanet.Types.Evidence.DuplicateVoteException.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Evidence.DuplicateVoteException.html#Libplanet_Types_Evidence_DuplicateVoteException_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Evidence.DuplicateVoteException.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Evidence.DuplicateVoteException.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: DuplicateVoteException.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Evidence.DuplicateVoteException.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Evidence.DuplicateVoteException.html#Libplanet_Types_Evidence_DuplicateVoteException_GetObjectData_
-  commentId: Overload:Libplanet.Types.Evidence.DuplicateVoteException.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Evidence.DuplicateVoteException.GetObjectData
-  nameWithType: DuplicateVoteException.GetObjectData
 - uid: Libplanet.Types.Evidence.DuplicateVoteException.Height
   name: Height
   href: api/Libplanet.Types.Evidence.DuplicateVoteException.html#Libplanet_Types_Evidence_DuplicateVoteException_Height
@@ -34488,12 +33982,6 @@ references:
   commentId: T:Libplanet.Types.Evidence.EvidenceException
   fullName: Libplanet.Types.Evidence.EvidenceException
   nameWithType: EvidenceException
-- uid: Libplanet.Types.Evidence.EvidenceException.#ctor(SerializationInfo,StreamingContext)
-  name: EvidenceException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Evidence.EvidenceException.html#Libplanet_Types_Evidence_EvidenceException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Evidence.EvidenceException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Evidence.EvidenceException.EvidenceException(SerializationInfo, StreamingContext)
-  nameWithType: EvidenceException.EvidenceException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Evidence.EvidenceException.#ctor(System.String,Exception)
   name: EvidenceException(String, Exception)
   href: api/Libplanet.Types.Evidence.EvidenceException.html#Libplanet_Types_Evidence_EvidenceException__ctor_System_String_Exception_
@@ -34573,12 +34061,6 @@ references:
   commentId: M:Libplanet.Types.Evidence.EvidenceId.#ctor(IValue)
   fullName: Libplanet.Types.Evidence.EvidenceId.EvidenceId(IValue)
   nameWithType: EvidenceId.EvidenceId(IValue)
-- uid: Libplanet.Types.Evidence.EvidenceId.#ctor(SerializationInfo,StreamingContext)
-  name: EvidenceId(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Evidence.EvidenceId.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Evidence.EvidenceId.EvidenceId(SerializationInfo, StreamingContext)
-  nameWithType: EvidenceId.EvidenceId(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Evidence.EvidenceId.#ctor(System.Byte[])
   name: EvidenceId(Byte[])
   href: api/Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId__ctor_System_Byte___
@@ -34691,19 +34173,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Evidence.EvidenceId.GetHashCode
   nameWithType: EvidenceId.GetHashCode
-- uid: Libplanet.Types.Evidence.EvidenceId.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Evidence.EvidenceId.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Evidence.EvidenceId.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: EvidenceId.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Evidence.EvidenceId.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_GetObjectData_
-  commentId: Overload:Libplanet.Types.Evidence.EvidenceId.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Evidence.EvidenceId.GetObjectData
-  nameWithType: EvidenceId.GetObjectData
 - uid: Libplanet.Types.Evidence.EvidenceId.op_Equality(Libplanet.Types.Evidence.EvidenceId,Libplanet.Types.Evidence.EvidenceId)
   name: Equality(EvidenceId, EvidenceId)
   href: api/Libplanet.Types.Evidence.EvidenceId.html#Libplanet_Types_Evidence_EvidenceId_op_Equality_Libplanet_Types_Evidence_EvidenceId_Libplanet_Types_Evidence_EvidenceId_
@@ -34861,12 +34330,6 @@ references:
   commentId: T:Libplanet.Types.Evidence.InvalidEvidenceException
   fullName: Libplanet.Types.Evidence.InvalidEvidenceException
   nameWithType: InvalidEvidenceException
-- uid: Libplanet.Types.Evidence.InvalidEvidenceException.#ctor(SerializationInfo,StreamingContext)
-  name: InvalidEvidenceException(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Evidence.InvalidEvidenceException.html#Libplanet_Types_Evidence_InvalidEvidenceException__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Evidence.InvalidEvidenceException.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Evidence.InvalidEvidenceException.InvalidEvidenceException(SerializationInfo, StreamingContext)
-  nameWithType: InvalidEvidenceException.InvalidEvidenceException(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Evidence.InvalidEvidenceException.#ctor(System.String)
   name: InvalidEvidenceException(String)
   href: api/Libplanet.Types.Evidence.InvalidEvidenceException.html#Libplanet_Types_Evidence_InvalidEvidenceException__ctor_System_String_
@@ -35935,12 +35398,6 @@ references:
   commentId: M:Libplanet.Types.Tx.TxId.#ctor(IValue)
   fullName: Libplanet.Types.Tx.TxId.TxId(IValue)
   nameWithType: TxId.TxId(IValue)
-- uid: Libplanet.Types.Tx.TxId.#ctor(SerializationInfo,StreamingContext)
-  name: TxId(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Tx.TxId.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Tx.TxId.TxId(SerializationInfo, StreamingContext)
-  nameWithType: TxId.TxId(SerializationInfo, StreamingContext)
 - uid: Libplanet.Types.Tx.TxId.#ctor(System.Byte[])
   name: TxId(Byte[])
   href: api/Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId__ctor_System_Byte___
@@ -36053,19 +35510,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Types.Tx.TxId.GetHashCode
   nameWithType: TxId.GetHashCode
-- uid: Libplanet.Types.Tx.TxId.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Types.Tx.TxId.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Types.Tx.TxId.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: TxId.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Types.Tx.TxId.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_GetObjectData_
-  commentId: Overload:Libplanet.Types.Tx.TxId.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Types.Tx.TxId.GetObjectData
-  nameWithType: TxId.GetObjectData
 - uid: Libplanet.Types.Tx.TxId.op_Equality(Libplanet.Types.Tx.TxId,Libplanet.Types.Tx.TxId)
   name: Equality(TxId, TxId)
   href: api/Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_op_Equality_Libplanet_Types_Tx_TxId_Libplanet_Types_Tx_TxId_

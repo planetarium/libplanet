@@ -82,7 +82,6 @@ and 64 characters in hexadecimal.
   <div class="markdown level0 conceptual"></div>
   <div class="implements">
     <h5>Implements</h5>
-    <div><span class="xref">ISerializable</span></div>
     <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</div>
     <div><span class="xref">IComparable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>&gt;</div>
     <div><span class="xref">IComparable</span></div>
@@ -101,7 +100,7 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId__ctor_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.%23ctor(ImmutableArray%7BSystem.Byte%7D%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L52">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId__ctor_" data-uid="Libplanet.Types.Tx.TxId.#ctor*"></a>
   <h4 id="Libplanet_Types_Tx_TxId__ctor_ImmutableArray_System_Byte___" data-uid="Libplanet.Types.Tx.TxId.#ctor(ImmutableArray{System.Byte}@)">TxId(in ImmutableArray&lt;Byte&gt;)</h4>
@@ -141,7 +140,7 @@ a <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.  It must not be 
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId__ctor_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.%23ctor(IValue)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L87">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L85">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId__ctor_" data-uid="Libplanet.Types.Tx.TxId.#ctor*"></a>
   <h4 id="Libplanet_Types_Tx_TxId__ctor_IValue_" data-uid="Libplanet.Types.Tx.TxId.#ctor(IValue)">TxId(IValue)</h4>
@@ -177,57 +176,10 @@ represents an <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId__ctor_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.%23ctor(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L97">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_TxId__ctor_" data-uid="Libplanet.Types.Tx.TxId.#ctor*"></a>
-  <h4 id="Libplanet_Types_Tx_TxId__ctor_SerializationInfo_StreamingContext_" data-uid="Libplanet.Types.Tx.TxId.#ctor(SerializationInfo,StreamingContext)">TxId(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
-is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
-content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
-and 64 characters in hexadecimal.
-(See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxId(SerializationInfo info, StreamingContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SerializationInfo</span></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">StreamingContext</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_TxId__ctor_SerializationInfo_StreamingContext__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L73">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L71">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId__ctor_" data-uid="Libplanet.Types.Tx.TxId.#ctor*"></a>
   <h4 id="Libplanet_Types_Tx_TxId__ctor_System_Byte___" data-uid="Libplanet.Types.Tx.TxId.#ctor(System.Byte[])">TxId(Byte[])</h4>
@@ -270,7 +222,7 @@ and its <see cref="!:Array.Length"></see> must be the same to
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_Size.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.Size%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L34">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L32">View Source</a>
   </span>
   <h4 id="Libplanet_Types_Tx_TxId_Size" data-uid="Libplanet.Types.Tx.TxId.Size">Size</h4>
   <div class="markdown level1 summary"><p>The <see cref="!:System.Byte"></see>s size that each <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> takes.</p>
@@ -308,7 +260,7 @@ and its <see cref="!:Array.Length"></see> must be the same to
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_Bencoded.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.Bencoded%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L123">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L112">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_Bencoded_" data-uid="Libplanet.Types.Tx.TxId.Bencoded*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_Bencoded" data-uid="Libplanet.Types.Tx.TxId.Bencoded">Bencoded</h4>
@@ -348,7 +300,7 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.ByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L118">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L107">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_ByteArray_" data-uid="Libplanet.Types.Tx.TxId.ByteArray*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_ByteArray" data-uid="Libplanet.Types.Tx.TxId.ByteArray">ByteArray</h4>
@@ -390,7 +342,7 @@ this <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_CompareTo_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.CompareTo(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L192">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L181">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_CompareTo_" data-uid="Libplanet.Types.Tx.TxId.CompareTo*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_CompareTo_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Types.Tx.TxId.CompareTo(Libplanet.Types.Tx.TxId)">CompareTo(TxId)</h4>
@@ -447,7 +399,7 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_CompareTo_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.CompareTo(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L207">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L196">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_CompareTo_" data-uid="Libplanet.Types.Tx.TxId.CompareTo*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_CompareTo_System_Nullable_System_Object__" data-uid="Libplanet.Types.Tx.TxId.CompareTo(System.Nullable{System.Object})">CompareTo(Nullable&lt;Object&gt;)</h4>
@@ -504,7 +456,7 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_Equals_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.Equals(Libplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L156">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L145">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_Equals_" data-uid="Libplanet.Types.Tx.TxId.Equals*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_Equals_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Types.Tx.TxId.Equals(Libplanet.Types.Tx.TxId)">Equals(TxId)</h4>
@@ -561,7 +513,7 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L158">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L147">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_Equals_" data-uid="Libplanet.Types.Tx.TxId.Equals*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Tx.TxId.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
@@ -618,7 +570,7 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_FromHex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.FromHex(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L141">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L130">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_FromHex_" data-uid="Libplanet.Types.Tx.TxId.FromHex*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_FromHex_System_String_" data-uid="Libplanet.Types.Tx.TxId.FromHex(System.String)">FromHex(String)</h4>
@@ -674,7 +626,7 @@ This is usually made by <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libpl
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L160">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L149">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_GetHashCode_" data-uid="Libplanet.Types.Tx.TxId.GetHashCode*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_GetHashCode" data-uid="Libplanet.Types.Tx.TxId.GetHashCode">GetHashCode()</h4>
@@ -711,57 +663,10 @@ and 64 characters in hexadecimal.
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L213">View Source</a>
-  </span>
-  <a id="Libplanet_Types_Tx_TxId_GetObjectData_" data-uid="Libplanet.Types.Tx.TxId.GetObjectData*"></a>
-  <h4 id="Libplanet_Types_Tx_TxId_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Types.Tx.TxId.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
-is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
-content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
-and 64 characters in hexadecimal.
-(See also <a class="xref" href="Libplanet.Types.Tx.TxId.html#Libplanet_Types_Tx_TxId_Size">Size</a> constant.)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SerializationInfo</span></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">StreamingContext</span></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Types_Tx_TxId_GetObjectData_SerializationInfo_StreamingContext__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Id">Id</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.ToByteArray%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L173">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L162">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_ToByteArray_" data-uid="Libplanet.Types.Tx.TxId.ToByteArray*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_ToByteArray" data-uid="Libplanet.Types.Tx.TxId.ToByteArray">ToByteArray()</h4>
@@ -802,7 +707,7 @@ the <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> object.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.ToHex%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L180">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L169">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_ToHex_" data-uid="Libplanet.Types.Tx.TxId.ToHex*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_ToHex" data-uid="Libplanet.Types.Tx.TxId.ToHex">ToHex()</h4>
@@ -838,7 +743,7 @@ the <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> object.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L188">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L177">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_ToString_" data-uid="Libplanet.Types.Tx.TxId.ToString*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_ToString" data-uid="Libplanet.Types.Tx.TxId.ToString">ToString()</h4>
@@ -876,7 +781,7 @@ the <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> object.</p>
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_op_Equality_Libplanet_Types_Tx_TxId_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.op_Equality(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L114">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_op_Equality_" data-uid="Libplanet.Types.Tx.TxId.op_Equality*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_op_Equality_Libplanet_Types_Tx_TxId_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Types.Tx.TxId.op_Equality(Libplanet.Types.Tx.TxId,Libplanet.Types.Tx.TxId)">Equality(TxId, TxId)</h4>
@@ -938,7 +843,7 @@ and 64 characters in hexadecimal.
     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId_op_Inequality_Libplanet_Types_Tx_TxId_Libplanet_Types_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId.op_Inequality(Libplanet.Types.Tx.TxId%2CLibplanet.Types.Tx.TxId)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L127">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L116">View Source</a>
   </span>
   <a id="Libplanet_Types_Tx_TxId_op_Inequality_" data-uid="Libplanet.Types.Tx.TxId.op_Inequality*"></a>
   <h4 id="Libplanet_Types_Tx_TxId_op_Inequality_Libplanet_Types_Tx_TxId_Libplanet_Types_Tx_TxId_" data-uid="Libplanet.Types.Tx.TxId.op_Inequality(Libplanet.Types.Tx.TxId,Libplanet.Types.Tx.TxId)">Inequality(TxId, TxId)</h4>
@@ -997,9 +902,6 @@ and 64 characters in hexadecimal.
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">ISerializable</span>
-  </div>
-  <div>
       <span class="xref">IEquatable&lt;&gt;</span>
   </div>
   <div>
@@ -1026,7 +928,7 @@ and 64 characters in hexadecimal.
                     <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Types_Tx_TxId.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.TxId%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Types/Tx/TxId.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

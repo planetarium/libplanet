@@ -72,95 +72,20 @@
 
   <h1 id="Libplanet_Common_FixedSizedQueue_1" data-uid="Libplanet.Common.FixedSizedQueue`1" class="text-break">Class FixedSizedQueue&lt;T&gt;
 </h1>
-  <div class="markdown level0 summary"><p>Equivalent to <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;</span>, except this does not accept more than
+  <div class="markdown level0 summary"><p>Equivalent to <see cref="!:ConcurrentQueue&lt;T>"></see>, except this does not accept more than
 the specified maximum size.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">System.Collections.Concurrent.ConcurrentQueue</span>&lt;T&gt;</div>
-    <div class="level2"><span class="xref">FixedSizedQueue&lt;T&gt;</span></div>
-  </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><span class="xref">System.Collections.Concurrent.IProducerConsumerCollection</span>&lt;T&gt;</div>
-    <div><span class="xref">System.Collections.ICollection</span></div>
-    <div><span class="xref">System.Collections.Generic.IReadOnlyCollection</span>&lt;T&gt;</div>
-    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</div>
-    <div><span class="xref">System.Collections.IEnumerable</span></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.Clear()</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.CopyTo(T[], System.Int32)</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.GetEnumerator()</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryAdd(T)</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryTake(T)</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.System.Collections.ICollection.CopyTo(System.Array, System.Int32)</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.System.Collections.IEnumerable.GetEnumerator()</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.ToArray()</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.TryDequeue(T)</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.TryPeek(T)</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.Count</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.IsEmpty</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.System.Collections.ICollection.IsSynchronized</span>
-    </div>
-    <div>
-      <span class="xref">System.Collections.Concurrent.ConcurrentQueue&lt;T&gt;.System.Collections.ICollection.SyncRoot</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
+    <div class="level1"><span class="xref">FixedSizedQueue&lt;T&gt;</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Common.html">Libplanet.Common</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Common.dll</h6>
   <h5 id="Libplanet_Common_FixedSizedQueue_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class FixedSizedQueue&lt;T&gt; : ConcurrentQueue&lt;T&gt;, IProducerConsumerCollection&lt;T&gt;, ICollection, IReadOnlyCollection&lt;T&gt;, IEnumerable&lt;T&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public class FixedSizedQueue&lt;T&gt; : ConcurrentQueue&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -285,22 +210,6 @@ end of the <a class="xref" href="Libplanet.Common.FixedSizedQueue-1.html">FixedS
       </tr>
     </tbody>
   </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;</span>
-  </div>
-  <div>
-      <span class="xref">System.Collections.ICollection</span>
-  </div>
-  <div>
-      <span class="xref">System.Collections.Generic.IReadOnlyCollection&lt;T&gt;</span>
-  </div>
-  <div>
-      <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span>
-  </div>
-  <div>
-      <span class="xref">System.Collections.IEnumerable</span>
-  </div>
 </article>
           </div>
 

@@ -72,7 +72,7 @@
 
   <h1 id="Libplanet_Common_NameValueCollectionExtensions" data-uid="Libplanet.Common.NameValueCollectionExtensions" class="text-break">Class NameValueCollectionExtensions
 </h1>
-  <div class="markdown level0 summary"><p>Useful extension methods for <span class="xref">System.Collections.Specialized.NameValueCollection</span>.</p>
+  <div class="markdown level0 summary"><p>Useful extension methods for <see cref="!:NameValueCollection"></see>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -80,49 +80,25 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">NameValueCollectionExtensions</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Common.html">Libplanet.Common</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Common.dll</h6>
   <h5 id="Libplanet_Common_NameValueCollectionExtensions_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class NameValueCollectionExtensions</code></pre>
+    <pre><code class="lang-csharp hljs">public static class NameValueCollectionExtensions : object</code></pre>
   </div>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetBoolean_System_Collections_Specialized_NameValueCollection_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetBoolean_NameValueCollection_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetBoolean(NameValueCollection%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/NameValueCollectionExtensions.cs/#L193">View Source</a>
   </span>
   <a id="Libplanet_Common_NameValueCollectionExtensions_GetBoolean_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetBoolean*"></a>
-  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetBoolean_System_Collections_Specialized_NameValueCollection_System_String_System_Boolean_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetBoolean(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean)">GetBoolean(NameValueCollection, String, Boolean)</h4>
+  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetBoolean_NameValueCollection_System_String_System_Boolean_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetBoolean(NameValueCollection,System.String,System.Boolean)">GetBoolean(NameValueCollection, String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Tries to get the boolean text associated with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> as
-a <span class="xref">System.Boolean</span> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
+a <see cref="!:System.Boolean"></see> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
 <p>Supported keywords are: <span class="xref">true</span>, <span class="xref">false</span>,
 <code>yes</code>, <code>no</code>, <code>on</code>, <code>off</code>, <code>t</code>, <code>f</code>, <code>y</code>, <code>n</code>,
 <code>1</code>, <code>0</code> (all case-insensitive).</p>
@@ -143,16 +119,16 @@ a <span class="xref">System.Boolean</span> value from the specified name-value <
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Specialized.NameValueCollection</span></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><span class="parametername">collection</span></td>
-        <td><p>The <span class="xref">System.Collections.Specialized.NameValueCollection</span> that contains the entry
+        <td><p>The <see cref="!:NameValueCollection"></see> that contains the entry
 to find.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The <span class="xref">System.String</span> key of the entry that contains the value to
+        <td><p>The <see cref="!:System.String"></see> key of the entry that contains the value to
 find.</p>
 </td>
       </tr>
@@ -178,7 +154,7 @@ by default.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>A <span class="xref">System.Boolean</span> value converted from the text value associated with
+        <td><p>A <see cref="!:System.Boolean"></see> value converted from the text value associated with
 the specified key <code data-dev-comment-type="paramref" class="paramref">name</code> from the <code data-dev-comment-type="paramref" class="paramref">collection</code>,
 if found; otherwise, <code data-dev-comment-type="paramref" class="paramref">defaultValue</code>.</p>
 </td>
@@ -187,15 +163,15 @@ if found; otherwise, <code data-dev-comment-type="paramref" class="paramref">def
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String___0_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetEnum%60%601(System.Collections.Specialized.NameValueCollection%2CSystem.String%2C%60%600)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_NameValueCollection_System_String___0_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetEnum%60%601(NameValueCollection%2CSystem.String%2C%60%600)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/NameValueCollectionExtensions.cs/#L52">View Source</a>
   </span>
   <a id="Libplanet_Common_NameValueCollectionExtensions_GetEnum_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetEnum*"></a>
-  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String___0_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String,``0)">GetEnum&lt;T&gt;(NameValueCollection, String, T)</h4>
+  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_NameValueCollection_System_String___0_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(NameValueCollection,System.String,``0)">GetEnum&lt;T&gt;(NameValueCollection, String, T)</h4>
   <div class="markdown level1 summary"><p>Tries to get the text associated with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> as
-given <span class="xref">System.Enum</span> type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> value from the specified
+given <see cref="!:Enum"></see> type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> value from the specified
 name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -215,16 +191,16 @@ name-value <code data-dev-comment-type="paramref" class="paramref">collection</c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Specialized.NameValueCollection</span></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><span class="parametername">collection</span></td>
-        <td><p>The <span class="xref">System.Collections.Specialized.NameValueCollection</span> that contains the entry
+        <td><p>The <see cref="!:NameValueCollection"></see> that contains the entry
 to find.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The <span class="xref">System.String</span> key of the entry that contains the value to
+        <td><p>The <see cref="!:System.String"></see> key of the entry that contains the value to
 find.</p>
 </td>
       </tr>
@@ -267,22 +243,22 @@ if found; otherwise, <span class="xref">langword_csharp_defaultValue</span>.</p>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>The <span class="xref">System.Enum</span> type to parse to.</p>
+        <td><p>The <see cref="!:Enum"></see> type to parse to.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetEnum%60%601(System.Collections.Specialized.NameValueCollection%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_NameValueCollection_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetEnum%60%601(NameValueCollection%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/NameValueCollectionExtensions.cs/#L30">View Source</a>
   </span>
   <a id="Libplanet_Common_NameValueCollectionExtensions_GetEnum_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetEnum*"></a>
-  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(System.Collections.Specialized.NameValueCollection,System.String)">GetEnum&lt;T&gt;(NameValueCollection, String)</h4>
+  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_NameValueCollection_System_String_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetEnum``1(NameValueCollection,System.String)">GetEnum&lt;T&gt;(NameValueCollection, String)</h4>
   <div class="markdown level1 summary"><p>Tries to get the text associated with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> as
-given <span class="xref">System.Enum</span> type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> value from the specified
+given <see cref="!:Enum"></see> type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> value from the specified
 name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -302,16 +278,16 @@ name-value <code data-dev-comment-type="paramref" class="paramref">collection</c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Specialized.NameValueCollection</span></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><span class="parametername">collection</span></td>
-        <td><p>The <span class="xref">System.Collections.Specialized.NameValueCollection</span> that contains the entry
+        <td><p>The <see cref="!:NameValueCollection"></see> that contains the entry
 to find.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The <span class="xref">System.String</span> key of the entry that contains the value to
+        <td><p>The <see cref="!:System.String"></see> key of the entry that contains the value to
 find.</p>
 </td>
       </tr>
@@ -346,43 +322,26 @@ if found; otherwise, <span class="xref">null</span>.</p>
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>The <span class="xref">System.Enum</span> type to parse to.</p>
+        <td><p>The <see cref="!:Enum"></see> type to parse to.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_System_Collections_Specialized_NameValueCollection_System_String__remarks">Remarks</h5>
+  <h5 id="Libplanet_Common_NameValueCollectionExtensions_GetEnum__1_NameValueCollection_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method assumes the <code data-dev-comment-type="paramref" class="paramref">collection</code> contains zero or
 one entry for the specified <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentException</span></td>
-        <td><p>Thrown when the value cannot be parsed to type
-<code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection%2CSystem.String%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection%2CSystem.String%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/NameValueCollectionExtensions.cs/#L100">View Source</a>
   </span>
   <a id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetInt32*"></a>
-  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_System_Int32_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String,System.Int32)">GetInt32(NameValueCollection, String, Int32)</h4>
+  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_System_Int32_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String,System.Int32)">GetInt32(NameValueCollection, String, Int32)</h4>
   <div class="markdown level1 summary"><p>Tries to get the numeric text associated with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> as
-an <span class="xref">System.Int32</span> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
+an <see cref="!:System.Int32"></see> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -400,16 +359,16 @@ an <span class="xref">System.Int32</span> value from the specified name-value <c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Specialized.NameValueCollection</span></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><span class="parametername">collection</span></td>
-        <td><p>The <span class="xref">System.Collections.Specialized.NameValueCollection</span> that contains the entry
+        <td><p>The <see cref="!:NameValueCollection"></see> that contains the entry
 to find.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The <span class="xref">System.String</span> key of the entry that contains the value to
+        <td><p>The <see cref="!:System.String"></see> key of the entry that contains the value to
 find.</p>
 </td>
       </tr>
@@ -418,7 +377,7 @@ find.</p>
         <td><span class="parametername">defaultValue</span></td>
         <td><p>Returns this value if the specified key
 <code data-dev-comment-type="paramref" class="paramref">name</code> is not found in the <code data-dev-comment-type="paramref" class="paramref">collection</code>, or
-the associated value is not a numeric text or outside the range of the <span class="xref">System.Int32</span>
+the associated value is not a numeric text or outside the range of the <see cref="!:System.Int32"></see>
 type.</p>
 </td>
       </tr>
@@ -435,7 +394,7 @@ type.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td><p>An <span class="xref">System.Int32</span> value converted from the text value associated with
+        <td><p>An <see cref="!:System.Int32"></see> value converted from the text value associated with
 the specified key <code data-dev-comment-type="paramref" class="paramref">name</code> from the <code data-dev-comment-type="paramref" class="paramref">collection</code>,
 if found; otherwise, <code data-dev-comment-type="paramref" class="paramref">defaultValue</code>.</p>
 </td>
@@ -444,15 +403,15 @@ if found; otherwise, <code data-dev-comment-type="paramref" class="paramref">def
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/NameValueCollectionExtensions.cs/#L82">View Source</a>
   </span>
   <a id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetInt32*"></a>
-  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetInt32(System.Collections.Specialized.NameValueCollection,System.String)">GetInt32(NameValueCollection, String)</h4>
+  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetInt32(NameValueCollection,System.String)">GetInt32(NameValueCollection, String)</h4>
   <div class="markdown level1 summary"><p>Tries to get the numeric text associated with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> as
-an <span class="xref">System.Int32</span> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
+an <see cref="!:System.Int32"></see> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -470,16 +429,16 @@ an <span class="xref">System.Int32</span> value from the specified name-value <c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Specialized.NameValueCollection</span></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><span class="parametername">collection</span></td>
-        <td><p>The <span class="xref">System.Collections.Specialized.NameValueCollection</span> that contains the entry
+        <td><p>The <see cref="!:NameValueCollection"></see> that contains the entry
 to find.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The <span class="xref">System.String</span> key of the entry that contains the value to
+        <td><p>The <see cref="!:System.String"></see> key of the entry that contains the value to
 find.</p>
 </td>
       </tr>
@@ -496,50 +455,28 @@ find.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
-        <td><p>An <span class="xref">System.Int32</span> value converted from the text value associated with
+        <td><p>An <see cref="!:System.Int32"></see> value converted from the text value associated with
 the specified key <code data-dev-comment-type="paramref" class="paramref">name</code> from the <code data-dev-comment-type="paramref" class="paramref">collection</code>,
 if found; otherwise, <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_System_Collections_Specialized_NameValueCollection_System_String__remarks">Remarks</h5>
+  <h5 id="Libplanet_Common_NameValueCollectionExtensions_GetInt32_NameValueCollection_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method assumes the <code data-dev-comment-type="paramref" class="paramref">collection</code> contains zero or
 one entry for the specified <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.FormatException</span></td>
-        <td><p>Thrown when the value is not a numeric text.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.OverflowException</span></td>
-        <td><p>Thrown when the value is outside the range of the
-<span class="xref">System.Int32</span> type.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_System_UInt64_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection%2CSystem.String%2CSystem.UInt64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_System_UInt64_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection%2CSystem.String%2CSystem.UInt64)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/NameValueCollectionExtensions.cs/#L156">View Source</a>
   </span>
   <a id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetUInt64*"></a>
-  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_System_UInt64_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String,System.UInt64)">GetUInt64(NameValueCollection, String, UInt64)</h4>
+  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_System_UInt64_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String,System.UInt64)">GetUInt64(NameValueCollection, String, UInt64)</h4>
   <div class="markdown level1 summary"><p>Tries to get the numeric text associated with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> as
-a <span class="xref">System.UInt64</span> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
+a <see cref="!:System.UInt64"></see> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -557,16 +494,16 @@ a <span class="xref">System.UInt64</span> value from the specified name-value <c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Specialized.NameValueCollection</span></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><span class="parametername">collection</span></td>
-        <td><p>The <span class="xref">System.Collections.Specialized.NameValueCollection</span> that contains the entry
+        <td><p>The <see cref="!:NameValueCollection"></see> that contains the entry
 to find.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The <span class="xref">System.String</span> key of the entry that contains the value to
+        <td><p>The <see cref="!:System.String"></see> key of the entry that contains the value to
 find.</p>
 </td>
       </tr>
@@ -576,7 +513,7 @@ find.</p>
         <td><p>Returns this value if the specified key
 <code data-dev-comment-type="paramref" class="paramref">name</code> is not found in the <code data-dev-comment-type="paramref" class="paramref">collection</code>, or
 the associated value is not a numeric text or outside the range of
-the <span class="xref">System.UInt64</span> type.</p>
+the <see cref="!:System.UInt64"></see> type.</p>
 </td>
       </tr>
     </tbody>
@@ -592,7 +529,7 @@ the <span class="xref">System.UInt64</span> type.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.UInt64</span></td>
-        <td><p>An <span class="xref">System.Int32</span> value converted from the text value associated with
+        <td><p>An <see cref="!:System.Int32"></see> value converted from the text value associated with
 the specified key <code data-dev-comment-type="paramref" class="paramref">name</code> from the <code data-dev-comment-type="paramref" class="paramref">collection</code>,
 if found; otherwise, <code data-dev-comment-type="paramref" class="paramref">defaultValue</code>.</p>
 </td>
@@ -601,15 +538,15 @@ if found; otherwise, <code data-dev-comment-type="paramref" class="paramref">def
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Common_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Common/NameValueCollectionExtensions.cs/#L136">View Source</a>
   </span>
   <a id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetUInt64*"></a>
-  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetUInt64(System.Collections.Specialized.NameValueCollection,System.String)">GetUInt64(NameValueCollection, String)</h4>
+  <h4 id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String_" data-uid="Libplanet.Common.NameValueCollectionExtensions.GetUInt64(NameValueCollection,System.String)">GetUInt64(NameValueCollection, String)</h4>
   <div class="markdown level1 summary"><p>Tries to get the numeric text associated with the specified <code data-dev-comment-type="paramref" class="paramref">name</code> as
-a <span class="xref">System.UInt64</span> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
+a <see cref="!:System.UInt64"></see> value from the specified name-value <code data-dev-comment-type="paramref" class="paramref">collection</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -627,16 +564,16 @@ a <span class="xref">System.UInt64</span> value from the specified name-value <c
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Specialized.NameValueCollection</span></td>
+        <td><span class="xref">NameValueCollection</span></td>
         <td><span class="parametername">collection</span></td>
-        <td><p>The <span class="xref">System.Collections.Specialized.NameValueCollection</span> that contains the entry
+        <td><p>The <see cref="!:NameValueCollection"></see> that contains the entry
 to find.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The <span class="xref">System.String</span> key of the entry that contains the value to
+        <td><p>The <see cref="!:System.String"></see> key of the entry that contains the value to
 find.</p>
 </td>
       </tr>
@@ -653,39 +590,17 @@ find.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt64</span>&gt;</td>
-        <td><p>A <span class="xref">System.UInt64</span> value converted from the text value associated with
+        <td><p>A <see cref="!:System.UInt64"></see> value converted from the text value associated with
 the specified key <code data-dev-comment-type="paramref" class="paramref">name</code> from the <code data-dev-comment-type="paramref" class="paramref">collection</code>,
 if found; otherwise, <span class="xref">null</span>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_System_Collections_Specialized_NameValueCollection_System_String__remarks">Remarks</h5>
+  <h5 id="Libplanet_Common_NameValueCollectionExtensions_GetUInt64_NameValueCollection_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method assumes the <code data-dev-comment-type="paramref" class="paramref">collection</code> contains zero or
 one entry for the specified <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
 </div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.FormatException</span></td>
-        <td><p>Thrown when the value is not a numeric text.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.OverflowException</span></td>
-        <td><p>Thrown when the value is outside the range of the
-<span class="xref">System.UInt64</span> type.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
 

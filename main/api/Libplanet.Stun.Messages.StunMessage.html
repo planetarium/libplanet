@@ -95,35 +95,11 @@
       <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.RefreshRequest.html">RefreshRequest</a></div>
       <div class="level2"><a class="xref" href="Libplanet.Stun.Messages.RefreshSuccessResponse.html">RefreshSuccessResponse</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Stun.Messages.html">Libplanet.Stun.Messages</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.Stun.dll</h6>
   <h5 id="Libplanet_Stun_Messages_StunMessage_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class StunMessage</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class StunMessage : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -170,7 +146,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Libplanet.Stun.Attributes.Attribute.html">Attribute</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Stun.Attributes.Attribute.html">Attribute</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -365,19 +341,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_ParseAsync_System_IO_Stream_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.ParseAsync(System.IO.Stream%2CSystem.Threading.CancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/main/apiSpec/new?filename=Libplanet_Stun_Messages_StunMessage_ParseAsync_Stream_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Stun.Messages.StunMessage.ParseAsync(Stream%2CCancellationToken)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/main/src/Libplanet.Stun/Stun/Messages/StunMessage.cs/#L96">View Source</a>
   </span>
   <a id="Libplanet_Stun_Messages_StunMessage_ParseAsync_" data-uid="Libplanet.Stun.Messages.StunMessage.ParseAsync*"></a>
-  <h4 id="Libplanet_Stun_Messages_StunMessage_ParseAsync_System_IO_Stream_System_Threading_CancellationToken_" data-uid="Libplanet.Stun.Messages.StunMessage.ParseAsync(System.IO.Stream,System.Threading.CancellationToken)">ParseAsync(Stream, CancellationToken)</h4>
+  <h4 id="Libplanet_Stun_Messages_StunMessage_ParseAsync_Stream_CancellationToken_" data-uid="Libplanet.Stun.Messages.StunMessage.ParseAsync(Stream,CancellationToken)">ParseAsync(Stream, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Parses <a class="xref" href="Libplanet.Stun.Messages.StunMessage.html">StunMessage</a> from <code data-dev-comment-type="paramref" class="paramref">stream</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static async Task&lt;StunMessage&gt; ParseAsync(Stream stream, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static async Task&lt;StunMessage&gt; ParseAsync(Stream stream, CancellationToken cancellationToken = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -390,13 +366,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="xref">Stream</span></td>
         <td><span class="parametername">stream</span></td>
         <td><p>A view of a sequence of STUN packet's bytes.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="xref">CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td><p>A cancellation token used to propagate notification that this
 operation should be canceled.</p>
@@ -414,7 +390,7 @@ operation should be canceled.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Libplanet.Stun.Messages.StunMessage.html">StunMessage</a>&gt;</td>
+        <td><span class="xref">Task</span>&lt;<a class="xref" href="Libplanet.Stun.Messages.StunMessage.html">StunMessage</a>&gt;</td>
         <td><p>A <a class="xref" href="Libplanet.Stun.Messages.StunMessage.html">StunMessage</a> derived on
 bytes read from <code data-dev-comment-type="paramref" class="paramref">stream</code>.</p>
 </td>
