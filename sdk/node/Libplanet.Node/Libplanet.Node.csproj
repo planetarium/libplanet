@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+    <PackageReference Include="NJsonSchema" Version="11.0.2" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.0.2" />
+    <PackageReference Include="R3" Version="1.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <ProjectReference Include="..\..\..\src\Libplanet.Store\Libplanet.Store.csproj" />
+    <ProjectReference Include="..\..\..\src\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\..\..\src\Libplanet.Net\Libplanet.Net.csproj" />
+  </ItemGroup>
+
+</Project>

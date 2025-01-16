@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Consensus
@@ -9,11 +8,10 @@ namespace Libplanet.Net.Consensus
     /// this is thrown pre-emptively before a <see cref="ConsensusMsg"/> is processed, i.e.
     /// does not change the state of a <see cref="Context"/> in a meaningful way.
     /// </summary>
-    [Serializable]
     public class InvalidConsensusMessageException : InvalidMessageContentException
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -30,7 +28,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -38,21 +36,6 @@ namespace Libplanet.Net.Consensus
         /// </param>
         public InvalidConsensusMessageException(string message, MessageContent receivedMessage)
             : base(message, receivedMessage)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/>
-        /// class with serialized data.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/>
-        /// that holds the serialized object data about the exception being thrown.
-        /// </param>
-        /// <param name="context">The <see cref="StreamingContext"/>
-        /// that contains contextual information about the source or destination.
-        /// </param>
-        protected InvalidConsensusMessageException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

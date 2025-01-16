@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 
 namespace Libplanet.Types.Blocks
 {
@@ -7,7 +6,6 @@ namespace Libplanet.Types.Blocks
     /// An exception <em>returned</em> when a <see cref="Block"/> violates
     /// a <see cref="IBlockPolicy"/>.
     /// </summary>
-    [Serializable]
     public class BlockPolicyViolationException : InvalidBlockException
     {
         /// <summary>
@@ -18,11 +16,6 @@ namespace Libplanet.Types.Blocks
         /// </param>
         public BlockPolicyViolationException(string message)
             : base(message)
-        {
-        }
-
-        protected BlockPolicyViolationException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

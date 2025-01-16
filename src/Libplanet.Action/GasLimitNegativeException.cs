@@ -2,7 +2,6 @@ using System;
 
 namespace Libplanet.Action
 {
-    [Serializable]
     public class GasLimitNegativeException : Exception
     {
         public GasLimitNegativeException()

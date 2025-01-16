@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "Libplanet.Node.API";
+
+package node.schema.v1;
+
+service Schema {
+  rpc GetList(GetListRequest) returns (GetListReply);
+  rpc GetSchema(GetSchemaRequest) returns (GetSchemaReply);
+}
+
+message GetListRequest {
+}
+
+message GetListReply {
+  repeated string list = 1;
+}
+
+message GetSchemaRequest {
+}
+
+message GetSchemaReply {
+  string schema = 1;
+}

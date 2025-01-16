@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.Serialization;
 using Libplanet.Types.Consensus;
 
 namespace Libplanet.Net.Consensus
@@ -9,11 +8,10 @@ namespace Libplanet.Net.Consensus
     /// this is thrown pre-emptively before a <see cref="Vote"/> is processed, i.e.
     /// does not change the state of a <see cref="Context"/> in a meaningful way.
     /// </summary>
-    [Serializable]
     public class InvalidVoteException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidVoteException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -31,7 +29,7 @@ namespace Libplanet.Net.Consensus
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="InvalidConsensusMessageException"/> class.
+        /// Initializes a new instance of the <see cref="InvalidVoteException"/> class.
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.
         /// </param>
@@ -43,31 +41,6 @@ namespace Libplanet.Net.Consensus
             Vote = vote;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidConsensusMessageException"/>
-        /// class with serialized data.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/>
-        /// that holds the serialized object data about the exception being thrown.
-        /// </param>
-        /// <param name="context">The <see cref="StreamingContext"/>
-        /// that contains contextual information about the source or destination.
-        /// </param>
-        protected InvalidVoteException(SerializationInfo info, StreamingContext context)
-        {
-            Vote =
-                info.GetValue(nameof(Vote), typeof(Vote)) as Vote ??
-                throw new SerializationException(
-                    $"{nameof(Vote)} is expected to be a non-null {nameof(Vote)}.");
-        }
-
         public Vote Vote { get; }
-
-        public override void GetObjectData(
-            SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Vote), Vote);
-        }
     }
 }

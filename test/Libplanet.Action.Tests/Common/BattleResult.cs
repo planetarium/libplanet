@@ -1,13 +1,10 @@
 using System.Collections.Immutable;
 using System.Globalization;
-using System.Runtime.Serialization;
 using Bencodex.Types;
-using Libplanet.Common.Serialization;
 
 namespace Libplanet.Action.Tests.Common
 {
-    [Serializable]
-    public sealed class BattleResult : IEquatable<BattleResult>, ISerializable
+    public sealed class BattleResult : IEquatable<BattleResult>
     {
         public BattleResult(
             IEnumerable<string> usedWeapons,
@@ -18,14 +15,6 @@ namespace Libplanet.Action.Tests.Common
                 StringComparer.Create(CultureInfo.InvariantCulture, false);
             UsedWeapons = usedWeapons.ToImmutableHashSet(comparer);
             Targets = targets.ToImmutableHashSet(comparer);
-        }
-
-        private BattleResult(SerializationInfo info, StreamingContext context)
-            : this(
-                info.GetValue<string[]>("used_weapons").ToImmutableHashSet(),
-                info.GetValue<string[]>("targets").ToImmutableHashSet()
-            )
-        {
         }
 
         public IImmutableSet<string> UsedWeapons { get; }
@@ -66,15 +55,6 @@ namespace Libplanet.Action.Tests.Common
                 return ((UsedWeapons?.GetHashCode() ?? 0) * 397) ^
                     (Targets?.GetHashCode() ?? 0);
             }
-        }
-
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context
-        )
-        {
-            info.AddValue("used_weapons", UsedWeapons.ToArray());
-            info.AddValue("targets", Targets.ToArray());
         }
 
         public override string ToString()

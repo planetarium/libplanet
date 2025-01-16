@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 
@@ -12,7 +10,6 @@ namespace Libplanet.Action.State
     /// </summary>
     /// <seealso cref="IWorld.TransferAsset"/>
     /// <seealso cref="IWorld.BurnAsset"/>
-    [Serializable]
     public sealed class InsufficientBalanceException : Exception
     {
         /// <summary>
@@ -34,13 +31,6 @@ namespace Libplanet.Action.State
             Balance = balance;
         }
 
-        private InsufficientBalanceException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            Address = info.GetValue<Address>(nameof(Address));
-            Balance = info.GetValue<FungibleAssetValue>(nameof(Balance));
-        }
-
         /// <summary>
         /// The owner of the insufficient <see cref="Balance"/>.
         /// </summary>
@@ -50,13 +40,5 @@ namespace Libplanet.Action.State
         /// The account's current balance.
         /// </summary>
         public FungibleAssetValue Balance { get; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue(nameof(Address), Address);
-            info.AddValue(nameof(Balance), Balance);
-        }
     }
 }

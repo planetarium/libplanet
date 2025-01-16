@@ -6,7 +6,6 @@ namespace Libplanet.Types.Tx
     /// An exception <em>returned</em> when a <see cref="Transaction"/> violates
     /// a <see cref="IBlockPolicy"/>.
     /// </summary>
-    [Serializable]
     public class TxPolicyViolationException : InvalidTxException
     {
         /// <summary>

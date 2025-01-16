@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Types.Assets;
 
 namespace Libplanet.Action.State
@@ -10,7 +8,6 @@ namespace Libplanet.Action.State
     /// supply exceed the maximum amount.
     /// </summary>
     /// <seealso cref="IWorld.MintAsset"/>
-    [Serializable]
     public sealed class SupplyOverflowException : Exception
     {
         /// <summary>
@@ -28,22 +25,9 @@ namespace Libplanet.Action.State
             Amount = amount;
         }
 
-        private SupplyOverflowException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            Amount = info.GetValue<FungibleAssetValue>(nameof(Amount));
-        }
-
         /// <summary>
         /// The attempted amount to be minted.
         /// </summary>
         public FungibleAssetValue Amount { get; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue(nameof(Amount), Amount);
-        }
     }
 }

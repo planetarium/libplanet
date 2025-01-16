@@ -5,7 +5,18 @@
   ],
   "search.exclude": {
     "**/.yarn": true,
-    "**/.pnp.*": true
+    "**/.pnp.*": true,
+    "**/bin": true,
+    "**/obj": true
+  },
+  "files.exclude": {
+    "**/obj": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
   },
   "csharp.semanticHighlighting.enabled": true,
   "cSpell.words": [

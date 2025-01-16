@@ -34,7 +34,7 @@ jobs:
         WEB_FLOW_KEY_URL: https://github.com/web-flow.gpg
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
     - uses: actions/setup-node@v3
       with:
         registry-url: 'https://registry.npmjs.org'

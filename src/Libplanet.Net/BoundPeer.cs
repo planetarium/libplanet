@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Net;
-using System.Runtime.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Destructurama.Attributed;
@@ -10,10 +9,8 @@ using Libplanet.Crypto;
 
 namespace Libplanet.Net
 {
-    [Serializable]
-    public sealed class BoundPeer : ISerializable, IEquatable<BoundPeer>, IBencodable
+    public sealed class BoundPeer : IEquatable<BoundPeer>, IBencodable
     {
-        private static readonly Codec _codec = new Codec();
         private static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
         private static readonly byte[] EndPointHostKey = { 0x68 }; // 'h'
         private static readonly byte[] EndPointPortKey = { 0x65 }; // 'e'
@@ -66,15 +63,6 @@ namespace Libplanet.Net
                 new DnsEndPoint(
                     (Text)bencoded[EndPointHostKey], (Integer)bencoded[EndPointPortKey]),
                 bencoded[PublicIpAddressKey] is Text text ? IPAddress.Parse(text) : null)
-        {
-        }
-
-        private BoundPeer(SerializationInfo info, StreamingContext context)
-            : this(_codec.Decode(info.GetValue(nameof(Bencoded), typeof(byte[])) is
-                byte[] bytes
-                    ? bytes
-                    : throw new SerializationException(
-                        $"Invalid type for {nameof(Bencoded)} in {nameof(info)}.")))
         {
         }
 
@@ -189,12 +177,6 @@ namespace Libplanet.Net
         }
 
         public override bool Equals(object? obj) => obj is BoundPeer other && Equals(other);
-
-        /// <inheritdoc/>
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(Bencoded), _codec.Encode(Bencoded));
-        }
 
         public override int GetHashCode() => HashCode.Combine(
             HashCode.Combine(PublicKey.GetHashCode(), PublicIPAddress?.GetHashCode()), EndPoint);

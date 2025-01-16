@@ -1,7 +1,5 @@
 #pragma warning disable S1764
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Types.Assets;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -398,19 +396,6 @@ namespace Libplanet.Tests.Assets
             Assert.Equal(foo3, foo3.Abs());
             Assert.Equal(foo3, foo_3.Abs());
             Assert.Equal(foo0, foo0.Abs());
-        }
-
-        [Fact]
-        public void Serialize()
-        {
-            FungibleAssetValue foo100 = FungibleAssetValue.FromRawValue(FOO, 100);
-            var f = new BinaryFormatter();
-            var s = new MemoryStream();
-            f.Serialize(s, foo100);
-            s.Seek(0, SeekOrigin.Begin);
-            var deserialized = f.Deserialize(s);
-            Assert.IsType<FungibleAssetValue>(deserialized);
-            Assert.Equal(foo100, (FungibleAssetValue)deserialized);
         }
 
         [Fact]

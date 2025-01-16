@@ -6,7 +6,6 @@ namespace Libplanet.Types.Tx
     /// The exception that is thrown when a <see cref="Transaction"/>'s
     /// <see cref="Transaction.Signature"/> is invalid.
     /// </summary>
-    [Serializable]
     public class InvalidTxSignatureException : InvalidTxException
     {
         /// <summary>

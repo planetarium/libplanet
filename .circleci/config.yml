@@ -70,12 +70,18 @@ commands:
     steps:
     - checkout
     - concat_files:
-        glob: "{src,test,tools}/*/*.csproj"
+        glob: "{src,test,tools,sdk/*}/*/*.csproj"
         to: .combined-package-files.txt
     - restore_cache:
         keys:
         - v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
         - v1-deps-{{ arch }}
+    - run:
+        name: Install .NET 8.0 SDK for Libplanet-SDK
+        shell: bash
+        command: |
+          curl -sSL https://dot.net/v1/dotnet-install.sh | \
+          bash /dev/stdin --channel 8.0 --install-dir /usr/share/dotnet
     - run: dotnet restore
     - save_cache:
         key: v1-deps-{{ arch }}-{{ checksum ".combined-package-files.txt" }}
@@ -111,6 +117,8 @@ commands:
         - "test/*/obj/"
         - "tools/*/bin/"
         - "tools/*/obj/"
+        - "sdk/node/*/bin/"
+        - "sdk/node/*/obj/"
 
   netcore_test_base:
     parameters:
@@ -243,6 +251,12 @@ commands:
           name: Install lib6c-dev (for RocksDBSharp)
           shell: bash
           command: apt update -y && apt install -y libc6-dev liblz4-dev zlib1g-dev libsnappy-dev libzstd-dev
+      - run:
+          name: Install .NET 8.0 SDK for Libplanet-SDK
+          shell: bash
+          command: |
+            curl -sSL https://dot.net/v1/dotnet-install.sh | \
+            bash /dev/stdin --channel 8.0 --install-dir /usr/share/dotnet
       - netcore_test_base:
           collect_tests_from: "<<parameters.collect_tests_from>>"
           locale: "<<parameters.locale>>"
@@ -276,19 +290,12 @@ commands:
         name: Install .NET 6.0 SDK
         shell: bash
         command: |
-          set -evx
-          echo $PATH > /dev/stderr
-          if ! command -v dotnet && [[ ! -f "$HOME/.dotnet/dotnet" ]]; then
-            curl \
-              -L \
-              -o /tmp/dotnet-install.sh \
-              https://dot.net/v1/dotnet-install.sh
-            chmod +x /tmp/dotnet-install.sh
-            /tmp/dotnet-install.sh \
-              --verbose \
-              --channel 6.0
-          fi
-          command -v dotnet
+          curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 6.0
+    - run:
+        name: Install .NET 8.0 SDK for Libplanet-SDK
+        shell: bash
+        command: |
+          curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 8.0
     - save_cache:
         key: v1-macos-dotnet-sdk-6.0
         paths:

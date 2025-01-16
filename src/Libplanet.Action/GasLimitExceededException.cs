@@ -3,7 +3,6 @@ using System.Globalization;
 
 namespace Libplanet.Action
 {
-    [Serializable]
     public sealed class GasLimitExceededException : Exception
     {
         public GasLimitExceededException(long limit, long used)

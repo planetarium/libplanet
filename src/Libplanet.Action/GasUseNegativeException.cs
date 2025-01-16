@@ -2,7 +2,6 @@ using System;
 
 namespace Libplanet.Action
 {
-    [Serializable]
     public class GasUseNegativeException : Exception
     {
         public GasUseNegativeException()

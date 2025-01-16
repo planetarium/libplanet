@@ -25,6 +25,6 @@ jobs:
         ref: ${{ github.pull_request.head.sha }}
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
     - run: 'hooks/pre-commit'
     - run: 'dotnet pack -p:SkipSonar=false -p:_IsPacking=true'

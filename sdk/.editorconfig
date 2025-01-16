@@ -1,0 +1,19 @@
+[*.proto]
+indent_size = 2
+
+[*.cs]
+
+# S3903: Types should be defined in named namespaces
+dotnet_diagnostic.S3903.severity = none
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = none
+
+# MEN016: Avoid top-level statements
+dotnet_diagnostic.MEN016.severity = none
+
+[**/obj/**/*.cs]
+
+# CS8981: The type name only contains lower-cased ascii characters
+dotnet_diagnostic.CS8981.severity = none
+

@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-using Libplanet.Common.Serialization;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net.Transports
@@ -10,7 +8,6 @@ namespace Libplanet.Net.Transports
     /// <see cref="Message"/> that <see cref="Swarm"/> received
     /// is different.
     /// </summary>
-    [Serializable]
     public class DifferentAppProtocolVersionException : Exception
     {
         /// <summary>
@@ -37,18 +34,6 @@ namespace Libplanet.Net.Transports
             Trusted = trusted;
         }
 
-        protected DifferentAppProtocolVersionException(
-            SerializationInfo info,
-            StreamingContext context)
-            : base(info, context)
-        {
-            ExpectedApv = AppProtocolVersion.FromToken(
-                info.GetValue<string>(nameof(ExpectedApv)));
-            ActualApv = AppProtocolVersion.FromToken(
-                info.GetValue<string>(nameof(ActualApv)));
-            Trusted = info.GetValue<bool>(nameof(Trusted));
-        }
-
         /// <summary>
         /// The protocol version of the current <see cref="Swarm"/>.
         /// </summary>
@@ -64,14 +49,5 @@ namespace Libplanet.Net.Transports
         /// Whether <see cref="ActualApv"/> is signed by a trusted signer.
         /// </summary>
         public bool Trusted { get; }
-
-        public override void GetObjectData(
-            SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(ExpectedApv), ExpectedApv.Token);
-            info.AddValue(nameof(ActualApv), ActualApv.Token);
-            info.AddValue(nameof(Trusted), Trusted);
-        }
     }
 }

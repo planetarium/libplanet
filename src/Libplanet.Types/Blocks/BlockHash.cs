@@ -4,13 +4,11 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Libplanet.Common;
-using Libplanet.Common.Serialization;
 
 namespace Libplanet.Types.Blocks
 {
@@ -19,9 +17,8 @@ namespace Libplanet.Types.Blocks
     /// </summary>
     /// <seealso cref="Block.Hash"/>
     [JsonConverter(typeof(BlockHashJsonConverter))]
-    [Serializable]
     public readonly struct BlockHash :
-        ISerializable, IEquatable<BlockHash>, IComparable<BlockHash>, IComparable, IBencodable
+        IEquatable<BlockHash>, IComparable<BlockHash>, IComparable, IBencodable
     {
         /// <summary>
         /// The size of bytes that each <see cref="BlockHash"/> consists of.
@@ -80,11 +77,6 @@ namespace Libplanet.Types.Blocks
 
         private BlockHash(Bencodex.Types.Binary bencoded)
             : this(bencoded.ByteArray)
-        {
-        }
-
-        private BlockHash(SerializationInfo info, StreamingContext context)
-            : this(info.GetValue<byte[]>(nameof(BlockHash)))
         {
         }
 
@@ -222,10 +214,6 @@ namespace Libplanet.Types.Blocks
             ? this.CompareTo(other)
             : throw new ArgumentException(
                 $"Argument {nameof(obj)} is not an ${nameof(BlockHash)}.", nameof(obj));
-
-        /// <inheritdoc cref="ISerializable.GetObjectData(SerializationInfo, StreamingContext)"/>
-        public void GetObjectData(SerializationInfo info, StreamingContext context) =>
-            info.AddValue(nameof(BlockHash), ToByteArray());
 
         /// <inheritdoc cref="object.ToString()"/>
         [Pure]
