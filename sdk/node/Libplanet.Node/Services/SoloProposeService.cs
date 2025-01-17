@@ -27,20 +27,15 @@ internal sealed class SoloProposeService : BackgroundService
         _blockInterval = TimeSpan.FromMilliseconds(options.BlockInterval);
         _logger = logger;
         _logger.LogInformation(
-            "SoloProposeService initialized. Interval: {BlockInterval}ms",
+            "SoloProposeService initialized. Interval: {BlockInterval}",
             _blockInterval);
     }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using PeriodicTimer timer = new PeriodicTimer(_blockInterval);
-
         try
         {
-            while (await timer.WaitForNextTickAsync(stoppingToken))
-            {
-                await ProposeBlockAsync(stoppingToken);
-            }
+            await ProposeBlockAsync(stoppingToken);
         }
         catch (OperationCanceledException e)
         {
@@ -48,15 +43,13 @@ internal sealed class SoloProposeService : BackgroundService
         }
     }
 
-    private Task ProposeBlockAsync(CancellationToken cancellationToken)
+    private async Task ProposeBlockAsync(CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
             ProposeBlock();
-            Task.Delay(_blockInterval, cancellationToken);
+            await Task.Delay(_blockInterval, cancellationToken);
         }
-
-        return Task.CompletedTask;
     }
 
     private void ProposeBlock()
