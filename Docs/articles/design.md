@@ -4,7 +4,7 @@ Libplanet design
 Libplanet is a network/storage library for [peer-to-peer][P2P] distributed
 multiplayer games.  From the perspective of this library's user,
 it can be similar to a client library of a [PaaS] for games,
-except that autonomous nodes run by gamers communicate with
+except those autonomous nodes run by gamers communicate with
 each other without any authority of the centralized server.
 
 Under the hood, because we need to prevent malicious nodes in the network from
@@ -15,7 +15,7 @@ Implementing blockchain and BFT consensus for peer-to-peer distributed
 multiplayer games is highly complicated, requires a lot of code to
 be written, and is difficult and tedious to test.  For the future of
 decentralized online games, rather than every single game making such redundant
-effort, it will be more cost-efficient to make a high quality open source
+effort, it will be more cost-efficient to make a high-quality open source
 library for commonly performed tasks.
 
 [P2P]: https://en.wikipedia.org/wiki/Peer-to-peer
@@ -55,9 +55,9 @@ For the maximum compatibility and portability, we currently target
 Transactions and actions
 ------------------------
 
-Every action that happened in a game built on Libplanet should be recorded in
+Every action that happens in a game built on Libplanet should be recorded in
 the blockchain.  Although trivial things like chatting between players could be
-an exception as these do not affect rules or incentives of a game, actions such
+an exception as these do not affect the rules or incentives of a game, actions such
 as a character's movement, battle, progression (i.e., exp), item drops,
 reinforcements, breakages, trades, that are non-trivial and affect game states
 should be recorded to the append-only log.  Each log has its own digital
@@ -65,7 +65,7 @@ signature to prove that the corresponding gamer is responsible.
 
 We call the unit of such pair of log and its signature a
 @"Libplanet.Tx.Transaction`1", and it consists of multiple
-@"Libplanet.Tx.Transaction`1.Actions".  How transactions and actions grouped is
+@"Libplanet.Tx.Transaction`1.Actions".  How transactions and actions are grouped is
 left to a game engineer's discretion.  For example, if there are four actions
 like *A* to *D*, these can be grouped altogether (e.g., *{A, B, C, D}*),
 or be into two or three groups (e.g., *{A} & {B, C, D}*), or rather have
@@ -88,7 +88,7 @@ at best to 20 seconds even at worst.
 Does it imply the best practice is to put as many actions as possible into
 as few transactions as possible?  Unfortunately it is not that simple.
 
-Putting many actions into few transactions decreases the immediacy of
+Putting many actions into a few transactions decreases the immediacy of
 each action.  To other nodes (gamers), it looks like there is no change at
 all for a while, and then suddenly many things happening at once.
 Grouping actions into transactions is a balance between throughput and latency,
@@ -120,7 +120,7 @@ Accounts and addresses
 
 Libplanet creates digital signatures to find which player node made each
 transaction, without relying on the authority of a centralized server.
-In the similar fashion to [Bitcoin] and [Ethereum], a transaction is signed
+In a similar fashion to [Bitcoin] and [Ethereum], a transaction is signed
 with [ECDSA], and a pair of each player's sole @"Libplanet.Crypto.PrivateKey"
 and @"Libplanet.Crypto.PublicKey" used to sign transactions construct
 an *account*.  Since a pair of keys for an account is *chosen* at offline,
@@ -129,7 +129,7 @@ the process of so-called "account creation" can be omitted.
 An account can also be identified through the @"Libplanet.Address" which is
 derived from the corresponding @"Libplanet.Crypto.PublicKey".  It is shorter
 than @"Libplanet.Crypto.PublicKey" and follows the same form to Ethereum's.
-This means key pairs that have used for Ethereum can be reused for
+This means key pairs that have been used for Ethereum can be reused for
 Libplanet-backed games too.  For example, a game can raise funding or receive
 donations through Ethereum and then reward people when the game is released.
 
