@@ -67,6 +67,12 @@ namespace Libplanet.Net.Consensus
             TimeSpan newHeightDelay,
             ContextOption contextOption)
         {
+            _logger = Log
+                .ForContext("Tag", "Consensus")
+                .ForContext("SubTag", "ConsensusContext")
+                .ForContext<ConsensusContext>()
+                .ForContext("Source", nameof(ConsensusContext));
+
             _consensusMessageCommunicator = consensusMessageCommunicator;
             _blockChain = blockChain;
             _privateKey = privateKey;
@@ -79,12 +85,6 @@ namespace Libplanet.Net.Consensus
                 _blockChain.GetBlockCommit(_blockChain.Tip.Index));
             AttachEventHandlers(_currentContext);
             _pendingMessages = new HashSet<ConsensusMsg>();
-
-            _logger = Log
-                .ForContext("Tag", "Consensus")
-                .ForContext("SubTag", "ConsensusContext")
-                .ForContext<ConsensusContext>()
-                .ForContext("Source", nameof(ConsensusContext));
 
             _blockChain.TipChanged += OnTipChanged;
             _contextLock = new object();
@@ -485,13 +485,25 @@ namespace Libplanet.Net.Consensus
         /// </exception>
         private Context CreateContext(long height, BlockCommit? lastCommit)
         {
+            _logger.Information(
+                "Creating a new context for height #{Height} with last commit {LastCommit}",
+                height,
+                lastCommit != null);
             var nextStateRootHash = _blockChain.GetNextStateRootHash(height - 1) ??
                 throw new NullReferenceException(
                     $"Could not find the next state root hash for index {height - 1}");
+            _logger.Information(
+                "Next state root hash for height #{Height} is {NextStateRootHash}",
+                height,
+                nextStateRootHash);
             ValidatorSet validatorSet = _blockChain
                 .GetWorldState(nextStateRootHash)
                 .GetValidatorSet();
 
+            _logger.Information(
+                "Validator set for height #{Height} is {ValidatorSet}",
+                height,
+                validatorSet.Validators.Count);
             Context context = new Context(
                 _blockChain,
                 height,
