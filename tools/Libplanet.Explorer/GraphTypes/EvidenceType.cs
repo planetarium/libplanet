@@ -34,6 +34,11 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "Indicates the timestamp the infraction occurred.",
                 resolve: x => x.Source.Timestamp
             );
+            Field<NonNullGraphType<IValueType>>(
+                name: "Bencoded",
+                description: "The bencoded form of evidence.",
+                resolve: x => x.Source.Bencoded
+            );
         }
     }
 }
