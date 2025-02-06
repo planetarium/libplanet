@@ -14,7 +14,7 @@ namespace Libplanet.Store
     public class HashNodeCache
     {
         // FIXME: Tuned to 9c mainnet.  Should be refactored to accept cache size as an argument.
-        private const int _cacheSize = 524_288;
+        private const int _cacheSize = 1_024;
 
         private ICache<HashDigest<SHA256>, IValue> _cache;
 
