@@ -10,6 +10,16 @@ internal static class PluginLoader
 {
     public static IActionLoader LoadActionLoader(string modulePath, string typeName)
     {
+        if (Type.GetType(typeName) is { } type)
+        {
+            if (Activator.CreateInstance(type) is not IActionLoader obj)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return obj;
+        }
+
         var assembly = LoadAssembly(modulePath);
         return Create<IActionLoader>(assembly, typeName);
     }
@@ -17,6 +27,16 @@ internal static class PluginLoader
     public static IPolicyActionsRegistry LoadPolicyActionRegistry(
         string relativePath, string typeName)
     {
+        if (Type.GetType(typeName) is { } type)
+        {
+            if (Activator.CreateInstance(type) is not IPolicyActionsRegistry obj)
+            {
+                throw new InvalidOperationException();
+            }
+
+            return obj;
+        }
+
         var assembly = LoadAssembly(relativePath);
         return Create<IPolicyActionsRegistry>(assembly, typeName);
     }

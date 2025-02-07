@@ -18,7 +18,8 @@ internal sealed class ActionService(IOptions<ActionOptions> options)
     {
         if (options.ActionLoaderType != string.Empty)
         {
-            var modulePath = options.ModulePath;
+            var modulePath = options.ModulePath != string.Empty
+                ? Path.GetFullPath(options.ModulePath) : string.Empty;
             var actionLoaderType = options.ActionLoaderType;
             return PluginLoader.LoadActionLoader(modulePath, actionLoaderType);
         }
@@ -30,7 +31,8 @@ internal sealed class ActionService(IOptions<ActionOptions> options)
     {
         if (options.PolicyActionRegistryType != string.Empty)
         {
-            var modulePath = options.ModulePath;
+            var modulePath = options.ModulePath != string.Empty
+                ? Path.GetFullPath(options.ModulePath) : string.Empty;
             var policyActionRegistryType = options.PolicyActionRegistryType;
             return PluginLoader.LoadPolicyActionRegistry(modulePath, policyActionRegistryType);
         }
