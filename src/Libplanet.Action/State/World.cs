@@ -31,11 +31,11 @@ namespace Libplanet.Action.State
         [Pure]
         public ITrie Trie => _baseState.Trie;
 
-        /// <inheritdoc cref="IWorldState.Legacy/>
+        /// <inheritdoc cref="IWorldState.Legacy"/>
         [Pure]
         public bool Legacy => _baseState.Legacy;
 
-        /// <inheritdoc cref="IWorldState.Version/>
+        /// <inheritdoc cref="IWorldState.Version"/>
         [Pure]
         public int Version => _baseState.Version;
 
@@ -52,7 +52,7 @@ namespace Libplanet.Action.State
         [Pure]
         public IAccountState GetAccountState(Address address) => GetAccount(address);
 
-        /// <inheritdoc cref="IWorld.SetAccount/>
+        /// <inheritdoc cref="IWorld.SetAccount"/>
         [Pure]
         public IWorld SetAccount(Address address, IAccount account)
         {
