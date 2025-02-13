@@ -157,7 +157,7 @@ namespace Libplanet.Store
 
         private Block? GetBlock(BlockHash key)
         {
-            if (_cache.TryGet(key, out Block cached))
+            if (_cache.TryGet(key, out Block? cached))
             {
                 if (_store.ContainsBlock(key))
                 {
