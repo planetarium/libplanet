@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using global::Cocona;
 using Libplanet.Common;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Tx;
@@ -158,6 +159,49 @@ public class StoreCommand
         {
             Console.WriteLine("Already migrated, no need to migrate.");
         }
+    }
+
+    [Command(Description = "Query a tx nonce for the address for the canonical chain.")]
+    public void GetTxNonce(
+        [Argument("STORE", Description = StoreArgumentDescription)]
+        string home,
+        [Argument("ADDRESS", Description = "signer address")]
+        string address)
+    {
+        IStore store = Utils.LoadStoreFromUri(home);
+        var canon = store.GetCanonicalChainId();
+        if (canon is not { } cid)
+        {
+            Console.WriteLine("No canonical chain.");
+            return;
+        }
+
+        Console.WriteLine(store.GetTxNonce(cid, new Address(address)));
+        store?.Dispose();
+    }
+
+    [Command(Description = "Mutate a tx nonce for the address for the canonical chain.")]
+    public void SetTxNonce(
+        [Argument("STORE", Description = StoreArgumentDescription)]
+        string home,
+        [Argument("ADDRESS", Description = "signer address")]
+        string address,
+        [Argument("NONCE", Description = "nonce")]
+        long nonce)
+    {
+        IStore store = Utils.LoadStoreFromUri(home);
+        var canon = store.GetCanonicalChainId();
+        if (canon is not { } cid)
+        {
+            Console.WriteLine("No canonical chain.");
+            return;
+        }
+
+        var signer = new Address(address);
+        var currentNonce = store.GetTxNonce(cid, signer);
+        store.IncreaseTxNonce(cid, signer, nonce - currentNonce);
+        Console.WriteLine(store.GetTxNonce(cid, signer));
+        store?.Dispose();
     }
 
     private static Block GetBlock(IStore store, BlockHash blockHash)

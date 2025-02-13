@@ -347,6 +347,38 @@ public class StoreCommandTest : IDisposable
         }
     }
 
+    [SkippableFact]
+    public void TestGetTxNonce()
+    {
+        foreach (var fx in _storeFixtures)
+        {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
+            new StoreCommand().GetTxNonce(
+                fx.Scheme + fx.Path,
+                new PrivateKey().Address.ToString());
+            var actual = sw.ToString();
+            Assert.Equal("0", actual.TrimEnd());
+        }
+    }
+
+    [SkippableFact]
+    public void TestSetTxNonce()
+    {
+        foreach (var fx in _storeFixtures)
+        {
+            using var sw = new StringWriter();
+            Console.SetOut(sw);
+            const int target = 5;
+            new StoreCommand().SetTxNonce(
+                fx.Scheme + fx.Path,
+                new PrivateKey().Address.ToString(),
+                target);
+            var actual = sw.ToString();
+            Assert.Equal($"{target}", actual.TrimEnd());
+        }
+    }
+
     public void Dispose()
     {
         foreach (var storeFixture in _storeFixtures)
