@@ -169,7 +169,10 @@ this <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
   </span>
   <a id="Libplanet_Action_State_World_Legacy_" data-uid="Libplanet.Action.State.World.Legacy*"></a>
   <h4 id="Libplanet_Action_State_World_Legacy" data-uid="Libplanet.Action.State.World.Legacy">Legacy</h4>
-  <div class="markdown level1 summary"><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
+  <div class="markdown level1 summary"><p>Whether <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> is backed by an <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> with
+the legacy data model.  This is <span class="xref">true</span> if and only if
+<a class="xref" href="Libplanet.Action.State.IWorldState.html#Libplanet_Action_State_IWorldState_Version">Version</a> is less than
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion">WorldStateProtocolVersion</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -231,7 +234,13 @@ this <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
   </span>
   <a id="Libplanet_Action_State_World_Version_" data-uid="Libplanet.Action.State.World.Version*"></a>
   <h4 id="Libplanet_Action_State_World_Version" data-uid="Libplanet.Action.State.World.Version">Version</h4>
-  <div class="markdown level1 summary"><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
+  <div class="markdown level1 summary"><p>The version of the backend <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> data model.  This should be in sync with
+<a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_ProtocolVersion">ProtocolVersion</a> of the <a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a>
+getting evaluated.  As this was only introduced since
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion">WorldStateProtocolVersion</a>, this returns
+zero with any <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a> representing an <a class="xref" href="Libplanet.Action.State.IWorldState.html">IWorldState</a> before
+<a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html#Libplanet_Types_Blocks_BlockMetadata_WorldStateProtocolVersion">WorldStateProtocolVersion</a> or any <a class="xref" href="Libplanet.Store.Trie.ITrie.html">ITrie</a>
+representing an <a class="xref" href="Libplanet.Action.State.IAccountState.html">IAccountState</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -253,6 +262,10 @@ this <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_State_World_Version_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.Trie.TrieMetadata.html#Libplanet_Store_Trie_TrieMetadata_Version">Version</a></div>
+  </div>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
@@ -370,7 +383,8 @@ instead.</p>
   </span>
   <a id="Libplanet_Action_State_World_SetAccount_" data-uid="Libplanet.Action.State.World.SetAccount*"></a>
   <h4 id="Libplanet_Action_State_World_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount_" data-uid="Libplanet.Action.State.World.SetAccount(Libplanet.Crypto.Address,Libplanet.Action.State.IAccount)">SetAccount(Address, IAccount)</h4>
-  <div class="markdown level1 summary"><p>An internal implementation of <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>.</p>
+  <div class="markdown level1 summary"><p>Creates a new instance of <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> with given <code data-dev-comment-type="paramref" class="paramref">address</code>
+set to given <code data-dev-comment-type="paramref" class="paramref">account</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -390,12 +404,16 @@ instead.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.Address.html">Address</a> for which to set
+given <see cref="!:account"></see> to.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a></td>
         <td><span class="parametername">account</span></td>
-        <td></td>
+        <td><p>The new <a class="xref" href="Libplanet.Action.State.IAccount.html">IAccount</a> to set to
+given <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -410,10 +428,16 @@ instead.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a></td>
-        <td></td>
+        <td><p>A new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> instance where the account state of given
+<code data-dev-comment-type="paramref" class="paramref">address</code> is set to given <code data-dev-comment-type="paramref" class="paramref">account</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_State_World_SetAccount_Libplanet_Crypto_Address_Libplanet_Action_State_IAccount__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method does not manipulate the instance, but returns
+a new <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a> instance with an updated world state instead.</p>
+</div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Libplanet.Action.State.IWorld.html">IWorld</a>
