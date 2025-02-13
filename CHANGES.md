@@ -6,6 +6,15 @@ Version 5.5.1
 
 To be released.
 
+### Added APIs
+
+ -  (Libplanet.Extensions.Cocona) Added new commands to store command:
+    [[#4032]]
+     -  `GetTxNonce`
+     -  `SetTxNonce`
+
+[#4032]: https://github.com/planetarium/libplanet/pull/4032
+
 
 Version 5.5.0
 -------------
