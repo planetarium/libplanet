@@ -9,6 +9,8 @@ namespace Libplanet.Store.Trie.Nodes;
 /// </summary>
 public sealed record class HashNode(HashDigest<SHA256> HashDigest) : INode
 {
+    public HashDigest<SHA256> Hash => HashDigest;
+
     /// <inheritdoc cref="INode.ToBencodex()"/>
     public IValue ToBencodex() => HashDigest.Bencoded;
 

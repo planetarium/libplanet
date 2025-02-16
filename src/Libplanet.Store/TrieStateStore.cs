@@ -104,11 +104,11 @@ public partial class TrieStateStore(IKeyValueStore keyValueStore) : IStateStore
         _logger.Verbose("Finished {MethodName}()", nameof(CopyStates));
     }
 
-    /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}?, bool)"/>
-    public ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash) =>
+    /// <inheritdoc cref="IStateStore.GetStateRoot(HashDigest{SHA256}, bool)"/>
+    public ITrie GetStateRoot(HashDigest<SHA256> stateRootHash) =>
         new MerkleTrie(
             StateKeyValueStore,
-            stateRootHash is { } h2 ? new HashNode(h2) : null,
+            new HashNode(stateRootHash),
             _cache);
 
     /// <inheritdoc cref="System.IDisposable.Dispose()"/>

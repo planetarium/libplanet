@@ -28,7 +28,7 @@ public class MerkleTrieTest
         // See https://github.com/planetarium/libplanet/pull/1091
         using var store2 = new MemoryKeyValueStore();
         var merkleTrie2 = new MerkleTrie(store2, MerkleTrie.EmptyRootHash);
-        Assert.Null(merkleTrie2.Node);
+        Assert.Equal(RootNode.Default, merkleTrie2.Node);
     }
 
     [Fact]

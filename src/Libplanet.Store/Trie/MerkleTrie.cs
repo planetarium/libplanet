@@ -25,7 +25,7 @@ namespace Libplanet.Store.Trie;
 // TODO: implement 'logs' for debugging.
 public sealed partial class MerkleTrie(
     IKeyValueStore keyValueStore,
-    INode? node = null,
+    INode node,
     HashNodeCache? cache = null) : ITrie
 {
     public static readonly HashDigest<SHA256> EmptyRootHash;
@@ -38,6 +38,11 @@ public sealed partial class MerkleTrie(
     {
         var bxNull = _codec.Encode(Null.Value);
         EmptyRootHash = HashDigest<SHA256>.DeriveFrom(bxNull);
+    }
+
+    public MerkleTrie(IKeyValueStore keyValueStore, HashNodeCache? cache = null)
+        : this(keyValueStore, RootNode.Default, cache)
+    {
     }
 
     /// <summary>
@@ -57,11 +62,10 @@ public sealed partial class MerkleTrie(
     }
 
     /// <inheritdoc cref="ITrie.Node"/>
-    public INode? Node { get; }
-        = node is HashNode hashNode && hashNode.HashDigest.Equals(EmptyRootHash) ? null : node;
+    public INode Node { get; } = node;
 
     /// <inheritdoc cref="ITrie.Hash"/>
-    public HashDigest<SHA256> Hash => GetHash(Node);
+    public HashDigest<SHA256> Hash => Node.Hash;
 
     /// <inheritdoc cref="ITrie.Recorded"/>
     public bool Recorded => Node is null || keyValueStore[new KeyBytes(Hash.ByteArray)] != null;
@@ -244,21 +248,6 @@ public sealed partial class MerkleTrie(
                     throw new InvalidOperationException();
             }
         }
-    }
-
-    private static HashDigest<SHA256> GetHash(INode? node)
-    {
-        if (node is null)
-        {
-            return EmptyRootHash;
-        }
-
-        if (node is HashNode hashNode)
-        {
-            return hashNode.HashDigest;
-        }
-
-        return HashDigest<SHA256>.DeriveFrom(_codec.Encode(node.ToBencodex()));
     }
 
     private IEnumerable<(Nibbles Path, INode Node)> IterateNodes(Nibbles rootPrefix, INode root)

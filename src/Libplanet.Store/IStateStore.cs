@@ -19,7 +19,7 @@ public interface IStateStore : IDisposable
     /// If <see langword="null"/> is passed the empty state root trie is returned.</param>
     /// <returns>The state root trie of the <paramref name="stateRootHash"/>.
     /// If <see langword="null"/> is passed the empty state root trie is returned.</returns>
-    ITrie GetStateRoot(HashDigest<SHA256>? stateRootHash);
+    ITrie GetStateRoot(HashDigest<SHA256> stateRootHash);
 
     /// <summary>
     /// Commits given <paramref name="trie"/> to storage.
