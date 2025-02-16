@@ -16,7 +16,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Null(_type.ParseLiteral(new NullValue()));
 
             var bytes = TestUtils.GetRandomBytes(HashDigest<SHA256>.Size);
-            var hashDigestSHA256 = new HashDigest<SHA256>(bytes);
+            var hashDigestSHA256 = HashDigest<SHA256>.Create(bytes);
             var hex = ByteUtil.Hex(bytes);
             Assert.Equal(
                 hashDigestSHA256,
@@ -38,7 +38,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Null(_type.ParseValue(null));
 
             var bytes = TestUtils.GetRandomBytes(HashDigest<SHA256>.Size);
-            var hashDigest = new HashDigest<SHA256>(bytes);
+            var hashDigest = HashDigest<SHA256>.Create(bytes);
             var hex = ByteUtil.Hex(bytes);
             Assert.Equal(hashDigest, _type.ParseValue(hex));
 
@@ -54,7 +54,7 @@ namespace Libplanet.Explorer.Tests.GraphTypes
         public void Serialize()
         {
             var bytes = TestUtils.GetRandomBytes(HashDigest<SHA256>.Size);
-            var hashDigest = new HashDigest<SHA256>(bytes);
+            var hashDigest = HashDigest<SHA256>.Create(bytes);
             var hex = ByteUtil.Hex(bytes);
             Assert.Equal(hex, _type.Serialize(hashDigest));
 

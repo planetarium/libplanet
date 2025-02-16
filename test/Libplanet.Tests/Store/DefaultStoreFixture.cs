@@ -27,7 +27,13 @@ namespace Libplanet.Tests.Store
 
             Scheme = "default+file://";
 
-            var store = new DefaultStore(Path, blockCacheSize: 2, txCacheSize: 2);
+            var store = new DefaultStore(
+                new DefaultStoreOptions
+                {
+                    Path = Path,
+                    BlockCacheSize = 2,
+                    TxCacheSize = 2,
+                });
             Store = store;
             StateStore = LoadTrieStateStore(Path);
         }
@@ -43,10 +49,10 @@ namespace Libplanet.Tests.Store
 
         public override void Dispose()
         {
-            Store?.Dispose();
-            StateStore?.Dispose();
+            Store.Dispose();
+            StateStore.Dispose();
 
-            if (!(Path is null))
+            if (Directory.Exists(Path))
             {
                 Directory.Delete(Path, true);
             }

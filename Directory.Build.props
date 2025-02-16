@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks Condition="'$(_IsPacking)'=='true'">net8.0</TargetFrameworks>
     <TargetFramework Condition="'$(_IsPacking)'!='true'">net8.0</TargetFramework>
-    <LangVersion>10</LangVersion>
     <VersionPrefix>6.0.0</VersionPrefix>
     <!-- Note: don't be confused by the word "prefix" here.  It's merely a
     version without suffix like "-dev.123".  See the following examples:
@@ -49,17 +48,11 @@
   </ItemGroup>
 
   <ItemGroup>
-     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+     <PackageReference Include="Menees.Analyzers" Version="3.2.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>
-        runtime; build; native; contentfiles; analyzers; buildtransitive
-      </IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
         runtime; build; native; contentfiles; analyzers

@@ -4,7 +4,6 @@
 
   <PropertyGroup>
     <TargetFrameworks Condition="'$(_IsPacking)'=='true'">$(TargetFrameworks);netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
-    <LangVersion>9</LangVersion>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
     <Title>$(ProjectName)</Title>

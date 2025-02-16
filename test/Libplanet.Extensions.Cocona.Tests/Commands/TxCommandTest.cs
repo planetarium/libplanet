@@ -14,7 +14,7 @@ public class TxCommandTest
     [Fact]
     public void Analyze()
     {
-        TxCommand cmd = new ();
+        TxCommand cmd = new();
         int exitCode = cmd.Analyze(
             Path.Combine(FixturesPath, "tx.bin"),
             unsigned: false,

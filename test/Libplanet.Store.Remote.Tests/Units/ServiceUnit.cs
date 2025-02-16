@@ -16,9 +16,9 @@ public class ServiceUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(1, 2, 3);
+        var key = KeyBytes.Create(1, 2, 3);
         byte[] value = new byte[] { 4, 5, 6 };
-        mocker.Use<IKeyValueStore>(kvStore => kvStore.Get(key) == value);
+        mocker.Use<IKeyValueStore>(kvStore => kvStore[key] == value);
         RemoteKeyValueService service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
@@ -37,7 +37,7 @@ public class ServiceUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(1, 2, 3);
+        var key = KeyBytes.Create(1, 2, 3);
         mocker.Setup<IKeyValueStore>(store => store.Get(key))
             .Throws<KeyNotFoundException>()
             .Verifiable();
@@ -61,8 +61,8 @@ public class ServiceUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(1, 2, 3);
-        mocker.Use<IKeyValueStore>(kvStore => kvStore.Get(key) == Array.Empty<byte>());
+        var key = KeyBytes.Create(1, 2, 3);
+        mocker.Use<IKeyValueStore>(kvStore => kvStore[key] == Array.Empty<byte>());
         RemoteKeyValueService service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
@@ -81,7 +81,7 @@ public class ServiceUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(1, 2, 3);
+        var key = KeyBytes.Create(1, 2, 3);
         var value = new byte[] { 4, 5, 6 };
         mocker
             .Setup<IKeyValueStore>(store => store.Set(key, value))
@@ -113,12 +113,12 @@ public class ServiceUnit
             {
                 new KeyValueStorePair
                 {
-                    Key = new KeyBytes(1, 2, 3).ToKeyValueStoreKey(),
+                    Key = KeyBytes.Create(1, 2, 3).ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(4, 5, 6).ToKeyValueStoreValue(),
                 },
                 new KeyValueStorePair
                 {
-                    Key = new KeyBytes(2, 3, 4).ToKeyValueStoreKey(),
+                    Key = KeyBytes.Create(2, 3, 4).ToKeyValueStoreKey(),
                     Value = ByteString.CopyFrom(5, 6, 7).ToKeyValueStoreValue(),
                 },
             },
@@ -141,9 +141,9 @@ public class ServiceUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(1, 2, 3);
+        var key = KeyBytes.Create(1, 2, 3);
         mocker
-            .Setup<IKeyValueStore>(store => store.Delete(key))
+            .Setup<IKeyValueStore>(store => store.Remove(key))
             .Verifiable();
         var service = mocker.CreateInstance<RemoteKeyValueService>();
 
@@ -166,13 +166,13 @@ public class ServiceUnit
         {
             Keys =
             {
-                new KeyBytes(1, 2, 3).ToKeyValueStoreKey(),
-                new KeyBytes(2, 3, 4).ToKeyValueStoreKey(),
+                KeyBytes.Create(1, 2, 3).ToKeyValueStoreKey(),
+                KeyBytes.Create(2, 3, 4).ToKeyValueStoreKey(),
             },
         };
 
         mocker
-            .Setup<IKeyValueStore>(store => store.Delete(It.IsAny<IEnumerable<KeyBytes>>()))
+            .Setup<IKeyValueStore>(store => store.RemoveMany(It.IsAny<IEnumerable<KeyBytes>>()))
             .Verifiable();
         var service = mocker.CreateInstance<RemoteKeyValueService>();
 
@@ -188,8 +188,8 @@ public class ServiceUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(1, 2, 3);
-        mocker.Use<IKeyValueStore>(store => store.Exists(key) == true);
+        var key = KeyBytes.Create(1, 2, 3);
+        mocker.Use<IKeyValueStore>(store => store.ContainsKey(key) == true);
         var service = mocker.CreateInstance<RemoteKeyValueService>();
 
         // Act
@@ -210,8 +210,8 @@ public class ServiceUnit
         var mocker = new AutoMocker();
         var keys = new List<KeyBytes>
         {
-            new KeyBytes(1, 2, 3),
-            new KeyBytes(2, 3, 4),
+            KeyBytes.Create(1, 2, 3),
+            KeyBytes.Create(2, 3, 4),
         };
         mocker.Use<IKeyValueStore>(store => store.ListKeys() == keys);
 

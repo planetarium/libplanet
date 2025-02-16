@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Fixtures
                     evidenceHash: BlockContent.DeriveEvidenceHash(block1Evidence)),
                 transactions: block1Transactions,
                 evidence: block1Evidence);
-            Block1TxHash = HashDigest<SHA256>.FromString(
+            Block1TxHash = HashDigest<SHA256>.Parse(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
             Block1Metadata = new BlockMetadata(Block1Content);
 

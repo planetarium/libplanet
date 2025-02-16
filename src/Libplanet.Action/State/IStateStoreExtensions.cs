@@ -168,7 +168,7 @@ namespace Libplanet.Action.State
 
                 // Remove all total supply tracking.
                 const int totalSupplyKeyLength = 42;
-                var subRootPath = new KeyBytes(Encoding.ASCII.GetBytes("__"));
+                var subRootPath = KeyBytes.Create(Encoding.ASCII.GetBytes("__"));
                 var legacyAccountTrie =
                     world.GetAccount(ReservedAddresses.LegacyAccount).Trie;
                 var tempTrie = (MerkleTrie)legacyAccountTrie.Set(subRootPath, Null.Value);
@@ -189,7 +189,7 @@ namespace Libplanet.Action.State
 
                 // Remove all fungible assets
                 const int fungibleAssetKeyLength = 82;
-                subRootPath = new KeyBytes(Encoding.ASCII.GetBytes("_"));
+                subRootPath = KeyBytes.Create(Encoding.ASCII.GetBytes("_"));
                 tempTrie = (MerkleTrie)legacyAccountTrie.Set(subRootPath, Null.Value);
                 byte[] addressBytesBuffer = new byte[40];
                 byte[] currencyBytesBuffer = new byte[40];
@@ -203,8 +203,8 @@ namespace Libplanet.Action.State
                         pair.Path.ByteArray.CopyTo(1, addressBytesBuffer, 0, 40);
                         pair.Path.ByteArray.CopyTo(42, currencyBytesBuffer, 0, 40);
                         favs.Add((
-                            new KeyBytes(addressBytesBuffer),
-                            new KeyBytes(currencyBytesBuffer),
+                            KeyBytes.Create(addressBytesBuffer),
+                            KeyBytes.Create(currencyBytesBuffer),
                             (Integer)pair.Value));
                     }
                 }

@@ -39,7 +39,11 @@ namespace Libplanet.Tests.Store
             try
             {
                 Directory.SetCurrentDirectory(tmpDir);
-                store = new DefaultStore(dirName);
+                store = new DefaultStore(
+                    new DefaultStoreOptions
+                    {
+                        Path = dirName,
+                    });
                 store.PutTransaction(Fx.Transaction1);
             }
             finally
@@ -53,7 +57,11 @@ namespace Libplanet.Tests.Store
 
             // The following `identicalStore' instance should be identical to
             // the `store' instance above, i.e., views the same data.
-            var identicalStore = new DefaultStore(Path.Combine(tmpDir, dirName));
+            var identicalStore = new DefaultStore(
+                new DefaultStoreOptions
+                {
+                    Path = Path.Combine(tmpDir, dirName),
+                });
             Assert.Equal(
                 Fx.Transaction1,
                 identicalStore.GetTransaction(Fx.Transaction1.Id)

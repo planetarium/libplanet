@@ -2,37 +2,34 @@ using System;
 using System.Collections.Generic;
 using LruCacheNet;
 
-namespace Libplanet.Store.Trie
+namespace Libplanet.Store.Trie;
+
+/// <summary>
+/// The proxy class to cache <see cref="IKeyValueStore"/> operations.
+/// </summary>
+/// <remarks>
+/// Creates a new <see cref="CacheableKeyValueStore"/>.
+/// </remarks>
+/// <param name="keyValueStore">An <see cref="IKeyValueStore"/> implementation to do real
+/// operations via <see cref="CacheableKeyValueStore"/>.</param>
+/// <param name="cacheSize">The capacity of the values cache.</param>
+public sealed class CacheableKeyValueStore(IKeyValueStore keyValueStore, int cacheSize = 100)
+    : IKeyValueStore, IDisposable
 {
-    /// <summary>
-    /// The proxy class to cache <see cref="IKeyValueStore"/> operations.
-    /// </summary>
-    public class CacheableKeyValueStore : IKeyValueStore
+    private readonly LruCache<KeyBytes, byte[]> _cache = new(cacheSize);
+    private bool _disposed;
+
+    /// <inheritdoc/>
+    public byte[] this[in KeyBytes key]
     {
-        private readonly IKeyValueStore _keyValueStore;
-        private readonly LruCache<KeyBytes, byte[]> _cache;
-
-        /// <summary>
-        /// Creates a new <see cref="CacheableKeyValueStore"/>.
-        /// </summary>
-        /// <param name="keyValueStore">An <see cref="IKeyValueStore"/> implementation to do real
-        /// operations via <see cref="CacheableKeyValueStore"/>.</param>
-        /// <param name="cacheSize">The capacity of the values cache.</param>
-        public CacheableKeyValueStore(IKeyValueStore keyValueStore, int cacheSize = 100)
-        {
-            _keyValueStore = keyValueStore;
-            _cache = new LruCache<KeyBytes, byte[]>(cacheSize);
-        }
-
-        /// <inheritdoc/>
-        public byte[] Get(in KeyBytes key)
+        get
         {
             if (_cache.TryGetValue(key, out byte[]? value) && value is { } v)
             {
                 return v;
             }
 
-            if (_keyValueStore.Get(key) is { } bytes)
+            if (keyValueStore[key] is { } bytes)
             {
                 _cache[key] = bytes;
                 return bytes;
@@ -41,48 +38,46 @@ namespace Libplanet.Store.Trie
             throw new KeyNotFoundException($"No such key: ${key}.");
         }
 
-        /// <inheritdoc/>
-        public void Set(in KeyBytes key, byte[] value)
+        set
         {
-            _keyValueStore.Set(key, value);
+            keyValueStore[key] = value;
             _cache[key] = value;
         }
+    }
 
-        public void Set(IDictionary<KeyBytes, byte[]> values)
-        {
-            _keyValueStore.Set(values);
-        }
+    public void Set(IDictionary<KeyBytes, byte[]> values)
+    {
+        keyValueStore.Set(values);
+    }
 
-        /// <inheritdoc/>
-        public void Delete(in KeyBytes key)
+    /// <inheritdoc/>
+    public bool Remove(in KeyBytes key)
+    {
+        if (keyValueStore.Remove(key))
         {
-            _keyValueStore.Delete(key);
             _cache.Remove(key);
+            return true;
         }
 
-        /// <inheritdoc cref="IKeyValueStore.Delete(IEnumerable{KeyBytes})"/>
-        public void Delete(IEnumerable<KeyBytes> keys)
-        {
-            _keyValueStore.Delete(keys);
-            foreach (KeyBytes key in keys)
-            {
-                _cache.Remove(key);
-            }
-        }
+        return false;
+    }
 
-        /// <inheritdoc/>
-        public bool Exists(in KeyBytes key)
-        {
-            return _cache.ContainsKey(key) || _keyValueStore.Exists(key);
-        }
+    /// <inheritdoc/>
+    public bool ContainsKey(in KeyBytes key)
+    {
+        return _cache.ContainsKey(key) || keyValueStore.ContainsKey(key);
+    }
 
-        /// <inheritdoc/>
-        public IEnumerable<KeyBytes> ListKeys() => _keyValueStore.ListKeys();
+    /// <inheritdoc/>
+    public IEnumerable<KeyBytes> ListKeys() => keyValueStore.ListKeys();
 
-        /// <inheritdoc cref="IDisposable.Dispose()"/>
-        public void Dispose()
+    /// <inheritdoc cref="IDisposable.Dispose()"/>
+    public void Dispose()
+    {
+        if (!_disposed)
         {
-            _keyValueStore?.Dispose();
+            _disposed = true;
+            GC.SuppressFinalize(this);
         }
     }
 }

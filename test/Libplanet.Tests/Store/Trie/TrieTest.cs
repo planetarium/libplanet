@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Store.Trie
                 trieA = trieA.Set(new KeyBytes(addresses[i].ByteArray), states[i]);
             }
 
-            KeyBytes path = new KeyBytes(TestUtils.GetRandomBytes(32));
+            KeyBytes path = KeyBytes.Create(TestUtils.GetRandomBytes(32));
             trieA = trieA.Set(path, (Text)"foo");
             Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
 
@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Store.Trie
             ITrie trie = new MerkleTrie(keyValueStore);
 
             Assert.Throws<ArgumentNullException>(
-                () => trie.Set(new KeyBytes(0xbe, 0xef), null)
+                () => trie.Set(KeyBytes.Create(0xbe, 0xef), null)
             );
         }
     }

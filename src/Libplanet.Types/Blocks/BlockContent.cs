@@ -210,7 +210,7 @@ namespace Libplanet.Types.Blocks
             hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
             if (hasher.Hash is { } hash)
             {
-                return new HashDigest<SHA256>(hash);
+                return HashDigest<SHA256>.Create(hash);
             }
 
             return null;
@@ -246,7 +246,7 @@ namespace Libplanet.Types.Blocks
             hasher.TransformFinalBlock(new byte[] { 0x65 }, 0, 1);  // "e"
             if (hasher.Hash is { } hash)
             {
-                return new HashDigest<SHA256>(hash);
+                return HashDigest<SHA256>.Create(hash);
             }
 
             return null;

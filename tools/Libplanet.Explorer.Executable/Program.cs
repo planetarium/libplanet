@@ -318,9 +318,11 @@ If omitted (default) explorer only the local blockchain store.")]
                       keepLogFileNum: 1);
                 case "default":
                     return new DefaultStore(
-                        options.StorePath,
-                        flush: false,
-                        readOnly: readOnlyMode);
+                        new DefaultStoreOptions
+                        {
+                            Path = options.StorePath,
+                            ReadOnly = readOnlyMode,
+                        });
                 default:
                     // FIXME: give available store type as argument hint without code duplication.
                     var availableStoreTypes = new[] { "rocksdb", "default" };

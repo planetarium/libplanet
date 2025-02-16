@@ -175,22 +175,22 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Hash1,
                 _fx.TxId1,
                 false,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new List<string>() { string.Empty });
             var inputB = new TxExecution(
                 _fx.Hash1,
                 _fx.TxId2,
                 true,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new List<string>() { "AnExceptionName" });
             var inputC = new TxExecution(
                 _fx.Hash2,
                 _fx.TxId1,
                 true,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new List<string>() { "AnotherExceptionName", "YetAnotherExceptionName" });
             _blockChain.UpdateTxExecutions(new TxExecution[] { inputA, inputB, inputC });
 

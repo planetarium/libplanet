@@ -45,9 +45,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         TxStatus.SUCCESS,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        HashDigest<SHA256>.FromString(
+                        HashDigest<SHA256>.Parse(
                             "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
-                        HashDigest<SHA256>.FromString(
+                        HashDigest<SHA256>.Parse(
                             "72bb2e17da644cbca9045f5e689fae0323b6af56a0acab9fd828d2243b50df1c"),
                         new List<string>() { "" }
                     ),
@@ -67,9 +67,9 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                         TxStatus.FAILURE,
                         0,
                         "45bcaa4c0b00f4f31eb61577e595ea58fb69c7df3ee612aa6eea945bbb0ce39d",
-                        HashDigest<SHA256>.FromString(
+                        HashDigest<SHA256>.Parse(
                             "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
-                        HashDigest<SHA256>.FromString(
+                        HashDigest<SHA256>.Parse(
                             "7146ddfb3594089795f6992a668a3ce7fde089aacdda68075e1bc37b14ebb06f"),
                         new List<string>() { "SomeException" }
                     ),

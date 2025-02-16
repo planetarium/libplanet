@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Store.Trie
         // [ValueNode:*:L08]   [ValueNode:*:L08]
         public readonly ITrie HalfTrie;
 
-        public readonly HashDigest<SHA256> HalfTrieHash = new HashDigest<SHA256>(
+        public readonly HashDigest<SHA256> HalfTrieHash = HashDigest<SHA256>.Create(
             ByteUtil.ParseHex("6cc5c2ca1b7b146268f0d930c58c7e5441b807e72cf16d56f52c869a594b17bf"));
 
         // An uncommitted instance of FullTrie.
@@ -61,13 +61,13 @@ namespace Libplanet.Tests.Store.Trie
         // [ValueNode:*:L10]                      [HashNode:L35]-----[ValueNode:*:L39]
         public readonly ITrie FullTrie;
 
-        public readonly HashDigest<SHA256> FullTrieHash = new HashDigest<SHA256>(
+        public readonly HashDigest<SHA256> FullTrieHash = HashDigest<SHA256>.Create(
             ByteUtil.ParseHex("979a00921d42d2ca63e98c1c2ac07f0eacbb99e363b8f2f7f8e4d19c854b6c20"));
 
-        public readonly KeyBytes K00 = KeyBytes.FromHex("00");
-        public readonly KeyBytes K01 = KeyBytes.FromHex("01");
-        public readonly KeyBytes K0000 = KeyBytes.FromHex("0000");
-        public readonly KeyBytes K0010 = KeyBytes.FromHex("0010");
+        public readonly KeyBytes K00 = KeyBytes.Parse("00");
+        public readonly KeyBytes K01 = KeyBytes.Parse("01");
+        public readonly KeyBytes K0000 = KeyBytes.Parse("0000");
+        public readonly KeyBytes K0010 = KeyBytes.Parse("0010");
 
         public readonly IValue V00 = new Text("00");
         public readonly IValue V01 = new Text("01");
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Store.Trie
             proof = ((MerkleTrie)FullTrie).GenerateProof(K0010, V0010);
             Assert.Equal(P0010, proof);
 
-            KeyBytes k = KeyBytes.FromHex(string.Empty);
+            KeyBytes k = KeyBytes.Parse(string.Empty);
             IValue v = new Text(string.Empty);
             var trie = StateStore.Commit(EmptyTrie.Set(k, v));
             proof = ((MerkleTrie)trie).GenerateProof(k, v);
@@ -190,12 +190,12 @@ namespace Libplanet.Tests.Store.Trie
                 "could not be fully resolved",
                 Assert.Throws<ArgumentException>(
                     () => ((MerkleTrie)FullTrie).GenerateProof(
-                        KeyBytes.FromHex("000000"), V0000)).Message);
+                        KeyBytes.Parse("000000"), V0000)).Message);
             Assert.Contains(
                 "could not be properly resolved",
                 Assert.Throws<ArgumentException>(
                     () => ((MerkleTrie)FullTrie).GenerateProof(
-                        KeyBytes.FromHex("0020"), V0000)).Message);
+                        KeyBytes.Parse("0020"), V0000)).Message);
         }
 
         [Fact]

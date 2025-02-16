@@ -414,8 +414,8 @@ namespace Libplanet.Tests.Store
                 Fx.Hash1,
                 Fx.TxId1,
                 false,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new List<string>() { string.Empty });
             Fx.Store.PutTxExecution(inputA);
 
@@ -428,8 +428,8 @@ namespace Libplanet.Tests.Store
                 Fx.Hash1,
                 Fx.TxId2,
                 true,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new List<string>() { "AnExceptionName" });
             Fx.Store.PutTxExecution(inputB);
 
@@ -442,8 +442,8 @@ namespace Libplanet.Tests.Store
                 Fx.Hash2,
                 Fx.TxId1,
                 true,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
+                HashDigest<SHA256>.Create(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)),
                 new List<string>() { "AnotherExceptionName", "YetAnotherExceptionName" });
             Fx.Store.PutTxExecution(inputC);
 

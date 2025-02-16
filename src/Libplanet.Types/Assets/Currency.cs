@@ -675,7 +675,7 @@ namespace Libplanet.Types.Assets
             stream.FlushFinalBlock();
             if (sha1.Hash is { } hash)
             {
-                return new HashDigest<SHA1>(sha1.Hash);
+                return HashDigest<SHA1>.Create(sha1.Hash);
             }
 
             throw new InvalidOperationException("Failed to compute the hash.");

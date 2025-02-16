@@ -21,7 +21,7 @@ namespace Libplanet.Store
             // FIXME: StateKeyValueStore used might not be the same as
             // the one referenced by the argument trie.  Some kind of sanity check
             // would be nice, if possible.
-            INode? root = trie.Root;
+            INode? root = trie.Node;
             if (root is null)
             {
                 return trie;

@@ -103,7 +103,7 @@ namespace Libplanet.Store.Trie
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when either
         /// <see cref="Recorded"/> is <see langword="false"/> or
-        /// <see cref="Root"/> is <see langword="null"/>.</exception>
+        /// <see cref="Node"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="key"/>
         /// and <paramref name="value"/> pair is invalid, i.e. not a key value pair
         /// found in this <see cref="ITrie"/>.</exception>
@@ -119,9 +119,9 @@ namespace Libplanet.Store.Trie
                     $"A proof can only be retrieved from a recorded {nameof(ITrie)}");
             }
 
-            INode root = Root ??
+            INode root = Node ??
                 throw new InvalidOperationException(
-                    $"A proof can only be retrieved from a non-null {nameof(Root)}");
+                    $"A proof can only be retrieved from a non-null {nameof(Node)}");
 
             // NOTE: Should never be thrown. A recorded non-null root must always be a HashNode.
             INode hashNode = root is HashNode h

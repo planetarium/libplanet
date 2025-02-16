@@ -38,6 +38,12 @@ namespace Libplanet.Store.Remote.Client
             // Do nothing.
         }
 
+        public byte[] this[in KeyBytes key]
+        {
+            get => Get(key);
+            set => Set(key, value);
+        }
+
         /// <inheritdoc/>
         public byte[] Get(in KeyBytes key)
         {
@@ -84,21 +90,25 @@ namespace Libplanet.Store.Remote.Client
             });
 
         /// <inheritdoc/>
-        public void Delete(in KeyBytes key) =>
+        public bool Remove(in KeyBytes key)
+        {
             _client.DeleteValue(new DeleteValueRequest
             {
                 Key = key.ToKeyValueStoreKey(),
             });
 
+            return true;
+        }
+
         /// <inheritdoc/>
-        public void Delete(IEnumerable<KeyBytes> keys) =>
+        public void RemoveMany(IEnumerable<KeyBytes> keys) =>
             _client.DeleteValues(new DeleteValuesRequest
             {
                 Keys = { keys.Select(KeyBytesExtensions.ToKeyValueStoreKey) },
             });
 
         /// <inheritdoc/>
-        public bool Exists(in KeyBytes key) =>
+        public bool ContainsKey(in KeyBytes key) =>
             _client.ExistsKey(new ExistsKeyRequest
             {
                 Key = key.ToKeyValueStoreKey(),

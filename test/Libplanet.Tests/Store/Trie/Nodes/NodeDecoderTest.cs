@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
             });
             Assert.Equal(17, list.Count);
 
-            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Full);
+            INode node = NodeDecoder.Decode(list, NodeTypes.Full);
             Assert.IsType<FullNode>(node);
             var fullNode = (FullNode)node;
             Assert.Equal(new HashNode(hashB), fullNode.Value);
@@ -55,21 +55,21 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         {
             var list = new List(Enumerable.Repeat((IValue)Null.Value, listCount));
             Assert.Throws<InvalidTrieNodeException>(
-                () => NodeDecoder.Decode(list, NodeDecoder.NodeType.Full));
+                () => NodeDecoder.Decode(list, NodeTypes.Full));
         }
 
         [Fact]
         public void DecodeValidValueNode()
         {
             var list = List.Empty
-                .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
+                .Add(new Binary(Nibbles.Parse("beef").ByteArray))
                 .Add(new List(new IValue[] { Null.Value, (Text)"beef", }));
 
-            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short);
+            INode node = NodeDecoder.Decode(list, NodeTypes.Short);
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<ValueNode>(shortNode.Value);
-            Assert.Equal(Nibbles.FromHex("beef"), shortNode.Key);
+            Assert.Equal(Nibbles.Parse("beef"), shortNode.Key);
             Assert.Equal(new ValueNode((Text)"beef"), shortNode.Value);
         }
 
@@ -77,10 +77,10 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         public void DecodeValidExtensionNode()
         {
             var list = List.Empty
-                .Add(new Binary(Nibbles.FromHex("beef").ByteArray))
+                .Add(new Binary(Nibbles.Parse("beef").ByteArray))
                 .Add(default(HashDigest<SHA256>).ByteArray);
 
-            INode node = NodeDecoder.Decode(list, NodeDecoder.NodeType.Short);
+            INode node = NodeDecoder.Decode(list, NodeTypes.Short);
             Assert.IsType<ShortNode>(node);
             var shortNode = (ShortNode)node;
             Assert.IsType<HashNode>(shortNode.Value);
@@ -92,7 +92,7 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         {
             IValue valueNodeEncoded = new ValueNode(new Text("foo")).ToBencodex();
             IValue shortNodeEncoded = new ShortNode(
-                Nibbles.FromHex("b4"),
+                Nibbles.Parse("b4"),
                 new ValueNode(new Text("bar"))).ToBencodex();
             IValue fullNodeEncoded = FullNode.Empty
                 .SetChild(4, new ValueNode(new Text("4")))
@@ -100,26 +100,26 @@ namespace Libplanet.Tests.Store.Trie.Nodes
                 .ToBencodex();
             IValue hashNodeEncoded =
                 new HashNode(
-                    new HashDigest<SHA256>(
+                    HashDigest<SHA256>.Create(
                         TestUtils.GetRandomBytes(HashDigest<SHA256>.Size))).ToBencodex();
 
-            Assert.Null(NodeDecoder.Decode(Null.Value, NodeDecoder.AnyNodeType));
+            Assert.Null(NodeDecoder.Decode(Null.Value, NodeDecoder.AnyNodeTypes));
             Assert.IsType<ValueNode>(
-                NodeDecoder.Decode(valueNodeEncoded, NodeDecoder.AnyNodeType));
+                NodeDecoder.Decode(valueNodeEncoded, NodeDecoder.AnyNodeTypes));
             Assert.IsType<ShortNode>(
-                NodeDecoder.Decode(shortNodeEncoded, NodeDecoder.AnyNodeType));
+                NodeDecoder.Decode(shortNodeEncoded, NodeDecoder.AnyNodeTypes));
             Assert.IsType<FullNode>(
-                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.AnyNodeType));
+                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.AnyNodeTypes));
             Assert.IsType<FullNode>(
-                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.AnyNodeType));
+                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.AnyNodeTypes));
             Assert.Throws<InvalidTrieNodeException>(() =>
-                NodeDecoder.Decode(Null.Value, NodeDecoder.NodeType.Value));
+                NodeDecoder.Decode(Null.Value, NodeTypes.Value));
             Assert.Throws<InvalidTrieNodeException>(() =>
-                NodeDecoder.Decode(valueNodeEncoded, NodeDecoder.NodeType.Short));
+                NodeDecoder.Decode(valueNodeEncoded, NodeTypes.Short));
             Assert.Throws<InvalidTrieNodeException>(() =>
-                NodeDecoder.Decode(shortNodeEncoded, NodeDecoder.NodeType.Full));
+                NodeDecoder.Decode(shortNodeEncoded, NodeTypes.Full));
             Assert.Throws<InvalidTrieNodeException>(() =>
-                NodeDecoder.Decode(fullNodeEncoded, NodeDecoder.NodeType.Null));
+                NodeDecoder.Decode(fullNodeEncoded, NodeTypes.Null));
         }
     }
 }

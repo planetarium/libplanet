@@ -57,7 +57,7 @@ namespace Libplanet.Explorer.Queries
                     }
                 ),
                 resolve: context =>
-                    new KeyBytes(Encoding.ASCII.GetBytes(context.GetArgument<string>("value")))
+                    KeyBytes.Create(Encoding.ASCII.GetBytes(context.GetArgument<string>("value")))
             );
         }
     }

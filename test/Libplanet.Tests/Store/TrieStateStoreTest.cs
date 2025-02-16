@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Store
             List<(KeyBytes, IValue)> kvs = Enumerable.Range(0, 1_000)
                 .Select(_ =>
                 (
-                    new KeyBytes(GetRandomBytes(random.Next(1, 20))),
+                    KeyBytes.Create(GetRandomBytes(random.Next(1, 20))),
                     (IValue)new Binary(GetRandomBytes(20))
                 ))
                 .ToList();
@@ -92,12 +92,8 @@ namespace Libplanet.Tests.Store
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
             // NOTE: Avoid possible collision of KeyBytes, just in case.
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(30)),
-                ByteUtil.ParseHex("00"));
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(40)),
-                ByteUtil.ParseHex("00"));
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(30))] = ByteUtil.ParseHex("00");
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(40))] = ByteUtil.ParseHex("00");
 
             Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
             Assert.Empty(targetStateKeyValueStore.ListKeys());
@@ -134,7 +130,7 @@ namespace Libplanet.Tests.Store
                         .Range(0, 100)
                         .Select(__ =>
                         (
-                            new KeyBytes(GetRandomBytes(random.Next(20))),
+                            KeyBytes.Create(GetRandomBytes(random.Next(20))),
                             (IValue)new Binary(GetRandomBytes(20))
                         ))
                         .ToList());
@@ -160,12 +156,8 @@ namespace Libplanet.Tests.Store
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
             // NOTE: Avoid possible collision of KeyBytes, just in case.
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(30)),
-                ByteUtil.ParseHex("00"));
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(40)),
-                ByteUtil.ParseHex("00"));
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(30))] = ByteUtil.ParseHex("00");
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(40))] = ByteUtil.ParseHex("00");
 
             Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
             Assert.Empty(targetStateKeyValueStore.ListKeys());

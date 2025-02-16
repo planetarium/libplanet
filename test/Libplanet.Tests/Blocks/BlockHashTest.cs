@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Blocks
                 0x57, 0x2a, 0xd5, 0x8d, 0x1c, 0x37, 0x05, 0xc8, 0xcb, 0xfc,
             };
             var expected = new BlockHash(b);
-            BlockHash actual = BlockHash.FromHashDigest(new HashDigest<SHA256>(b));
+            BlockHash actual = BlockHash.FromHashDigest(HashDigest<SHA256>.Create(b));
             Assert.Equal(expected, actual);
 
             Assert.Equal(

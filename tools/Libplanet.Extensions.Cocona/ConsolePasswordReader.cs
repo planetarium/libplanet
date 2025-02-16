@@ -1,7 +1,7 @@
-namespace Libplanet.Extensions.Cocona;
-
 using System;
 using System.Text;
+
+namespace Libplanet.Extensions.Cocona;
 
 public class ConsolePasswordReader
 {
