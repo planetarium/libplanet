@@ -1,0 +1,1117 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Transaction
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Transaction
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Tx.Transaction">
+
+
+  <h1 id="Libplanet_Types_Tx_Transaction" data-uid="Libplanet.Types.Tx.Transaction" class="text-break">Class Transaction
+</h1>
+  <div class="markdown level0 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">Transaction</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+    <div><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></div>
+    <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a></div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>&gt;</div>
+    <div><a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a></div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a>&gt;</div>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a>&gt;</div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Types.Tx.html">Libplanet.Types.Tx</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.Types.dll</h6>
+  <h5 id="Libplanet_Types_Tx_Transaction_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class Transaction : IEquatable&lt;Transaction&gt;, ITransaction, IUnsignedTx, ITxInvoice, ITxSigningMetadata</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.%23ctor(Libplanet.Types.Tx.IUnsignedTx%2CImmutableArray%7BSystem.Byte%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction__ctor_" data-uid="Libplanet.Types.Tx.Transaction.#ctor*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__" data-uid="Libplanet.Types.Tx.Transaction.#ctor(Libplanet.Types.Tx.IUnsignedTx,ImmutableArray{System.Byte})">Transaction(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> instance by verifying a
+<code data-dev-comment-type="paramref" class="paramref">signature</code> of an <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transaction(IUnsignedTx unsignedTx, ImmutableArray&lt;byte&gt; signature)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
+        <td><span class="parametername">unsignedTx</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a> instance to combine with
+<code data-dev-comment-type="paramref" class="paramref">signature</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">signature</span></td>
+        <td><p>The signature to combine with <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">signature</code> is not valid for <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.%23ctor(Libplanet.Types.Tx.IUnsignedTx%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction__ctor_" data-uid="Libplanet.Types.Tx.Transaction.#ctor*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Types.Tx.Transaction.#ctor(Libplanet.Types.Tx.IUnsignedTx,Libplanet.Crypto.PrivateKey)">Transaction(IUnsignedTx, PrivateKey)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> instance by signing an
+<code data-dev-comment-type="paramref" class="paramref">unsignedTx</code> with a <code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transaction(IUnsignedTx unsignedTx, PrivateKey privateKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a></td>
+        <td><span class="parametername">unsignedTx</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a> instance to sign.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>The private key to sign <code data-dev-comment-type="paramref" class="paramref">unsignedTx</code> with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction__ctor_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Actions.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Actions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L147">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Actions_" data-uid="Libplanet.Types.Tx.Transaction.Actions*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Actions" data-uid="Libplanet.Types.Tx.Transaction.Actions">Actions</h4>
+  <div class="markdown level1 summary"><p>A list of <see cref="!:IAction"></see>s.  These are executed in the order.
+This can be empty, but cannot be <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxActionList Actions { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.TxActionList.html">TxActionList</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Actions_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_GasLimit.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.GasLimit%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L154">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_GasLimit_" data-uid="Libplanet.Types.Tx.Transaction.GasLimit*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_GasLimit" data-uid="Libplanet.Types.Tx.Transaction.GasLimit">GasLimit</h4>
+  <div class="markdown level1 summary"><p>
+The limit on the total amount of gas that the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> can use.
+</p>
+<p>
+If <span class="xref">null</span>, gas processing is entirely bypassed.
+The parity of <span class="xref">null</span>-ness is always the same as
+that of <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html#Libplanet_Types_Tx_ITxInvoice_MaxGasPrice">MaxGasPrice</a>.
+</p>
+<p>
+If not <span class="xref">null</span>, this value cannot be negative.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long? GasLimit { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_GasLimit_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html#Libplanet_Types_Tx_ITxInvoice_GasLimit">GasLimit</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_GenesisHash.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.GenesisHash%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L163">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_GenesisHash_" data-uid="Libplanet.Types.Tx.Transaction.GenesisHash*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_GenesisHash" data-uid="Libplanet.Types.Tx.Transaction.GenesisHash">GenesisHash</h4>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a> value of the genesis which this transaction is made
+from.  This can be <span class="xref">null</span> iff the transaction is contained in
+the genesis block.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHash? GenesisHash { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_GenesisHash_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Id.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Id%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L92">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Id_" data-uid="Libplanet.Types.Tx.Transaction.Id*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Id" data-uid="Libplanet.Types.Tx.Transaction.Id">Id</h4>
+  <div class="markdown level1 summary"><p>A unique identifier derived from this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
+content.</p>
+<p>For more characteristics, see <a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a> type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxId Id { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Id_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.TxId.html">TxId</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_MaxGasPrice.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.MaxGasPrice%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L151">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_MaxGasPrice_" data-uid="Libplanet.Types.Tx.Transaction.MaxGasPrice*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_MaxGasPrice" data-uid="Libplanet.Types.Tx.Transaction.MaxGasPrice">MaxGasPrice</h4>
+  <div class="markdown level1 summary"><p>
+The maximum amount of <a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a> that the
+<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>&apos;s author is willing to pay per gas
+for the <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.
+</p>
+<p>
+If <span class="xref">null</span>, gas processing is entirely bypassed.
+The parity of <span class="xref">null</span>-ness is always the same as
+that of <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html#Libplanet_Types_Tx_ITxInvoice_GasLimit">GasLimit</a>.
+</p>
+<p>
+If not <span class="xref">null</span>, this value cannot be negative.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FungibleAssetValue? MaxGasPrice { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_MaxGasPrice_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html#Libplanet_Types_Tx_ITxInvoice_GasLimit">GasLimit</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Nonce%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L108">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Nonce_" data-uid="Libplanet.Types.Tx.Transaction.Nonce*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Nonce" data-uid="Libplanet.Types.Tx.Transaction.Nonce">Nonce</h4>
+  <div class="markdown level1 summary"><p>The number of previous <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s committed by
+the <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libplanet_Types_Tx_ITxSigningMetadata_Signer">Signer</a> of this transaction.  This nonce is used for preventing replay
+attack.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Nonce { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Nonce_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.PublicKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L160">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_PublicKey_" data-uid="Libplanet.Types.Tx.Transaction.PublicKey*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_PublicKey" data-uid="Libplanet.Types.Tx.Transaction.PublicKey">PublicKey</h4>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libplanet_Types_Tx_ITxSigningMetadata_PublicKey">PublicKey</a> of the account who signs this transaction.
+The <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libplanet_Types_Tx_ITxSigningMetadata_Signer">Signer</a> address is always corresponding to this for each transaction.
+This cannot be <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PublicKey PublicKey { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_PublicKey_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Signature%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L127">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Signature_" data-uid="Libplanet.Types.Tx.Transaction.Signature*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Signature" data-uid="Libplanet.Types.Tx.Transaction.Signature">Signature</h4>
+  <div class="markdown level1 summary"><p>A digital signature of the content of this
+<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.  This is signed by the account
+who corresponds to <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_PublicKey">PublicKey</a>.
+This cannot be <span class="xref">null</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Signature { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>A new <see cref="!:System.Byte"></see> array of this transaction's
+signature.  Changing a returned array does not affect the internal
+state of this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Signature_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Although this cannot be <span class="xref">null</span>, it can be an empty
+array if the transaction is not signed yet.</p>
+</div>
+  <h5 id="Libplanet_Types_Tx_Transaction_Signature_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Signer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L111">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Signer_" data-uid="Libplanet.Types.Tx.Transaction.Signer*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Signer" data-uid="Libplanet.Types.Tx.Transaction.Signer">Signer</h4>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libplanet_Types_Tx_ITxSigningMetadata_PublicKey">PublicKey</a> of the account who signs this transaction.  This is derived
+from the <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html#Libplanet_Types_Tx_ITxSigningMetadata_PublicKey">PublicKey</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address Signer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.Address.html">Address</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Signer_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Timestamp%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L157">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Timestamp_" data-uid="Libplanet.Types.Tx.Transaction.Timestamp*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Timestamp" data-uid="Libplanet.Types.Tx.Transaction.Timestamp">Timestamp</h4>
+  <div class="markdown level1 summary"><p>The time this transaction is created and signed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset Timestamp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Timestamp_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_UpdatedAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.UpdatedAddresses%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L114">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_UpdatedAddresses_" data-uid="Libplanet.Types.Tx.Transaction.UpdatedAddresses*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_UpdatedAddresses" data-uid="Libplanet.Types.Tx.Transaction.UpdatedAddresses">UpdatedAddresses</h4>
+  <div class="markdown level1 summary"><p>
+A deprecated property which was used as an approximated list of addresses whose states
+would be affected by actions in this transaction.
+</p>
+<p>
+This is no longer officially supported in the sense that a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>
+cannot be created with a non-empty set of <a class="xref" href="Libplanet.Crypto.Address.html">Address</a>es through normal means
+(i.e. using intended APIs).
+</p>
+<p>
+It is still possible to create a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> through other means,
+such as creating a payload directly by assigning appropriate values and signing
+an &quot;unsigned transaction&quot;.  This is not recommended.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IImmutableSet&lt;Address&gt; UpdatedAddresses { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Crypto.Address.html">Address</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_UpdatedAddresses_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__IEnumerable_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CSystem.Nullable%7BLibplanet.Types.Blocks.BlockHash%7D%2CIEnumerable%7BIValue%7D%2CSystem.Nullable%7BLibplanet.Types.Assets.FungibleAssetValue%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BDateTimeOffset%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L245">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Create_" data-uid="Libplanet.Types.Tx.Transaction.Create*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__IEnumerable_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_DateTimeOffset__" data-uid="Libplanet.Types.Tx.Transaction.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.Types.Blocks.BlockHash},IEnumerable{IValue},System.Nullable{Libplanet.Types.Assets.FungibleAssetValue},System.Nullable{System.Int64},System.Nullable{DateTimeOffset})">Create(Int64, PrivateKey, Nullable&lt;BlockHash&gt;, IEnumerable&lt;IValue&gt;, Nullable&lt;FungibleAssetValue&gt;, Nullable&lt;Int64&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
+  <div class="markdown level1 summary"><p>A façade factory to create a new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.
+It automatically fills the following values from:</p>
+<table><thead><tr><th>Property</th><th>Parameter the filled value derived from</th></tr></thead><tbody><tr><td><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Signer">Signer</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_PublicKey">PublicKey</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_UpdatedAddresses">UpdatedAddresses</a></td><td><code data-dev-comment-type="paramref" class="paramref">actions</code> and
+<code data-dev-comment-type="paramref" class="paramref">updatedAddresses</code></td></tr></tbody></table>
+<p>Note that the <code data-dev-comment-type="paramref" class="paramref">privateKey</code> in itself is not
+included in the created <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Transaction Create(long nonce, PrivateKey privateKey, BlockHash? genesisHash, IEnumerable&lt;IValue&gt; actions, FungibleAssetValue? maxGasPrice = null, long? gasLimit = null, DateTimeOffset? timestamp = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">nonce</span></td>
+        <td><p>The number of previous
+<a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>s committed by the <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Signer">Signer</a>
+of this transaction.  This goes to the
+<a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Nonce">Nonce</a> property.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> of the account
+who creates and signs a new transaction.  This key is used to fill
+the <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Signer">Signer</a>, <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_PublicKey">PublicKey</a>, and
+<a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Signature">Signature</a> properties, but this in itself is not
+included in the transaction.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a>&gt;</td>
+        <td><span class="parametername">genesisHash</span></td>
+        <td><p>A <see cref="!:HashDigest&lt;SHA256>"></see> value
+of the genesis which this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> is made from.
+This can be <span class="xref">null</span> iff the transaction is contained
+in the genesis block.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">IValue</span>&gt;</td>
+        <td><span class="parametername">actions</span></td>
+        <td><p>A list of user-defined custom actions to include.  This can
+be empty, but cannot be <span class="xref">null</span>.  This goes to
+the <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Actions">Actions</a> property.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Libplanet.Types.Assets.FungibleAssetValue.html">FungibleAssetValue</a>&gt;</td>
+        <td><span class="parametername">maxGasPrice</span></td>
+        <td><p>The maximum gas price this transaction can pay fee.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><span class="parametername">gasLimit</span></td>
+        <td><p>The maximum amount of gas this transaction can consume.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">DateTimeOffset</span>&gt;</td>
+        <td><span class="parametername">timestamp</span></td>
+        <td><p>The time this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>
+is created and signed.  This goes to the <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Timestamp">Timestamp</a>
+property.  If <span class="xref">null</span> (which is default) is passed this will
+be the current time.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a></td>
+        <td><p>A created new <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> signed by
+the given <code data-dev-comment-type="paramref" class="paramref">privateKey</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_Types_Blocks_BlockHash__IEnumerable_IValue__System_Nullable_Libplanet_Types_Assets_FungibleAssetValue__System_Nullable_System_Int64__System_Nullable_DateTimeOffset___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Deserialize_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Deserialize(System.Byte%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L177">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Deserialize_" data-uid="Libplanet.Types.Tx.Transaction.Deserialize*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Deserialize_System_Byte___" data-uid="Libplanet.Types.Tx.Transaction.Deserialize(System.Byte[])">Deserialize(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Decodes a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>'s
+<a href="https://bencodex.org/">Bencodex</a> representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Transaction Deserialize(byte[] bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">bytes</span></td>
+        <td><p>A <a href="https://bencodex.org/">Bencodex</a>
+representation of a <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a></td>
+        <td><p>A decoded <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
+        <td><p>Thrown when its
+<a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Signature">Signature</a> is invalid or not signed by
+the account who corresponds to <a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_PublicKey">PublicKey</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Deserialize_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.Transaction.html#Libplanet_Types_Tx_Transaction_Serialize">Serialize()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Equals_Libplanet_Types_Tx_Transaction_.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Equals(Libplanet.Types.Tx.Transaction)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L286">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Equals_" data-uid="Libplanet.Types.Tx.Transaction.Equals*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Equals_Libplanet_Types_Tx_Transaction_" data-uid="Libplanet.Types.Tx.Transaction.Equals(Libplanet.Types.Tx.Transaction)">Equals(Transaction)</h4>
+  <div class="markdown level1 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(Transaction other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Equals_Libplanet_Types_Tx_Transaction__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Equals_System_Nullable_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Equals(System.Nullable%7BSystem.Object%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L289">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Equals_" data-uid="Libplanet.Types.Tx.Transaction.Equals*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Equals_System_Nullable_System_Object__" data-uid="Libplanet.Types.Tx.Transaction.Equals(System.Nullable{System.Object})">Equals(Nullable&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Equals_System_Nullable_System_Object___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L292">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_GetHashCode_" data-uid="Libplanet.Types.Tx.Transaction.GetHashCode*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_GetHashCode" data-uid="Libplanet.Types.Tx.Transaction.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Consists of <see cref="!:IAction"></see> and is signed to be included in
+a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> and transmitted over the network.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_GetHashCode_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction_Serialize.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction.Serialize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L267">View Source</a>
+  </span>
+  <a id="Libplanet_Types_Tx_Transaction_Serialize_" data-uid="Libplanet.Types.Tx.Transaction.Serialize*"></a>
+  <h4 id="Libplanet_Types_Tx_Transaction_Serialize" data-uid="Libplanet.Types.Tx.Transaction.Serialize">Serialize()</h4>
+  <div class="markdown level1 summary"><p>Encodes this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a> into a <see cref="!:System.Byte"></see> array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Serialize()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>A <a href="https://bencodex.org/">Bencodex</a>
+representation of this <a class="xref" href="Libplanet.Types.Tx.Transaction.html">Transaction</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Types_Tx_Transaction_Serialize_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.IUnsignedTx.html">IUnsignedTx</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.ITxInvoice.html">ITxInvoice</a>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.ITxSigningMetadata.html">ITxSigningMetadata</a>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Combine_Libplanet_Types_Tx_ITxInvoice_Libplanet_Types_Tx_ITxSigningMetadata_">TransactionExtensions.Combine(ITxInvoice, ITxSigningMetadata)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Sign_Libplanet_Types_Tx_ITxInvoice_Libplanet_Crypto_PrivateKey_System_Int64_">TransactionExtensions.Sign(ITxInvoice, PrivateKey, Int64)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_MarshalTxInvoice_Libplanet_Types_Tx_ITxInvoice_">TxMarshaler.MarshalTxInvoice(ITxInvoice)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_MarshalTxSigningMetadata_Libplanet_Types_Tx_ITxSigningMetadata_">TxMarshaler.MarshalTxSigningMetadata(ITxSigningMetadata)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Sign_Libplanet_Types_Tx_IUnsignedTx_Libplanet_Crypto_PrivateKey_">TransactionExtensions.Sign(IUnsignedTx, PrivateKey)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TransactionExtensions.html#Libplanet_Types_Tx_TransactionExtensions_Verify_Libplanet_Types_Tx_IUnsignedTx_ImmutableArray_System_Byte__">TransactionExtensions.Verify(IUnsignedTx, ImmutableArray&lt;Byte&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_MarshalUnsignedTx_Libplanet_Types_Tx_IUnsignedTx_">TxMarshaler.MarshalUnsignedTx(IUnsignedTx)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_SerializeUnsignedTx_Libplanet_Types_Tx_IUnsignedTx_">TxMarshaler.SerializeUnsignedTx(IUnsignedTx)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Blocks.BlockMarshaler.html#Libplanet_Types_Blocks_BlockMarshaler_MarshalTransaction_Libplanet_Types_Tx_Transaction_">BlockMarshaler.MarshalTransaction(Transaction)</a>
+  </div>
+  <div>
+      <a class="xref" href="Libplanet.Types.Tx.TxMarshaler.html#Libplanet_Types_Tx_TxMarshaler_MarshalTransaction_Libplanet_Types_Tx_Transaction_">TxMarshaler.MarshalTransaction(Transaction)</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Types.Tx.ITransaction.html">ITransaction</a></div>
+  </div>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/5.5.1/apiSpec/new?filename=Libplanet_Types_Tx_Transaction.md&amp;value=---%0Auid%3A%20Libplanet.Types.Tx.Transaction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/5.5.1/src/Libplanet.Types/Tx/Transaction.cs/#L22" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
