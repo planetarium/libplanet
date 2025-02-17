@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.5.1
 -------------
 
-To be released.
+Released on February 17, 2025.
 
 ### Added APIs
 
