@@ -81,6 +81,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Node.Executable",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Node.Tests", "sdk\node\Libplanet.Node.Tests\Libplanet.Node.Tests.csproj", "{C050C5F0-8A40-4CB1-9715-A55EBF94FBF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Crypto.Nethereum", "src\Libplanet.Crypto.Nethereum\Libplanet.Crypto.Nethereum.csproj", "{42801CB6-D452-408C-B0A5-970D8D997B38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -697,6 +699,24 @@ Global
 		{C050C5F0-8A40-4CB1-9715-A55EBF94FBF2}.Release|x64.Build.0 = Release|Any CPU
 		{C050C5F0-8A40-4CB1-9715-A55EBF94FBF2}.Release|x86.ActiveCfg = Release|Any CPU
 		{C050C5F0-8A40-4CB1-9715-A55EBF94FBF2}.Release|x86.Build.0 = Release|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Debug|x64.Build.0 = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Debug|x86.Build.0 = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.ReleaseMono|Any CPU.ActiveCfg = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.ReleaseMono|Any CPU.Build.0 = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.ReleaseMono|x64.ActiveCfg = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.ReleaseMono|x64.Build.0 = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.ReleaseMono|x86.ActiveCfg = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.ReleaseMono|x86.Build.0 = Debug|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Release|x64.ActiveCfg = Release|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Release|x64.Build.0 = Release|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Release|x86.ActiveCfg = Release|Any CPU
+		{42801CB6-D452-408C-B0A5-970D8D997B38}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -737,6 +757,7 @@ Global
 		{704BA731-9C70-4CBE-A607-1A2E1FB73753} = {8CA69CC9-3415-4484-9342-88D495AE2FF6}
 		{A0EAD8F0-B7A3-4112-9F3F-2D9922A500BA} = {8CA69CC9-3415-4484-9342-88D495AE2FF6}
 		{C050C5F0-8A40-4CB1-9715-A55EBF94FBF2} = {8CA69CC9-3415-4484-9342-88D495AE2FF6}
+		{42801CB6-D452-408C-B0A5-970D8D997B38} = {AC908E33-B856-4E23-9F81-B7F7C97A07F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DB552D2A-94E1-4A1C-9F3E-E0097C6158CD}
