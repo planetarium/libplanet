@@ -17,7 +17,6 @@ namespace Libplanet.Tests.Tx
         {
             var metadata = new TxSigningMetadata(PublicKey, 123L);
             Assert.Equal(PublicKey.Address, metadata.Signer);
-            Assert.Equal(PublicKey, metadata.PublicKey);
             Assert.Equal(123L, metadata.Nonce);
 
             Assert.Throws<ArgumentOutOfRangeException>(
@@ -30,12 +29,10 @@ namespace Libplanet.Tests.Tx
             var metadata = new TxSigningMetadata(PublicKey, 123L);
             var copy = new TxSigningMetadata(metadata);
             Assert.Equal(PublicKey.Address, copy.Signer);
-            Assert.Equal(PublicKey, copy.PublicKey);
             Assert.Equal(123L, copy.Nonce);
 
             var copyFromInterface = new TxSigningMetadata(new MockingTxSigningMetadata());
             Assert.Equal(PublicKey.Address, copyFromInterface.Signer);
-            Assert.Equal(PublicKey, copyFromInterface.PublicKey);
             Assert.Equal(123L, copyFromInterface.Nonce);
         }
 
@@ -78,7 +75,6 @@ namespace Libplanet.Tests.Tx
                 @"
                     {
                       ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
-                      ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
                       ""nonce"": 123
                     }
                 ",
@@ -91,8 +87,6 @@ namespace Libplanet.Tests.Tx
             long ITxSigningMetadata.Nonce => 123L;
 
             Address ITxSigningMetadata.Signer => PublicKey.Address;
-
-            PublicKey ITxSigningMetadata.PublicKey => PublicKey;
 
             bool IEquatable<ITxSigningMetadata>.Equals(ITxSigningMetadata other) => false;
         }

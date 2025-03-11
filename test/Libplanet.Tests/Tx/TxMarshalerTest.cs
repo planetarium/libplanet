@@ -35,11 +35,6 @@ namespace Libplanet.Tests.Tx
             _marshaledTxSigningMetadata = Bencodex.Types.Dictionary.Empty
                 .Add(new byte[] { 0x6e }, 0L) // 'n'
                 .Add(
-                    new byte[] { 0x70 }, // 'p'
-                    ByteUtil.ParseHex(
-                        "0446115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f7328" +
-                        "08711ec97af6e341f110a326da1bdb81f5ae3badf76a90b22c8c491aed3aaa296"))
-                .Add(
                     new byte[] { 0x73 }, // 's'
                     ByteUtil.ParseHex("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc"));
             _marshaledUnsignedTx =
@@ -48,8 +43,8 @@ namespace Libplanet.Tests.Tx
                 .Add(
                     new byte[] { 0x53 },  // 'S'
                     ByteUtil.ParseHex(
-                        "304402202f2dbe5a916559dedbe8d84fa920e201294d4f40ea1e97441fbfa25c8bd00e" +
-                        "2302203c06021fb83f6749923c07596796a86304b0c3febb6c7a7b5858e97d3767e1e9"
+                        "b6396d8fbcb3b59d88bb8693117ffb9557bacfc51def4928216254550d7e17b06" +
+                        "6dbc1b50779d7452c48d2c98d59b991db87fdfbda0ce040e27eeba20fb8a3ff1c"
                     ));
 
             Bencodex.Types.Dictionary actionAttack = Bencodex.Types.Dictionary.Empty
@@ -80,8 +75,8 @@ namespace Libplanet.Tests.Tx
                 .Add(
                     new byte[] { 0x53 },  // 'S'
                     ByteUtil.ParseHex(
-                        "304402204cf2d4d92297a67fd04769f253e20e6213f063b8142fff4cb9e9c04733edbc" +
-                        "1602200efebb0e2a7bcf4d5c7a628ed2e7a91f440afa31197ff616fb32d8badad3e9cc"
+                        "eaf3bbcca2d6dcc03d74d04e367e393d2b3ddb44649aaa9d95cda82c28acafc40" +
+                        "78d8321b3e5db669906a2b0d5afd02f8c27e7702062a3b1d5211eafc95369881c"
                     ));
         }
 
@@ -187,8 +182,8 @@ namespace Libplanet.Tests.Tx
         public void UnmarshalTransactionSignature()
         {
             AssertBytesEqual(
-                "304402202f2dbe5a916559dedbe8d84fa920e201294d4f40ea1e97441fbfa25c8bd00e" +
-                "2302203c06021fb83f6749923c07596796a86304b0c3febb6c7a7b5858e97d3767e1e9",
+                "b6396d8fbcb3b59d88bb8693117ffb9557bacfc51def4928216254550d7e17b06" +
+                "6dbc1b50779d7452c48d2c98d59b991db87fdfbda0ce040e27eeba20fb8a3ff1c",
                 Assert.IsType<ImmutableArray<byte>>(
                     TxMarshaler.UnmarshalTransactionSignature(_marshaledTransaction)));
 
@@ -203,18 +198,18 @@ namespace Libplanet.Tests.Tx
             Transaction tx =
                 TxMarshaler.UnmarshalTransaction(_marshaledTransaction);
 
-            Assert.Equal(publicKey, tx.PublicKey);
+            Assert.Equal(publicKey.Address, tx.Signer);
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
             Assert.Equal(new Address(publicKey), tx.Signer);
             Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             AssertBytesEqual(
-                "304402202f2dbe5a916559dedbe8d84fa920e201294d4f40ea1e97441fbfa25c8bd00e" +
-                "2302203c06021fb83f6749923c07596796a86304b0c3febb6c7a7b5858e97d3767e1e9",
+                "b6396d8fbcb3b59d88bb8693117ffb9557bacfc51def4928216254550d7e17b06" +
+                "6dbc1b50779d7452c48d2c98d59b991db87fdfbda0ce040e27eeba20fb8a3ff1c",
                 tx.Signature
             );
             AssertBytesEqual(
                 new TxId(ByteUtil.ParseHex(
-                    "b069fde2538853be81b3eaacc23855420e03e5626f757fa19b3792601a948881")),
+                    "35507312cf5baed8a37969d2b0b59a16e48881c10ee4b41ded2d0ff541f003d1")),
                 tx.Id
             );
 
@@ -231,7 +226,7 @@ namespace Libplanet.Tests.Tx
                 TxMarshaler.UnmarshalTransaction(
                     _marshaledTransactionWithCustomActions);
 
-            Assert.Equal(publicKey, tx.PublicKey);
+            Assert.Equal(publicKey.Address, tx.Signer);
             Assert.Equal(
                 ImmutableHashSet.Create(new Address(publicKey)),
                 tx.UpdatedAddresses
@@ -239,13 +234,13 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(new Address(publicKey), tx.Signer);
             Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             AssertBytesEqual(
-                "304402204cf2d4d92297a67fd04769f253e20e6213f063b8142fff4cb9e9c04733edbc" +
-                "1602200efebb0e2a7bcf4d5c7a628ed2e7a91f440afa31197ff616fb32d8badad3e9cc",
+                "eaf3bbcca2d6dcc03d74d04e367e393d2b3ddb44649aaa9d95cda82c28acafc40" +
+                "78d8321b3e5db669906a2b0d5afd02f8c27e7702062a3b1d5211eafc95369881c",
                 tx.Signature
             );
             AssertBytesEqual(
                 new TxId(ByteUtil.ParseHex(
-                    "2c7d15f4c1d536ce4ca2a359bcd873a94f3c6518109ffabcf87e3485f363a534")),
+                    "9aae665f856de01773d9ff43f0dcdbe8c348358cf965bd76cfe31ca0b50db64e")),
                 tx.Id
             );
 

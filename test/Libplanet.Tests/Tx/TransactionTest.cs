@@ -37,7 +37,7 @@ namespace Libplanet.Tests.Tx
             InvalidTxSignatureException e = Assert.Throws<InvalidTxSignatureException>(
                 () => new Transaction(_fx.Tx, wrongSig));
             TestUtils.AssertBytesEqual(
-                "d4e3e4db802ef1b19c4bc74dd8fae5da60108414a6772b060752825034cb7f1b",
+                "0a5b3d8ac9819ecd8343d6816a0632c20a669c45ad94ffc9f4005af3815a0f1b",
                 e.TxId.ByteArray);
         }
 
@@ -85,23 +85,21 @@ namespace Libplanet.Tests.Tx
 
             AssertBytesEqual(privateKey.Address, tx.Signer);
             Assert.Empty(tx.UpdatedAddresses);
-            Assert.Equal(privateKey.PublicKey, tx.PublicKey);
+            Assert.Equal(privateKey.Address, tx.Signer);
             Assert.Equal(timestamp, tx.Timestamp);
             AssertBytesEqual(
                 new byte[]
                 {
-                    0x30, 0x44, 0x02, 0x20, 0x60, 0x8a, 0xbf, 0x3d, 0xdf, 0x50,
-                    0xf2, 0x00, 0x27, 0x56, 0xbb, 0x84, 0xc5, 0x65, 0x7c, 0xd9,
-                    0x4f, 0xbc, 0x33, 0x81, 0xe1, 0x0d, 0xc1, 0x5b, 0x23, 0x11,
-                    0xc4, 0x97, 0x61, 0x3e, 0xa0, 0xff, 0x02, 0x20, 0x44, 0x08,
-                    0xf8, 0x71, 0x43, 0x8c, 0x51, 0xd6, 0xa8, 0x22, 0x7d, 0x8c,
-                    0x7d, 0xb2, 0xc5, 0x97, 0x5b, 0xef, 0x72, 0x07, 0xfe, 0x4f,
-                    0x9d, 0x4c, 0x25, 0xc6, 0xb2, 0x1a, 0x89, 0xc7, 0xad, 0x10,
+                    0x08, 0xef, 0x2a, 0x58, 0x52, 0x8b, 0x15, 0xe5, 0xc3, 0x25, 0xe1, 0x59, 0x2a,
+                    0x5e, 0x1d, 0x3a, 0x8a, 0xf3, 0xeb, 0x12, 0x01, 0xfe, 0x1f, 0x2b, 0xf7, 0x42,
+                    0x80, 0xd1, 0xc1, 0xaa, 0x09, 0xbc, 0x19, 0xb1, 0x59, 0x77, 0x95, 0xaa, 0x03,
+                    0x74, 0x75, 0x5f, 0x6c, 0xdd, 0x69, 0x89, 0x3a, 0x82, 0x72, 0xd2, 0xcf, 0xee,
+                    0x31, 0x31, 0x7f, 0x53, 0x39, 0x25, 0xe4, 0x1c, 0xdf, 0x3d, 0x55, 0x61, 0x1b,
                 },
                 tx.Signature
             );
             AssertBytesEqual(
-                TxId.FromHex("eff61a6ee0faa2705b3dbd23abefbf18b4c864fa6b344c4fc3846cbb71a0e294"),
+                TxId.FromHex("babd317f0ce9961a528d9c923022fa4e0a360df0437463af7267ac40c5a889e6"),
                 tx.Id
             );
         }
@@ -137,16 +135,16 @@ namespace Libplanet.Tests.Tx
                 new Address(privateKey.PublicKey),
                 tx.Signer
             );
-            Assert.Equal(privateKey.PublicKey, tx.PublicKey);
+            Assert.Equal(privateKey.Address, tx.Signer);
             Assert.Equal(timestamp, tx.Timestamp);
             AssertBytesEqual(
-                "3045022100c489671a0c97a0033c3273b15bb90bdff96e47bfaf475a1914ad5441bac32" +
-                "d6e022066ed765bbfead057a5cb12fa3ad4188833f1ea139f80383d062ffd315213289d",
+                "20687120cb1d510e954cb506af5e92d9b4e19cf1ddf509ba104863db202a5e2b7" +
+                "77d056be4e09f044182af2ebb79c449a4f619b5c77f5bd34567400e6dfcab881c",
                 tx.Signature
             );
             AssertBytesEqual(
                 new TxId(ByteUtil.ParseHex(
-                    "201ff302e08e0a3a6ce62415265dff6ec7c4439673f5079ceaeb2572fe05f632")),
+                    "6b377f828e6e310d986f5812caa732f00841ebaf66ace2b2aab6fe417ee1b84d")),
                 tx.Id
             );
         }
@@ -210,17 +208,17 @@ namespace Libplanet.Tests.Tx
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             var signature = new byte[]
             {
-                0x30, 0x44, 0x02, 0x20, 0x2f, 0x2d, 0xbe, 0x5a, 0x91, 0x65, 0x59, 0xde, 0xdb, 0xe8,
-                0xd8, 0x4f, 0xa9, 0x20, 0xe2, 0x01, 0x29, 0x4d, 0x4f, 0x40, 0xea, 0x1e, 0x97, 0x44,
-                0x1f, 0xbf, 0xa2, 0x5c, 0x8b, 0xd0, 0x0e, 0x23, 0x02, 0x20, 0x3c, 0x06, 0x02, 0x1f,
-                0xb8, 0x3f, 0x67, 0x49, 0x92, 0x3c, 0x07, 0x59, 0x67, 0x96, 0xa8, 0x63, 0x04, 0xb0,
-                0xc3, 0xfe, 0xbb, 0x6c, 0x7a, 0x7b, 0x58, 0x58, 0xe9, 0x7d, 0x37, 0x67, 0xe1, 0xe9,
+                0xb6, 0x39, 0x6d, 0x8f, 0xbc, 0xb3, 0xb5, 0x9d, 0x88, 0xbb, 0x86, 0x93, 0x11, 0x7f,
+                0xfb, 0x95, 0x57, 0xba, 0xcf, 0xc5, 0x1d, 0xef, 0x49, 0x28, 0x21, 0x62, 0x54, 0x55,
+                0x0d, 0x7e, 0x17, 0xb0, 0x66, 0xdb, 0xc1, 0xb5, 0x07, 0x79, 0xd7, 0x45, 0x2c, 0x48,
+                0xd2, 0xc9, 0x8d, 0x59, 0xb9, 0x91, 0xdb, 0x87, 0xfd, 0xfb, 0xda, 0x0c, 0xe0, 0x40,
+                0xe2, 0x7e, 0xeb, 0xa2, 0x0f, 0xb8, 0xa3, 0xff, 0x1c,
             };
-            var tx = new Transaction(
-                new UnsignedTx(
+            var unsignedTx = new UnsignedTx(
                 new TxInvoice(timestamp: timestamp),
-                new TxSigningMetadata(privateKey.PublicKey, nonce: 0L)
-                ),
+                new TxSigningMetadata(privateKey.PublicKey, nonce: 0L));
+            var tx = new Transaction(
+                unsignedTx: unsignedTx,
                 signature: signature.ToImmutableArray()
             );
 
@@ -229,7 +227,7 @@ namespace Libplanet.Tests.Tx
                 tx.Signer
             );
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
-            Assert.Equal(privateKey.PublicKey, tx.PublicKey);
+            Assert.Equal(privateKey.Address, tx.Signer);
             Assert.Equal(timestamp, tx.Timestamp);
             AssertBytesEqual(
                 signature,
@@ -239,9 +237,9 @@ namespace Libplanet.Tests.Tx
                 new TxId(
                     new byte[]
                     {
-                        0xb0, 0x69, 0xfd, 0xe2, 0x53, 0x88, 0x53, 0xbe, 0x81, 0xb3, 0xea, 0xac,
-                        0xc2, 0x38, 0x55, 0x42, 0x0e, 0x03, 0xe5, 0x62, 0x6f, 0x75, 0x7f, 0xa1,
-                        0x9b, 0x37, 0x92, 0x60, 0x1a, 0x94, 0x88, 0x81,
+                        0x35, 0x50, 0x73, 0x12, 0xcf, 0x5b, 0xae, 0xd8, 0xa3, 0x79, 0x69, 0xd2,
+                        0xb0, 0xb5, 0x9a, 0x16, 0xe4, 0x88, 0x81, 0xc1, 0x0e, 0xe4, 0xb4, 0x1d,
+                        0xed, 0x2d, 0x0f, 0xf5, 0x41, 0xf0, 0x03, 0xd1,
                     }
                 ),
                 tx.Id
@@ -312,8 +310,8 @@ namespace Libplanet.Tests.Tx
             var signingMetadata = new TxSigningMetadata(publicKey, 123L);
             var unsignedTx = new UnsignedTx(invoice, signingMetadata);
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
-                "30430220502da40025cf537d0517a111bb2078b04ec421755743177e0bad75ff47dcf" +
-                "066021f154bb551ec7e5e9228debcd44beee5a74db8249670e06f2c5b355f56730627");
+                "6624cbd4281c0fb29d73f7912f8bec6a9bf4be4b73538148e5ef0352885906c54" +
+                "f05d12acbe0cf6afd8665b744db99a2a4a54cb473f9ac0077b93cc614e806a91c");
             var tx = new Transaction(unsignedTx, signature: signature);
 
             Assert.Equal<ITxInvoice>(invoice, tx);
@@ -338,7 +336,7 @@ namespace Libplanet.Tests.Tx
                     null,
                     null);
                 var diffSigningMetadata = new TxSigningMetadata(
-                    i == 4 ? wrongKey.PublicKey : signingMetadata.PublicKey,
+                    i == 4 ? wrongKey.Address : signingMetadata.Signer,
                     i == 5 ? 456L : signingMetadata.Nonce
                 );
 
@@ -392,8 +390,8 @@ namespace Libplanet.Tests.Tx
             var signingMetadata = new TxSigningMetadata(publicKey, 123L);
             var unsignedTx = new UnsignedTx(invoice, signingMetadata);
             ImmutableArray<byte> signature = ByteUtil.ParseHexToImmutable(
-                "30430220502da40025cf537d0517a111bb2078b04ec421755743177e0bad75ff47dcf" +
-                "066021f154bb551ec7e5e9228debcd44beee5a74db8249670e06f2c5b355f56730627");
+                "6624cbd4281c0fb29d73f7912f8bec6a9bf4be4b73538148e5ef0352885906c54" +
+                "f05d12acbe0cf6afd8665b744db99a2a4a54cb473f9ac0077b93cc614e806a91c");
             var tx = new Transaction(unsignedTx, signature: signature);
 
 #pragma warning disable MEN002  // Long lines are OK for test JSON data.
@@ -401,14 +399,14 @@ namespace Libplanet.Tests.Tx
                 tx,
                 @"
                     {
-                      ""id"": ""926c8ee03479bfe29ee78ab71e81684badca177cee9c63bcc1a8f3bdf6ad4d45"",
+                      ""id"": ""daa356224285b0a0aaafa1be222dc47ec1fea27b835e09c46a8b0c3cde797b73"",
                       ""nonce"": 123,
                       ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
                       ""updatedAddresses"": [
                         ""B61CE2Ce6d28237C1BC6E114616616762f1a12Ab"",
                         ""D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9""
                       ],
-                      ""signature"": ""MEMCIFAtpAAlz1N9BRehEbsgeLBOxCF1V0MXfgutdf9H3PBmAh8VS7VR7H5ekijevNRL7uWnTbgklnDgbyxbNV9WcwYn"",
+                      ""signature"": ""ZiTL1CgcD7Kdc/eRL4vsapv0vktzU4FI5e8DUohZBsVPBdEqy\u002BDPav2GZbdE25mipKVMtHP5rAB3uTzGFOgGqRw="",
                       ""actions"": [
                         {
                           ""\uFEFFitem"": ""\uFEFFfoo"",
@@ -422,7 +420,6 @@ namespace Libplanet.Tests.Tx
                         }
                       ],
                       ""timestamp"": ""2023-03-29T01:02:03.456\u002B00:00"",
-                      ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
                       ""genesisHash"": ""92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265"",
                       ""maxGasPrice"": null,
                       ""gasLimit"": null

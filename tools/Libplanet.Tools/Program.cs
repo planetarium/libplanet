@@ -5,7 +5,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Cocona;
-using Libplanet.Crypto.Secp256k1;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Extensions;
 using CryptoConfig = Libplanet.Crypto.CryptoConfig;
@@ -29,16 +28,6 @@ public class Program
 
     public static Task Main(string[] args)
     {
-        try
-        {
-            CryptoConfig.CryptoBackend = new Secp256k1CryptoBackend<SHA256>();
-        }
-        catch (Exception)
-        {
-            // If it fails to load the Secp256k1CryptoBackend<T> for any reason
-            // fall back to the DefaultCryptoBackend<T> instead.
-        }
-
         return CoconaLiteApp.CreateHostBuilder()
             .ConfigureServices(services =>
             {
