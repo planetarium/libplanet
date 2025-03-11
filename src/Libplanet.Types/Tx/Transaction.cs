@@ -156,9 +156,6 @@ namespace Libplanet.Types.Tx
         /// <inheritdoc cref="ITxInvoice.Timestamp"/>
         public DateTimeOffset Timestamp => _unsignedTx.Timestamp;
 
-        /// <inheritdoc cref="ITxSigningMetadata.PublicKey"/>
-        public PublicKey PublicKey => _unsignedTx.PublicKey;
-
         /// <inheritdoc cref="ITxInvoice.GenesisHash"/>
         public BlockHash? GenesisHash => _unsignedTx.GenesisHash;
 
@@ -319,7 +316,7 @@ namespace Libplanet.Types.Tx
                 actions,
                 maxGasPrice,
                 gasLimit);
-            var signMeta = new TxSigningMetadata(privateKey.PublicKey, nonce);
+            var signMeta = new TxSigningMetadata(privateKey.Address, nonce);
             var invoice = new TxInvoice(
                 draftInvoice.GenesisHash,
                 draftInvoice.UpdatedAddresses,

@@ -3,12 +3,8 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Common;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Modes;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Security;
 
 namespace Libplanet.Crypto
 {
@@ -23,11 +19,11 @@ namespace Libplanet.Crypto
     /// </summary>
     public class SymmetricKey : IEquatable<SymmetricKey>
     {
-        private const int KeyBitSize = 256;
-        private const int MacBitSize = 128;
-        private const int NonceBitSize = 128;
+        private const int KeyByteSize = 32; // 256 bits
+        private const int TagByteSize = 16; // 128 bits
+        private const int NonceByteSize = 12; // 128 bits
 
-        private readonly SecureRandom _secureRandom;
+        private readonly RandomNumberGenerator _secureRandom;
 
         private readonly byte[] _key;
 
@@ -51,12 +47,12 @@ namespace Libplanet.Crypto
         /// <seealso cref="ToByteArray()"/>
         public SymmetricKey(byte[] key)
         {
-            _secureRandom = new SecureRandom();
+            _secureRandom = RandomNumberGenerator.Create();
 
-            if (key == null || key.Length != KeyBitSize / 8)
+            if (key == null || key.Length != KeyByteSize)
             {
                 throw new ArgumentException(
-                    $"Key needs to be {KeyBitSize} bit!",
+                    $"Key needs to be {KeyByteSize} bytes!",
                     nameof(key));
             }
 
@@ -113,33 +109,25 @@ namespace Libplanet.Crypto
         /// </returns>
         /// <seealso cref="Decrypt(byte[], int)"/>
         [Pure]
-        public byte[] Encrypt(byte[] message, byte[]? nonSecret = null)
+        public byte[] Encrypt(byte[] message, byte[] nonSecret)
         {
-            var nonce = new byte[NonceBitSize / 8];
-            _secureRandom.NextBytes(nonce, 0, nonce.Length);
+            using var aes = new AesGcm(_key, tagSizeInBytes: TagByteSize);
+            byte[] nonce = new byte[NonceByteSize];
+            _secureRandom.GetBytes(nonce);
 
-            nonSecret = nonSecret ?? new byte[] { };
+            byte[] ciphertext = new byte[message.Length];
+            byte[] tag = new byte[TagByteSize];
+            _secureRandom.GetBytes(nonce);
 
-            var cipher = new GcmBlockCipher(new AesEngine());
-            var parameters = new AeadParameters(
-                new KeyParameter(_key), MacBitSize, nonce, nonSecret
-            );
-            cipher.Init(true, parameters);
+            aes.Encrypt(nonce, message, ciphertext, tag, nonSecret);
 
-            var cipherText = new byte[cipher.GetOutputSize(message.Length)];
-            int len =
-                cipher.ProcessBytes(message, 0, message.Length, cipherText, 0);
-            cipher.DoFinal(cipherText, len);
-
-            using var combinedStream = new MemoryStream();
-            using (var binaryWriter = new BinaryWriter(combinedStream))
-            {
-                binaryWriter.Write(nonSecret);
-                binaryWriter.Write(nonce);
-                binaryWriter.Write(cipherText);
-            }
-
-            return combinedStream.ToArray();
+            using var resultStream = new MemoryStream();
+            using var writer = new BinaryWriter(resultStream);
+            writer.Write(nonSecret);
+            writer.Write(nonce);
+            writer.Write(ciphertext);
+            writer.Write(tag);
+            return resultStream.ToArray();
         }
 
         /// <summary>
@@ -164,48 +152,28 @@ namespace Libplanet.Crypto
         [Pure]
         public byte[] Decrypt(byte[] ciphertext, int nonSecretLength = 0)
         {
-            if (ciphertext == null || ciphertext.Length == 0)
-            {
-                throw new ArgumentException(
-                    "Encrypted Message Required!",
-                    nameof(ciphertext));
-            }
+            using var aes = new AesGcm(_key, tagSizeInBytes: TagByteSize);
+            using var inputStream = new MemoryStream(ciphertext);
+            using var reader = new BinaryReader(inputStream);
+            var nonSecretPayload = reader.ReadBytes(nonSecretLength);
 
-            using var cipherStream = new MemoryStream(ciphertext);
-            using var cipherReader = new BinaryReader(cipherStream);
-            byte[] nonSecretPayload = cipherReader.ReadBytes(
-                nonSecretLength
-            );
-            byte[] nonce = cipherReader.ReadBytes(NonceBitSize / 8);
+            byte[] nonce = reader.ReadBytes(NonceByteSize);
+            byte[] encryptedMessage = reader.ReadBytes(
+                ciphertext.Length - nonSecretLength - nonce.Length - TagByteSize);
+            byte[] tag = reader.ReadBytes(TagByteSize);
 
-            var cipher = new GcmBlockCipher(new AesEngine());
-            var parameters = new AeadParameters(
-                new KeyParameter(_key),
-                MacBitSize,
-                nonce,
-                nonSecretPayload);
-            cipher.Init(false, parameters);
-
-            byte[] cipherText = cipherReader.ReadBytes(
-                ciphertext.Length - nonSecretLength - nonce.Length
-            );
-            var plainText =
-                new byte[cipher.GetOutputSize(cipherText.Length)];
-
+            byte[] decryptedMessage = new byte[encryptedMessage.Length];
             try
             {
-                int len = cipher.ProcessBytes(
-                    cipherText, 0, cipherText.Length, plainText, 0
-                );
-                cipher.DoFinal(plainText, len);
-                return plainText;
+                aes.Decrypt(nonce, encryptedMessage, tag, decryptedMessage, nonSecretPayload);
+                return decryptedMessage;
             }
-            catch (InvalidCipherTextException)
+            catch (AuthenticationTagMismatchException e)
             {
-                throw new InvalidCiphertextException(
-                    "The ciphertext is invalid. " +
+                var message = "The ciphertext is invalid. " +
                     "Ciphertext may not have been encrypted with " +
-                    "the corresponding public key");
+                    "the corresponding public key";
+                throw new InvalidCiphertextException(message, e);
             }
         }
 

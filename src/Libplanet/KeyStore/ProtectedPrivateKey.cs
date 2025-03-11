@@ -322,10 +322,7 @@ namespace Libplanet.KeyStore
             ImmutableArray<byte> encKey = MakeEncryptionKey(derivedKey);
             ImmutableArray<byte> plaintext = Cipher.Decrypt(encKey, Ciphertext);
 
-            var key = new PrivateKey(
-                unverifiedKey: plaintext.ToBuilder().ToArray(),
-                informedConsent: true
-            );
+            var key = new PrivateKey(plaintext.ToBuilder().ToArray());
             Address actualAddress = key.Address;
             if (!Address.Equals(actualAddress))
             {

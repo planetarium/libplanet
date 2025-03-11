@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\tools\Libplanet.Explorer.Executable\Libplanet.Explorer.Executable.csproj" />
-    <ProjectReference Include="..\..\..\src\Libplanet.Crypto.Secp256k1\Libplanet.Crypto.Secp256k1.csproj" />
     <ProjectReference Include="..\Libplanet.Node.Extensions\Libplanet.Node.Extensions.csproj" />
     <ProjectReference Include="..\Libplanet.Node\Libplanet.Node.csproj" />
   </ItemGroup>

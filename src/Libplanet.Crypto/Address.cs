@@ -5,13 +5,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
-using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet.Crypto
 {
@@ -259,35 +259,32 @@ namespace Libplanet.Crypto
 
         private static string ToChecksumAddress(string hex)
         {
-            byte[] bytes = Encoding.ASCII.GetBytes(hex);
-            byte[] hash = CalculateHash(bytes);
-            string hashHex = ByteUtil.Hex(hash);
-            string address = string.Empty;
-
-            for (var i = 0; i < hex.Length; i++)
+            var value = new Nethereum.Util.AddressUtil().ConvertToChecksumAddress(hex);
+            if (value.StartsWith("0x"))
             {
-                char c = hex[i];
-                address += (hashHex[i] >= '8') ? char.ToUpper(c, CultureInfo.InvariantCulture) : c;
+                return value.Substring(2);
             }
 
-            return address;
-        }
-
-        private static byte[] CalculateHash(byte[] value)
-        {
-            var digest = new KeccakDigest(256);
-            var output = new byte[digest.GetDigestSize()];
-            digest.BlockUpdate(value, 0, value.Length);
-            digest.DoFinal(output, 0);
-            return output;
+            return value;
         }
 
         private static ImmutableArray<byte> DeriveAddress(PublicKey key)
         {
-            byte[] hashPayload = key.Format(false).Skip(1).ToArray();
-            var output = CalculateHash(hashPayload);
+            var initaddr = new Nethereum.Util.Sha3Keccack().CalculateHash(
+                GetPubKeyNoPrefix(key, false));
+            var addr = new byte[initaddr.Length - 12];
+            Array.Copy(initaddr, 12, addr, 0, initaddr.Length - 12);
+            var address = ToChecksumAddress(
+                Nethereum.Hex.HexConvertors.Extensions.HexByteConvertorExtensions.ToHex(addr));
+            return Convert.FromHexString(address).ToImmutableArray();
+        }
 
-            return output.Skip(output.Length - Size).ToImmutableArray();
+        private static byte[] GetPubKeyNoPrefix(PublicKey publicKey, bool compressed = false)
+        {
+            var pubKey = publicKey.Format(compressed);
+            var arr = new byte[pubKey.Length - 1];
+            Array.Copy(pubKey, 1, arr, 0, arr.Length);
+            return arr;
         }
 
         private static ImmutableArray<byte> DeriveAddress(string hex)

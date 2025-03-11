@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
+using Bencodex.Json;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
 using Libplanet.Types.Blocks;
@@ -90,20 +94,17 @@ namespace Libplanet.Types.Tx
         /// <inheritdoc cref="ITxSigningMetadata.Signer" />
         public Address Signer => _signingMetadata.Signer;
 
-        /// <inheritdoc cref="ITxSigningMetadata.PublicKey" />
-        public PublicKey PublicKey => _signingMetadata.PublicKey;
-
         /// <summary>
         /// Creates a signature for this transaction with the given <paramref name="privateKey"/>.
         /// </summary>
         /// <param name="privateKey">The private key to sign this transaction.</param>
         /// <returns>A signature for this transaction.</returns>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="privateKey"/>
-        /// does not correspond to the <see cref="PublicKey"/> of this transaction.</exception>
+        /// does not correspond to the <see cref="Address"/> of this transaction.</exception>
         [Pure]
         public ImmutableArray<byte> CreateSignature(PrivateKey privateKey)
         {
-            if (!privateKey.PublicKey.Equals(PublicKey))
+            if (!privateKey.Address.Equals(Signer))
             {
                 throw new ArgumentException(
                     "The given private key does not correspond to the public key.",
@@ -125,7 +126,7 @@ namespace Libplanet.Types.Tx
         /// this transaction, otherwise <see langword="false"/>.</returns>
         [Pure]
         public bool VerifySignature(ImmutableArray<byte> signature) =>
-            PublicKey.Verify(CreateMessage(), signature);
+            PublicKey.Verify(Signer, CreateMessage().ToImmutableArray(), signature);
 
         /// <inheritdoc cref="IEquatable{T}.Equals(T)"/>
         [Pure]
@@ -175,12 +176,14 @@ namespace Libplanet.Types.Tx
                 $"  {nameof(Actions)} = {indentedActions},\n" +
                 $"  {nameof(Nonce)} = {Nonce},\n" +
                 $"  {nameof(Signer)} = {Signer},\n" +
-                $"  {nameof(PublicKey)} = {PublicKey},\n" +
                 "}";
         }
 
         [Pure]
-        private byte[] CreateMessage() =>
-            _codec.Encode(this.MarshalUnsignedTx());
+        private byte[] CreateMessage()
+        {
+            var json = this.SerializeUnsignedTxToJson();
+            return Encoding.UTF8.GetBytes(json);
+        }
     }
 }

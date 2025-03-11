@@ -2,9 +2,13 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.Json;
 using Bencodex;
+using Bencodex.Json;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Types.Assets;
@@ -22,10 +26,19 @@ namespace Libplanet.Types.Tx
         private static readonly Binary GasLimitKey = new Binary(new byte[] { 0x6c }); // 'l'
         private static readonly Binary NonceKey = new Binary(new byte[] { 0x6e }); // 'n'
         private static readonly Binary SignerKey = new Binary(new byte[] { 0x73 }); // 's'
-        private static readonly Binary PublicKeyKey = new Binary(new byte[] { 0x70 }); // 'p'
         private static readonly Binary SignatureKey = new Binary(new byte[] { 0x53 }); // 'S'
         private static readonly Binary ActionsKey = new Binary(new byte[] { 0x61 }); // 'a'
         private static readonly Codec Codec = new Codec();
+
+        private static readonly BencodexJsonConverter BencodexJsonConverter = new ();
+        private static readonly JsonSerializerOptions SerializerOptions = new ()
+        {
+            WriteIndented = true,
+            Converters =
+            {
+                BencodexJsonConverter,
+            },
+        };
 
         [Pure]
         public static Bencodex.Types.Dictionary MarshalTxInvoice(this ITxInvoice invoice)
@@ -70,23 +83,33 @@ namespace Libplanet.Types.Tx
             this ITxSigningMetadata metadata
         ) => Dictionary.Empty
             .Add(NonceKey, metadata.Nonce)
-            .Add(SignerKey, metadata.Signer.Bencoded)
-            .Add(PublicKeyKey, metadata.PublicKey.ToImmutableArray(compress: false));
+            .Add(SignerKey, metadata.Signer.Bencoded);
 
         [Pure]
-        public static Bencodex.Types.Dictionary MarshalUnsignedTx(this IUnsignedTx unsignedTx) =>
-            (Bencodex.Types.Dictionary)unsignedTx.MarshalTxInvoice()
+        public static Dictionary MarshalUnsignedTx(this IUnsignedTx unsignedTx)
+            => (Dictionary)unsignedTx.MarshalTxInvoice()
                 .AddRange(unsignedTx.MarshalTxSigningMetadata());
 
         [Pure]
-        public static Bencodex.Types.Dictionary MarshalTransaction(
-            this Transaction transaction) =>
-            transaction.MarshalUnsignedTx().Add(SignatureKey, transaction.Signature);
+        public static string SerializeUnsignedTxToJson(this IUnsignedTx unsignedTx)
+        {
+            var dict = unsignedTx.MarshalUnsignedTx();
+            using var ms = new MemoryStream();
+            using var writer = new Utf8JsonWriter(ms, new JsonWriterOptions { Indented = true });
+            BencodexJsonConverter.Write(writer, dict, SerializerOptions);
+            ms.Position = 0;
+            using var sr = new StreamReader(ms);
+            return sr.ReadToEnd();
+        }
+
+        [Pure]
+        public static Dictionary MarshalTransaction(this Transaction transaction)
+            => transaction.MarshalUnsignedTx().Add(SignatureKey, transaction.Signature);
 
         [Pure]
         public static ImmutableArray<byte> SerializeUnsignedTx(this IUnsignedTx unsignedTx)
         {
-            Bencodex.Types.Dictionary dict = unsignedTx.MarshalUnsignedTx();
+            Dictionary dict = unsignedTx.MarshalUnsignedTx();
             byte[] encoded = Codec.Encode(dict);
             ImmutableArray<byte> movedBytes =
                 Unsafe.As<byte[], ImmutableArray<byte>>(ref encoded);
@@ -125,8 +148,8 @@ namespace Libplanet.Types.Tx
             Bencodex.Types.Dictionary dictionary
         ) =>
             new TxSigningMetadata(
-                nonce: (Bencodex.Types.Integer)dictionary[NonceKey],
-                publicKey: new PublicKey(((Binary)dictionary[PublicKeyKey]).ByteArray)
+                signer: new Address(dictionary[SignerKey]),
+                nonce: (Bencodex.Types.Integer)dictionary[NonceKey]
             );
 
         [Pure]
@@ -167,6 +190,24 @@ namespace Libplanet.Types.Tx
             throw new DecodingException(
                 $"Expected a {typeof(Bencodex.Types.Dictionary).FullName}, " +
                 $"but {node.GetType().Name} given.");
+        }
+
+        [Pure]
+        public static IUnsignedTx DeserializeUnsignedTxFromJson(string json)
+        {
+            using var ms = new MemoryStream(Encoding.UTF8.GetBytes(json));
+            var reader = new Utf8JsonReader(ms.ToArray());
+            var value = BencodexJsonConverter.Read(ref reader, typeof(IValue), SerializerOptions)
+                ?? throw new InvalidOperationException("Failed to parse the unsigned transaction.");
+            if (value is Dictionary dict)
+            {
+                return UnmarshalUnsignedTx(dict);
+            }
+
+            throw new DecodingException(
+                $"Expected a {typeof(Bencodex.Types.Dictionary).FullName}, " +
+                $"but {value.GetType().Name} given."
+            );
         }
 
         [Pure]

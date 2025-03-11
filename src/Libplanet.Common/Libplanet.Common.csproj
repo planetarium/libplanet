@@ -4,6 +4,7 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.*" />
     <PackageReference Include="Bencodex" Version="0.16.0" />
+    <PackageReference Include="Bencodex.Json" Version="0.16.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

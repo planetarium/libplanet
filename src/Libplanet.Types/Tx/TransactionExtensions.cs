@@ -85,7 +85,7 @@ namespace Libplanet.Types.Tx
             PrivateKey privateKey,
             long nonce)
         =>
-            invoice.Combine(new TxSigningMetadata(privateKey.PublicKey, nonce)).Sign(privateKey);
+            invoice.Combine(new TxSigningMetadata(privateKey.Address, nonce)).Sign(privateKey);
 
         /// <inheritdoc cref="Transaction(IUnsignedTx, PrivateKey)" />
         /// <returns>A <see cref="Transaction"/> instance.</returns>

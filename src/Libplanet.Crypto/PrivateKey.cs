@@ -1,20 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Libplanet.Common;
-using Org.BouncyCastle.Asn1.Sec;
-using Org.BouncyCastle.Asn1.X9;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Crypto.Generators;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Math.EC;
-using Org.BouncyCastle.Security;
-using ECPoint = Org.BouncyCastle.Math.EC.ECPoint;
+using Secp256k1Net;
 
 namespace Libplanet.Crypto
 {
@@ -42,7 +35,9 @@ namespace Libplanet.Crypto
     /// <seealso cref="Crypto.PublicKey"/>
     public class PrivateKey : IEquatable<PrivateKey>
     {
+        internal static readonly object _secpLock = new object();
         private const int KeyByteSize = 32;
+        private readonly ImmutableArray<byte> _bytes;
         private PublicKey? _publicKey;
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace Libplanet.Crypto
         /// It can be analogous to creating a new account in a degree.
         /// </summary>
         public PrivateKey()
-            : this(GenerateKeyParam())
+            : this(GenerateBytes())
         {
         }
 
@@ -66,16 +61,14 @@ namespace Libplanet.Crypto
         /// <remarks>A valid <see cref="byte"/> array for a <see cref="PrivateKey"/> can be encoded
         /// using <see cref="ByteArray"/> property.</remarks>
         /// <seealso cref="ByteArray"/>
-        public PrivateKey(IReadOnlyList<byte> privateKey)
-            : this(privateKey is byte[] ba ? ba : privateKey.ToArray(), informedConsent: true)
+        public PrivateKey(byte[] privateKey)
+            : this(privateKey.ToImmutableArray())
         {
-            if (privateKey.Count != KeyByteSize)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(privateKey),
-                    $"The key must be {KeyByteSize} bytes."
-                );
-            }
+        }
+
+        public PrivateKey(in ImmutableArray<byte> immutableBytes)
+            : this(immutableBytes, verify: true)
+        {
         }
 
         /// <summary>
@@ -91,27 +84,18 @@ namespace Libplanet.Crypto
         /// <exception cref="FormatException">Thrown when the given <paramref name="hex"/> string is
         /// not a valid hexadecimal string.</exception>
         public PrivateKey(string hex)
-            : this(unverifiedKey: GenerateBytesFromHexString(hex), informedConsent: true)
+            : this(GenerateBytesFromHexString(hex), verify: true)
         {
         }
 
-        public PrivateKey(byte[] unverifiedKey, bool informedConsent)
-            : this(GenerateKeyFromBytes(unverifiedKey))
+        private PrivateKey(in ImmutableArray<byte> bytes, bool verify)
         {
-            // The `informedConsent` parameter mainly purposes to prevent this overload from
-            // being chosen instead of PrivatKey(IReadOnly<byte>) by mistake.
-            if (!informedConsent)
+            if (verify && !VerifyBytes(bytes))
             {
-                throw new ArgumentException(
-                    nameof(informedConsent),
-                    "The caller should ensure the key is valid and safe enough."
-                );
+                throw new ArgumentException("Invalid private key.", nameof(bytes));
             }
-        }
 
-        private PrivateKey(ECPrivateKeyParameters keyParam)
-        {
-            KeyParam = keyParam;
+            _bytes = bytes;
         }
 
         /// <summary>
@@ -124,10 +108,13 @@ namespace Libplanet.Crypto
             {
                 if (_publicKey is null)
                 {
-                    ECDomainParameters ecParams = GetECParameters();
-                    ECPoint q = ecParams.G.Multiply(KeyParam.D);
-                    var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
-                    _publicKey = new PublicKey(kp);
+                    lock (_secpLock)
+                    {
+                        using var secp256k1 = new Secp256k1();
+                        var publicKey = new byte[Secp256k1.PUBKEY_LENGTH];
+                        secp256k1.PublicKeyCreate(publicKey, _bytes.ToArray());
+                        _publicKey = new PublicKey(publicKey, verify: false);
+                    }
                 }
 
                 return _publicKey;
@@ -160,8 +147,6 @@ namespace Libplanet.Crypto
         [Pure]
         public ImmutableArray<byte> ByteArray => ToByteArray().ToImmutableArray();
 
-        internal ECPrivateKeyParameters KeyParam { get; }
-
         public static bool operator ==(PrivateKey left, PrivateKey right) => left.Equals(right);
 
         public static bool operator !=(PrivateKey left, PrivateKey right) => !left.Equals(right);
@@ -180,20 +165,19 @@ namespace Libplanet.Crypto
         /// not a valid hexadecimal string.</exception>
         [Pure]
         public static PrivateKey FromString(string hex)
-        {
-            return new PrivateKey(
-                unverifiedKey: GenerateBytesFromHexString(hex),
-                informedConsent: true
-            );
-        }
+            => new PrivateKey(GenerateBytesFromHexString(hex), verify: true);
 
-        public bool Equals(PrivateKey? other) => KeyParam.Equals(other?.KeyParam);
+        public bool Equals(PrivateKey? other)
+            => other is not null && _bytes.SequenceEqual(other._bytes);
 
         public override bool Equals(object? obj) => obj is PrivateKey other && Equals(other);
 
-        public override int GetHashCode() =>
-            unchecked(ByteUtil.CalculateHashCode(ToByteArray()) * 397 ^
-                      KeyParam.GetHashCode());
+        public override int GetHashCode()
+        {
+            HashCode hash = default;
+            hash.AddBytes(_bytes.ToArray());
+            return hash.ToHashCode();
+        }
 
         /// <summary>
         /// Creates a signature from the given <paramref name="message"/>.
@@ -226,8 +210,8 @@ namespace Libplanet.Crypto
         /// <seealso cref="Crypto.PublicKey.Verify"/>
         public byte[] Sign(byte[] message)
         {
-            HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
-            return CryptoConfig.CryptoBackend.Sign(hashed, this);
+            // HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
+            return CryptoConfig.CryptoBackend.Sign(message, this);
         }
 
         /// <summary>
@@ -253,8 +237,8 @@ namespace Libplanet.Crypto
         /// <seealso cref="Crypto.PublicKey.Verify"/>
         public ImmutableArray<byte> Sign(ImmutableArray<byte> message)
         {
-            HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
-            byte[] sig = CryptoConfig.CryptoBackend.Sign(hashed, this);
+            // HashDigest<SHA256> hashed = HashDigest<SHA256>.DeriveFrom(message);
+            byte[] sig = CryptoConfig.CryptoBackend.Sign(message.ToArray(), this);
             return Unsafe.As<byte[], ImmutableArray<byte>>(ref sig);
         }
 
@@ -320,21 +304,14 @@ namespace Libplanet.Crypto
         [Pure]
         public SymmetricKey ExchangeKey(PublicKey publicKey)
         {
-            ECPoint p = CalculatePoint(publicKey.KeyParam);
-            BigInteger x = p.AffineXCoord.ToBigInteger();
-            BigInteger y = p.AffineYCoord.ToBigInteger();
+            lock (_secpLock)
+            {
+                using var secp256k1 = new Secp256k1();
+                var secret = new byte[Secp256k1.SECRET_LENGTH];
+                secp256k1.Ecdh(secret, publicKey.Raw.ToArray(), _bytes.ToArray());
 
-            byte[] xbuf = x.ToByteArrayUnsigned();
-            var ybuf = new byte[] { (byte)(y.TestBit(0) ? 0x03 : 0x02) };
-
-            var hash = new Sha256Digest();
-            var result = new byte[hash.GetDigestSize()];
-
-            hash.BlockUpdate(ybuf, 0, ybuf.Length);
-            hash.BlockUpdate(xbuf, 0, xbuf.Length);
-            hash.DoFinal(result, 0);
-
-            return new SymmetricKey(result);
+                return new SymmetricKey(secret);
+            }
         }
 
         /// <summary>
@@ -359,71 +336,45 @@ namespace Libplanet.Crypto
         /// <seealso cref="ByteArray"/>
         /// <seealso cref="PrivateKey(IReadOnlyList{byte})"/>
         [Pure]
-        public byte[] ToByteArray() =>
-            KeyParam.D.ToByteArrayUnsigned();
+        public byte[] ToByteArray() => _bytes.ToArray();
 
-        internal static ECDomainParameters GetECParameters()
+        internal static byte[] GetPublicKey(in ImmutableArray<byte> raw, bool compress)
         {
-            return GetECParameters("secp256k1");
-        }
-
-        private static ECDomainParameters GetECParameters(string name)
-        {
-            X9ECParameters ps = SecNamedCurves.GetByName(name);
-            return new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
-        }
-
-        private static ECPrivateKeyParameters GenerateKeyParam()
-        {
-            var gen = new ECKeyPairGenerator();
-            var secureRandom = new SecureRandom();
-            ECDomainParameters ecParams = GetECParameters();
-            var keyGenParam =
-                new ECKeyGenerationParameters(ecParams, secureRandom);
-            gen.Init(keyGenParam);
-
-            const int maxTries = 3000;
-            int tries = 0;
-            ECPrivateKeyParameters result;
-
-            while (tries < maxTries)
+            lock (_secpLock)
             {
-                result = (ECPrivateKeyParameters)gen.GenerateKeyPair().Private;
-                if (result.D.ToByteArrayUnsigned().Length == KeyByteSize)
+                using var secp256k1 = new Secp256k1();
+                var length = compress
+                    ? Secp256k1.SERIALIZED_COMPRESSED_PUBKEY_LENGTH
+                    : Secp256k1.SERIALIZED_UNCOMPRESSED_PUBKEY_LENGTH;
+                var flag = compress
+                    ? Flags.SECP256K1_EC_COMPRESSED : Flags.SECP256K1_EC_UNCOMPRESSED;
+                var publicKey = new byte[length];
+                if (!secp256k1.PublicKeySerialize(publicKey, raw.ToArray(), flag))
                 {
-                    return result;
+                    throw new UnreachableException("Failed to serialize a public key.");
                 }
 
-                tries++;
+                return publicKey;
             }
-
-            throw new GenerateKeyParamTriesExceedException(
-                "Can't find appropriate parameter for private key" +
-                $"(maxTries: {maxTries})"
-            );
         }
 
-        private static ECPrivateKeyParameters GenerateKeyFromBytes(byte[] privateKey)
+        private static byte[] GenerateBytes()
         {
-            if (privateKey.All(b => b.Equals(0x00)))
+            lock (_secpLock)
             {
-                throw new ArgumentException("Every bytes in Private key is zero value.");
+                using var secp256k1 = new Secp256k1();
+                using var rnd = RandomNumberGenerator.Create();
+                var privateKey = new byte[Secp256k1.PRIVKEY_LENGTH];
+                do
+                {
+                    rnd.GetBytes(privateKey);
+                }
+                while (!secp256k1.SecretKeyVerify(privateKey));
+                return privateKey;
             }
-
-            var param = new ECPrivateKeyParameters(
-                "ECDSA",
-                new BigInteger(1, privateKey),
-                GetECParameters()
-            );
-
-            // For sanity check.
-#pragma warning disable SA1312, S1481
-            var _ = new PrivateKey(param).PublicKey;
-#pragma warning restore SA1312, S1481
-            return param;
         }
 
-        private static byte[] GenerateBytesFromHexString(string hex)
+        private static ImmutableArray<byte> GenerateBytesFromHexString(string hex)
         {
             byte[] bytes = ByteUtil.ParseHex(hex);
             if (bytes.Length != KeyByteSize)
@@ -434,45 +385,16 @@ namespace Libplanet.Crypto
                 );
             }
 
-            return bytes;
+            return bytes.ToImmutableArray();
         }
 
-        private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)
+        private static bool VerifyBytes(in ImmutableArray<byte> bytes)
         {
-            ECDomainParameters dp = KeyParam.Parameters;
-            if (!dp.Equals(pubKeyParams.Parameters))
+            lock (_secpLock)
             {
-                throw new InvalidOperationException(
-                    "ECDH public key has wrong domain parameters"
-                );
+                using var secp256k1 = new Secp256k1();
+                return bytes.Length == KeyByteSize && secp256k1.SecretKeyVerify(bytes.ToArray());
             }
-
-            BigInteger d = KeyParam.D;
-
-            ECPoint q = dp.Curve.DecodePoint(pubKeyParams.Q.GetEncoded(true));
-            if (q.IsInfinity)
-            {
-                throw new InvalidOperationException(
-                    "Infinity is not a valid public key for ECDH"
-                );
-            }
-
-            BigInteger h = dp.H;
-            if (!h.Equals(BigInteger.One))
-            {
-                d = dp.H.ModInverse(dp.N).Multiply(d).Mod(dp.N);
-                q = ECAlgorithms.ReferenceMultiply(q, h);
-            }
-
-            ECPoint p = q.Multiply(d).Normalize();
-            if (p.IsInfinity)
-            {
-                throw new InvalidOperationException(
-                    "Infinity is not a valid agreement value for ECDH"
-                );
-            }
-
-            return p;
         }
     }
 }

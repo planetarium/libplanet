@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -10,7 +11,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Libplanet.Common;
-using Org.BouncyCastle.Crypto.Parameters;
+using Secp256k1Net;
 
 namespace Libplanet.Crypto
 {
@@ -36,13 +37,15 @@ namespace Libplanet.Crypto
     [JsonConverter(typeof(PublicKeyJsonConverter))]
     public class PublicKey : IEquatable<PublicKey>
     {
+        private readonly ImmutableArray<byte> _bytes;
+
         /// <summary>
         /// Creates a <see cref="PublicKey"/> instance from the given
-        /// <see cref="byte"/> array (i.e., <paramref name="publicKey"/>),
+        /// <see cref="byte"/> array (i.e., <paramref name="bytes"/>),
         /// which encodes a valid <a href="https://en.wikipedia.org/wiki/ECDSA">
         /// ECDSA</a> public key.
         /// </summary>
-        /// <param name="publicKey">A valid <see cref="byte"/> array that
+        /// <param name="bytes">A valid <see cref="byte"/> array that
         /// encodes an ECDSA public key.  It can be either compressed or
         /// not.</param>
         /// <remarks>A valid <see cref="byte"/> array for
@@ -50,14 +53,26 @@ namespace Libplanet.Crypto
         /// <see cref="Format(bool)"/> method.
         /// </remarks>
         /// <seealso cref="Format(bool)"/>
-        public PublicKey(IReadOnlyList<byte> publicKey)
-            : this(GetECPublicKeyParameters(publicKey is byte[] ba ? ba : publicKey.ToArray()))
+        public PublicKey(byte[] bytes)
+            : this(bytes, verify: true)
         {
         }
 
-        internal PublicKey(ECPublicKeyParameters keyParam)
+        internal PublicKey(byte[] bytes, bool verify)
         {
-            KeyParam = keyParam;
+            if (verify)
+            {
+                if (!TryGetPublicKey(bytes, out var publicKey))
+                {
+                    throw new ArgumentException("Invalid public key bytes.", nameof(bytes));
+                }
+
+                _bytes = publicKey!.ToImmutableArray();
+            }
+            else
+            {
+                _bytes = bytes.ToImmutableArray();
+            }
         }
 
         /// <summary>
@@ -65,7 +80,7 @@ namespace Libplanet.Crypto
         /// </summary>
         public Address Address => new Address(this);
 
-        internal ECPublicKeyParameters KeyParam { get; }
+        internal ImmutableArray<byte> Raw => _bytes;
 
         public static bool operator ==(PublicKey left, PublicKey right) => left.Equals(right);
 
@@ -83,13 +98,39 @@ namespace Libplanet.Crypto
         /// is not a valid hexadecimal string.</exception>
         /// <seealso cref="ToHex(bool)"/>
         public static PublicKey FromHex(string hex) =>
-            new PublicKey(ByteUtil.ParseHex(hex));
+            new PublicKey(ByteUtil.ParseHex(hex), verify: true);
 
-        public bool Equals(PublicKey? other) => KeyParam.Equals(other?.KeyParam);
+        public static bool Verify(
+            Address signer, ImmutableArray<byte> message, ImmutableArray<byte> signature)
+        {
+            if (signature.IsDefaultOrEmpty)
+            {
+                return false;
+            }
+
+            try
+            {
+                // var hashed = HashDigest<SHA256>.DeriveFrom(message);
+                return CryptoConfig.CryptoBackend.Verify(
+                    message.ToArray(), signature.ToArray(), signer);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool Equals(PublicKey? other)
+            => other is not null && _bytes.SequenceEqual(other._bytes);
 
         public override bool Equals(object? obj) => obj is PublicKey other && Equals(other);
 
-        public override int GetHashCode() => KeyParam.GetHashCode();
+        public override int GetHashCode()
+        {
+            HashCode hash = default;
+            hash.AddBytes(_bytes.ToArray());
+            return hash.ToHashCode();
+        }
 
         /// <summary>
         /// Encodes this public key into a mutable <see cref="byte"/> array representation.
@@ -105,8 +146,7 @@ namespace Libplanet.Crypto
         /// <seealso cref="ToImmutableArray(bool)"/>
         /// <seealso cref="PublicKey(IReadOnlyList{byte})"/>
         [Pure]
-        public byte[] Format(bool compress) =>
-            KeyParam.Q.GetEncoded(compress);
+        public byte[] Format(bool compress) => PrivateKey.GetPublicKey(_bytes, compress);
 
         /// <summary>
         /// Encodes this public key into a immutable <see cref="byte"/> array representation.
@@ -123,6 +163,9 @@ namespace Libplanet.Crypto
         [Pure]
         public ImmutableArray<byte> ToImmutableArray(bool compress) =>
             Format(compress).ToImmutableArray();
+
+        [Pure]
+        public byte[] ToArray() => Format(false);
 
         /// <summary>
         /// Encrypts a plaintext <paramref name="message"/> to a ciphertext, which can be decrypted
@@ -180,41 +223,7 @@ namespace Libplanet.Crypto
         /// Otherwise <see langword="false"/>.</returns>
         [Pure]
         public bool Verify(IReadOnlyList<byte> message, IReadOnlyList<byte> signature)
-        {
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            if (signature == null)
-            {
-                throw new ArgumentNullException(nameof(signature));
-            }
-
-            if (signature is ImmutableArray<byte> i ? i.IsDefaultOrEmpty : !signature.Any())
-            {
-                return false;
-            }
-
-            try
-            {
-                HashDigest<SHA256> hashed = message switch
-                {
-                    byte[] ma => HashDigest<SHA256>.DeriveFrom(ma),
-                    ImmutableArray<byte> im => HashDigest<SHA256>.DeriveFrom(im),
-                    _ => HashDigest<SHA256>.DeriveFrom(message.ToArray()),
-                };
-                return CryptoConfig.CryptoBackend.Verify(
-                    hashed,
-                    signature is byte[] ba ? ba : signature.ToArray(),
-                    publicKey: this
-                );
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+            => Verify(Address, message.ToImmutableArray(), signature.ToImmutableArray());
 
         /// <summary>
         /// Gets the public key's hexadecimal representation in compressed form.
@@ -228,14 +237,21 @@ namespace Libplanet.Crypto
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString() => ToHex(true);
 
-        private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
+        private static bool TryGetPublicKey(
+            byte[] bytes, [MaybeNullWhen(false)] out byte[] publicKey)
         {
-            var ecParams = PrivateKey.GetECParameters();
-            return new ECPublicKeyParameters(
-                "ECDSA",
-                ecParams.Curve.DecodePoint(bs),
-                ecParams
-            );
+            lock (PrivateKey._secpLock)
+            {
+                using var secp256k1 = new Secp256k1();
+                publicKey = new byte[Secp256k1.PUBKEY_LENGTH];
+                if (secp256k1.PublicKeyParse(publicKey, bytes))
+                {
+                    return true;
+                }
+
+                publicKey = null;
+                return false;
+            }
         }
     }
 
