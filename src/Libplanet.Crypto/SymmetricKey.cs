@@ -111,7 +111,11 @@ namespace Libplanet.Crypto
         [Pure]
         public byte[] Encrypt(byte[] message, byte[] nonSecret)
         {
+#if NETSTANDARD2_0_OR_GREATER
+            using var aes = new AesGcm(_key);
+#else
             using var aes = new AesGcm(_key, tagSizeInBytes: TagByteSize);
+#endif
             byte[] nonce = new byte[NonceByteSize];
             _secureRandom.GetBytes(nonce);
 
@@ -152,7 +156,11 @@ namespace Libplanet.Crypto
         [Pure]
         public byte[] Decrypt(byte[] ciphertext, int nonSecretLength = 0)
         {
+#if NETSTANDARD2_0_OR_GREATER
+            using var aes = new AesGcm(_key);
+#else
             using var aes = new AesGcm(_key, tagSizeInBytes: TagByteSize);
+#endif
             using var inputStream = new MemoryStream(ciphertext);
             using var reader = new BinaryReader(inputStream);
             var nonSecretPayload = reader.ReadBytes(nonSecretLength);
@@ -168,11 +176,9 @@ namespace Libplanet.Crypto
                 aes.Decrypt(nonce, encryptedMessage, tag, decryptedMessage, nonSecretPayload);
                 return decryptedMessage;
             }
-            catch (AuthenticationTagMismatchException e)
+            catch (Exception e)
             {
-                var message = "The ciphertext is invalid. " +
-                    "Ciphertext may not have been encrypted with " +
-                    "the corresponding public key";
+                var message = "Failed to decrypt the ciphertext.";
                 throw new InvalidCiphertextException(message, e);
             }
         }

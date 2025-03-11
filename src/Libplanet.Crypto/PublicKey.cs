@@ -128,7 +128,11 @@ namespace Libplanet.Crypto
         public override int GetHashCode()
         {
             HashCode hash = default;
-            hash.AddBytes(_bytes.ToArray());
+            foreach (byte b in _bytes)
+            {
+                hash.Add(b);
+            }
+
             return hash.ToHashCode();
         }
 

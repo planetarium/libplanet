@@ -5,8 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -276,7 +274,7 @@ namespace Libplanet.Crypto
             Array.Copy(initaddr, 12, addr, 0, initaddr.Length - 12);
             var address = ToChecksumAddress(
                 Nethereum.Hex.HexConvertors.Extensions.HexByteConvertorExtensions.ToHex(addr));
-            return Convert.FromHexString(address).ToImmutableArray();
+            return ByteUtil.ParseHexToImmutable(address);
         }
 
         private static byte[] GetPubKeyNoPrefix(PublicKey publicKey, bool compressed = false)

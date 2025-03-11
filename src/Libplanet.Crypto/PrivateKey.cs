@@ -175,7 +175,11 @@ namespace Libplanet.Crypto
         public override int GetHashCode()
         {
             HashCode hash = default;
-            hash.AddBytes(_bytes.ToArray());
+            for (var i = 0; i < _bytes.Length; i++)
+            {
+                hash.Add(_bytes[i]);
+            }
+
             return hash.ToHashCode();
         }
 
@@ -351,7 +355,7 @@ namespace Libplanet.Crypto
                 var publicKey = new byte[length];
                 if (!secp256k1.PublicKeySerialize(publicKey, raw.ToArray(), flag))
                 {
-                    throw new UnreachableException("Failed to serialize a public key.");
+                    throw new NotSupportedException("Failed to serialize a public key.");
                 }
 
                 return publicKey;
