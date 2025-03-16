@@ -21,7 +21,7 @@ jobs:
     - run: yarn install --immutable  # TODO: cache and apply --immutable-cache --check-cache
     - run: yarn build
     - id: account-aws-kms-changes
-      uses: tj-actions/changed-files@v41.0.1
+      uses: step-security/changed-files@v45
       with:
         files: "@planetarium/account-aws-kms"
     - name: Run yarn test w/o AWS cred for PR unrelated to account-aws-kms
