@@ -30,11 +30,6 @@ namespace Libplanet.Explorer.GraphTypes
                 description: "An address of the account who signed this transaction.",
                 resolve: x => x.Source.Signer
             );
-            Field<NonNullGraphType<ByteStringType>>(
-                name: "PublicKey",
-                description: "A PublicKey of the account who signed this transaction.",
-                resolve: ctx => ctx.Source.PublicKey.Format(true)
-            );
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>>(
                 name: "UpdatedAddresses",
                 description: "Addresses whose states were affected by Actions.",

@@ -4,7 +4,9 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.*" />
     <PackageReference Include="System.Text.Json" Version="6.0.*" />
     <PackageReference Include="Bencodex" Version="0.16.0" />
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
+    <PackageReference Include="Secp256k1.Net" Version="1.2.0" />
+    <PackageReference Include="Secp256k1.Native" Version="0.1.24-alpha" />
+    <PackageReference Include="Nethereum.Util" Version="4.29.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(SkipSonar)' != 'true'">

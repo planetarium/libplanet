@@ -72,8 +72,8 @@ namespace Libplanet.Tests.Blocks
                     new TxSigningMetadata(key.PublicKey, nonce: 0)
                 ),
                 signature: ByteUtil.ParseHexToImmutable(
-                    "304402202a8324c83390b1fe0fdd4014056a049bc02ca059369ef62145fe574cb31224f" +
-                    "d022073bf8a48403cf46f5fa63f26f3e8ef4db8ef1d841684856da63d9b7eeb91759a"
+                    "cd51a992907121083ae2da9b39f94063fe5eb1bb91bb96dc83ced6add8370fe36" +
+                    "394d6db0fca60ebfe40284e4c4cf6096cf5aa4e18bdc5d4f732033ea692e7521c"
                 )
             );
             var txs = new[] { tx2, Block1Tx0, Block1Tx1 }.OrderBy(tx => tx.Id).ToImmutableList();
@@ -106,11 +106,11 @@ namespace Libplanet.Tests.Blocks
                         actions: TxActionList.Empty,
                         maxGasPrice: null,
                         gasLimit: null),
-                    new TxSigningMetadata(Block1Tx1.PublicKey, nonce: 1L)
+                    new TxSigningMetadata(Block1Tx1.Signer, nonce: 1L)
                 ),
                 signature: ByteUtil.ParseHexToImmutable(
-                    "304502210099e580e8599acf0b26ad0a80315f2d488703ffde01e9449b4bf399593b8cc" +
-                    "e63022002feb21bf0e4d76d25d17c8c1c4fbb3dfbda986e0693f984fbb302183ab7ece1"
+                    "271c43e8c1a54c59686a49f13f1279765dd26a40a7b5e649a7dbf938bbcef3bf5" +
+                    "e1d6be5b456506873fbd9d3e5b07a5f72bfeac19774cd8f8c7fd4f4f73abb6d1b"
                 )
             );
             var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
@@ -127,9 +127,9 @@ namespace Libplanet.Tests.Blocks
                         evidenceHash: null),
                     transactions: txs,
                     evidence: evs));
-            Assert.Equal(Block1Tx1.Id, e.TxId);
+            Assert.Equal(dupTx1.Id, e.TxId);
             Assert.Equal(2L, e.ExpectedNonce);
-            Assert.Equal(Block1Tx1.Nonce, e.ImproperNonce);
+            Assert.Equal(dupTx1.Nonce, e.ImproperNonce);
         }
 
         [Fact]
@@ -144,14 +144,14 @@ namespace Libplanet.Tests.Blocks
                         actions: TxActionList.Empty,
                         maxGasPrice: null,
                         gasLimit: null),
-                    new TxSigningMetadata(Block1Tx1.PublicKey, nonce: 3L)
+                    new TxSigningMetadata(Block1Tx1.Signer, nonce: 3L)
                 ),
                 signature: ByteUtil.ParseHexToImmutable(
-                    "3045022100bfdf79427028efea9449ad46fbf46d5a806694aa5bbab1a01f4c76b21acd" +
-                    "cb16022057c851a01dd74797121385ccfc81e7b33842941189154b4d46d05e891a28e3eb"
+                    "299543707e52a2ba0a20f6dfd306ca6a87c8f0567134c83f1a078af064547b9f4" +
+                    "72f3e6d2bb88c7e7cc46a6d70017117f5cb75fbb5cbd7239e042d1273072e861c"
                 )
             );
-            var txs = new[] { Block1Tx0, Block1Tx1, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
+            var txs = new[] { Block1Tx1, Block1Tx0, dupTx1 }.OrderBy(tx => tx.Id).ToArray();
             var evs = Array.Empty<EvidenceBase>();
             InvalidTxNonceException e = Assert.Throws<InvalidTxNonceException>(
                 () => new BlockContent(
@@ -215,9 +215,9 @@ namespace Libplanet.Tests.Blocks
         {
             var expected = new HashDigest<SHA256>(new byte[]
             {
-                0x65, 0x46, 0x98, 0xd3, 0x4b, 0x6d, 0x9a, 0x55, 0xb0, 0xc9, 0x3e,
-                0x4f, 0xfb, 0x26, 0x39, 0x27, 0x83, 0x24, 0x86, 0x8c, 0x91, 0x96,
-                0x5b, 0xc5, 0xf9, 0x6c, 0xb3, 0x07, 0x1d, 0x69, 0x03, 0xa0,
+                0x9d, 0x64, 0x57, 0xe7, 0xbd, 0xc4, 0xb1, 0x9d, 0x1f, 0x34, 0x1c, 0x45, 0xc7, 0x87,
+                0xcf, 0x80, 0xa1, 0x7c, 0x51, 0x4d, 0xa1, 0x0d, 0x70, 0x26, 0x06, 0xcc, 0x41, 0xf2,
+                0x33, 0x87, 0xba, 0xdb,
             });
             AssertBytesEqual(expected, Block1Content.TxHash);
             Assert.Null(GenesisContentPv0.TxHash);

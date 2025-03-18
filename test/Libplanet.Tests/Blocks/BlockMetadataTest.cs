@@ -129,7 +129,7 @@ namespace Libplanet.Tests.Blocks
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("3d8e87977b1142863435b9385657e69557df8951a0698e9719f7d06c5fb8db1f")
+                    ParseHex("5553c7f03ca10f7f9a58b051f65e1d35d52c28d658f3316545075dd07303cd71")
                 )
                 .Add(
                     "evidence_hash",
@@ -151,7 +151,7 @@ namespace Libplanet.Tests.Blocks
                 )
                 .Add(
                     "transaction_fingerprint",
-                    ParseHex("654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0")
+                    ParseHex("9d6457e7bdc4b19d1f341c45c787cf80a17c514da10d702606cc41f23387badb")
                 )
                 .Add("protocol_version", BlockMetadata.CurrentProtocolVersion)
                 .Add(
@@ -178,7 +178,7 @@ namespace Libplanet.Tests.Blocks
                 .Add(
                     "transaction_fingerprint",
                     ParseHex(
-                        "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0"
+                        "9d6457e7bdc4b19d1f341c45c787cf80a17c514da10d702606cc41f23387badb"
                     )
                 )
                 .Add(
@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Blocks
 
             HashDigest<SHA256> hash = GenesisMetadata.DerivePreEvaluationHash();
             AssertBytesEqual(
-                FromHex("9ff328716814fed03de454dfc0a9d9aeb0077ad0c393513bf29895a45ded13aa"),
+                FromHex("79c69838bb150cd31c77bf0a10db1f088dbd1509613b33db1081f2b39a6974e0"),
                 hash.ByteArray);
         }
 

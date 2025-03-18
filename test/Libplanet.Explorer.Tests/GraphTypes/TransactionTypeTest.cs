@@ -33,7 +33,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                     id
                     nonce
                     signer
-                    publicKey
                     updatedAddresses
                     signature
                     timestamp
@@ -51,9 +50,6 @@ namespace Libplanet.Explorer.Tests.GraphTypes
                 (Dictionary<string, object>)((ExecutionNode) result.Data!)?.ToValue()!;
             Assert.Null(result.Errors);
             Assert.Equal(transaction.Id.ToHex(), resultData["id"]);
-            Assert.Equal(
-                ByteUtil.Hex(transaction.PublicKey.Format(true)),
-                resultData["publicKey"]);
             Assert.Equal(transaction.Signer.ToString(), resultData["signer"]);
             Assert.Equal(ByteUtil.Hex(transaction.Signature), resultData["signature"]);
             Assert.Equal(transaction.Nonce, resultData["nonce"]);

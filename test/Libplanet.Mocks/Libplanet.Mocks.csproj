@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(_IsPacking)'=='true'">$(TargetFrameworks);netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(_IsPacking)'=='true'">$(TargetFrameworks);netstandard2.1</TargetFrameworks>
     <IsPackable>true</IsPackable>
     <IsTestProject>false</IsTestProject>
     <IsPublishable>true</IsPublishable>

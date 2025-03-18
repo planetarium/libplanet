@@ -55,17 +55,17 @@ namespace Libplanet.Tests.Crypto
             };
             var key = new PrivateKey(bs);
             Assert.Equal(bs, key.ToByteArray());
-            key = new PrivateKey(bs.ToImmutableArray());
+            key = new PrivateKey(bs.ToImmutableArray().ToArray());
             Assert.Equal(bs, key.ByteArray);
         }
 
         [Fact]
         public void BytesSanityCheckTest()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(
+            Assert.Throws<ArgumentException>(
                 () => new PrivateKey(new byte[] { 0x87, 0x09, 0x12 })
              );
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new PrivateKey(new byte[31]
                 {
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -73,7 +73,7 @@ namespace Libplanet.Tests.Crypto
                     0x87, 0x09, 0x12,
                 })
             );
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 new PrivateKey(new byte[33]
                 {
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -89,7 +89,7 @@ namespace Libplanet.Tests.Crypto
             };
             Assert.Throws<ArgumentException>(() => new PrivateKey(bs));
             ImmutableArray<byte> ibs = bs.ToImmutableArray();
-            Assert.Throws<ArgumentException>(() => new PrivateKey(ibs));
+            Assert.Throws<ArgumentException>(() => new PrivateKey(ibs.ToArray()));
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace Libplanet.Tests.Crypto
             Assert.Equal(expected, new PrivateKey(keyBytes).PublicKey.Format(false));
             Assert.Equal(
                 expected,
-                new PrivateKey(keyBytes.ToImmutableArray()).PublicKey.Format(false)
+                new PrivateKey(keyBytes.ToImmutableArray().ToArray()).PublicKey.Format(false)
             );
         }
 
@@ -226,14 +226,12 @@ namespace Libplanet.Tests.Crypto
             );
             var cipherText = new byte[]
             {
-                0x03, 0xe3, 0x1a, 0x0d, 0xea, 0x31, 0xe2, 0xb1, 0x32, 0x7b,
-                0xd8, 0x70, 0x0a, 0xd3, 0x57, 0xcc, 0x69, 0x31, 0x4e, 0xca,
-                0xd7, 0x0a, 0xe2, 0xe4, 0xfa, 0x55, 0x17, 0xa3, 0x3b, 0x67,
-                0xcf, 0xb1, 0xc4, 0xfa, 0xa1, 0x10, 0xd4, 0xd2, 0x73, 0x11,
-                0xef, 0xf1, 0x47, 0x99, 0xd7, 0x3d, 0x3c, 0xaa, 0xa2, 0x0e,
-                0x35, 0x7c, 0x41, 0xc8, 0x8e, 0x14, 0x22, 0xc7, 0x64, 0xed,
-                0xcc, 0xe0, 0x6c, 0x06, 0xb5, 0x86, 0x44, 0xc1, 0x68, 0xa5,
-                0xab, 0xf3, 0x9d, 0xcb, 0x46, 0xb6, 0xe2,
+                0x03, 0xc6, 0xcc, 0x1a, 0x70, 0xe4, 0x70, 0x0c, 0x96, 0x63, 0x8f, 0xf0, 0xd7, 0x8c,
+                0x6c, 0xf9, 0x7a, 0xce, 0x75, 0x27, 0xbb, 0xb6, 0xee, 0xa2, 0x12, 0x41, 0xb6, 0x18,
+                0x17, 0xf0, 0x6c, 0xb8, 0x37, 0xf6, 0x9d, 0xa2, 0x33, 0x4a, 0x03, 0xb1, 0xcb, 0xba,
+                0x07, 0xa5, 0x5a, 0x35, 0xd8, 0xf0, 0xca, 0x44, 0xaf, 0xab, 0xb7, 0x7f, 0x97, 0x7e,
+                0x06, 0x8b, 0xbe, 0xf8, 0xd6, 0x90, 0xc4, 0x47, 0x19, 0x99, 0x58, 0xee, 0x15, 0x86,
+                0xd0, 0x82, 0xef,
             };
             var expected = Encoding.ASCII.GetBytes("test message");
 

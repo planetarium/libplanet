@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Linq;
 using System.Text.Json.Serialization;
 using Bencodex;
 using Bencodex.Types;
@@ -80,7 +81,7 @@ namespace Libplanet.Consensus
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
-                    ((Binary)encoded[ValidatorPublicKeyKey]).ByteArray),
+                    ((Binary)encoded[ValidatorPublicKeyKey]).ByteArray.ToArray()),
                 flag: (VoteFlag)(int)(Integer)encoded[FlagKey])
         {
         }

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Immutable;
-using Bencodex;
+using System.Text;
 using Libplanet.Action;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Tx
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
             var wrongKey = new PrivateKey();
             ImmutableArray<byte> signature = unsignedTx.CreateSignature(privateKey);
-            byte[] message = new Codec().Encode(unsignedTx.MarshalUnsignedTx());
+            byte[] message = Encoding.UTF8.GetBytes(unsignedTx.SerializeUnsignedTxToJson());
             Assert.True(privateKey.PublicKey.Verify(message, signature));
             Assert.False(wrongKey.PublicKey.Verify(message, signature));
 
@@ -94,8 +94,8 @@ namespace Libplanet.Tests.Tx
             var privateKey =
                 new PrivateKey("51fb8c2eb261ed761429c297dd1f8952c8ce327d2ec2ec5bcc7728e3362627c2");
             var signature = ByteUtil.ParseHexToImmutable(
-                "30430220502da40025cf537d0517a111bb2078b04ec421755743177e0bad75ff47dcf" +
-                "066021f154bb551ec7e5e9228debcd44beee5a74db8249670e06f2c5b355f56730627");
+                "6624cbd4281c0fb29d73f7912f8bec6a9bf4be4b73538148e5ef0352885906c54" +
+                "f05d12acbe0cf6afd8665b744db99a2a4a54cb473f9ac0077b93cc614e806a91c");
             var wrongSignature = ByteUtil.ParseHexToImmutable(
                 "3045022100e4df322ba35e0e5ed96043b1c214e4a0f23734a7491b5db4c4a88834d3f47" +
                 "48a0220691b0972641a8759ac921b731e5750c20505f05fd993d45b24eb989de33018b1");
@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Tx
                     null,
                     null);
                 var diffSigningMetadata = new TxSigningMetadata(
-                    i == 4 ? wrongKey.PublicKey : _signingMetadata.PublicKey,
+                    i == 4 ? wrongKey.Address : _signingMetadata.Signer,
                     i == 5 ? 456L : _signingMetadata.Nonce
                 );
 
@@ -177,7 +177,6 @@ namespace Libplanet.Tests.Tx
                       ],
                       ""nonce"": 123,
                       ""signer"": ""89F0eE48e8BeaE3131B17Dc79A1282A0D7EdC6b9"",
-                      ""publicKey"": ""03f804c12768bf9e05978ee37c56d037f68523fd9079642691eec82e233e1559bf"",
                       ""maxGasPrice"": null,
                       ""gasLimit"": null,
                     }

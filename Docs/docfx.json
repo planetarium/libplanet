@@ -8,7 +8,6 @@
             "src/Libplanet.Action/Libplanet.Action.csproj",
             "src/Libplanet.Common/Libplanet.Common.csproj",
             "src/Libplanet.Crypto/Libplanet.Crypto.csproj",
-            "src/Libplanet.Crypto.Secp256k1/Libplanet.Crypto.Secp256k1.csproj",
             "tools/Libplanet.Explorer.Cocona/Libplanet.Explorer.Cocona.csproj",
             "tools/Libplanet.Extensions.Cocona/Libplanet.Extensions.Cocona.csproj",
             "test/Libplanet.Mocks/Libplanet.Mocks.csproj",

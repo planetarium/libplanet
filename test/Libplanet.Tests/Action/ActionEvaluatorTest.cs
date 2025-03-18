@@ -529,9 +529,9 @@ namespace Libplanet.Tests.Action
             // have to be updated, since the order may change due to different PreEvaluationHash.
             (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[] expectations =
             {
-                (1, 0, new[] { null, null, "C", null, null }, _txFx.Address2),  // Adds "A"
-                (0, 0, new[] { "A", null, "C", null, null }, _txFx.Address1),   // Adds "B"
-                (0, 1, new[] { "A", "B", "C", null, null }, _txFx.Address1),    // Adds "C"
+                (0, 0, new[] { "A", null, null, null, null }, _txFx.Address1),  // Adds "A"
+                (0, 1, new[] { "A", "B", null, null, null }, _txFx.Address1),   // Adds "B"
+                (1, 0, new[] { "A", "B", "C", null, null }, _txFx.Address2),    // Adds "C"
             };
 
 #if DEBUG
@@ -679,8 +679,8 @@ namespace Libplanet.Tests.Action
             expectations = new (int TxIdx, int ActionIdx, string[] UpdatedStates, Address Signer)[]
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }, _txFx.Address1),
-                (2, 0, new[] { "A,D", "B", "C", null, "F" }, _txFx.Address3),
-                (1, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address2),
+                (1, 0, new[] { "A,D", "B", "C", "E", null }, _txFx.Address2),
+                (2, 0, new[] { "A,D", "B", "C", "E", "F" }, _txFx.Address3),
             };
 
 #if DEBUG
@@ -1684,10 +1684,10 @@ namespace Libplanet.Tests.Action
         // Spec for protocol version < 3.
         public List<string> OrderedAddressesV0 = new List<string>
         {
-            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
-            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
-            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
             "0xc2A86014073D662a4a9bFCF9CB54263dfa4F5cBc",
+            "0xfcbfa4977B2Fc7A608E4Bd2F6F0D6b27C0a4cd13",
+            "0x1d2B31bF9A2CA71051f8c66E1C783Ae70EF32798",
+            "0xB0ea0018Ab647418FA81c384194C9167e6A3C925",
             "0x921Ba81C0be280C8A2faed79E14aD2a098874759",
         };
 

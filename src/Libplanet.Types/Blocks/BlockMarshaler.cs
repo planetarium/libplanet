@@ -175,7 +175,7 @@ namespace Libplanet.Types.Blocks
             PublicKey? publicKey = null;
             if (marshaled.ContainsKey(PublicKeyKey))
             {
-                publicKey = new PublicKey(((Binary)marshaled[PublicKeyKey]).ByteArray);
+                publicKey = new PublicKey(((Binary)marshaled[PublicKeyKey]).ByteArray.ToArray());
                 miner = publicKey.Address;
             }
             else

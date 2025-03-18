@@ -7,7 +7,6 @@ using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
 using Libplanet.Crypto;
-using NetMQ;
 
 namespace Libplanet.Net
 {
@@ -280,16 +279,10 @@ namespace Libplanet.Net
         [Pure]
         private static byte[] GetMessage(int version, IValue? extra)
         {
-            byte[] msg = NetworkOrderBitsConverter.GetBytes(version);
-            if (!(extra is null))
-            {
-                byte[] extraBytes = _codec.Encode(extra);
-                int versionLength = msg.Length;
-                Array.Resize(ref msg, versionLength + extraBytes.Length);
-                extraBytes.CopyTo(msg, versionLength);
-            }
-
-            return msg;
+            var list = new List(
+                new Integer(version),
+                extra is null ? Null.Value : extra);
+            return ByteUtil.CreateMessage(list);
         }
     }
 }

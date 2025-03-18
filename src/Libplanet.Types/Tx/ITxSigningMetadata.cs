@@ -24,12 +24,5 @@ namespace Libplanet.Types.Tx
         /// from the <see cref="PublicKey"/>.
         /// </summary>
         Address Signer { get; }
-
-        /// <summary>
-        /// A <see cref="PublicKey"/> of the account who signs this transaction.
-        /// The <see cref="Signer"/> address is always corresponding to this for each transaction.
-        /// This cannot be <see langword="null"/>.
-        /// </summary>
-        PublicKey PublicKey { get; }
     }
 }

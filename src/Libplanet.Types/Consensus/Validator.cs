@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Numerics;
 using System.Text.Json.Serialization;
 using Bencodex;
@@ -53,7 +54,7 @@ namespace Libplanet.Types.Consensus
 
         private Validator(Bencodex.Types.Dictionary bencoded)
             : this(
-                new PublicKey(((Binary)bencoded[PublicKeyKey]).ByteArray),
+                new PublicKey(((Binary)bencoded[PublicKeyKey]).ByteArray.ToArray()),
                 (Integer)bencoded[PowerKey])
         {
         }

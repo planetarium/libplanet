@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using Libplanet.Common;
 using Libplanet.Crypto;
@@ -26,11 +27,12 @@ namespace Libplanet.Tests.Crypto
                 "83440efbbef0657ac2ef6c6ee05db06a94532fda7ddc44a1695e5ce1a3d3c76db");
 
             var mutable = new PublicKey(bytes);
-            var immutable = new PublicKey(bytes.ToImmutableArray());
+            var immutable = new PublicKey(bytes);
             Assert.Equal(mutable, immutable);
             var compressedMutable = new PublicKey(mutable.Format(compress: true));
             Assert.Equal(mutable, compressedMutable);
-            var compressedImmutable = new PublicKey(immutable.ToImmutableArray(compress: true));
+            var compressedImmutable = new PublicKey(
+                immutable.ToImmutableArray(compress: true).ToArray());
             Assert.Equal(mutable, compressedImmutable);
         }
 
@@ -66,12 +68,15 @@ namespace Libplanet.Tests.Crypto
             Assert.Equal(expected, publicKey.Address);
         }
 
+        /// <summary>
+        /// private key: "8dc9c703811d9ef7d513b88f07249f1b90cfa3981ad1e208fa62acda572831ac".
+        /// </summary>
         [Fact]
         public void Verify()
         {
             var pubKey = new PublicKey(ByteUtil.ParseHex(
-                "04b5a24aa2112720423bad39a0205182379d6f2b33e3487c9ab6cc8fc496f8a54" +
-                "83440efbbef0657ac2ef6c6ee05db06a94532fda7ddc44a1695e5ce1a3d3c76db"));
+                "0409142d7919d50d48314bf877a9e86d5da7a20a49e230e89fbb18e8c4681a908" +
+                "5ab74286cb0c6bf1e56f6e077b2e1630c329338c3bfd0471f1565fe8bcf8de935"));
             var payload = new byte[]
             {
                 0x64, 0x37, 0x3a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73,
@@ -97,13 +102,13 @@ namespace Libplanet.Tests.Crypto
             };
             var signature = new byte[]
             {
-                0x30, 0x44, 0x02, 0x20, 0x62, 0xcf, 0x8a, 0x04, 0x41, 0x9c,
-                0x6a, 0x03, 0xba, 0xf5, 0x5d, 0xe1, 0x0d, 0x9b, 0x20, 0x0e,
-                0xda, 0xa9, 0xdf, 0x2b, 0x9b, 0xf0, 0xcf, 0x98, 0x9f, 0xd6,
-                0x5d, 0x71, 0xc5, 0x5c, 0x35, 0x60, 0x02, 0x20, 0x2a, 0xa5,
-                0x59, 0x69, 0xd0, 0xad, 0xb1, 0x5e, 0x9e, 0x70, 0x8d, 0x83,
-                0x00, 0xe1, 0x05, 0x31, 0x1e, 0x1a, 0x16, 0x16, 0x5d, 0xb7,
-                0x3e, 0xd8, 0xf4, 0xf0, 0x05, 0x1d, 0x9f, 0x13, 0x81, 0xfd,
+                0x1f, 0x80, 0xfb, 0x27, 0xbd, 0xdb, 0xea, 0xa5, 0x3a, 0x9e,
+                0x90, 0xc5, 0xbb, 0xc6, 0x1d, 0x99, 0x8d, 0xcd, 0x2d, 0x4e,
+                0x15, 0xdc, 0xeb, 0x4a, 0x78, 0x5f, 0x55, 0xac, 0x1c, 0xcb,
+                0x01, 0x93, 0x38, 0xb4, 0xbf, 0xaf, 0x85, 0xbb, 0x02, 0xe8,
+                0xeb, 0xe8, 0xa4, 0x21, 0xbe, 0x9f, 0x09, 0x6e, 0x43, 0xbf,
+                0x33, 0x74, 0x21, 0x04, 0x83, 0xb9, 0x21, 0x8b, 0x6a, 0xbd,
+                0x49, 0xfb, 0x58, 0xb7, 0x1b,
             };
             Assert.True(pubKey.Verify(payload, signature));
             Assert.False(pubKey.Verify(payload, ImmutableArray<byte>.Empty));
@@ -208,7 +213,8 @@ namespace Libplanet.Tests.Crypto
         [Fact]
         public void EncryptTest()
         {
-            var prvKey = new PrivateKey();
+            var prvKey = new PrivateKey(
+                "281747f1f29309b061e4a36a28ddc8276aec353cc312d3d8619d23ccf36172a5");
             var pubKey = prvKey.PublicKey;
             var bs = Encoding.ASCII.GetBytes("hello world");
 

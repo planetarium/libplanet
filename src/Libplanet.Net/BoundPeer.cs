@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using Bencodex;
 using Bencodex.Types;
@@ -59,7 +60,7 @@ namespace Libplanet.Net
 
         private BoundPeer(Bencodex.Types.Dictionary bencoded)
             : this(
-                new PublicKey(((Binary)bencoded[PublicKeyKey]).ByteArray),
+                new PublicKey(((Binary)bencoded[PublicKeyKey]).ByteArray.ToArray()),
                 new DnsEndPoint(
                     (Text)bencoded[EndPointHostKey], (Integer)bencoded[EndPointPortKey]),
                 bencoded[PublicIpAddressKey] is Text text ? IPAddress.Parse(text) : null)

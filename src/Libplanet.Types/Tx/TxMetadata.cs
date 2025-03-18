@@ -23,18 +23,17 @@ namespace Libplanet.Types.Tx
         private static readonly Binary SignerKey = new Binary(new byte[] { 0x73 }); // 's'
         private static readonly Binary GenesisHashKey = new Binary(new byte[] { 0x67 }); // 'g'
         private static readonly Binary UpdatedAddressesKey = new Binary(new byte[] { 0x75 }); // 'u'
-        private static readonly Binary PublicKeyKey = new Binary(new byte[] { 0x70 }); // 'p'
         private static readonly Binary TimestampKey = new Binary(new byte[] { 0x74 }); // 't'
 
         /// <summary>
         /// Creates a <see cref="TxMetadata"/> instance with a <paramref name="publicKey"/>.
         /// Other fields can be set using property setters.
         /// </summary>
-        /// <param name="publicKey">Configures <see cref="PublicKey"/> and <see cref="Signer"/>.
+        /// <param name="signer">Configures <see cref="Address"/>.
         /// </param>
-        public TxMetadata(PublicKey publicKey)
+        public TxMetadata(Address signer)
         {
-            PublicKey = publicKey;
+            Signer = signer;
         }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace Libplanet.Types.Tx
             Nonce = metadata.Nonce;
             GenesisHash = metadata.GenesisHash;
             UpdatedAddresses = metadata.UpdatedAddresses;
-            PublicKey = metadata.PublicKey;
+            Signer = metadata.Signer;
             Timestamp = metadata.Timestamp;
         }
 
@@ -72,7 +71,7 @@ namespace Libplanet.Types.Tx
             UpdatedAddresses = ((List)dictionary[UpdatedAddressesKey])
                 .Select(v => new Address(v))
                 .ToImmutableHashSet();
-            PublicKey = new PublicKey(((Binary)dictionary[PublicKeyKey]).ByteArray);
+            Signer = new Address(((Binary)dictionary[SignerKey]).ByteArray);
             Timestamp = DateTimeOffset.ParseExact(
                 (Text)dictionary[TimestampKey],
                 TimestampFormat,
@@ -89,10 +88,9 @@ namespace Libplanet.Types.Tx
 
         /// <summary>
         /// A <see cref="Address"/> of the account who signs this transaction.
-        /// This is derived from the <see cref="PublicKey"/>.
         /// </summary>
         /// <remarks>This is automatically derived from <see cref="PublicKey"/>.</remarks>
-        public Address Signer => new Address(PublicKey);
+        public Address Signer { get; }
 
         /// <summary>
         /// An approximated list of addresses whose states would be affected by actions in this
@@ -106,13 +104,6 @@ namespace Libplanet.Types.Tx
         /// The time this transaction is created and signed.
         /// </summary>
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.UtcNow;
-
-        /// <summary>
-        /// A <see cref="PublicKey"/> of the account who signs this transaction.
-        /// The <see cref="Signer"/> address is always corresponding to this
-        /// for each transaction.  This cannot be <see langword="null"/>.
-        /// </summary>
-        public PublicKey PublicKey { get; }
 
         /// <summary>
         /// A <see cref="BlockHash"/> value of the genesis which this transaction is made
@@ -133,7 +124,6 @@ namespace Libplanet.Types.Tx
                 .Add(NonceKey, Nonce)
                 .Add(SignerKey, Signer.Bencoded)
                 .Add(UpdatedAddressesKey, updatedAddresses)
-                .Add(PublicKeyKey, PublicKey.ToImmutableArray(compress: false))
                 .Add(TimestampKey, timestamp);
 
             if (GenesisHash is { } genesisHash)
@@ -155,7 +145,6 @@ namespace Libplanet.Types.Tx
                 (UpdatedAddresses.Any()
                     ? $"\n    {string.Join("\n    ", UpdatedAddresses)};\n"
                     : ";\n") +
-                $"  {nameof(PublicKey)} = {PublicKey},\n" +
                 $"  {nameof(Timestamp)} = {Timestamp},\n" +
                 $"  {nameof(GenesisHash)} = {GenesisHash?.ToString() ?? "(null)"},\n" +
                 "}";

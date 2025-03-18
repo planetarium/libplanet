@@ -45,7 +45,6 @@
     <ProjectReference Include="..\Libplanet.Extensions.Cocona\Libplanet.Extensions.Cocona.csproj" />
     <ProjectReference Include="..\..\src\Libplanet\Libplanet.csproj" />
     <ProjectReference Include="..\..\src\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
-    <ProjectReference Include="..\..\src\Libplanet.Crypto.Secp256k1\Libplanet.Crypto.Secp256k1.csproj" />
     <!-- FIXME: We should specify the version range when the following NuGet
     issue is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
   </ItemGroup>

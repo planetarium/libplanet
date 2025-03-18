@@ -96,8 +96,8 @@ namespace Libplanet.Tests.Fixtures
                     new TxSigningMetadata(Block1Tx0Key.PublicKey, nonce: 0L)
                 ),
                 signature: ByteUtil.ParseHexToImmutable(
-                    "30440220422c85ea44845a56253654d95595ad06d6f09f862ca71b97e986ecbb453eac" +
-                    "ae0220606e76276e40fa8f0795b880f712531fd6bd9db253bd8ab9c86aa4ab7d791d37"
+                    "6054008481425278039421becc25fcb030d12714dc53490fdd5d43bcc8fe2d2a5" +
+                    "b80a751bbde0b4813bd94ecd8e63bafee4f18db787beb117a5fc1aa5c2af9ca1b"
                 )
             );
             Block1Tx1Key = PrivateKey.FromString(
@@ -116,8 +116,8 @@ namespace Libplanet.Tests.Fixtures
                         gasLimit: null),
                     new TxSigningMetadata(Block1Tx1Key.PublicKey, nonce: 1L)),
                 signature: ByteUtil.ParseHexToImmutable(
-                    "3045022100abe3caabf2a46a297f2e4496f2c46d7e2f723e75fc42025d19f3ed7fce382" +
-                    "d4e02200ffd36f7bef759b6c7ab43bc0f8959a0c463f88fd0f1faeaa209a8661506c4f0")
+                    "f74609d91b9c5348ba248df1dcbce4114031971beb39c12874df3a8c4c8651540" +
+                    "b31c9460da2b673cae61502036f6054353303be3c0b210ad9659afc6e9f5ce71b")
             );
             Block1Ev0 = new TestEvidence(
                 0, GenesisKey.Address, new DateTimeOffset(2024, 5, 24, 14, 13, 9, 45, kst));
@@ -140,7 +140,7 @@ namespace Libplanet.Tests.Fixtures
                 transactions: block1Transactions,
                 evidence: block1Evidence);
             Block1TxHash = HashDigest<SHA256>.FromString(
-                "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
+                "9d6457e7bdc4b19d1f341c45c787cf80a17c514da10d702606cc41f23387badb");
             Block1Metadata = new BlockMetadata(Block1Content);
 
             GenesisContentPv0 = new BlockContent(

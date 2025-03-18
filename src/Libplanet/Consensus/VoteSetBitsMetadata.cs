@@ -87,7 +87,7 @@ namespace Libplanet.Consensus
                     TimestampFormat,
                     CultureInfo.InvariantCulture),
                 validatorPublicKey: new PublicKey(
-                    ((Binary)encoded[ValidatorPublicKeyKey]).ByteArray),
+                    ((Binary)encoded[ValidatorPublicKeyKey]).ByteArray.ToArray()),
                 flag: (VoteFlag)(int)(Integer)encoded[FlagKey],
                 voteBits: ((List)encoded[VoteBitsKey])
                     .Select(bit => (bool)(Bencodex.Types.Boolean)bit))

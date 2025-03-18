@@ -23,12 +23,11 @@ namespace Libplanet.Net.Tests
             signer: SignerFixture.Address,
             signature: new byte[]
             {
-                0x30, 0x45, 0x02, 0x21, 0x00, 0x89, 0x95, 0x9c, 0x59, 0x25, 0x83, 0x4e,
-                0xbc, 0x45, 0x59, 0xd7, 0x9b, 0xca, 0x82, 0x4a, 0x69, 0x20, 0xe5, 0x18,
-                0xf0, 0xc5, 0xad, 0xe2, 0xb9, 0xa3, 0xa3, 0xb3, 0x29, 0xbb, 0xa3, 0x3d,
-                0xd8, 0x02, 0x20, 0x1d, 0xcb, 0x88, 0xa1, 0x3a, 0x3c, 0x19, 0x2d, 0xe1,
-                0x9e, 0x39, 0xf6, 0x58, 0x05, 0xd4, 0x06, 0xbf, 0xb2, 0x93, 0xd1, 0x64,
-                0x85, 0x75, 0xa8, 0xa2, 0xcb, 0x9f, 0x95, 0xd9, 0x90, 0xb9, 0x51,
+                0xc6, 0xc8, 0xc1, 0x78, 0x52, 0xc6, 0x21, 0x0d, 0x97, 0xd7, 0x8b, 0xdd, 0xf1, 0x26,
+                0x49, 0x94, 0x1b, 0x80, 0x8b, 0x6a, 0x3a, 0x90, 0xad, 0x62, 0x83, 0x3e, 0xf4, 0x2a,
+                0x22, 0x2b, 0xc8, 0xf4, 0x07, 0x5e, 0xbe, 0x87, 0x32, 0x57, 0x34, 0xa9, 0x77, 0x1c,
+                0x3c, 0x87, 0x24, 0x39, 0x4a, 0x71, 0xcc, 0x5f, 0xaa, 0x8b, 0x07, 0x96, 0xbf, 0xb2,
+                0x7c, 0xf7, 0x7f, 0x11, 0xd1, 0x07, 0x49, 0xa2, 0x1c,
             }.ToImmutableArray()
         );
 
@@ -218,15 +217,14 @@ namespace Libplanet.Net.Tests
         {
             var expected =
                 "1/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
-                "MEUCIQCJlZxZJYNOvEVZ15vKgkppIOUY8MWt4rmjo7Mpu6M92AIgHcuIoTo8GS3hnjn2WAXUBr+yk9Fk" +
-                "hXWoosufldmQuVE=";
+                "xsjBeFLGIQ2X14vd8SZJlBuAi2o6kK1igz70KiIryPQHXr6HMlc0qXccPIckOUpxzF+qiweWv7J8938R" +
+                "0QdJohw=";
             Assert.Equal(expected, ValidClaimFixture.Token);
 
             expected =
                 "123/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
                 "MEQCIAhd1E0voVfgAcpvypiNeh0TdMvJJso7w98UPTfirQSIAiAW1K5yQjFj6XOZUAu5GUmh8rtjIJla" +
-                "d9IV.b1ZmexcUQ==/" +
-                "dTM6Zm9v";
+                "d9IV.b1ZmexcUQ==/dTM6Zm9v";
             Assert.Equal(expected, ValidClaimWExtraFixture.Token);
         }
 
@@ -237,8 +235,8 @@ namespace Libplanet.Net.Tests
                 ValidClaimFixture,
                 AppProtocolVersion.FromToken(
                     "1/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
-                    "MEUCIQCJlZxZJYNOvEVZ15vKgkppIOUY8MWt4rmjo7Mpu6M92AIgHcuIoTo8GS3hnjn2WAXUBr+y" +
-                    "k9FkhXWoosufldmQuVE="
+                    "xsjBeFLGIQ2X14vd8SZJlBuAi2o6kK1igz70KiIryPQHXr6HMlc0qXccPIckOUpxzF+qiweWv7J8" +
+                    "938R0QdJohw="
                 )
             );
             Assert.Equal(
@@ -246,8 +244,7 @@ namespace Libplanet.Net.Tests
                 AppProtocolVersion.FromToken(
                     "123/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
                     "MEQCIAhd1E0voVfgAcpvypiNeh0TdMvJJso7w98UPTfirQSIAiAW1K5yQjFj6XOZUAu5GUmh8rtj" +
-                    "IJlad9IV.b1ZmexcUQ==/" +
-                    "dTM6Zm9v"
+                    "IJlad9IV.b1ZmexcUQ==/dTM6Zm9v"
                 )
             );
 
