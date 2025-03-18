@@ -129,7 +129,7 @@ public class StoreCommand
     )
     {
         using IStore store = Utils.LoadStoreFromUri(home);
-        var block = GetBlock(store, BlockHash.FromString(blockHash));
+        var block = GetBlock(store, BlockHash.Parse(blockHash));
         Console.WriteLine(Utils.SerializeHumanReadable(block));
     }
 

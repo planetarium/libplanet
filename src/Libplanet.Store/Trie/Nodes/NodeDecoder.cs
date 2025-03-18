@@ -28,7 +28,7 @@ public static class NodeDecoder
     {
         if (value is List list)
         {
-            if (list.Count == FullNode.ChildrenCount + 1)
+            if (list.Count == FullNode.MaximumIndex + 1)
             {
                 if ((nodeTypes & NodeTypes.Full) == NodeTypes.Full)
                 {
@@ -104,7 +104,7 @@ public static class NodeDecoder
             builder.Add((byte)i, node);
         }
 
-        var value = Decode(list[FullNode.ChildrenCount], FullValueNodeTypes);
+        var value = Decode(list[FullNode.MaximumIndex], FullValueNodeTypes);
 
         return new FullNode(builder.ToImmutable(), value);
     }

@@ -64,7 +64,7 @@ namespace Libplanet.Explorer.Queries
 
                     if (hash is { } nonNullHash)
                     {
-                        return ExplorerQuery.GetBlockByHash(BlockHash.FromString(nonNullHash));
+                        return ExplorerQuery.GetBlockByHash(BlockHash.Parse(nonNullHash));
                     }
 
                     if (index is { } nonNullIndex)

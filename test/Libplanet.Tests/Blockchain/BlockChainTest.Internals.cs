@@ -9,6 +9,7 @@ using Libplanet.Action.State;
 using Libplanet.Action.Tests.Common;
 using Libplanet.Common;
 using Libplanet.Crypto;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Evidence;
 using Libplanet.Types.Tx;
@@ -130,7 +131,7 @@ namespace Libplanet.Tests.Blockchain
 
             IValue legacyStateRootRaw =
                 _fx.StateStore.GetStateRoot(_blockChain.GetNextStateRootHash() ?? default)
-                .Get(ToStateKey(ReservedAddresses.LegacyAccount));
+                [ToStateKey(ReservedAddresses.LegacyAccount)];
             Assert.NotNull(legacyStateRootRaw);
             var legacyStateRoot =
                 new HashDigest<SHA256>(((Binary)legacyStateRootRaw).ByteArray);
@@ -140,7 +141,7 @@ namespace Libplanet.Tests.Blockchain
                     pair.Value,
                     _fx.StateStore
                         .GetStateRoot(legacyStateRoot)
-                        .Get(new[] { ToStateKey(pair.Key) })[0]
+                        .GetMany(new[] { ToStateKey(pair.Key) })[0]
                 );
             }
         }

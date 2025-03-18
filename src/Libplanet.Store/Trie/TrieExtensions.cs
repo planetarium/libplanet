@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Store.Trie;
@@ -6,7 +8,7 @@ public static class TrieExtensions
 {
     public static TrieMetadata? GetMetadata(this ITrie @this)
     {
-        if (@this.Get(KeyBytes.Empty) is { } value)
+        if (@this[KeyBytes.Empty] is { } value)
         {
             return new TrieMetadata(value);
         }
@@ -19,4 +21,12 @@ public static class TrieExtensions
 
     public static ITrie SetMetadata(this ITrie @this, IValue encoded)
         => @this.Set(KeyBytes.Empty, encoded);
+
+    public static IReadOnlyList<IValue?> GetMany(this ITrie @this, IReadOnlyList<KeyBytes> keys)
+    {
+        const int parallelThreshold = 4;
+        return keys.Count <= parallelThreshold
+            ? keys.Select(key => @this[key]).ToArray()
+            : keys.AsParallel().Select(key => @this[key]).ToArray();
+    }
 }

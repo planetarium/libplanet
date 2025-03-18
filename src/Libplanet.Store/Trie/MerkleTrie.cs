@@ -26,6 +26,9 @@ namespace Libplanet.Store.Trie;
 public sealed partial class MerkleTrie(IKeyValueStore keyValueStore, INode? node) : ITrie
 {
     private static readonly Codec _codec = new();
+    private readonly NodeInserter _nodeInserter = new(keyValueStore);
+    private readonly NodeRemover _nodeRemover = new(keyValueStore);
+    private readonly NodeResolver _nodeResolver = new(keyValueStore);
 
     /// <summary>
     /// An <see cref="ITrie"/> implementation.
@@ -49,19 +52,28 @@ public sealed partial class MerkleTrie(IKeyValueStore keyValueStore, INode? node
     public INode? Node { get; } = node;
 
     /// <inheritdoc cref="ITrie.Hash"/>
-    public HashDigest<SHA256> Hash => GetHash(Node);
+    public HashDigest<SHA256> Hash => Node switch
+    {
+        null => default,
+        HashNode hashNode => hashNode.HashDigest,
+        _ => HashDigest<SHA256>.DeriveFrom(_codec.Encode(Node.ToBencodex())),
+    };
 
     /// <inheritdoc cref="ITrie.Recorded"/>
     public bool Recorded => Node is null || keyValueStore[new KeyBytes(Hash.ByteArray)] != null;
 
+    /// <inheritdoc cref="ITrie.this[KeyBytes]"/>
+    public IValue? this[in KeyBytes key]
+        => _nodeResolver.ResolveToValue(Node, PathCursor.Create(key));
+
     /// <inheritdoc cref="ITrie.Set"/>
     public ITrie Set(in KeyBytes key, IValue value)
     {
+        var node = Node;
         var cursor = PathCursor.Create(key);
         var valueNode = new ValueNode(value);
-        var nodeInserter = new NodeInserter(keyValueStore);
-        var node = nodeInserter.Insert(Node, cursor, valueNode);
-        return new MerkleTrie(keyValueStore, node);
+        var newNode = _nodeInserter.Insert(node, cursor, valueNode);
+        return new MerkleTrie(keyValueStore, newNode);
     }
 
     /// <inheritdoc cref="ITrie.Remove"/>
@@ -73,25 +85,13 @@ public sealed partial class MerkleTrie(IKeyValueStore keyValueStore, INode? node
         }
 
         var cursor = PathCursor.Create(key);
-        var nodeRemover = new NodeRemover(keyValueStore);
-        var newNode = nodeRemover.Remove(node, cursor);
+        var newNode = _nodeRemover.Remove(node, cursor);
         return new MerkleTrie(keyValueStore, newNode);
     }
 
-    /// <inheritdoc cref="ITrie.Get(KeyBytes)"/>
-    public IValue? Get(KeyBytes key) => ResolveToValue(Node, PathCursor.Create(key));
-
-    /// <inheritdoc cref="ITrie.Get(IReadOnlyList{KeyBytes})"/>
-    public IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys)
-    {
-        const int parallelThreshold = 4;
-        return keys.Count <= parallelThreshold
-            ? keys.Select(key => Get(key)).ToArray()
-            : keys.AsParallel().Select(key => Get(key)).ToArray();
-    }
-
     /// <inheritdoc cref="ITrie.GetNode(Nibbles)"/>
-    public INode? GetNode(Nibbles nibbles) => ResolveToNode(Node, new PathCursor(nibbles));
+    public INode? GetNode(in Nibbles nibbles)
+        => _nodeResolver.ResolveToNode(Node, new PathCursor(nibbles));
 
     /// <inheritdoc cref="ITrie.IterateValues"/>
     public IEnumerable<(KeyBytes Path, IValue Value)> IterateValues()
@@ -236,21 +236,6 @@ public sealed partial class MerkleTrie(IKeyValueStore keyValueStore, INode? node
         }
     }
 
-    private static HashDigest<SHA256> GetHash(INode? node)
-    {
-        if (node is null)
-        {
-            return default;
-        }
-
-        if (node is HashNode hashNode)
-        {
-            return hashNode.HashDigest;
-        }
-
-        return HashDigest<SHA256>.DeriveFrom(_codec.Encode(node.ToBencodex()));
-    }
-
     private IEnumerable<(Nibbles Path, INode Node)> IterateNodes(Nibbles rootPrefix, INode root)
     {
         var stack = new Stack<(Nibbles, INode)>();
@@ -267,7 +252,7 @@ public sealed partial class MerkleTrie(IKeyValueStore keyValueStore, INode? node
                     {
                         if (child is not null)
                         {
-                            stack.Push((path.Add((byte)index), child));
+                            stack.Push((path.Append((byte)index), child));
                         }
                     }
 
@@ -281,7 +266,7 @@ public sealed partial class MerkleTrie(IKeyValueStore keyValueStore, INode? node
                 case ShortNode shortNode:
                     if (shortNode.Value is not null)
                     {
-                        stack.Push((path.AddRange(shortNode.Key), shortNode.Value));
+                        stack.Push((path.Append(shortNode.Key), shortNode.Value));
                     }
 
                     break;
@@ -292,35 +277,4 @@ public sealed partial class MerkleTrie(IKeyValueStore keyValueStore, INode? node
             }
         }
     }
-
-    /// <summary>
-    /// Gets the concrete inner node corresponding to <paramref name="hashNode"/> from storage.
-    /// </summary>
-    /// <param name="hashNode">The <see cref="HashNode"/> to un-hash and retrieve
-    /// the inner node from.</param>
-    /// <returns>The node corresponding to <paramref name="hashNode"/>.</returns>
-    /// <exception cref="KeyNotFoundException">Thrown when <paramref name="hashNode"/>'s
-    /// <see cref="HashNode.HashDigest"/> is not found in storage.</exception>
-    /// <remarks>
-    /// As <see langword="null"/> is never hashed, this is never <see langword="null"/>.
-    /// Specifically, hashing of <see langword="null"/> never happens.
-    /// Calling of this method is explicitly bypassed for an empty <see cref="ITrie"/>.
-    /// </remarks>
-    // private INode UnhashNode(HashNode hashNode)
-    // {
-    //     IValue intermediateEncoding;
-    //     if (HashNodeCache.TryGetValue(hashNode.HashDigest, out var value))
-    //     {
-    //         intermediateEncoding = value!;
-    //     }
-    //     else
-    //     {
-    //         var keyBytes = new KeyBytes(hashNode.HashDigest.ByteArray);
-    //         intermediateEncoding = _codec.Decode(keyValueStore[keyBytes]);
-    //         HashNodeCache.AddOrUpdate(hashNode.HashDigest, intermediateEncoding);
-    //     }
-
-    //     return NodeDecoder.Decode(hashNode.KeyValueStore, intermediateEncoding, NodeDecoder.HashEmbeddedNodeTypes) ??
-    //         throw new NullReferenceException();
-    // }
 }

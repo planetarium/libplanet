@@ -33,7 +33,7 @@ public class TrieTest
         {
             foreach (var address in addresses)
             {
-                IValue v = trie.Get(new[] { new KeyBytes(address.ByteArray) })[0];
+                IValue v = trie.GetMany(new[] { new KeyBytes(address.ByteArray) })[0];
                 IValue expectedState = states.ContainsKey(address) ? states[address] : null;
                 Assert.Equal(expectedState, v);
             }
@@ -72,14 +72,14 @@ public class TrieTest
 
         KeyBytes path = KeyBytes.Create(TestUtils.GetRandomBytes(32));
         trieA = trieA.Set(path, (Text)"foo");
-        Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
+        Assert.Equal((Text)"foo", trieA.GetMany(new[] { path })[0]);
 
         ITrie trieB = stateStore.Commit(trieA);
-        Assert.Equal((Text)"foo", trieB.Get(new[] { path })[0]);
+        Assert.Equal((Text)"foo", trieB.GetMany(new[] { path })[0]);
 
         trieB = trieB.Set(path, (Text)"bar");
-        Assert.Equal((Text)"foo", trieA.Get(new[] { path })[0]);
-        Assert.Equal((Text)"bar", trieB.Get(new[] { path })[0]);
+        Assert.Equal((Text)"foo", trieA.GetMany(new[] { path })[0]);
+        Assert.Equal((Text)"bar", trieB.GetMany(new[] { path })[0]);
 
         ITrie trieC = stateStore.Commit(trieB);
         ITrie trieD = stateStore.Commit(trieC);

@@ -60,7 +60,7 @@ public partial class MerkleTrie : ITrie
                                 }
 
                             case ShortNode shortNode:
-                                queue.Enqueue((shortNode.Value, path.AddRange(shortNode.Key)));
+                                queue.Enqueue((shortNode.Value, path.Append(shortNode.Key)));
                                 continue;
 
                             case FullNode fullNode:
@@ -68,7 +68,7 @@ public partial class MerkleTrie : ITrie
                                 {
                                     if (child is not null)
                                     {
-                                        queue.Enqueue((child, path.Add(index)));
+                                        queue.Enqueue((child, path.Append(index)));
                                     }
                                 }
 
@@ -102,7 +102,7 @@ public partial class MerkleTrie : ITrie
                         continue;
 
                     case ShortNode shortNode:
-                        queue.Enqueue((shortNode.Value, path.AddRange(shortNode.Key)));
+                        queue.Enqueue((shortNode.Value, path.Append(shortNode.Key)));
                         continue;
 
                     case FullNode fullNode:
@@ -110,7 +110,7 @@ public partial class MerkleTrie : ITrie
                         {
                             if (child is not null)
                             {
-                                queue.Enqueue((child, path.Add(index)));
+                                queue.Enqueue((child, path.Append(index)));
                             }
                         }
 

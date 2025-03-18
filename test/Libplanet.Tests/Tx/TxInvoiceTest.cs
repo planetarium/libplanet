@@ -150,7 +150,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Equality()
         {
-            var genesisHash = BlockHash.FromString(
+            var genesisHash = BlockHash.Parse(
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void JsonSerialization()
         {
-            var genesisHash = BlockHash.FromString(
+            var genesisHash = BlockHash.Parse(
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
@@ -278,7 +278,7 @@ namespace Libplanet.Tests.Tx
             public DateTimeOffset Timestamp =>
                 new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);
 
-            public BlockHash? GenesisHash => BlockHash.FromString(
+            public BlockHash? GenesisHash => BlockHash.Parse(
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
 
             public TxActionList Actions => new TxActionList(new IAction[]

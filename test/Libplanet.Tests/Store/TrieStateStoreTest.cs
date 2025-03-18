@@ -38,11 +38,11 @@ namespace Libplanet.Tests.Store
             var stateStore = new TrieStateStore(_stateKeyValueStore);
             ITrie empty = stateStore.GetStateRoot(default);
             Assert.True(empty.Recorded);
-            Assert.Null(empty.Get(new[] { KeyFoo })[0]);
-            Assert.Null(empty.Get(new[] { KeyBar })[0]);
-            Assert.Null(empty.Get(new[] { KeyBaz })[0]);
-            Assert.Null(empty.Get(new[] { KeyQux })[0]);
-            Assert.Null(empty.Get(new[] { KeyQuux })[0]);
+            Assert.Null(empty.GetMany(new[] { KeyFoo })[0]);
+            Assert.Null(empty.GetMany(new[] { KeyBar })[0]);
+            Assert.Null(empty.GetMany(new[] { KeyBaz })[0]);
+            Assert.Null(empty.GetMany(new[] { KeyQux })[0]);
+            Assert.Null(empty.GetMany(new[] { KeyQuux })[0]);
 
             KeyBytes fooKey = new KeyBytes("foo");
             KeyBytes barKey = new KeyBytes("bar");
@@ -60,11 +60,11 @@ namespace Libplanet.Tests.Store
             HashDigest<SHA256> hash = trie.Hash;
             ITrie found = stateStore.GetStateRoot(hash);
             Assert.True(found.Recorded);
-            AssertBencodexEqual(values[fooKey], found.Get(new[] { KeyFoo })[0]);
-            AssertBencodexEqual(values[barKey], found.Get(new[] { KeyBar })[0]);
-            AssertBencodexEqual(values[bazKey], found.Get(new[] { KeyBaz })[0]);
-            AssertBencodexEqual(values[quxKey], found.Get(new[] { KeyQux })[0]);
-            Assert.Null(found.Get(new[] { KeyQuux })[0]);
+            AssertBencodexEqual(values[fooKey], found.GetMany(new[] { KeyFoo })[0]);
+            AssertBencodexEqual(values[barKey], found.GetMany(new[] { KeyBar })[0]);
+            AssertBencodexEqual(values[bazKey], found.GetMany(new[] { KeyBaz })[0]);
+            AssertBencodexEqual(values[quxKey], found.GetMany(new[] { KeyQux })[0]);
+            Assert.Null(found.GetMany(new[] { KeyQuux })[0]);
         }
 
         [Fact]

@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Sign()
         {
-            var genesisHash = BlockHash.FromString(
+            var genesisHash = BlockHash.Parse(
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             var updatedAddresses = ImmutableHashSet.Create(AddressA, AddressB);
             var timestamp = new DateTimeOffset(2023, 3, 29, 1, 2, 3, 456, TimeSpan.Zero);

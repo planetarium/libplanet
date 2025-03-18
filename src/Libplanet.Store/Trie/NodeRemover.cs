@@ -37,7 +37,7 @@ internal sealed class NodeRemover(IKeyValueStore keyValueStore)
                     HashNode _ => throw new ArgumentException(),
                     ValueNode vn => new ShortNode(shortNode.Key, vn),
                     FullNode fn => new ShortNode(shortNode.Key, fn),
-                    ShortNode sn => new ShortNode(shortNode.Key.AddRange(sn.Key), sn.Value),
+                    ShortNode sn => new ShortNode(shortNode.Key.Append(sn.Key), sn.Value),
                     _ => throw new InvalidTrieNodeException(
                             $"Unsupported node value: {node.ToBencodex().Inspect()}"),
                 };
@@ -98,7 +98,7 @@ internal sealed class NodeRemover(IKeyValueStore keyValueStore)
             var (index, child) = children.Single();
             child = child is HashNode hn ? hn.Expand(keyValueStore) : child;
             return child is ShortNode sn
-                    ? new ShortNode(new Nibbles([index]).AddRange(sn.Key), sn.Value)
+                    ? new ShortNode(new Nibbles([index]).Append(sn.Key), sn.Value)
                     : new ShortNode(new Nibbles([index]), child);
         }
         else

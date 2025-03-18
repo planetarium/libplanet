@@ -35,7 +35,7 @@ public class BlockchainGrpcServiceV1(IReadChainService blockChain) : Blockchain.
         Block GetBlock() => request.BlockIdentifierCase switch
         {
             GetBlockRequest.BlockIdentifierOneofCase.Hash
-                => _blockChain.GetBlock(BlockHash.FromString(request.Hash)),
+                => _blockChain.GetBlock(BlockHash.Parse(request.Hash)),
             GetBlockRequest.BlockIdentifierOneofCase.Height
                 => _blockChain.GetBlock(request.Height),
             _ => throw new InvalidOperationException("Invalid block identifier."),

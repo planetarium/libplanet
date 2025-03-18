@@ -82,7 +82,7 @@ namespace Libplanet.Tests.Tx
                     _key2.Address,
                 }.ToImmutableHashSet(),
                 Timestamp = new DateTimeOffset(2022, 1, 12, 4, 56, 7, 890, default),
-                GenesisHash = BlockHash.FromString(
+                GenesisHash = BlockHash.Parse(
                     "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"),
             };
             var copy2 = new TxMetadata(meta2);
@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Tx
                 meta2.Timestamp);
             Assert.Equal(_key2.PublicKey, meta2.PublicKey);
             AssertBytesEqual(
-                BlockHash.FromString(
+                BlockHash.Parse(
                     "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"),
                 meta2.GenesisHash
             );
@@ -172,7 +172,7 @@ namespace Libplanet.Tests.Tx
                     _key2.Address,
                 }.ToImmutableHashSet(),
                 Timestamp = new DateTimeOffset(2022, 1, 12, 4, 56, 7, 890, default),
-                GenesisHash = BlockHash.FromString(
+                GenesisHash = BlockHash.Parse(
                     "83915317ebdbf870c567b263dd2e61ec9dca7fb381c592d80993291b6ffe5ad5"),
             };
             Bencodex.Types.Dictionary expected2 = Dictionary.Empty

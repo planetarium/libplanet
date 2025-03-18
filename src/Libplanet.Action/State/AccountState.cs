@@ -33,7 +33,7 @@ namespace Libplanet.Action.State
             using Activity? a = _activitySource
                 .StartActivity(ActivityKind.Internal)?
                 .AddTag("Address", address.ToString());
-            return Trie.Get(ToStateKey(address));
+            return Trie[ToStateKey(address)];
         }
 
         /// <inheritdoc cref="IAccountState.GetStates"/>
@@ -43,7 +43,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetValidatorSet"/>
         public ValidatorSet GetValidatorSet()
         {
-            IValue? value = Trie.Get(ValidatorSetKey);
+            IValue? value = Trie[ValidatorSetKey];
             return value is List list
                 ? new ValidatorSet(list)
                 : new ValidatorSet();

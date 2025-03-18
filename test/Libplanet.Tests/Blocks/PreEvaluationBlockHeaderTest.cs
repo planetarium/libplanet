@@ -206,7 +206,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DeriveBlockHash()
         {
-            Func<string, BlockHash> fromHex = BlockHash.FromString;
+            Func<string, BlockHash> fromHex = BlockHash.Parse;
             HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.Parse(
                 "9db253bdb987ec93df713522e5f90f4865a2d0fa337481d7a065d588ddae7fa7"
             );

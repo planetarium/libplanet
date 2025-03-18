@@ -96,7 +96,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         Address[] addresses = context.GetArgument<Address[]>("addresses");
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -133,7 +133,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         Currency currency = context.GetArgument<Currency>("currency");
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -167,7 +167,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         Currency currency = context.GetArgument<Currency>("currency");
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -197,7 +197,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
     {
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");

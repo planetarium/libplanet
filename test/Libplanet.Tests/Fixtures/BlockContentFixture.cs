@@ -74,7 +74,7 @@ namespace Libplanet.Tests.Fixtures
                 transactions: genTxs,
                 evidence: genEvidence);
             GenesisMetadata = new BlockMetadata(GenesisContent);
-            GenesisHash = BlockHash.FromString(
+            GenesisHash = BlockHash.Parse(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a");
 
             Block1Key = PrivateKey.FromString(

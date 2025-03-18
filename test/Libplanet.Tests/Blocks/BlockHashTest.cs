@@ -37,26 +37,26 @@ namespace Libplanet.Tests.Blocks
                 0x57, 0x2a, 0xd5, 0x8d, 0x1c, 0x37, 0x05, 0xc8, 0xcb, 0xfc,
             };
             var expected = new BlockHash(b);
-            BlockHash actual = BlockHash.FromString(
+            BlockHash actual = BlockHash.Parse(
                 "2831d4c24ae5d1931a16de0a066e233e0eed1d3fdf6d572ad58d1c3705c8cbfc"
             );
             Assert.Equal(expected, actual);
 
-            Assert.Throws<ArgumentNullException>(() => BlockHash.FromString(null));
-            Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.FromString(string.Empty));
-            Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.FromString("abc"));
-            Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.FromString("ab"));
+            Assert.Throws<ArgumentNullException>(() => BlockHash.Parse(null));
+            Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.Parse(string.Empty));
+            Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.Parse("abc"));
+            Assert.Throws<ArgumentOutOfRangeException>(() => BlockHash.Parse("ab"));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                BlockHash.FromString(
+                BlockHash.Parse(
                     "2831d4c24ae5d1931a16de0a066e233e0eed1d3fdf6d572ad58d1c3705c8cb"
                 )
             );
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                BlockHash.FromString(
+                BlockHash.Parse(
                     "2831d4c24ae5d1931a16de0a066e233e0eed1d3fdf6d572ad58d1c3705c8cbfc00"
                 )
             );
-            Assert.Throws<FormatException>(() => BlockHash.FromString("asdf"));
+            Assert.Throws<FormatException>(() => BlockHash.Parse("asdf"));
         }
 
         [Fact]
@@ -69,12 +69,12 @@ namespace Libplanet.Tests.Blocks
                 0x57, 0x2a, 0xd5, 0x8d, 0x1c, 0x37, 0x05, 0xc8, 0xcb, 0xfc,
             };
             var expected = new BlockHash(b);
-            BlockHash actual = BlockHash.FromHashDigest(new HashDigest<SHA256>(b));
+            BlockHash actual = BlockHash.Create(new HashDigest<SHA256>(b));
             Assert.Equal(expected, actual);
 
             Assert.Equal(
                 new BlockHash(new byte[32]),
-                BlockHash.FromHashDigest(default)
+                BlockHash.Create(default)
             );
         }
 
@@ -83,12 +83,12 @@ namespace Libplanet.Tests.Blocks
         {
             byte[] foo = { 0x66, 0x6f, 0x6f }, bar = { 0x62, 0x61, 0x72 };
             AssertBytesEqual(
-                BlockHash.FromString(
+                BlockHash.Parse(
                     "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"),
                 BlockHash.DeriveFrom(foo)
             );
             AssertBytesEqual(
-                BlockHash.FromString(
+                BlockHash.Parse(
                     "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9"),
                 BlockHash.DeriveFrom(bar)
             );
@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Blocks
         [SkippableFact]
         public void JsonSerialization()
         {
-            BlockHash hash = BlockHash.FromString(
+            BlockHash hash = BlockHash.Parse(
                 "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae");
             AssertJsonSerializable(
                 hash,

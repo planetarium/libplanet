@@ -68,7 +68,7 @@ public partial class TrieStateStore(IKeyValueStore keyValueStore) : IStateStore
 
             // FIXME: Probably not the right place to implement this.
             // It'd be better to have it in Libplanet.Action.State.
-            if (stateTrie.Get(KeyBytes.Empty) is { } metadata)
+            if (stateTrie[KeyBytes.Empty] is { } metadata)
             {
                 foreach (var (path, hash) in stateTrie.IterateValues())
                 {

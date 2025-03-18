@@ -226,7 +226,7 @@ public class MptCommand
             keyValueStore,
             HashDigest<SHA256>.Parse(stateRootHashHex));
         KeyBytes stateKeyBytes = new KeyBytes(stateKey);
-        IReadOnlyList<IValue?> values = trie.Get(new[] { stateKeyBytes });
+        IReadOnlyList<IValue?> values = trie.GetMany([stateKeyBytes]);
         if (values.Count > 0 && values[0] is { } value)
         {
             var codec = new Codec();

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
@@ -25,11 +24,6 @@ namespace Libplanet.Common;
 /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to
 /// a digest.  This determines <see cref="Size"/> of a digest.</typeparam>
 /// <seealso cref="HashAlgorithm"/>
-[SuppressMessage(
-    "ReSharper",
-    "StaticMemberInGenericType",
-    Justification = "Size & DefaultByteArray differ between HashAlgorithm types."
-)]
 [TypeConverter(typeof(HashDigestTypeConverter))]
 [JsonConverter(typeof(HashDigestJsonConverter))]
 public readonly struct HashDigest<T> : IEquatable<HashDigest<T>>, IBencodable, IFormattable
@@ -252,7 +246,7 @@ public readonly struct HashDigest<T> : IEquatable<HashDigest<T>>, IBencodable, I
         unchecked
         {
             var bytes = ByteArray;
-            foreach (byte @byte in bytes)
+            foreach (var @byte in bytes)
             {
                 code = (code * 397) ^ @byte.GetHashCode();
             }

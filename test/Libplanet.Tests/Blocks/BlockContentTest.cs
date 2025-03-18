@@ -176,7 +176,7 @@ namespace Libplanet.Tests.Blocks
             var key = PrivateKey.FromString(
                 "2ed05de0b35d93e4ae801ae40c8bb4257a771ff67c1e5d1754562e4191953710"
             );
-            var differentGenesisHash = BlockHash.FromString(
+            var differentGenesisHash = BlockHash.Parse(
                 "76942b42f99c28da02ed916ebd2fadb189415e8288a4bd87f9ae3594127b79e6"
             );
             var txWithDifferentGenesis = new Transaction(

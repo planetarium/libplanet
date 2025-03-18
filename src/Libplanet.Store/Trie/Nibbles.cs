@@ -68,11 +68,11 @@ public readonly struct Nibbles : IEquatable<Nibbles>, IFormattable
         return new Nibbles(builder.ToImmutable());
     }
 
-    public Nibbles Add(byte @byte) => new(ByteArray.Add(@byte));
+    public Nibbles Append(byte @byte) => new(ByteArray.Add(@byte));
 
-    public Nibbles AddRange(in ImmutableArray<byte> bytes) => new(ByteArray.AddRange(bytes));
+    public Nibbles Append(in Nibbles nibbles) => new(ByteArray.AddRange(nibbles.ByteArray));
 
-    public Nibbles AddRange(in Nibbles nibbles) => new(ByteArray.AddRange(nibbles.ByteArray));
+    public Nibbles AppendMany(in ImmutableArray<byte> bytes) => new(ByteArray.AddRange(bytes));
 
     public Nibbles Take(int count)
     {

@@ -40,6 +40,14 @@ public interface ITrie
     bool Recorded { get; }
 
     /// <summary>
+    /// Gets or sets the value stored with the specified <paramref name="key"/>.
+    /// </summary>
+    /// <param name="key">The key used to store or retrieve a value.</param>
+    /// <returns>The value associated with the specified <paramref name="key"/>.
+    /// Absent value is represented as <see langword="null"/>.</returns>
+    IValue? this[in KeyBytes key] { get; }
+
+    /// <summary>
     /// Stores the <paramref name="value"/> at the path corresponding to
     /// given <paramref name="key"/> <em>in memory</em>.
     /// </summary>
@@ -74,23 +82,6 @@ public interface ITrie
     ITrie Remove(in KeyBytes key);
 
     /// <summary>
-    /// Gets the values stored with <paramref name="key"/> in <see cref="Set"/>.
-    /// </summary>
-    /// <param name="key">The key used in <see cref="Set"/> to store a value.</param>
-    /// <returns>The value associated to the specified <paramref name="key"/>.  Absent
-    /// value is represented as <see langword="null"/>.</returns>
-    IValue? Get(KeyBytes key);
-
-    /// <summary>
-    /// Gets the values stored with <paramref name="keys"/> in <see cref="Set"/>.
-    /// </summary>
-    /// <param name="keys">The keys used in <see cref="Set"/> to store a value.</param>
-    /// <returns>The values associated to the specified <paramref name="keys"/>.  The associated
-    /// values are ordered in the same way to the corresponding <paramref name="keys"/>.  Absent
-    /// values are represented as <see langword="null"/>.</returns>
-    IReadOnlyList<IValue?> Get(IReadOnlyList<KeyBytes> keys);
-
-    /// <summary>
     /// Gets the first node encountered at <paramref name="nibbles"/> when traversing down
     /// from <see cref="Node"/>.
     /// </summary>
@@ -114,7 +105,7 @@ public interface ITrie
     /// equivalent as sub-<see cref="ITrie"/>s.
     /// </para>
     /// </remarks>
-    INode? GetNode(Nibbles nibbles);
+    INode? GetNode(in Nibbles nibbles);
 
     /// <summary>
     /// Iterates and every stored <see cref="IValue"/> along with its respective

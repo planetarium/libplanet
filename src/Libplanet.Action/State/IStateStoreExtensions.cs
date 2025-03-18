@@ -129,7 +129,7 @@ namespace Libplanet.Action.State
 
                 var legacyAccountTrie =
                     world.GetAccount(ReservedAddresses.LegacyAccount).Trie;
-                IValue? rawValidatorSet = legacyAccountTrie.Get(KeyConverters.ValidatorSetKey);
+                IValue? rawValidatorSet = legacyAccountTrie[KeyConverters.ValidatorSetKey];
 
                 // Move encoded validator set only if it already exists.
                 if (rawValidatorSet is { } rawValue)
@@ -222,14 +222,14 @@ namespace Libplanet.Action.State
                 var grouped = favs.GroupBy(fav => fav.Currency);
                 foreach (var group in grouped)
                 {
-                    var currencyAccountTrie = world.Trie.Get(group.Key) is Binary hash
+                    var currencyAccountTrie = world.Trie[group.Key] is Binary hash
                         ? stateStore.GetStateRoot(new HashDigest<SHA256>(hash))
                         : stateStore.GetStateRoot(default);
                     foreach (var fav in group)
                     {
                         Integer balance = fav.Amount;
                         Integer prevTotalSupply =
-                            currencyAccountTrie.Get(totalSupplyKeyBytes) is Integer i
+                            currencyAccountTrie[totalSupplyKeyBytes] is Integer i
                                 ? i
                                 : new Integer(0);
                         Integer newTotalSupply = new Integer(prevTotalSupply.Value + balance.Value);

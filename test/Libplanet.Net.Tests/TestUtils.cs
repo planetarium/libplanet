@@ -32,7 +32,7 @@ namespace Libplanet.Net.Tests
     public static class TestUtils
     {
         public static readonly BlockHash BlockHash0 =
-            BlockHash.FromString(
+            BlockHash.Parse(
                 "042b81bef7d4bca6e01f5975ce9ac7ed9f75248903d08836bed6566488c8089d");
 
         public static readonly ImmutableList<PrivateKey> PrivateKeys =

@@ -406,7 +406,7 @@ public class DefaultStore : BaseStore
                 BlockHash blockHash;
                 try
                 {
-                    blockHash = BlockHash.FromString(name);
+                    blockHash = BlockHash.Parse(name);
                 }
                 catch (Exception)
                 {

@@ -103,7 +103,7 @@ namespace Libplanet.Mocks
             Legacy && address.Equals(ReservedAddresses.LegacyAccount)
                 ? new AccountState(Trie)
                 : new AccountState(
-                    Trie.Get(ToStateKey(address)) is { } stateRootNotNull
+                    Trie[ToStateKey(address)] is { } stateRootNotNull
                         ? _stateStore.GetStateRoot(new HashDigest<SHA256>(stateRootNotNull))
                         : _stateStore.GetStateRoot(default));
 
@@ -177,10 +177,10 @@ namespace Libplanet.Mocks
                 KeyBytes totalSupplyKey = ToStateKey(CurrencyAccount.TotalSupplyAddress);
 
                 ITrie trie = GetAccountState(accountAddress).Trie;
-                Integer balance = trie.Get(balanceKey) is Integer b
+                Integer balance = trie[balanceKey] is Integer b
                     ? b
                     : new Integer(0);
-                Integer totalSupply = trie.Get(totalSupplyKey) is Integer t
+                Integer totalSupply = trie[totalSupplyKey] is Integer t
                     ? t
                     : new Integer(0);
 
@@ -199,10 +199,10 @@ namespace Libplanet.Mocks
                 ITrie trie = GetAccountState(accountAddress).Trie;
                 if (currency.TotalSupplyTrackable)
                 {
-                    Integer balance = trie.Get(balanceKey) is Integer b
+                    Integer balance = trie[balanceKey] is Integer b
                         ? b
                         : new Integer(0);
-                    Integer totalSupply = trie.Get(totalSupplyKey) is Integer t
+                    Integer totalSupply = trie[totalSupplyKey] is Integer t
                         ? t
                         : new Integer(0);
                     trie = trie.Set(

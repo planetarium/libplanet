@@ -53,7 +53,7 @@ namespace Libplanet.Action.State
             }
             else
             {
-                return Trie.Get(ToStateKey(address)) is Binary accountStateRootHash
+                return Trie[ToStateKey(address)] is Binary accountStateRootHash
                     ? new AccountState(_stateStore.GetStateRoot(
                         new HashDigest<SHA256>(accountStateRootHash.ByteArray)))
                     : new AccountState(_stateStore.GetStateRoot(default));
