@@ -1,5 +1,3 @@
-namespace Libplanet.Extensions.Cocona.Tests.Commands;
-
 using System;
 using System.Collections.Immutable;
 using System.IO;
@@ -7,6 +5,8 @@ using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.RocksDBStore.Tests;
 using Libplanet.Tests.Store;
 using Xunit;
+
+namespace Libplanet.Extensions.Cocona.Tests.Commands;
 
 public class StatsCommandTest : IDisposable
 {

@@ -102,7 +102,7 @@ namespace Libplanet.Tests.Store
             return _store.GetBlockIndex(blockHash);
         }
 
-        public BlockDigest? GetBlockDigest(BlockHash blockHash)
+        public BlockDigest GetBlockDigest(BlockHash blockHash)
         {
             Log(nameof(GetBlockDigest), blockHash);
             return _store.GetBlockDigest(blockHash);
@@ -301,7 +301,7 @@ namespace Libplanet.Tests.Store
         {
             if (!_disposed)
             {
-                _store?.Dispose();
+                _store.Dispose();
                 _disposed = true;
             }
         }

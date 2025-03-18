@@ -1,22 +1,22 @@
-using Libplanet.Common;
-
-namespace Libplanet.Extensions.Cocona.Commands;
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
 using global::Cocona;
 using global::Cocona.Help;
+using Libplanet.Common;
 using Libplanet.Extensions.Cocona.Configuration;
 using Libplanet.Extensions.Cocona.Services;
 using Libplanet.RocksDBStore;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
+
+namespace Libplanet.Extensions.Cocona.Commands;
 
 internal enum SchemeType
 {
@@ -72,9 +72,9 @@ public class MptCommand
         IStateStore stateStore = new TrieStateStore(LoadKVStoreFromURI(kvStoreUri));
         IStateStore otherStateStore = new TrieStateStore(LoadKVStoreFromURI(otherKvStoreUri));
         var trie =
-            stateStore.GetStateRoot(HashDigest<SHA256>.FromString(stateRootHashHex));
+            stateStore.GetStateRoot(HashDigest<SHA256>.Parse(stateRootHashHex));
         var otherTrie =
-            otherStateStore.GetStateRoot(HashDigest<SHA256>.FromString(otherStateRootHashHex));
+            otherStateStore.GetStateRoot(HashDigest<SHA256>.Parse(otherStateRootHashHex));
 
         var codec = new Codec();
         HashDigest<SHA256> originRootHash = trie.Hash;
@@ -112,13 +112,13 @@ public class MptCommand
         kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
 
         IStateStore stateStore = new TrieStateStore(LoadKVStoreFromURI(kvStoreUri));
-        var trie = stateStore.GetStateRoot(HashDigest<SHA256>.FromString(stateRootHashHex));
+        var trie = stateStore.GetStateRoot(HashDigest<SHA256>.Parse(stateRootHashHex));
         var codec = new Codec();
 
         // This assumes the original key was encoded from a sensible string.
         ImmutableDictionary<string, byte[]> decoratedStates = trie.IterateValues()
             .ToImmutableDictionary(
-                pair => KeyBytes.Encoding.GetString(pair.Path.ToByteArray()),
+                pair => Encoding.UTF8.GetString(pair.Path.ToByteArray()),
                 pair => codec.Encode(pair.Value));
 
         Console.WriteLine(JsonSerializer.Serialize(decoratedStates));
@@ -224,7 +224,7 @@ public class MptCommand
         IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
         var trie = new MerkleTrie(
             keyValueStore,
-            HashDigest<SHA256>.FromString(stateRootHashHex));
+            HashDigest<SHA256>.Parse(stateRootHashHex));
         KeyBytes stateKeyBytes = new KeyBytes(stateKey);
         IReadOnlyList<IValue?> values = trie.Get(new[] { stateKeyBytes });
         if (values.Count > 0 && values[0] is { } value)

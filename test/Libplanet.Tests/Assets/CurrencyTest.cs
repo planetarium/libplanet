@@ -89,33 +89,33 @@ namespace Libplanet.Tests.Assets
             Currency currency = Currency.Legacy("GOLD", 2, AddressA);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             HashDigest<SHA1> expected =
-                HashDigest<SHA1>.FromString("81446cd346c1be9e686835742bfd3772194dea21");
+                HashDigest<SHA1>.Parse("81446cd346c1be9e686835742bfd3772194dea21");
             AssertBytesEqual(expected, currency.Hash);
 
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             currency = Currency.Legacy("NCG", 8, ImmutableHashSet.Create(AddressA, AddressB));
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            expected = HashDigest<SHA1>.FromString("42ce3a098fe14084e89d3d4449f56126693aeed1");
+            expected = HashDigest<SHA1>.Parse("42ce3a098fe14084e89d3d4449f56126693aeed1");
             AssertBytesEqual(expected, currency.Hash);
 
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             currency = Currency.Legacy("FOO", 0, ImmutableHashSet<Address>.Empty);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            expected = HashDigest<SHA1>.FromString("801990ea2885bd51eebca0e826cc0e27f0917a9b");
+            expected = HashDigest<SHA1>.Parse("801990ea2885bd51eebca0e826cc0e27f0917a9b");
             AssertBytesEqual(expected, currency.Hash);
 
 #pragma warning disable CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
             currency = Currency.Legacy("BAR", 1, null);
 #pragma warning restore CS0618  // must test obsoleted Currency.Legacy() for backwards compatibility
-            expected = HashDigest<SHA1>.FromString("da42781871890f1e1b7d6f49c7f2733d3ba7b8bd");
+            expected = HashDigest<SHA1>.Parse("da42781871890f1e1b7d6f49c7f2733d3ba7b8bd");
             AssertBytesEqual(expected, currency.Hash);
 
             currency = Currency.Uncapped("BAZ", 1, null);
-            expected = HashDigest<SHA1>.FromString("d7fe111cae5b2503939c9bce864ca3b64d575e8d");
+            expected = HashDigest<SHA1>.Parse("d7fe111cae5b2503939c9bce864ca3b64d575e8d");
             AssertBytesEqual(expected, currency.Hash);
 
             currency = Currency.Capped("BAZ", 1, (100, 0), null);
-            expected = HashDigest<SHA1>.FromString("38bd85ea71c09ca7ed82b61fe91bc205101db191");
+            expected = HashDigest<SHA1>.Parse("38bd85ea71c09ca7ed82b61fe91bc205101db191");
             AssertBytesEqual(expected, currency.Hash);
         }
 

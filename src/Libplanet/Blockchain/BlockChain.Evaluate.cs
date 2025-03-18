@@ -64,7 +64,7 @@ namespace Libplanet.Blockchain
                 {
                     return Store.GetStateRootHash(block.Hash) is { } stateRootHash
                         ? stateRootHash
-                        : StateStore.GetStateRoot(null).Hash;
+                        : StateStore.GetStateRoot(default).Hash;
                 }
             }
             finally
@@ -139,7 +139,7 @@ namespace Libplanet.Blockchain
                 }
                 else
                 {
-                    var prevBlock = _blocks[(BlockHash)preEvaluationBlock.PreviousHash];
+                    var prevBlock = _blocks[preEvaluationBlock.PreviousHash];
                     var stateRootHash = GetNextStateRootHash(prevBlock.Hash)
                         ?? throw new NullReferenceException(
                             $"State root hash of block is not prepared");
@@ -196,7 +196,7 @@ namespace Libplanet.Blockchain
                 {
                     return Store.GetStateRootHash(block.PreviousHash) is { } prevStateRootHash
                         ? prevStateRootHash
-                        : StateStore.GetStateRoot(null).Hash;
+                        : StateStore.GetStateRoot(default).Hash;
                 }
             }
             finally

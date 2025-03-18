@@ -52,6 +52,6 @@ namespace Libplanet.Action.State
         /// <paramref name="hash"/> as its state root hash is found.
         /// </exception>
         /// <seealso cref="IWorldState"/>
-        IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash);
+        IWorldState GetWorldState(HashDigest<SHA256> stateRootHash);
     }
 }

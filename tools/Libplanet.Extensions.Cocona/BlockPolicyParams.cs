@@ -1,5 +1,3 @@
-namespace Libplanet.Extensions.Cocona;
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -7,6 +5,8 @@ using System.Reflection;
 using global::Cocona;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
+
+namespace Libplanet.Extensions.Cocona;
 
 public class BlockPolicyParams : ICommandParameterSet
 {

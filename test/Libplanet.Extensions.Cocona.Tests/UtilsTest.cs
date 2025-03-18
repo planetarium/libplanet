@@ -1,10 +1,10 @@
-namespace Libplanet.Extensions.Cocona.Tests;
-
 using System;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using Xunit;
+
+namespace Libplanet.Extensions.Cocona.Tests;
 
 public class UtilsTest
 {
@@ -18,7 +18,8 @@ public class UtilsTest
             DateTimeOffset.UtcNow.ToString(
                 Utils.DateTimeOffsetFormat,
                 CultureInfo.InvariantCulture
-            ), Utils.DateTimeOffsetFormat,
+            ),
+            Utils.DateTimeOffsetFormat,
             CultureInfo.InvariantCulture);
         var dummyClass = new DummyClass(byteArray, dateTimeOffset);
 

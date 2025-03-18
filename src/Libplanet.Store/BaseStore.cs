@@ -103,11 +103,11 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public long? GetBlockIndex(BlockHash blockHash)
         {
-            return GetBlockDigest(blockHash)?.Index;
+            return GetBlockDigest(blockHash).Index;
         }
 
         /// <inheritdoc/>
-        public abstract BlockDigest? GetBlockDigest(BlockHash blockHash);
+        public abstract BlockDigest GetBlockDigest(BlockHash blockHash);
 
         /// <inheritdoc/>
         public abstract void PutBlock(Block block);

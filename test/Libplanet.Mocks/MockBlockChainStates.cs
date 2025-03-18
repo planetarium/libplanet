@@ -60,7 +60,7 @@ namespace Libplanet.Mocks
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
-        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
+        public IWorldState GetWorldState(HashDigest<SHA256> stateRootHash)
         {
             ITrie trie = _stateStore.GetStateRoot(stateRootHash);
             return trie.Recorded

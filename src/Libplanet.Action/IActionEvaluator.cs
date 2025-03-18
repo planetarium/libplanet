@@ -44,6 +44,6 @@ namespace Libplanet.Action
         [Pure]
         IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
-            HashDigest<SHA256>? baseStateRootHash);
+            HashDigest<SHA256> baseStateRootHash);
     }
 }

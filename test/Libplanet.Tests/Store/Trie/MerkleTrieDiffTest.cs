@@ -11,35 +11,35 @@ namespace Libplanet.Tests.Store.Trie
         [Fact]
         public void EmptySourceNode()
         {
-            KeyBytes k01 = KeyBytes.FromHex("01");
+            KeyBytes k01 = KeyBytes.Parse("01");
             IValue v01 = new Text("01");
 
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(keyValueStore);
-            ITrie source = stateStore.GetStateRoot(null);
-            ITrie target = stateStore.GetStateRoot(null);
-            Assert.Null(target.Root);
+            ITrie source = stateStore.GetStateRoot(default);
+            ITrie target = stateStore.GetStateRoot(default);
+            Assert.Null(target.Node);
             Assert.Empty(((MerkleTrie)source).Diff((MerkleTrie)target));
 
             target = target.Set(k01, v01);
             target = stateStore.Commit(target);
-            Assert.NotNull(target.Root);
+            Assert.NotNull(target.Node);
             Assert.Empty(source.Diff(target));
         }
 
         [Fact]
         public void ValueSourceNode()
         {
-            KeyBytes k = KeyBytes.FromHex(string.Empty);
+            KeyBytes k = KeyBytes.Parse(string.Empty);
             IValue v = new Text(string.Empty);
 
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(keyValueStore);
-            ITrie source = stateStore.GetStateRoot(null);
+            ITrie source = stateStore.GetStateRoot(default);
             source = source.Set(k, v);
             source = stateStore.Commit(source);
 
-            ITrie target = stateStore.GetStateRoot(null);
+            ITrie target = stateStore.GetStateRoot(default);
             var diff = source.Diff(target).ToList();
             Assert.Single(diff);
             Assert.Contains((k, null, v), diff);
@@ -52,20 +52,20 @@ namespace Libplanet.Tests.Store.Trie
         [InlineData(true, true)]
         public void Diff(bool commitSource, bool commitTarget)
         {
-            KeyBytes k00 = KeyBytes.FromHex("00");
+            KeyBytes k00 = KeyBytes.Parse("00");
             IValue v00 = new Text("00");
-            KeyBytes k01 = KeyBytes.FromHex("01");
+            KeyBytes k01 = KeyBytes.Parse("01");
             IValue v01 = new Text("01");
             IValue v01a = new Text("01A");
-            KeyBytes k0000 = KeyBytes.FromHex("0000");
+            KeyBytes k0000 = KeyBytes.Parse("0000");
             IValue v0000 = new Text("0000");
-            KeyBytes k0010 = KeyBytes.FromHex("0010");
+            KeyBytes k0010 = KeyBytes.Parse("0010");
             IValue v0010 = new Text("0010");
             IValue v0010a = new Text("0010A");
 
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(keyValueStore);
-            ITrie source = stateStore.GetStateRoot(null);
+            ITrie source = stateStore.GetStateRoot(default);
             source = source.Set(k00, v00);
             source = source.Set(k01, v01);
             source = source.Set(k0000, v0000);
@@ -73,7 +73,7 @@ namespace Libplanet.Tests.Store.Trie
             source = commitSource ? stateStore.Commit(source) : source;
 
             // Same value for K00 and missing value for K0000
-            ITrie target = stateStore.GetStateRoot(null);
+            ITrie target = stateStore.GetStateRoot(default);
             target = target.Set(k00, v00);
             target = target.Set(k01, v01a);
             target = target.Set(k0010, v0010a);

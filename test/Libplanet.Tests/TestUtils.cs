@@ -445,7 +445,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
                     miner: (proposer ?? GenesisProposer.PublicKey).Address,
                     publicKey: protocolVersion >= 2 ? proposer ?? GenesisProposer.PublicKey : null,
-                    previousHash: null,
+                    previousHash: default,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
                     evidenceHash: null),
@@ -478,7 +478,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         {
             return preEval.Sign(
                 privateKey,
-                MerkleTrie.EmptyRootHash);
+                default);
         }
 
         public static PreEvaluationBlock ProposeNext(
@@ -637,7 +637,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                     validatorSet,
                     timestamp,
                     protocolVersion);
-                var evaluatedSrh = actionEvaluator.Evaluate(preEval, null).Last().OutputState;
+                var evaluatedSrh = actionEvaluator.Evaluate(preEval, default).Last().OutputState;
                 genesisBlock = protocolVersion < BlockMetadata.SignatureProtocolVersion
                     ? new Block(
                         preEval,
@@ -648,7 +648,7 @@ Actual (C# array lit):   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                         ))
                     : protocolVersion < BlockMetadata.SlothProtocolVersion
                         ? preEval.Sign(privateKey, evaluatedSrh)
-                        : preEval.Sign(privateKey, MerkleTrie.EmptyRootHash);
+                        : preEval.Sign(privateKey, default);
             }
 
             ValidatingActionRenderer validator = null;

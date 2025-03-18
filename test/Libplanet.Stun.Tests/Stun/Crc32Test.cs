@@ -15,7 +15,8 @@ namespace Libplanet.Stun.Tests
                 new byte[]
                 {
                     0x39, 0xa3, 0x4f, 0x41,
-                }, 0);
+                },
+                0);
             Assert.Equal(expected, Crc32.Calculate(bytes));
         }
     }

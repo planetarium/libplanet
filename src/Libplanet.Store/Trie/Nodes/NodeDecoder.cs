@@ -1,148 +1,113 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Common;
 
-namespace Libplanet.Store.Trie.Nodes
+namespace Libplanet.Store.Trie.Nodes;
+
+public static class NodeDecoder
 {
-    public static class NodeDecoder
+    public const NodeTypes AnyNodeTypes =
+        NodeTypes.Null | NodeTypes.Value | NodeTypes.Short | NodeTypes.Full | NodeTypes.Hash;
+
+    public const NodeTypes FullValueNodeTypes =
+        NodeTypes.Null | NodeTypes.Value | NodeTypes.Hash;
+
+    public const NodeTypes FullChildNodeTypes =
+        NodeTypes.Null | NodeTypes.Value | NodeTypes.Short | NodeTypes.Full | NodeTypes.Hash;
+
+    public const NodeTypes ShortValueNodeTypes =
+        NodeTypes.Value | NodeTypes.Short | NodeTypes.Full | NodeTypes.Hash;
+
+    public const NodeTypes HashEmbeddedNodeTypes =
+        NodeTypes.Value | NodeTypes.Short | NodeTypes.Full;
+
+    public static INode? Decode(IValue value, NodeTypes nodeTypes)
     {
-        public const NodeType AnyNodeType =
-            NodeType.Null | NodeType.Value | NodeType.Short | NodeType.Full | NodeType.Hash;
-
-        public const NodeType FullValueNodeType =
-            NodeType.Null | NodeType.Value | NodeType.Hash;
-
-        public const NodeType FullChildNodeType =
-            NodeType.Null | NodeType.Value | NodeType.Short | NodeType.Full | NodeType.Hash;
-
-        public const NodeType ShortValueNodeType =
-            NodeType.Value | NodeType.Short | NodeType.Full | NodeType.Hash;
-
-        public const NodeType HashEmbeddedNodeType =
-            NodeType.Value | NodeType.Short | NodeType.Full;
-
-        [Flags]
-        public enum NodeType : short
+        if (value is List list)
         {
-            /// <summary>
-            /// A null node represented as <see langword="null"/>.
-            /// </summary>
-            Null = 1,
-
-            /// <summary>
-            /// A <see cref=ValueNode"/>.
-            /// </summary>
-            Value = 2,
-
-            /// <summary>
-            /// A <see cref="ShortNode"/>.
-            /// </summary>
-            Short = 4,
-
-            /// <summary>
-            /// A <see cref="FullNode"/>.
-            /// </summary>
-            Full = 8,
-
-            /// <summary>
-            /// A <see cref="HashNode"/>.
-            /// </summary>
-            Hash = 16,
-        }
-
-        public static INode? Decode(IValue value, NodeType allowed)
-        {
-            if (value is List list)
+            if (list.Count == FullNode.ChildrenCount + 1)
             {
-                if (list.Count == FullNode.ChildrenCount)
+                if ((nodeTypes & NodeTypes.Full) == NodeTypes.Full)
                 {
-                    return (allowed & NodeType.Full) == NodeType.Full
-                        ? DecodeFull(list)
-                        : throw new InvalidTrieNodeException(
-                            $"Can't decode a node from value {value.Inspect()}");
-                }
-                else if (list.Count == 2)
-                {
-                    if (list[0] is Binary)
-                    {
-                        return (allowed & NodeType.Short) == NodeType.Short
-                            ? DecodeShort(list)
-                            : throw new InvalidTrieNodeException(
-                                $"Can't decode a node from value {value.Inspect()}");
-                    }
-                    else if (list[0] is Null)
-                    {
-                        return (allowed & NodeType.Value) == NodeType.Value
-                            ? DecodeValue(list)
-                            : throw new InvalidTrieNodeException(
-                                $"Can't decode a node from value {value.Inspect()}");
-                    }
-                    else
-                    {
-                        throw new InvalidTrieNodeException(
-                                $"Can't decode a node from value {value.Inspect()}");
-                    }
-                }
-                else
-                {
-                    throw new InvalidTrieNodeException(
-                        $"Can't decode a node from the bencodex value: {value.Inspect()}");
+                    return DecodeFull(list);
                 }
             }
-            else if (value is Binary binary)
+            else if (list.Count == 2)
             {
-                return (allowed & NodeType.Hash) == NodeType.Hash
-                    ? DecodeHash(binary)
-                    : throw new InvalidTrieNodeException(
-                        $"Can't decode a node from value {value.Inspect()}");
-            }
-            else if (value is Null)
-            {
-                return (allowed & NodeType.Null) == NodeType.Null
-                    ? (INode?)null
-                    : throw new InvalidTrieNodeException(
-                        $"Can't decode a node from value {value.Inspect()}");
-            }
-            else
-            {
-                throw new InvalidTrieNodeException(
-                    $"Can't decode a node from value {value.Inspect()}");
+                if (list[0] is Binary)
+                {
+                    if ((nodeTypes & NodeTypes.Short) == NodeTypes.Short)
+                    {
+                        return DecodeShort(list);
+                    }
+                }
+                else if (list[0] is Null)
+                {
+                    if ((nodeTypes & NodeTypes.Value) == NodeTypes.Value)
+                    {
+                        return DecodeValue(list);
+                    }
+                }
             }
         }
-
-        // The length and the first element are already checked.
-        private static ValueNode DecodeValue(List list)
+        else if (value is Binary binary)
         {
-            return new ValueNode(list[1]);
+            if ((nodeTypes & NodeTypes.Hash) == NodeTypes.Hash)
+            {
+                return DecodeHash(binary);
+            }
+        }
+        else if (value is Null)
+        {
+            if ((nodeTypes & NodeTypes.Null) == NodeTypes.Null)
+            {
+                return null;
+            }
         }
 
-        // The length and the first element are already checked.
-        private static ShortNode DecodeShort(List list)
-        {
-            // FIXME: This assumes encoded binary is a valid sequence of nibbles.
-            INode value = Decode(list[1], ShortValueNodeType) ??
-                throw new NullReferenceException(
-                    $"Failed to decode a {nameof(ShortNode)} from given {nameof(list)}: {list}");
-            return new ShortNode(
-                new Nibbles(((Binary)list[0]).ByteArray), value);
-        }
-
-        // The length is already checked.
-        private static FullNode DecodeFull(List list)
-        {
-            return new FullNode(list
-                .Select((child, i) => i < FullNode.ChildrenCount - 1
-                    ? Decode(child, FullChildNodeType)
-                    : Decode(child, FullValueNodeType))
-                .ToImmutableArray());
-        }
-
-        private static HashNode DecodeHash(Binary binary)
-        {
-            return new HashNode(new HashDigest<SHA256>(binary.ByteArray));
-        }
+        throw new InvalidTrieNodeException($"Can't decode a node from value {value.Inspect()}");
     }
+
+    // The length and the first element are already checked.
+    private static ValueNode DecodeValue(List list) => new(list[1]);
+
+    // The length and the first element are already checked.
+    private static ShortNode DecodeShort(List list)
+    {
+        if (list[0] is not Binary binary)
+        {
+            var message = "The first element of the given list is not a binary.";
+            throw new InvalidTrieNodeException(message);
+        }
+
+        if (Decode(list[1], ShortValueNodeTypes) is not { } node)
+        {
+            var message = $"Failed to decode a {nameof(ShortNode)} from given " +
+                          $"{nameof(list)}: {list}";
+            throw new NullReferenceException(message);
+        }
+
+        var key = new Nibbles(binary.ByteArray);
+        return new ShortNode(key, node);
+    }
+
+    // The length is already checked.
+    private static FullNode DecodeFull(List list)
+    {
+        var builder = ImmutableDictionary.CreateBuilder<byte, INode?>();
+        for (var i = 0; i < list.Count - 1; i++)
+        {
+            var node = Decode(list[i], FullChildNodeTypes);
+            builder.Add((byte)i, node);
+        }
+
+        var value = Decode(list[FullNode.ChildrenCount], FullValueNodeTypes);
+
+        return new FullNode(builder.ToImmutable(), value);
+    }
+
+    private static HashNode DecodeHash(Binary binary) => new(new HashDigest<SHA256>(binary));
 }

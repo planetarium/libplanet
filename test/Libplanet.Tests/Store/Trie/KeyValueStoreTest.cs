@@ -29,22 +29,22 @@ namespace Libplanet.Tests.Store.Trie
             foreach (var (key, expectedValue) in PreStoredDataKeys.Zip(
                 PreStoredDataValues, ValueTuple.Create))
             {
-                var actual = KeyValueStore.Get(key);
+                var actual = KeyValueStore[key];
                 Assert.Equal(expectedValue, actual);
             }
 
             var randomKey = NewRandomKey();
-            Assert.Throws<KeyNotFoundException>(() => KeyValueStore.Get(randomKey));
+            Assert.Throws<KeyNotFoundException>(() => KeyValueStore[randomKey]);
         }
 
         [SkippableFact]
         public void Set()
         {
-            var key = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
+            var key = KeyBytes.Create(Random.NextBytes(PreStoredDataKeySize));
             byte[] value = Random.NextBytes(PreStoredDataValueSize);
-            KeyValueStore.Set(key, value);
+            KeyValueStore[key] = value;
 
-            Assert.Equal(value, KeyValueStore.Get(key));
+            Assert.Equal(value, KeyValueStore[key]);
         }
 
         [SkippableFact]
@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Store.Trie
             var values = new Dictionary<KeyBytes, byte[]>();
             foreach (int i in Enumerable.Range(0, 10))
             {
-                values[new KeyBytes(Random.NextBytes(PreStoredDataKeySize))] =
+                values[KeyBytes.Create(Random.NextBytes(PreStoredDataKeySize))] =
                     Random.NextBytes(PreStoredDataValueSize);
             }
 
@@ -61,7 +61,7 @@ namespace Libplanet.Tests.Store.Trie
 
             foreach (KeyValuePair<KeyBytes, byte[]> kv in values)
             {
-                Assert.Equal(kv.Value, KeyValueStore.Get(kv.Key));
+                Assert.Equal(kv.Value, KeyValueStore[kv.Key]);
             }
         }
 
@@ -73,11 +73,11 @@ namespace Libplanet.Tests.Store.Trie
                 PreStoredDataValues, ValueTuple.Create))
             {
                 var randomValue = Random.NextBytes(PreStoredDataValueSize);
-                var actual = KeyValueStore.Get(key);
+                var actual = KeyValueStore[key];
                 Assert.Equal(expectedValue, actual);
 
-                KeyValueStore.Set(key, randomValue);
-                actual = KeyValueStore.Get(key);
+                KeyValueStore[key] = randomValue;
+                actual = KeyValueStore[key];
                 Assert.Equal(randomValue, actual);
                 Assert.NotEqual(expectedValue, actual);
             }
@@ -88,13 +88,13 @@ namespace Libplanet.Tests.Store.Trie
         {
             foreach (KeyBytes key in PreStoredDataKeys)
             {
-                KeyValueStore.Delete(key);
-                Assert.False(KeyValueStore.Exists(key));
+                KeyValueStore.Remove(key);
+                Assert.False(KeyValueStore.ContainsKey(key));
             }
 
             KeyBytes nonExistent = NewRandomKey();
-            KeyValueStore.Delete(nonExistent);
-            Assert.False(KeyValueStore.Exists(nonExistent));
+            KeyValueStore.Remove(nonExistent);
+            Assert.False(KeyValueStore.ContainsKey(nonExistent));
         }
 
         [SkippableFact]
@@ -107,8 +107,8 @@ namespace Libplanet.Tests.Store.Trie
                 .Concat(PreStoredDataKeys.Take(PreStoredDataCount / 2))
                 .Concat(nonExistentKeys)
                 .ToArray();
-            KeyValueStore.Delete(keys);
-            Assert.All(keys, k => Assert.False(KeyValueStore.Exists(k)));
+            KeyValueStore.RemoveMany(keys);
+            Assert.All(keys, k => Assert.False(KeyValueStore.ContainsKey(k)));
         }
 
         [SkippableFact]
@@ -116,11 +116,11 @@ namespace Libplanet.Tests.Store.Trie
         {
             foreach (var (key, _) in PreStoredDataKeys.Zip(PreStoredDataValues, ValueTuple.Create))
             {
-                Assert.True(KeyValueStore.Exists(key));
+                Assert.True(KeyValueStore.ContainsKey(key));
             }
 
             var randomKey = NewRandomKey();
-            Assert.False(KeyValueStore.Exists(randomKey));
+            Assert.False(KeyValueStore.ContainsKey(randomKey));
         }
 
         [SkippableFact]
@@ -136,9 +136,9 @@ namespace Libplanet.Tests.Store.Trie
             KeyBytes randomKey;
             do
             {
-                randomKey = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
+                randomKey = KeyBytes.Create(Random.NextBytes(PreStoredDataKeySize));
             }
-            while (KeyValueStore.Exists(randomKey));
+            while (KeyValueStore.ContainsKey(randomKey));
 
             return randomKey;
         }
@@ -150,9 +150,9 @@ namespace Libplanet.Tests.Store.Trie
 
             for (int i = 0; i < PreStoredDataCount; ++i)
             {
-                PreStoredDataKeys[i] = new KeyBytes(Random.NextBytes(PreStoredDataKeySize));
+                PreStoredDataKeys[i] = KeyBytes.Create(Random.NextBytes(PreStoredDataKeySize));
                 PreStoredDataValues[i] = Random.NextBytes(PreStoredDataValueSize);
-                KeyValueStore.Set(PreStoredDataKeys[i], PreStoredDataValues[i]);
+                KeyValueStore[PreStoredDataKeys[i]] = PreStoredDataValues[i];
             }
         }
     }

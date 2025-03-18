@@ -1,35 +1,54 @@
 using System;
 using System.Security.Cryptography;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Common;
 
-namespace Libplanet.Store.Trie.Nodes
+namespace Libplanet.Store.Trie.Nodes;
+
+/// <summary>
+/// <see cref="HashDigest{T}"/>'s wrapper class, used in <see cref="ITrie"/> interface.
+/// </summary>
+internal sealed record class HashNode(in HashDigest<SHA256> HashDigest) : INode
 {
-    /// <summary>
-    /// <see cref="HashDigest{T}"/>'s wrapper class, used in <see cref="ITrie"/> interface.
-    /// </summary>
-    public class HashNode : INode, IEquatable<HashNode>
+    private static readonly Codec _codec = new();
+
+    public HashDigest<SHA256> HashDigest { get; } = ValidateHashDigest(HashDigest);
+
+    public static HashNode? CreateOrDefault(in HashDigest<SHA256> hashDigest)
+        => hashDigest == default ? null : new HashNode(hashDigest);
+
+    /// <inheritdoc cref="INode.ToBencodex()"/>
+    public IValue ToBencodex() => HashDigest.Bencoded;
+
+    public override int GetHashCode() => HashDigest.GetHashCode();
+
+    public INode Expand(IKeyValueStore keyValueStore)
     {
-        public HashNode(HashDigest<SHA256> hashDigest)
+        IValue intermediateEncoding;
+        if (HashNodeCache.TryGetValue(HashDigest, out var value))
         {
-            HashDigest = hashDigest;
+            intermediateEncoding = value!;
+        }
+        else
+        {
+            var keyBytes = new KeyBytes(HashDigest.ByteArray);
+            intermediateEncoding = _codec.Decode(keyValueStore[keyBytes]);
+            HashNodeCache.AddOrUpdate(HashDigest, intermediateEncoding);
         }
 
-        public HashDigest<SHA256> HashDigest { get; }
+        return NodeDecoder.Decode(intermediateEncoding, NodeDecoder.HashEmbeddedNodeTypes)
+            ?? throw new NullReferenceException();
+    }
 
-        public static bool operator ==(HashNode left, HashNode right) => left.Equals(right);
+    private static HashDigest<SHA256> ValidateHashDigest(in HashDigest<SHA256> hashDigest)
+    {
+        if (hashDigest == default)
+        {
+            throw new ArgumentException(
+                $"{nameof(hashDigest)} cannot be default.", nameof(hashDigest));
+        }
 
-        public static bool operator !=(HashNode left, HashNode right) => !left.Equals(right);
-
-        /// <inheritdoc cref="IEquatable{T}.Equals"/>
-        public bool Equals(HashNode? other) =>
-            other is { } node && HashDigest.Equals(node.HashDigest);
-
-        public override bool Equals(object? obj) => obj is HashNode other && Equals(other);
-
-        /// <inheritdoc cref="INode.ToBencodex()"/>
-        public IValue ToBencodex() => HashDigest.Bencoded;
-
-        public override int GetHashCode() => HashDigest.GetHashCode();
+        return hashDigest;
     }
 }

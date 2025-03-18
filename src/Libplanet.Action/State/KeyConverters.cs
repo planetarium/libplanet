@@ -10,7 +10,7 @@ namespace Libplanet.Action.State
     {
         // "___"
         public static readonly KeyBytes ValidatorSetKey =
-            new KeyBytes(new byte[] { _underScore, _underScore, _underScore });
+            KeyBytes.Create(_underScore, _underScore, _underScore);
 
         private const byte _underScore = 95;  // '_'
 

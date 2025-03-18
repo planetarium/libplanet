@@ -21,7 +21,7 @@ namespace Libplanet.Store
             // FIXME: StateKeyValueStore used might not be the same as
             // the one referenced by the argument trie.  Some kind of sanity check
             // would be nice, if possible.
-            INode? root = trie.Root;
+            INode? root = trie.Node;
             if (root is null)
             {
                 return trie;
@@ -44,7 +44,7 @@ namespace Libplanet.Store
 
                 writeBatch.Flush();
 
-                return new MerkleTrie(StateKeyValueStore, newRoot, _cache);
+                return new MerkleTrie(StateKeyValueStore, newRoot);
             }
         }
 
@@ -73,11 +73,21 @@ namespace Libplanet.Store
         private static INode CommitFullNode(
             FullNode fullNode, WriteBatch writeBatch, HashNodeCache cache)
         {
-            var virtualChildren = fullNode.Children
-                .Select(c => c is null ? null : Commit(c, writeBatch, cache))
-                .ToImmutableArray();
+            var virtualValue = fullNode.Value is null
+                ? null
+                : Commit(fullNode.Value, writeBatch, cache);
+            var builder = ImmutableDictionary.CreateBuilder<byte, INode?>();
+            foreach (var (index, child) in fullNode.Children)
+            {
+                if (child is not null)
+                {
+                    builder.Add(index, Commit(child, writeBatch, cache));
+                }
+            }
 
-            fullNode = new FullNode(virtualChildren);
+            var virtualChildren = builder.ToImmutable();
+
+            fullNode = new FullNode(virtualChildren, virtualValue);
             IValue encoded = fullNode.ToBencodex();
 
             if (encoded.EncodingLength <= HashDigest<SHA256>.Size)
@@ -130,9 +140,9 @@ namespace Libplanet.Store
         {
             byte[] serialized = _codec.Encode(bencodedNode);
             var nodeHash = HashDigest<SHA256>.DeriveFrom(serialized);
-            cache.AddOrUpdate(nodeHash, bencodedNode);
+            HashNodeCache.AddOrUpdate(nodeHash, bencodedNode);
             writeBatch.Add(new KeyBytes(nodeHash.ByteArray), serialized);
-            return new HashNode(nodeHash);
+            return writeBatch.Create(nodeHash);
         }
 
         private class WriteBatch
@@ -164,6 +174,11 @@ namespace Libplanet.Store
             {
                 _store.Set(_batch);
                 _batch.Clear();
+            }
+
+            public HashNode Create(HashDigest<SHA256> nodeHash)
+            {
+                return new HashNode(nodeHash);
             }
         }
     }

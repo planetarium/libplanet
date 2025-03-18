@@ -50,7 +50,16 @@ public class CurrencyInputTypeTest
             new object[] {
                 @"query
                 {
-                    currency(currency: { ticker: ""ABC"", decimalPlaces: 5, totalSupplyTrackable: false, minters: null })
+                    currency(
+                        currency:
+                            {
+                                ticker: ""ABC"",
+                                decimalPlaces: 5,
+                                totalSupplyTrackable:
+                                false,
+                                minters: null
+                            }
+                    )
                     {
                         ticker
                         decimalPlaces

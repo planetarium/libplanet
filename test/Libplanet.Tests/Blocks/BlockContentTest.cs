@@ -213,12 +213,12 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void TxHash()
         {
-            var expected = new HashDigest<SHA256>(new byte[]
-            {
+            var expected = new HashDigest<SHA256>(
+            [
                 0x65, 0x46, 0x98, 0xd3, 0x4b, 0x6d, 0x9a, 0x55, 0xb0, 0xc9, 0x3e,
                 0x4f, 0xfb, 0x26, 0x39, 0x27, 0x83, 0x24, 0x86, 0x8c, 0x91, 0x96,
                 0x5b, 0xc5, 0xf9, 0x6c, 0xb3, 0x07, 0x1d, 0x69, 0x03, 0xa0,
-            });
+            ]);
             AssertBytesEqual(expected, Block1Content.TxHash);
             Assert.Null(GenesisContentPv0.TxHash);
         }

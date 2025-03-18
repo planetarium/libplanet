@@ -67,15 +67,7 @@ namespace Libplanet.Store
         /// <exception cref="ArgumentException">Thrown when <paramref name="blockHash"/> is
         /// not <see langword="null"/> but the corresponding block is not found in store.
         /// </exception>
-        public static HashDigest<SHA256>? GetStateRootHash(
-            this IStore store,
-            BlockHash? blockHash
-        ) =>
-            blockHash is { } hash
-                ? store.GetBlockDigest(hash) is BlockDigest digest
-                    ? digest.StateRootHash
-                    : throw new ArgumentException(
-                        $"Given {nameof(blockHash)} was not found in storage: {hash}")
-                : (HashDigest<SHA256>?)null;
+        public static HashDigest<SHA256> GetStateRootHash(this IStore store, BlockHash blockHash)
+            => store.GetBlockDigest(blockHash).StateRootHash;
     }
 }

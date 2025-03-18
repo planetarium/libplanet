@@ -515,7 +515,8 @@ namespace Libplanet.Net.Consensus
                         _logger.Error(
                             "Invalid message, rejecting: {Message}, {Exception}", msg, e.Message);
                     }
-                }, ctx);
+                },
+                ctx);
 
             var id = msg is { Identity: null } ? "unknown" : new Guid(msg.Identity).ToString();
             _logger.Debug("Finished replying WantMessage. {RequestId}", id);

@@ -117,7 +117,7 @@ namespace Libplanet.Types.Blocks
         public PublicKey? PublicKey => _preEvaluationBlock.PublicKey;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash => _preEvaluationBlock.PreviousHash;
+        public BlockHash PreviousHash => _preEvaluationBlock.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.Timestamp"/>
         public DateTimeOffset Timestamp => _preEvaluationBlock.Timestamp;

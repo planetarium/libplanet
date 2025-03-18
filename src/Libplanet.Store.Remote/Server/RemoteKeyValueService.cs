@@ -25,11 +25,11 @@ namespace Libplanet.Store.Remote.Server
             GetValueRequest request,
             ServerCallContext context)
         {
-            var key = new KeyBytes(request.Key.Data.ToByteArray());
+            var key = KeyBytes.Create(request.Key.Data.ToByteArray());
             byte[] value;
             try
             {
-                value = _baseStore.Get(key);
+                value = _baseStore[key];
 
             }
             catch (KeyNotFoundException e)
@@ -46,12 +46,12 @@ namespace Libplanet.Store.Remote.Server
             SetValueRequest request,
             ServerCallContext context)
         {
-            var key = new KeyBytes(request.Item.Key.Data.ToByteArray());
+            var key = KeyBytes.Create(request.Item.Key.Data.ToByteArray());
             byte[] value = request.Item.Value.Data.ToByteArray();
 
             try
             {
-                _baseStore.Set(key, value);
+                _baseStore[key] = value;
             }
             catch (Exception e)
             {
@@ -75,7 +75,7 @@ namespace Libplanet.Store.Remote.Server
 
             var dict = items
                 .ToDictionary(
-                    pair => new KeyBytes(pair.Key.Data.ToByteArray()),
+                    pair => KeyBytes.Create(pair.Key.Data.ToByteArray()),
                     pair => pair.Value.Data.ToByteArray());
 
             try
@@ -96,10 +96,10 @@ namespace Libplanet.Store.Remote.Server
             DeleteValueRequest request,
             ServerCallContext context)
         {
-            var key = new KeyBytes(request.Key.Data.ToByteArray());
+            var key = KeyBytes.Create(request.Key.Data.ToByteArray());
             try
             {
-                _baseStore.Delete(key);
+                _baseStore.Remove(key);
             }
             catch (Exception e)
             {
@@ -122,10 +122,10 @@ namespace Libplanet.Store.Remote.Server
             }
 
             IEnumerable<KeyBytes> keyBytes = keys
-                .Select(k => new KeyBytes(k.Data.ToByteArray()));
+                .Select(k => KeyBytes.Create(k.Data.ToByteArray()));
             try
             {
-                _baseStore.Delete(keyBytes);
+                _baseStore.RemoveMany(keyBytes);
             }
             catch (Exception e)
             {
@@ -141,11 +141,11 @@ namespace Libplanet.Store.Remote.Server
             ExistsKeyRequest request,
             ServerCallContext context)
         {
-            var key = new KeyBytes(request.Key.Data.ToByteArray());
+            var key = KeyBytes.Create(request.Key.Data.ToByteArray());
             bool exists;
             try
             {
-                exists = _baseStore.Exists(key);
+                exists = _baseStore.ContainsKey(key);
             }
             catch (Exception e)
             {
@@ -166,7 +166,7 @@ namespace Libplanet.Store.Remote.Server
             response.Keys.AddRange(
                 keys
                     .Select(KeyBytesExtensions.ToByteString)
-                    .Select(key => new KeyValueStoreKey{ Data = key }));
+                    .Select(key => new KeyValueStoreKey { Data = key }));
             _logger.Verbose("ListKeys: {Count}", response.Keys.Count);
             return Task.FromResult(response);
         }

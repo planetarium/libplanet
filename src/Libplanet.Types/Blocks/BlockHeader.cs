@@ -152,7 +152,7 @@ namespace Libplanet.Types.Blocks
         public PublicKey? PublicKey => _preEvaluationBlockHeader.PublicKey;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash => _preEvaluationBlockHeader.PreviousHash;
+        public BlockHash PreviousHash => _preEvaluationBlockHeader.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _preEvaluationBlockHeader.TxHash;

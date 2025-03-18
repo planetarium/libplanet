@@ -3,62 +3,72 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 
-namespace Libplanet.Store.Trie.Nodes
+namespace Libplanet.Store.Trie.Nodes;
+
+public sealed record class FullNode(ImmutableDictionary<byte, INode?> Children, INode? Value)
+    : INode, IEquatable<FullNode>
 {
-    public sealed class FullNode : INode, IEquatable<FullNode>
+    public const byte ChildrenCount = 16;
+
+    [Obsolete("This field will be removed in the future. Use Constructor instead.")]
+    public static readonly FullNode Empty = new(ImmutableDictionary<byte, INode?>.Empty, null);
+
+    public ImmutableDictionary<byte, INode?> Children { get; } = ValidateChildren(Children);
+
+    public INode? GetChild(byte index) => Children.GetValueOrDefault(index);
+
+    public FullNode SetChild(byte index, INode? node)
     {
-        // Children 0x10 + Value 0x01
-        public const byte ChildrenCount = 0x11;
+        return new(Children.SetItem(index, node), Value);
+    }
 
-        public static readonly FullNode Empty =
-            new FullNode(new INode?[ChildrenCount].ToImmutableArray());
+    public FullNode SetValue(INode? value) => new(Children, value);
 
-        public FullNode(ImmutableArray<INode?> children)
+    /// <inheritdoc cref="IEquatable{T}.Equals"/>
+    public bool Equals(FullNode? other)
+    {
+        if (other is not null)
         {
-            if (children.Length != ChildrenCount)
+            return Children.SequenceEqual(other.Children) && Equals(Value, other.Value);
+        }
+
+        return false;
+    }
+
+    public override int GetHashCode() => Children.GetHashCode();
+
+    /// <inheritdoc cref="INode.ToBencodex()"/>
+    public IValue ToBencodex()
+    {
+        var items = Enumerable.Repeat<IValue>(Null.Value, 16 + 1).ToArray();
+        foreach (var (key, value) in Children)
+        {
+            if (value is not null)
             {
-                throw new InvalidTrieNodeException(
-                    $"The number of {nameof(FullNode)}'s children should be {ChildrenCount}.");
+                items[key] = value.ToBencodex();
             }
-
-            Children = children;
-            Value = children[ChildrenCount - 1];
         }
 
-        public ImmutableArray<INode?> Children { get; }
-
-        public INode? Value { get; }
-
-        public FullNode SetChild(int index, INode childNode)
+        if (Value is not null)
         {
-            return new FullNode(Children.SetItem(index, childNode));
+            items[16] = Value.ToBencodex();
         }
 
-        public FullNode RemoveChild(int index)
-        {
-            return new FullNode(Children.SetItem(index, null));
-        }
+        return new List(items);
+    }
 
-        /// <inheritdoc cref="IEquatable{T}.Equals"/>
-        public bool Equals(FullNode? other)
+    private static ImmutableDictionary<byte, INode?> ValidateChildren(
+        ImmutableDictionary<byte, INode?> children)
+    {
+        foreach (var key in children.Keys)
         {
-            if (ReferenceEquals(this, other))
+            if (key >= 0x10)
             {
-                return true;
+                var message = $"The key of {nameof(FullNode)}'s children should be less than 0x0f.";
+                throw new ArgumentException(message, nameof(children));
             }
-
-            return other is { } node &&
-                Children.Select((n, i) => (n, i)).Where(pair => pair.n is { }).SequenceEqual(
-                    node.Children.Select((n, i) => (n, i)).Where(pair => pair.n is { }));
         }
 
-        public override bool Equals(object? obj) =>
-            obj is FullNode other && Equals(other);
-
-        public override int GetHashCode() => Children.GetHashCode();
-
-        /// <inheritdoc cref="INode.ToBencodex()"/>
-        public IValue ToBencodex() =>
-            new List(Children.Select(child => child?.ToBencodex() ?? Null.Value));
+        return children;
     }
 }

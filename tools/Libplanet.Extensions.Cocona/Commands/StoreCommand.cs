@@ -37,7 +37,7 @@ public class StoreCommand
                 height.ToString(CultureInfo.InvariantCulture),
                 id == canon ? "*" : string.Empty,
                 store.GetBlockDigest(
-                    store.IndexBlockHash(id, height)!.Value)!.Value.Hash.ToString());
+                    store.IndexBlockHash(id, height)!.Value)!.Hash.ToString());
         });
         if (showHash)
         {

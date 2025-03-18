@@ -73,7 +73,7 @@ namespace Libplanet.Mocks
         public static MockWorldState CreateLegacy(IStateStore? stateStore = null)
         {
             stateStore ??= new TrieStateStore(new MemoryKeyValueStore());
-            return new MockWorldState(stateStore.GetStateRoot(null), stateStore);
+            return new MockWorldState(stateStore.GetStateRoot(default), stateStore);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Libplanet.Mocks
             int version = BlockMetadata.CurrentProtocolVersion)
         {
             stateStore ??= new TrieStateStore(new MemoryKeyValueStore());
-            ITrie trie = stateStore.GetStateRoot(null);
+            ITrie trie = stateStore.GetStateRoot(default);
             trie = trie.SetMetadata(new TrieMetadata(version));
             trie = stateStore.Commit(trie);
             return new MockWorldState(trie, stateStore);
@@ -105,7 +105,7 @@ namespace Libplanet.Mocks
                 : new AccountState(
                     Trie.Get(ToStateKey(address)) is { } stateRootNotNull
                         ? _stateStore.GetStateRoot(new HashDigest<SHA256>(stateRootNotNull))
-                        : _stateStore.GetStateRoot(null));
+                        : _stateStore.GetStateRoot(default));
 
         /// <summary>
         /// Sets given <paramref name="accountState"/> to <paramref name="address"/>.

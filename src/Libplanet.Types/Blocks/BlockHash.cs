@@ -92,6 +92,10 @@ namespace Libplanet.Types.Blocks
         /// <inheritdoc/>
         public Bencodex.Types.IValue Bencoded => new Bencodex.Types.Binary(ByteArray);
 
+        public static bool operator ==(BlockHash left, BlockHash right) => left.Equals(right);
+
+        public static bool operator !=(BlockHash left, BlockHash right) => !left.Equals(right);
+
         /// <summary>
         /// Converts a given hexadecimal representation of a block hash into
         /// a <see cref="BlockHash"/> value.

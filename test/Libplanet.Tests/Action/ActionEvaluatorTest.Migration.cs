@@ -332,7 +332,8 @@ namespace Libplanet.Tests.Action
             var block3 = chain.ProposeBlock(miner, blockCommit);
             chain.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetNextWorldState().Version);
-            var accountStateRoot = stateStore.GetStateRoot(chain.GetNextStateRootHash(block3.Hash))
+            var accountStateRoot = stateStore.GetStateRoot(
+                chain.GetNextStateRootHash(block3.Hash) ?? default)
                 .Get(KeyConverters.ToStateKey(ModernAction.AccountAddress));
             Assert.NotNull(accountStateRoot);
             var accountTrie = stateStore.GetStateRoot(new HashDigest<SHA256>(accountStateRoot));
@@ -386,7 +387,7 @@ namespace Libplanet.Tests.Action
             chain.Append(block3, CreateBlockCommit(block3));
             Assert.Equal(BlockMetadata.CurrentProtocolVersion, chain.GetNextWorldState().Version);
 
-            var nextStateRootHash = chain.GetNextStateRootHash(block3.Hash);
+            var nextStateRootHash = chain.GetNextStateRootHash(block3.Hash) ?? default;
             var currencyAccountStateRoot = stateStore
                     .GetStateRoot(nextStateRootHash)
                     .Get(KeyConverters.ToStateKey(

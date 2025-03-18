@@ -37,7 +37,8 @@ namespace Libplanet.Benchmarks
         [IterationSetup(Target = nameof(DecodeBlockCommit))]
         public void PrepareDecode()
         {
-            _blockCommit = new BlockCommit(1, 0, _blockHash, _votes.Take(ValidatorSize).ToImmutableArray());
+            _blockCommit = new BlockCommit(1, 0, _blockHash, _votes.Take(ValidatorSize)
+                .ToImmutableArray());
             _encodedBlockCommit = _blockCommit.Bencoded;
         }
 

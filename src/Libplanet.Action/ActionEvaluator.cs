@@ -98,7 +98,7 @@ namespace Libplanet.Action
         [Pure]
         public IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
-            HashDigest<SHA256>? baseStateRootHash)
+            HashDigest<SHA256> baseStateRootHash)
         {
             if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
             {

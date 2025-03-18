@@ -25,7 +25,7 @@ namespace Libplanet.Action.State
         /// given <paramref name="stateRootHash"/>.</returns>
         internal static IWorld GetWorld(
             this IStateStore stateStore,
-            HashDigest<SHA256>? stateRootHash)
+            HashDigest<SHA256> stateRootHash)
         {
             return new World(
                 new WorldBaseState(stateStore.GetStateRoot(stateRootHash), stateStore));
@@ -106,7 +106,7 @@ namespace Libplanet.Action.State
             if (targetVersion >= BlockMetadata.WorldStateProtocolVersion &&
                 world.Version < BlockMetadata.WorldStateProtocolVersion)
             {
-                var worldTrie = stateStore.GetStateRoot(null);
+                var worldTrie = stateStore.GetStateRoot(default);
                 worldTrie = worldTrie.SetMetadata(
                     new TrieMetadata(BlockMetadata.WorldStateProtocolVersion));
                 worldTrie = worldTrie.Set(
@@ -168,7 +168,7 @@ namespace Libplanet.Action.State
 
                 // Remove all total supply tracking.
                 const int totalSupplyKeyLength = 42;
-                var subRootPath = new KeyBytes(Encoding.ASCII.GetBytes("__"));
+                var subRootPath = KeyBytes.Create(Encoding.ASCII.GetBytes("__"));
                 var legacyAccountTrie =
                     world.GetAccount(ReservedAddresses.LegacyAccount).Trie;
                 var tempTrie = (MerkleTrie)legacyAccountTrie.Set(subRootPath, Null.Value);
@@ -189,7 +189,7 @@ namespace Libplanet.Action.State
 
                 // Remove all fungible assets
                 const int fungibleAssetKeyLength = 82;
-                subRootPath = new KeyBytes(Encoding.ASCII.GetBytes("_"));
+                subRootPath = KeyBytes.Create(Encoding.ASCII.GetBytes("_"));
                 tempTrie = (MerkleTrie)legacyAccountTrie.Set(subRootPath, Null.Value);
                 byte[] addressBytesBuffer = new byte[40];
                 byte[] currencyBytesBuffer = new byte[40];
@@ -203,8 +203,8 @@ namespace Libplanet.Action.State
                         pair.Path.ByteArray.CopyTo(1, addressBytesBuffer, 0, 40);
                         pair.Path.ByteArray.CopyTo(42, currencyBytesBuffer, 0, 40);
                         favs.Add((
-                            new KeyBytes(addressBytesBuffer),
-                            new KeyBytes(currencyBytesBuffer),
+                            KeyBytes.Create(addressBytesBuffer),
+                            KeyBytes.Create(currencyBytesBuffer),
                             (Integer)pair.Value));
                     }
                 }
@@ -224,7 +224,7 @@ namespace Libplanet.Action.State
                 {
                     var currencyAccountTrie = world.Trie.Get(group.Key) is Binary hash
                         ? stateStore.GetStateRoot(new HashDigest<SHA256>(hash))
-                        : stateStore.GetStateRoot(null);
+                        : stateStore.GetStateRoot(default);
                     foreach (var fav in group)
                     {
                         Integer balance = fav.Amount;

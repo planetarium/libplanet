@@ -32,6 +32,12 @@ dotnet_naming_rule.public_members_must_be_capitalized.style = first_word_upper_c
 dotnet_naming_style.first_word_upper_case_style.capitalization = first_word_upper
 dotnet_naming_rule.public_members_must_be_capitalized.severity = warning
 
+# SA1615: Element return value should be documented
+dotnet_diagnostic.SA1615.severity = none
+
+# S3903: Types should be defined in named namespaces
+dotnet_diagnostic.S3903.severity = none
+
 [*.csproj]
 quote_type = double
 

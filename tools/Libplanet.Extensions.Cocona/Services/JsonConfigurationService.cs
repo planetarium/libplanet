@@ -1,10 +1,10 @@
-namespace Libplanet.Extensions.Cocona.Services;
-
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Libplanet.Extensions.Cocona.Configuration;
 using Zio;
+
+namespace Libplanet.Extensions.Cocona.Services;
 
 public class JsonConfigurationService : IConfigurationService<ToolConfiguration>
 {

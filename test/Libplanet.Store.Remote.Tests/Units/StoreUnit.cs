@@ -16,7 +16,7 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(0x01);
+        var key = KeyBytes.Create(0x01);
         byte[] value = { 0x02 };
         var request = new GetValueRequest { Key = key.ToKeyValueStoreKey() };
         var response = new KeyValueStoreValue { Data = ByteString.CopyFrom(value) };
@@ -25,7 +25,7 @@ public class StoreUnit
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act
-        byte[] result = store.Get(key);
+        byte[] result = store[key];
 
         // Assert
         mocker.VerifyAll();
@@ -36,7 +36,7 @@ public class StoreUnit
     public void GetUnary_NotFoundTest()
     {
         // Arrange
-        var key = new KeyBytes(0x01);
+        var key = KeyBytes.Create(0x01);
         // Cannot use `AutoMocker` in here. (dunno why)
         var mockClient = new Mock<KeyValueStore.KeyValueStoreClient>();
         mockClient
@@ -46,7 +46,7 @@ public class StoreUnit
         var store = new RemoteKeyValueStore(mockClient.Object);
 
         // Act & Assert
-        Assert.Throws<KeyNotFoundException>(() => store.Get(key));
+        Assert.Throws<KeyNotFoundException>(() => store[key]);
         mockClient.VerifyAll();
     }
 
@@ -55,7 +55,7 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(0x01);
+        var key = KeyBytes.Create(0x01);
         var request = new GetValueRequest { Key = key.ToKeyValueStoreKey() };
         var response = new KeyValueStoreValue { Data = ByteString.Empty };
         mocker.Use<KeyValueStore.KeyValueStoreClient>(
@@ -63,7 +63,7 @@ public class StoreUnit
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act
-        byte[] result = store.Get(key);
+        byte[] result = store[key];
 
         // Assert
         mocker.VerifyAll();
@@ -75,7 +75,7 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(0x01);
+        var key = KeyBytes.Create(0x01);
         var value = new byte[] { 0x02 };
         var request = new SetValueRequest
         {
@@ -91,7 +91,7 @@ public class StoreUnit
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act
-        store.Set(key, value);
+        store[key] = value;
 
         // Assert
         mocker.VerifyAll();
@@ -102,8 +102,8 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key1 = new KeyBytes(0x01);
-        var key2 = new KeyBytes(0x02);
+        var key1 = KeyBytes.Create(0x01);
+        var key2 = KeyBytes.Create(0x02);
 
         var request = new SetValuesRequest
         {
@@ -143,7 +143,7 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(0x01);
+        var key = KeyBytes.Create(0x01);
         var request = new DeleteValueRequest
         {
             Key = key.ToKeyValueStoreKey(),
@@ -155,7 +155,7 @@ public class StoreUnit
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act
-        store.Delete(key);
+        store.Remove(key);
 
         // Assert
         mocker.VerifyAll();
@@ -166,8 +166,8 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key1 = new KeyBytes(0x01);
-        var key2 = new KeyBytes(0x02);
+        var key1 = KeyBytes.Create(0x01);
+        var key2 = KeyBytes.Create(0x02);
         var request = new DeleteValuesRequest
         {
             Keys =
@@ -183,7 +183,7 @@ public class StoreUnit
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act
-        store.Delete(new List<KeyBytes> { key1, key2 });
+        store.RemoveMany(new List<KeyBytes> { key1, key2 });
 
         // Assert
         mocker.VerifyAll();
@@ -194,7 +194,7 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key = new KeyBytes(0x01);
+        var key = KeyBytes.Create(0x01);
         var request = new ExistsKeyRequest
         {
             Key = key.ToKeyValueStoreKey(),
@@ -206,7 +206,7 @@ public class StoreUnit
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act
-        bool result = store.Exists(key);
+        bool result = store.ContainsKey(key);
 
         // Assert
         mocker.VerifyAll();
@@ -220,7 +220,8 @@ public class StoreUnit
         var mocker = new AutoMocker();
         var response = new ListKeysResponse();
         mocker.Use<KeyValueStore.KeyValueStoreClient>(
-            client => client.ListKeys(new ListKeysRequest(), null, null, CancellationToken.None) == response);
+            client => client.ListKeys(
+                new ListKeysRequest(), null, null, CancellationToken.None) == response);
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act
@@ -236,8 +237,8 @@ public class StoreUnit
     {
         // Arrange
         var mocker = new AutoMocker();
-        var key1 = new KeyBytes(0x01);
-        var key2 = new KeyBytes(0x02);
+        var key1 = KeyBytes.Create(0x01);
+        var key2 = KeyBytes.Create(0x02);
         var response = new ListKeysResponse
         {
             Keys =
@@ -248,7 +249,8 @@ public class StoreUnit
         };
 
         mocker.Use<KeyValueStore.KeyValueStoreClient>(
-            client => client.ListKeys(new ListKeysRequest(), null, null, CancellationToken.None) == response);
+            client => client.ListKeys(
+                new ListKeysRequest(), null, null, CancellationToken.None) == response);
         RemoteKeyValueStore store = mocker.CreateInstance<RemoteKeyValueStore>();
 
         // Act

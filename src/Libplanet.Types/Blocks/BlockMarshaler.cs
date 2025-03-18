@@ -197,7 +197,7 @@ namespace Libplanet.Types.Blocks
                 publicKey: publicKey,
                 previousHash: marshaled.TryGetValue(PreviousHashKey, out IValue phv)
                     ? new BlockHash(phv)
-                    : (BlockHash?)null,
+                    : default,
                 txHash: marshaled.TryGetValue(TxHashKey, out IValue thv)
                     ? new HashDigest<SHA256>(thv)
                     : (HashDigest<SHA256>?)null,

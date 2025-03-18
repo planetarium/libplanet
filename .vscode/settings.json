@@ -1,8 +1,14 @@
 {
-  "editor.rulers": [
-    80,
-    100
-  ],
+  "[csharp]": {
+    "editor.rulers": [
+      100
+    ]
+  },
+  "[markdown]": {
+    "editor.rulers": [
+      80
+    ]
+  },
   "search.exclude": {
     "**/.yarn": true,
     "**/.pnp.*": true,

@@ -78,7 +78,7 @@ namespace Libplanet.Types.Blocks
         /// The previous block's hash.  If it's a genesis block (i.e., its <see cref="Index"/> is 0)
         /// this must be <see langword="null"/>.
         /// </summary>
-        BlockHash? PreviousHash { get; }
+        BlockHash PreviousHash { get; }
 
         /// <summary>
         /// The hash of all transactions in the block.  This is <see langword="null"/> if the block

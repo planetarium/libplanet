@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blocks
             // Should be fine.
             var preEvaluationBlockHeaderPv1 = new PreEvaluationBlockHeader(
                 metadataPv1,
-                new HashDigest<SHA256>(TestUtils.GetRandomBytes(HashDigest<SHA256>.Size)));
+                new HashDigest<SHA256>(GetRandomBytes(HashDigest<SHA256>.Size)));
 
             BlockMetadata metadata = new BlockMetadata(_contents.Block1Content);
             Assert.False(metadata.ProtocolVersion < BlockMetadata.PBFTProtocolVersion);
@@ -57,7 +57,7 @@ namespace Libplanet.Tests.Blocks
         public void MakeCandidateData()
         {
             var random = new Random();
-            Bencodex.Types.Dictionary expectedGenesis = Bencodex.Types.Dictionary.Empty
+            Bencodex.Types.Dictionary expectedGenesis = Dictionary.Empty
                 .Add("index", 0L)
                 .Add("timestamp", "2021-09-06T04:46:39.123000Z")
                 .Add("nonce", ImmutableArray<byte>.Empty)
@@ -85,7 +85,7 @@ namespace Libplanet.Tests.Blocks
                 genesis.MakeCandidateData(stateRootHash)
             );
 
-            Bencodex.Types.Dictionary expectedBlock1 = Bencodex.Types.Dictionary.Empty
+            Bencodex.Types.Dictionary expectedBlock1 = Dictionary.Empty
                 .Add("index", 1L)
                 .Add("timestamp", "2021-09-06T08:01:09.045000Z")
                 .Add("nonce", ImmutableArray<byte>.Empty)
@@ -127,7 +127,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void MakeSignature()
         {
-            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.FromString(
+            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.Parse(
                 "e6b3803208416556db8de50670aaf0b642e13c90afd77d24da8f642dc3e8f320"
             );
 
@@ -171,7 +171,7 @@ namespace Libplanet.Tests.Blocks
         public void VerifySignature()
         {
             var random = new Random();
-            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.FromString(
+            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.Parse(
                 "e6b3803208416556db8de50670aaf0b642e13c90afd77d24da8f642dc3e8f320"
             );
 
@@ -180,7 +180,7 @@ namespace Libplanet.Tests.Blocks
                 _contents.Block1Metadata.DerivePreEvaluationHash());
 
             // Same as block1.MakeSignature(_contents.Block1Key, arbitraryHash)
-            ImmutableArray<byte> validSig = ByteUtil.ParseHexToImmutable(
+            ImmutableArray<byte> validSig = ParseHexToImmutable(
                 "3045022100f975e902971092f16dbbb1fe6b7c956de648a8cd62346dbadc07e5fca4ce3" +
                 "07a02200987a349f0763efd0448659ed66c6bd0ad0971dd57fbb89c672aed592fbd70d6");
             AssertBytesEqual(
@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Blocks
         public void DeriveBlockHash()
         {
             Func<string, BlockHash> fromHex = BlockHash.FromString;
-            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.FromString(
+            HashDigest<SHA256> arbitraryHash = HashDigest<SHA256>.Parse(
                 "9db253bdb987ec93df713522e5f90f4865a2d0fa337481d7a065d588ddae7fa7"
             );
 

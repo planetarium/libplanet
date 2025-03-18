@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Store
         public void GetStateRoot()
         {
             var stateStore = new TrieStateStore(_stateKeyValueStore);
-            ITrie empty = stateStore.GetStateRoot(null);
+            ITrie empty = stateStore.GetStateRoot(default);
             Assert.True(empty.Recorded);
             Assert.Null(empty.Get(new[] { KeyFoo })[0]);
             Assert.Null(empty.Get(new[] { KeyBar })[0]);
@@ -55,7 +55,7 @@ namespace Libplanet.Tests.Store
                 .Add(quxKey, Bencodex.Types.Dictionary.Empty);
             ITrie trie = stateStore.Commit(
                 values.Aggregate(
-                    stateStore.GetStateRoot(null),
+                    stateStore.GetStateRoot(default),
                     (prev, kv) => prev.Set(kv.Key, kv.Value)));
             HashDigest<SHA256> hash = trie.Hash;
             ITrie found = stateStore.GetStateRoot(hash);
@@ -77,12 +77,12 @@ namespace Libplanet.Tests.Store
             List<(KeyBytes, IValue)> kvs = Enumerable.Range(0, 1_000)
                 .Select(_ =>
                 (
-                    new KeyBytes(GetRandomBytes(random.Next(1, 20))),
+                    KeyBytes.Create(GetRandomBytes(random.Next(1, 20))),
                     (IValue)new Binary(GetRandomBytes(20))
                 ))
                 .ToList();
 
-            ITrie trie = stateStore.GetStateRoot(null);
+            ITrie trie = stateStore.GetStateRoot(default);
             foreach (var kv in kvs)
             {
                 trie = trie.Set(kv.Item1, kv.Item2);
@@ -92,12 +92,8 @@ namespace Libplanet.Tests.Store
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
             // NOTE: Avoid possible collision of KeyBytes, just in case.
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(30)),
-                ByteUtil.ParseHex("00"));
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(40)),
-                ByteUtil.ParseHex("00"));
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(30))] = ByteUtil.ParseHex("00");
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(40))] = ByteUtil.ParseHex("00");
 
             Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
             Assert.Empty(targetStateKeyValueStore.ListKeys());
@@ -134,18 +130,18 @@ namespace Libplanet.Tests.Store
                         .Range(0, 100)
                         .Select(__ =>
                         (
-                            new KeyBytes(GetRandomBytes(random.Next(20))),
+                            KeyBytes.Create(GetRandomBytes(random.Next(20))),
                             (IValue)new Binary(GetRandomBytes(20))
                         ))
                         .ToList());
 
-            ITrie worldTrie = stateStore.GetStateRoot(null);
+            ITrie worldTrie = stateStore.GetStateRoot(default);
             worldTrie = worldTrie.SetMetadata(new TrieMetadata(5));
 
             List<HashDigest<SHA256>> accountHashes = new List<HashDigest<SHA256>>();
             foreach (var elem in data)
             {
-                ITrie trie = stateStore.GetStateRoot(null);
+                ITrie trie = stateStore.GetStateRoot(default);
                 foreach (var kv in elem.Value)
                 {
                     trie = trie.Set(kv.Item1, kv.Item2);
@@ -160,12 +156,8 @@ namespace Libplanet.Tests.Store
             int prevStatesCount = _stateKeyValueStore.ListKeys().Count();
 
             // NOTE: Avoid possible collision of KeyBytes, just in case.
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(30)),
-                ByteUtil.ParseHex("00"));
-            _stateKeyValueStore.Set(
-                new KeyBytes(GetRandomBytes(40)),
-                ByteUtil.ParseHex("00"));
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(30))] = ByteUtil.ParseHex("00");
+            _stateKeyValueStore[KeyBytes.Create(GetRandomBytes(40))] = ByteUtil.ParseHex("00");
 
             Assert.Equal(prevStatesCount + 2, _stateKeyValueStore.ListKeys().Count());
             Assert.Empty(targetStateKeyValueStore.ListKeys());

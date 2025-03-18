@@ -36,7 +36,7 @@ namespace Libplanet.Blockchain
         }
 
         /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
-        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
+        public IWorldState GetWorldState(HashDigest<SHA256> stateRootHash)
             => new WorldBaseState(GetTrie(stateRootHash), _stateStore);
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private ITrie GetTrie(HashDigest<SHA256>? hash)
+        private ITrie GetTrie(HashDigest<SHA256> hash)
         {
             ITrie trie = _stateStore.GetStateRoot(hash);
             return trie.Recorded

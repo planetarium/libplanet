@@ -66,8 +66,7 @@ public class StatsCommand
 
         foreach (var hash in hashes)
         {
-            BlockDigest blockDigest = store.GetBlockDigest(hash) ??
-                throw Utils.Error($"Failed to load the block {hash}.");
+            BlockDigest blockDigest = store.GetBlockDigest(hash);
             BlockHeader blockHeader =
                 blockDigest.GetHeader();
 

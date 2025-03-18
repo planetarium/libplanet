@@ -79,7 +79,7 @@ namespace Libplanet.Tests.Blocks
             _marshaledNextMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.Next.ProtocolVersion)
                 .Add(IndexKey, _fx.Next.Index)
-                .Add(PreviousHashKey, _fx.Next.PreviousHash.Value.ByteArray)
+                .Add(PreviousHashKey, _fx.Next.PreviousHash.ByteArray)
                 .Add(
                     TimestampKey,
                     _fx.Next.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Blocks
             _marshaledHasTxMetadata = Dictionary.Empty
                 .Add(ProtocolVersionKey, _fx.HasTx.ProtocolVersion)
                 .Add(IndexKey, _fx.HasTx.Index)
-                .Add(PreviousHashKey, _fx.HasTx.PreviousHash.Value.ByteArray)
+                .Add(PreviousHashKey, _fx.HasTx.PreviousHash.ByteArray)
                 .Add(
                     TimestampKey,
                     _fx.HasTx.Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
@@ -142,7 +142,7 @@ namespace Libplanet.Tests.Blocks
                     .Add(IndexKey, 1L)
                     .Add(
                         PreviousHashKey,
-                        _content.Block1ContentPv1.PreviousHash?.ByteArray ?? default)
+                        _content.Block1ContentPv1.PreviousHash.ByteArray)
                     .Add(TimestampKey, "2021-09-06T08:01:09.045000Z")
                     .Add(MinerKey, _content.Block1ContentPv1.Miner.Bencoded)
                     .Add(TxHashKey, _content.Block1ContentPv1.TxHash?.ByteArray ?? default)

@@ -129,7 +129,7 @@ namespace Libplanet.Tests.Blockchain
             };
 
             IValue legacyStateRootRaw =
-                _fx.StateStore.GetStateRoot(_blockChain.GetNextStateRootHash())
+                _fx.StateStore.GetStateRoot(_blockChain.GetNextStateRootHash() ?? default)
                 .Get(ToStateKey(ReservedAddresses.LegacyAccount));
             Assert.NotNull(legacyStateRootRaw);
             var legacyStateRoot =

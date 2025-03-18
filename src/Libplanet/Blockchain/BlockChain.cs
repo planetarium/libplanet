@@ -401,7 +401,7 @@ namespace Libplanet.Blockchain
                 var preEval = new PreEvaluationBlock(
                     genesisBlock.Header, genesisBlock.Transactions, genesisBlock.Evidence);
                 var computedStateRootHash =
-                    actionEvaluator.Evaluate(preEval, null).Last().OutputState;
+                    actionEvaluator.Evaluate(preEval, default).Last().OutputState;
                 if (!genesisBlock.StateRootHash.Equals(computedStateRootHash))
                 {
                     throw new InvalidBlockStateRootHashException(

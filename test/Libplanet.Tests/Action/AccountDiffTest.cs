@@ -15,8 +15,8 @@ namespace Libplanet.Tests.Action
         public void EmptyAccountStateSource()
         {
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            ITrie targetTrie = stateStore.GetStateRoot(null);
-            ITrie sourceTrie = stateStore.GetStateRoot(null);
+            ITrie targetTrie = stateStore.GetStateRoot(default);
+            ITrie sourceTrie = stateStore.GetStateRoot(default);
 
             AccountDiff diff = AccountDiff.Create(targetTrie, sourceTrie);
             Assert.Empty(diff.StateDiffs);
@@ -35,8 +35,8 @@ namespace Libplanet.Tests.Action
         public void Diff()
         {
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            ITrie targetTrie = stateStore.GetStateRoot(null);
-            ITrie sourceTrie = stateStore.GetStateRoot(null);
+            ITrie targetTrie = stateStore.GetStateRoot(default);
+            ITrie sourceTrie = stateStore.GetStateRoot(default);
 
             Address addr1 = new Address(TestUtils.GetRandomBytes(Address.Size));
             Address addr2 = new Address(TestUtils.GetRandomBytes(Address.Size));

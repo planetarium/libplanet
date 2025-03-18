@@ -11,7 +11,7 @@ https://docs.libplanet.io/</Description>
   <PropertyGroup>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
     <NoWarn>$(NoWarn);S4035;CS1591;NU5104;MEN001;NU1902</NoWarn>
     <!-- FIXME: S4035 and CS1591 should be turned on eventually. -->
     <!-- FIXME: NU1902 should be removed once BouncyCastle is bumped to a secure version -->

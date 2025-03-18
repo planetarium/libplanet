@@ -18,8 +18,8 @@ namespace Libplanet.Blockchain
         public IWorldState GetWorldState(BlockHash offset)
             => _blockChainStates.GetWorldState(offset);
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)" />
-        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256})" />
+        public IWorldState GetWorldState(HashDigest<SHA256> stateRootHash)
             => _blockChainStates.GetWorldState(stateRootHash);
 
         /// <summary>

@@ -1,14 +1,12 @@
-using Libplanet.Common;
-using Libplanet.Crypto;
-
-namespace Libplanet.Crypto.Secp256k1;
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet;
-using Secp256k1Net;
+using Libplanet.Common;
 using Libplanet.Crypto;
+using Secp256k1Net;
+
+namespace Libplanet.Crypto.Secp256k1;
 
 [SuppressMessage(
     "Minor Code Smell",
@@ -17,26 +15,26 @@ using Libplanet.Crypto;
 public class Secp256k1CryptoBackend<T> : ICryptoBackend<T>
     where T : HashAlgorithm
 {
-    private readonly Secp256k1 _instance = new Secp256k1();
+    private readonly Secp256k1Net.Secp256k1 _instance = new Secp256k1Net.Secp256k1();
     private readonly object _instanceLock = new object();
 
     public byte[] Sign(HashDigest<T> messageHash, PrivateKey privateKey)
     {
         lock (_instanceLock)
         {
-            var secp256K1Signature = new byte[Secp256k1.SIGNATURE_LENGTH];
-            var privateKeyBytes = new byte[Secp256k1.PRIVKEY_LENGTH];
+            var secp256K1Signature = new byte[Secp256k1Net.Secp256k1.SIGNATURE_LENGTH];
+            var privateKeyBytes = new byte[Secp256k1Net.Secp256k1.PRIVKEY_LENGTH];
 
             privateKey.ByteArray.CopyTo(
                 privateKeyBytes,
-                Secp256k1.PRIVKEY_LENGTH - privateKey.ByteArray.Length);
+                Secp256k1Net.Secp256k1.PRIVKEY_LENGTH - privateKey.ByteArray.Length);
 
             _instance.Sign(
                 secp256K1Signature,
                 messageHash.ToByteArray(),
                 privateKeyBytes);
 
-            var signature = new byte[Secp256k1.SERIALIZED_DER_SIGNATURE_MAX_SIZE];
+            var signature = new byte[Secp256k1Net.Secp256k1.SERIALIZED_DER_SIGNATURE_MAX_SIZE];
             _instance.SignatureSerializeDer(
                 signature,
                 secp256K1Signature,

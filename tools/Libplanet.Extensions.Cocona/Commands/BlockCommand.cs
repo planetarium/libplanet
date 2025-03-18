@@ -1,38 +1,38 @@
-namespace Libplanet.Extensions.Cocona.Commands;
-
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
-using ImmutableTrie;
 using global::Cocona;
+using ImmutableTrie;
 using Libplanet.Action;
 using Libplanet.Action.Loader;
 using Libplanet.Action.Sys;
 using Libplanet.Blockchain;
 using Libplanet.Crypto;
+using Libplanet.Store;
+using Libplanet.Store.Trie;
 using Libplanet.Types.Blocks;
 using Libplanet.Types.Consensus;
 using Libplanet.Types.Tx;
-using Libplanet.Store;
-using Libplanet.Store.Trie;
+
+namespace Libplanet.Extensions.Cocona.Commands;
 
 public class BlockCommand
 {
     public enum OutputFormat
     {
         /// <summary>
-        /// Bencode Extensible Binary Object Notation
+        /// Bencode Extensible Binary Object Notation.
         /// </summary>
         Bencodex,
 
         /// <summary>
-        /// Json (Human-readable)
+        /// Json (Human-readable).
         /// </summary>
         Json,
     }
@@ -159,7 +159,7 @@ public class BlockCommand
         var policyActionsRegistry = blockPolicyParams.GetPolicyActionsRegistry();
         var actionEvaluator = new ActionEvaluator(
             policyActionsRegistry,
-            new TrieStateStore(new DefaultKeyValueStore(null)),
+            new TrieStateStore(new DefaultKeyValueStore()),
             new SingleActionLoader(typeof(NullAction)));
         Block genesis = BlockChain.ProposeGenesisBlock(
             privateKey: key, transactions: txs);

@@ -1,5 +1,3 @@
-namespace Libplanet.Tools;
-
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -9,6 +7,8 @@ using Libplanet.Crypto.Secp256k1;
 using Libplanet.Extensions.Cocona.Commands;
 using Libplanet.Extensions.Cocona.Extensions;
 using CryptoConfig = Libplanet.Crypto.CryptoConfig;
+
+namespace Libplanet.Tools;
 
 [HasSubCommands(typeof(ApvCommand), "apv", Description = "App protocol version utilities.")]
 [HasSubCommands(typeof(KeyCommand), "key", Description = "Manage private keys.")]
