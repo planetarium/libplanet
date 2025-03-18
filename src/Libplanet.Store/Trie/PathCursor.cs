@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace Libplanet.Store.Trie;
 
-public readonly struct PathCursor
+internal readonly struct PathCursor
 {
     public readonly Nibbles Nibbles;
 

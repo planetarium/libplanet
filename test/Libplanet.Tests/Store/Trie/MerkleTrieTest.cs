@@ -149,10 +149,10 @@ public class MerkleTrieTest
             Parse("0000000000000000000000000000000000000000000000000000000000000000"),
             trie.Hash
         );
-        Assert.Null(trie.Get(KeyBytes.Create(0xbe, 0xef)));
-        Assert.Null(trie.Get(KeyBytes.Create(0x11, 0x22)));
-        Assert.Null(trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        Assert.Null(trie.Get(KeyBytes.Create(0x12, 0x34)));
+        Assert.Null(trie[KeyBytes.Create(0xbe, 0xef)]);
+        Assert.Null(trie[KeyBytes.Create(0x11, 0x22)]);
+        Assert.Null(trie[KeyBytes.Create(0xaa, 0xbb)]);
+        Assert.Null(trie[KeyBytes.Create(0x12, 0x34)]);
 
         trie = trie.Set(KeyBytes.Create(0xbe, 0xef), Null.Value);
         trie = commit ? stateStore.Commit(trie) : trie;
@@ -160,10 +160,10 @@ public class MerkleTrieTest
             Parse("16fc25f43edd0c2d2cb6e3cc3827576e57f4b9e04f8dc3a062c7fe59041f77bd"),
             trie.Hash
         );
-        AssertBencodexEqual(Null.Value, trie.Get(KeyBytes.Create(0xbe, 0xef)));
-        Assert.Null(trie.Get(KeyBytes.Create(0x11, 0x22)));
-        Assert.Null(trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        Assert.Null(trie.Get(KeyBytes.Create(0x12, 0x34)));
+        AssertBencodexEqual(Null.Value, trie[KeyBytes.Create(0xbe, 0xef)]);
+        Assert.Null(trie[KeyBytes.Create(0x11, 0x22)]);
+        Assert.Null(trie[KeyBytes.Create(0xaa, 0xbb)]);
+        Assert.Null(trie[KeyBytes.Create(0x12, 0x34)]);
 
         trie = trie.Set(KeyBytes.Create(0xbe, 0xef), new Bencodex.Types.Boolean(true));
         trie = commit ? stateStore.Commit(trie) : trie;
@@ -173,11 +173,11 @@ public class MerkleTrieTest
         );
         AssertBencodexEqual(
             new Bencodex.Types.Boolean(true),
-            trie.Get(KeyBytes.Create(0xbe, 0xef))
+            trie[KeyBytes.Create(0xbe, 0xef)]
         );
-        Assert.Null(trie.Get(KeyBytes.Create(0x11, 0x22)));
-        Assert.Null(trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        Assert.Null(trie.Get(KeyBytes.Create(0x12, 0x34)));
+        Assert.Null(trie[KeyBytes.Create(0x11, 0x22)]);
+        Assert.Null(trie[KeyBytes.Create(0xaa, 0xbb)]);
+        Assert.Null(trie[KeyBytes.Create(0x12, 0x34)]);
 
         trie = trie.Set(KeyBytes.Create(0x11, 0x22), List.Empty);
         trie = commit ? stateStore.Commit(trie) : trie;
@@ -187,11 +187,11 @@ public class MerkleTrieTest
         );
         AssertBencodexEqual(
             new Bencodex.Types.Boolean(true),
-            trie.Get(KeyBytes.Create(0xbe, 0xef))
+            trie[KeyBytes.Create(0xbe, 0xef)]
         );
-        AssertBencodexEqual(List.Empty, trie.Get(KeyBytes.Create(0x11, 0x22)));
-        Assert.Null(trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        Assert.Null(trie.Get(KeyBytes.Create(0x12, 0x34)));
+        AssertBencodexEqual(List.Empty, trie[KeyBytes.Create(0x11, 0x22)]);
+        Assert.Null(trie[KeyBytes.Create(0xaa, 0xbb)]);
+        Assert.Null(trie[KeyBytes.Create(0x12, 0x34)]);
 
         trie = trie.Set(KeyBytes.Create(0xaa, 0xbb), new Text("hello world"));
         trie = commit ? stateStore.Commit(trie) : trie;
@@ -201,14 +201,14 @@ public class MerkleTrieTest
         );
         AssertBencodexEqual(
             new Bencodex.Types.Boolean(true),
-            trie.Get(KeyBytes.Create(0xbe, 0xef))
+            trie[KeyBytes.Create(0xbe, 0xef)]
         );
-        AssertBencodexEqual(List.Empty, trie.Get(KeyBytes.Create(0x11, 0x22)));
+        AssertBencodexEqual(List.Empty, trie[KeyBytes.Create(0x11, 0x22)]);
         AssertBencodexEqual(
             new Text("hello world"),
-            trie.Get(KeyBytes.Create(0xaa, 0xbb))
+            trie[KeyBytes.Create(0xaa, 0xbb)]
         );
-        Assert.Null(trie.Get(KeyBytes.Create(0x12, 0x34)));
+        Assert.Null(trie[KeyBytes.Create(0x12, 0x34)]);
 
         // Once node encoding length exceeds certain length,
         // uncommitted and committed hash diverge
@@ -223,11 +223,11 @@ public class MerkleTrieTest
         );
         AssertBencodexEqual(
             new Bencodex.Types.Boolean(true),
-            trie.Get(KeyBytes.Create(0xbe, 0xef))
+            trie[KeyBytes.Create(0xbe, 0xef)]
         );
-        AssertBencodexEqual(List.Empty, trie.Get(KeyBytes.Create(0x11, 0x22)));
-        AssertBencodexEqual(longText, trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        Assert.Null(trie.Get(KeyBytes.Create(0x12, 0x34)));
+        AssertBencodexEqual(List.Empty, trie[KeyBytes.Create(0x11, 0x22)]);
+        AssertBencodexEqual(longText, trie[KeyBytes.Create(0xaa, 0xbb)]);
+        Assert.Null(trie[KeyBytes.Create(0x12, 0x34)]);
 
         trie = trie.Set(KeyBytes.Create(0x12, 0x34), Dictionary.Empty);
         trie = commit ? stateStore.Commit(trie) : trie;
@@ -239,11 +239,11 @@ public class MerkleTrieTest
         );
         AssertBencodexEqual(
             new Bencodex.Types.Boolean(true),
-            trie.Get(KeyBytes.Create(0xbe, 0xef))
+            trie[KeyBytes.Create(0xbe, 0xef)]
         );
-        AssertBencodexEqual(List.Empty, trie.Get(KeyBytes.Create(0x11, 0x22)));
-        AssertBencodexEqual(longText, trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        AssertBencodexEqual(Dictionary.Empty, trie.Get(KeyBytes.Create(0x12, 0x34)));
+        AssertBencodexEqual(List.Empty, trie[KeyBytes.Create(0x11, 0x22)]);
+        AssertBencodexEqual(longText, trie[KeyBytes.Create(0xaa, 0xbb)]);
+        AssertBencodexEqual(Dictionary.Empty, trie[KeyBytes.Create(0x12, 0x34)]);
 
         List complexList = List.Empty
             .Add("Hello world")
@@ -264,11 +264,11 @@ public class MerkleTrieTest
         );
         AssertBencodexEqual(
             new Bencodex.Types.Boolean(true),
-            trie.Get(KeyBytes.Create(0xbe, 0xef))
+            trie[KeyBytes.Create(0xbe, 0xef)]
         );
-        AssertBencodexEqual(complexList, trie.Get(KeyBytes.Create(0x11, 0x22)));
-        AssertBencodexEqual(longText, trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        AssertBencodexEqual(Dictionary.Empty, trie.Get(KeyBytes.Create(0x12, 0x34)));
+        AssertBencodexEqual(complexList, trie[KeyBytes.Create(0x11, 0x22)]);
+        AssertBencodexEqual(longText, trie[KeyBytes.Create(0xaa, 0xbb)]);
+        AssertBencodexEqual(Dictionary.Empty, trie[KeyBytes.Create(0x12, 0x34)]);
 
         Dictionary complexDict = Dictionary.Empty
             .Add("foo", 123)
@@ -294,11 +294,11 @@ public class MerkleTrieTest
         );
         AssertBencodexEqual(
             new Bencodex.Types.Boolean(true),
-            trie.Get(KeyBytes.Create(0xbe, 0xef))
+            trie[KeyBytes.Create(0xbe, 0xef)]
         );
-        AssertBencodexEqual(complexList, trie.Get(KeyBytes.Create(0x11, 0x22)));
-        AssertBencodexEqual(longText, trie.Get(KeyBytes.Create(0xaa, 0xbb)));
-        AssertBencodexEqual(complexDict, trie.Get(KeyBytes.Create(0x12, 0x34)));
+        AssertBencodexEqual(complexList, trie[KeyBytes.Create(0x11, 0x22)]);
+        AssertBencodexEqual(longText, trie[KeyBytes.Create(0xaa, 0xbb)]);
+        AssertBencodexEqual(complexDict, trie[KeyBytes.Create(0x12, 0x34)]);
     }
 
     [Fact]
@@ -349,7 +349,7 @@ public class MerkleTrieTest
         trie = trie.Set(key00, value00);
         trie = stateStore.Commit(trie);
 
-        Assert.Null(trie.Get(key0000));
+        Assert.Null(trie[key0000]);
     }
 
     [Fact]
@@ -367,8 +367,8 @@ public class MerkleTrieTest
         trie = stateStore.Commit(trie);
 
         Assert.Equal(2, trie.IterateValues().Count());
-        Assert.Equal(value00, trie.Get(key00));
-        Assert.Equal(value0000, trie.Get(key0000));
+        Assert.Equal(value00, trie[KeyBytes.Create(0x00)]);
+        Assert.Equal(value0000, trie[KeyBytes.Create(0x00, 0x00)]);
     }
 
     [Fact]
@@ -389,9 +389,9 @@ public class MerkleTrieTest
         trie = stateStore.Commit(trie);
 
         Assert.Equal(3, trie.IterateValues().Count());
-        Assert.Equal(value00, trie.Get(key00));
-        Assert.Equal(value0000, trie.Get(key0000));
-        Assert.Equal(value0010, trie.Get(key0010));
+        Assert.Equal(value00, trie[KeyBytes.Create(0x00)]);
+        Assert.Equal(value0000, trie[KeyBytes.Create(0x00, 0x00)]);
+        Assert.Equal(value0010, trie[KeyBytes.Create(0x00, 0x10)]);
     }
 
     [Fact]
@@ -449,7 +449,7 @@ public class MerkleTrieTest
         trie = stateStore.Commit(trie);
         trie = trie.Remove(key00);
         trie = stateStore.Commit(trie);
-        Assert.Equal(value0000, trie.Get(key0000));
+        Assert.Equal(value0000, trie[KeyBytes.Create(0x00, 0x00)]);
         Assert.Equal(expectedNodeCount, trie.IterateNodes().Count());
         Assert.Equal(expectedValueCount, trie.IterateValues().Count());
         Assert.Equal(expectedHash, trie.Hash);
@@ -491,8 +491,8 @@ public class MerkleTrieTest
         Assert.Empty(trie.IterateNodes());
         Assert.Empty(trie.IterateValues());
         trie = stateStore.GetStateRoot(hash);
-        Assert.Equal(value00, trie.Get(key00)); // Nothing is actually removed from storage.
-        Assert.Equal(value0000, trie.Get(key0000));
+        Assert.Equal(value00, trie[KeyBytes.Create(0x00)]); // Nothing is actually removed from storage.
+        Assert.Equal(value0000, trie[KeyBytes.Create(0x00, 0x00)]);
 
         // Add randomized kvs and remove kvs in order.
         // The way the test is set up, identical kv pairs shouldn't matter.

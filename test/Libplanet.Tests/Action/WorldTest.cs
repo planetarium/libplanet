@@ -422,12 +422,10 @@ namespace Libplanet.Tests.Action
             Assert.NotEqual(_initWorld.GetValidatorSet(), world.GetValidatorSet());
             var oldValidatorSetRawValue = world
                 .GetAccountState(ReservedAddresses.LegacyAccount)
-                .Trie
-                .Get(KeyConverters.ValidatorSetKey);
+                .Trie[KeyConverters.ValidatorSetKey];
             var newValidatorSetRawValue = world
                 .GetAccountState(ReservedAddresses.ValidatorSetAccount)
-                .Trie
-                .Get(KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
+                .Trie[KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress)];
             if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
             {
                 Assert.Null(oldValidatorSetRawValue);
@@ -442,11 +440,11 @@ namespace Libplanet.Tests.Action
             world = world.SetValidatorSet(new ValidatorSet());
             Assert.Equal(0, world.GetValidatorSet().TotalCount);
             oldValidatorSetRawValue =
-                world.GetAccountState(ReservedAddresses.LegacyAccount).Trie.Get(
-                    KeyConverters.ValidatorSetKey);
+                world.GetAccountState(ReservedAddresses.LegacyAccount).Trie[
+                    KeyConverters.ValidatorSetKey];
             newValidatorSetRawValue =
-                world.GetAccountState(ReservedAddresses.ValidatorSetAccount).Trie.Get(
-                    KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress));
+                world.GetAccountState(ReservedAddresses.ValidatorSetAccount).Trie[
+                    KeyConverters.ToStateKey(ValidatorSetAccount.ValidatorSetAddress)];
             if (ProtocolVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
             {
                 Assert.Null(oldValidatorSetRawValue);

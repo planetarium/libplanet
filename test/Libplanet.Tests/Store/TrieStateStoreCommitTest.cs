@@ -56,8 +56,8 @@ namespace Libplanet.Tests.Store
 
             trie = stateStore.GetStateRoot(hashAfterCommitOnce);
             Assert.Equal(2, trie.IterateValues().Count());
-            Assert.Equal(new Text("2c73"), trie.Get(KeyBytes.Create(new byte[] { 0x2c, 0x73 })));
-            Assert.Equal(new Text("234f"), trie.Get(KeyBytes.Create(new byte[] { 0x23, 0x4f })));
+            Assert.Equal(new Text("2c73"), trie[KeyBytes.Create(new byte[] { 0x2c, 0x73 })]);
+            Assert.Equal(new Text("234f"), trie[KeyBytes.Create(new byte[] { 0x23, 0x4f })]);
         }
 
         [Fact]
