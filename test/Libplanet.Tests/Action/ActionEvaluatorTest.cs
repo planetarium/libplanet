@@ -103,7 +103,7 @@ namespace Libplanet.Tests.Action
                     timestamp: timestamp,
                     miner: GenesisProposer.Address,
                     publicKey: GenesisProposer.PublicKey,
-                    previousHash: null,
+                    previousHash: default,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
                     evidenceHash: null),
@@ -115,20 +115,20 @@ namespace Libplanet.Tests.Action
                 new SingleActionLoader(typeof(ContextRecordingAction)));
             Block stateRootBlock = noStateRootBlock.Sign(
                 GenesisProposer,
-                MerkleTrie.EmptyRootHash);
+                stateRootHash: default);
             var generatedRandomNumbers = new List<int>();
 
             AssertPreEvaluationBlocksEqual(stateRootBlock, noStateRootBlock);
 
             for (int i = 0; i < repeatCount; ++i)
             {
-                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, null);
+                var actionEvaluations = actionEvaluator.Evaluate(noStateRootBlock, default);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
                             .GetAccountState(ReservedAddresses.LegacyAccount)
                             .GetState(ContextRecordingAction.RandomRecordAddress));
-                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, null);
+                actionEvaluations = actionEvaluator.Evaluate(stateRootBlock, default);
                 generatedRandomNumbers.Add(
                     (Integer)new WorldBaseState(
                         stateStore.GetStateRoot(actionEvaluations[0].OutputState), stateStore)
@@ -892,7 +892,7 @@ namespace Libplanet.Tests.Action
                     evidenceHash: null),
                 transactions: txs,
                 evidence: evs).Propose();
-            IWorld previousState = stateStore.GetWorld(null);
+            IWorld previousState = stateStore.GetWorld(default);
             var nextState = actionEvaluator.EvaluateTx(
                 block: block,
                 tx: tx,
@@ -1048,7 +1048,7 @@ namespace Libplanet.Tests.Action
                 lastCommit: CreateBlockCommit(chain.Tip),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
-            IWorld previousState = _storeFx.StateStore.GetWorld(null);
+            IWorld previousState = _storeFx.StateStore.GetWorld(default);
             var evaluations = actionEvaluator.EvaluatePolicyBeginBlockActions(
                 genesis,
                 previousState);
@@ -1099,7 +1099,7 @@ namespace Libplanet.Tests.Action
                 CreateBlockCommit(chain.Tip),
                 ImmutableArray<EvidenceBase>.Empty);
 
-            IWorld previousState = _storeFx.StateStore.GetWorld(null);
+            IWorld previousState = _storeFx.StateStore.GetWorld(default);
             var evaluations = actionEvaluator.EvaluatePolicyEndBlockActions(
                 genesis,
                 previousState);
@@ -1151,7 +1151,7 @@ namespace Libplanet.Tests.Action
                 lastCommit: CreateBlockCommit(chain.Tip),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
-            IWorld previousState = _storeFx.StateStore.GetWorld(null);
+            IWorld previousState = _storeFx.StateStore.GetWorld(default);
             var evaluations = actionEvaluator.EvaluatePolicyBeginTxActions(
                 genesis,
                 txs[0],
@@ -1206,7 +1206,7 @@ namespace Libplanet.Tests.Action
                 lastCommit: CreateBlockCommit(chain.Tip),
                 evidence: ImmutableArray<EvidenceBase>.Empty);
 
-            IWorld previousState = _storeFx.StateStore.GetWorld(null);
+            IWorld previousState = _storeFx.StateStore.GetWorld(default);
             var evaluations = actionEvaluator.EvaluatePolicyEndTxActions(
                 genesis,
                 txs[0],
@@ -1392,7 +1392,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
 
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                block, chain.GetNextStateRootHash(block.PreviousHash) ?? default);
 
             Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
@@ -1454,7 +1454,7 @@ namespace Libplanet.Tests.Action
 
             var evaluations = chain.ActionEvaluator.Evaluate(
                 block,
-                chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                chain.GetNextStateRootHash(block.PreviousHash) ?? default);
 
             Assert.False(evaluations[0].InputContext.IsPolicyAction);
             Assert.Single(evaluations);
@@ -1540,7 +1540,7 @@ namespace Libplanet.Tests.Action
                 new TrieStateStore(new MemoryKeyValueStore()),
                 new SingleActionLoader(typeof(DumbAction)));
             Assert.Throws<BlockProtocolVersionNotSupportedException>(
-                () => actionEvaluator.Evaluate(block, null));
+                () => actionEvaluator.Evaluate(block, default));
         }
 
         private (Address[], Transaction[]) MakeFixturesForAppendTests(

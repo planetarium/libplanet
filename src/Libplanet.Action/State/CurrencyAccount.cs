@@ -376,23 +376,22 @@ namespace Libplanet.Action.State
                 Currency);
 
         private BigInteger GetRawBalanceV0(Address address) =>
-            Trie.Get(
-                KeyConverters.ToFungibleAssetKey(address, Currency)) is Integer i
-                    ? i.Value
-                    : BigInteger.Zero;
+            Trie[KeyConverters.ToFungibleAssetKey(address, Currency)] is Integer i
+                ? i.Value
+                : BigInteger.Zero;
 
         private BigInteger GetRawBalanceV7(Address address) =>
-            Trie.Get(KeyConverters.ToStateKey(address)) is Integer i
+            Trie[KeyConverters.ToStateKey(address)] is Integer i
                 ? i.Value
                 : BigInteger.Zero;
 
         private BigInteger GetRawTotalSupplyV0() =>
-            Trie.Get(KeyConverters.ToTotalSupplyKey(Currency)) is Integer i
+            Trie[KeyConverters.ToTotalSupplyKey(Currency)] is Integer i
                 ? i.Value
                 : BigInteger.Zero;
 
         private BigInteger GetRawTotalSupplyV7() =>
-            Trie.Get(KeyConverters.ToStateKey(TotalSupplyAddress)) is Integer i
+            Trie[KeyConverters.ToStateKey(TotalSupplyAddress)] is Integer i
                 ? i.Value
                 : BigInteger.Zero;
 

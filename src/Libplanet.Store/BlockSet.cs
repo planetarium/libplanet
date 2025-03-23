@@ -1,182 +1,168 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using BitFaster.Caching;
 using BitFaster.Caching.Lru;
-using Caching;
 using Libplanet.Types.Blocks;
 
-namespace Libplanet.Store
+namespace Libplanet.Store;
+
+public sealed class BlockSet(IStore store, int cacheSize = 4096)
+    : IReadOnlyDictionary<BlockHash, Block>
 {
-    public class BlockSet : IReadOnlyDictionary<BlockHash, Block>
+    private readonly IStore _store = store;
+    private readonly ICache<BlockHash, Block> _cache = new ConcurrentLruBuilder<BlockHash, Block>()
+            .WithCapacity(cacheSize)
+            .Build();
+
+    public IEnumerable<BlockHash> Keys => [.. _store.IterateBlockHashes()];
+
+    public IEnumerable<Block> Values =>
+        _store.IterateBlockHashes()
+            .Select(GetBlock)
+            .Where(block => block is { })
+            .Select(block => block!)
+            .ToList();
+
+    public int Count => (int)_store.CountBlocks();
+
+    public Block this[BlockHash key]
     {
-        private readonly IStore _store;
-        private readonly ICache<BlockHash, Block> _cache;
-
-        public BlockSet(IStore store, int cacheSize = 4096)
+        get
         {
-            _store = store;
-            _cache = new ConcurrentLruBuilder<BlockHash, Block>()
-                .WithCapacity(cacheSize)
-                .Build();
+            Block? block = GetBlock(key);
+            if (block is null)
+            {
+                throw new KeyNotFoundException(
+                    $"The given hash[{key}] was not found in this set."
+                );
+            }
+
+            if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
+            {
+                // Skip verifying BlockHash of PoW blocks due to change of the block structure.
+                // If verification is required, use older version of LibPlanet(<0.43).
+            }
+            else if (!block.Hash.Equals(key))
+            {
+                throw new InvalidBlockHashException(
+                    $"The given hash[{key}] was not equal to actual[{block.Hash}].");
+            }
+
+            return block;
         }
 
-        public IEnumerable<BlockHash> Keys =>
-            _store.IterateBlockHashes().ToList();
-
-        public IEnumerable<Block> Values =>
-            _store.IterateBlockHashes()
-                .Select(GetBlock)
-                .Where(block => block is { })
-                .Select(block => block!)
-                .ToList();
-
-        public int Count => (int)_store.CountBlocks();
-
-        public bool IsReadOnly => false;
-
-        public Block this[BlockHash key]
+        set
         {
-            get
+            if (!value.Hash.Equals(key))
             {
-                Block? block = GetBlock(key);
-                if (block is null)
-                {
-                    throw new KeyNotFoundException(
-                        $"The given hash[{key}] was not found in this set."
-                    );
-                }
-
-                if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
-                {
-                    // Skip verifying BlockHash of PoW blocks due to change of the block structure.
-                    // If verification is required, use older version of LibPlanet(<0.43).
-                }
-                else if (!block.Hash.Equals(key))
-                {
-                    throw new InvalidBlockHashException(
-                        $"The given hash[{key}] was not equal to actual[{block.Hash}].");
-                }
-
-                return block;
+                throw new InvalidBlockHashException(
+                    $"{value}.hash does not match to {key}");
             }
 
-            set
-            {
-                if (!value.Hash.Equals(key))
-                {
-                    throw new InvalidBlockHashException(
-                        $"{value}.hash does not match to {key}");
-                }
+            value.ValidateTimestamp();
+            _store.PutBlock(value);
+            _cache.AddOrUpdate(value.Hash, value);
+        }
+    }
 
-                value.ValidateTimestamp();
-                _store.PutBlock(value);
-                _cache.AddOrUpdate(value.Hash, value);
-            }
+    public bool Contains(KeyValuePair<BlockHash, Block> item) => _store.ContainsBlock(item.Key);
+
+    public bool ContainsKey(BlockHash key) => _store.ContainsBlock(key);
+
+    public bool Remove(BlockHash key)
+    {
+        bool deleted = _store.DeleteBlock(key);
+
+        _cache.TryRemove(key);
+
+        return deleted;
+    }
+
+    public void Add(BlockHash key, Block value)
+    {
+        this[key] = value;
+    }
+
+    public bool TryGetValue(BlockHash key, [MaybeNullWhen(false)] out Block value)
+    {
+        try
+        {
+            value = this[key];
+            return true;
+        }
+        catch (KeyNotFoundException)
+        {
+            value = default;
+            return false;
+        }
+    }
+
+    public void Add(KeyValuePair<BlockHash, Block> item) => Add(item.Key, item.Value);
+
+    public void Clear()
+    {
+        foreach (var key in Keys)
+        {
+            Remove(key);
+        }
+    }
+
+    public void CopyTo(KeyValuePair<BlockHash, Block>[] array, int arrayIndex)
+    {
+        if (arrayIndex < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(arrayIndex));
         }
 
-        public bool Contains(KeyValuePair<BlockHash, Block> item) =>
-            _store.ContainsBlock(item.Key);
-
-        public bool ContainsKey(BlockHash key) =>
-            _store.ContainsBlock(key);
-
-        public bool Remove(BlockHash key)
+        if (Count > array.Length + arrayIndex)
         {
-            bool deleted = _store.DeleteBlock(key);
-
-            _cache.TryRemove(key);
-
-            return deleted;
+            var message = "The number of elements in the source BlockSet is greater than the " +
+                          "available space from arrayIndex to the end of the destination array.";
+            throw new ArgumentException(message, nameof(array));
         }
 
-        public void Add(BlockHash key, Block value)
+        foreach (KeyValuePair<BlockHash, Block> kv in this)
         {
-            this[key] = value;
+            array[arrayIndex++] = kv;
         }
+    }
 
-        public bool TryGetValue(BlockHash key, out Block value)
+    public bool Remove(KeyValuePair<BlockHash, Block> item) => Remove(item.Key);
+
+    public IEnumerator<KeyValuePair<BlockHash, Block>> GetEnumerator()
+    {
+        foreach (var key in Keys)
         {
-            try
-            {
-                value = this[key];
-                return true;
-            }
-            catch (KeyNotFoundException)
-            {
-                value = default!;
-                return false;
-            }
+            yield return new KeyValuePair<BlockHash, Block>(key, this[key]);
         }
+    }
 
-        public void Add(KeyValuePair<BlockHash, Block> item) => Add(item.Key, item.Value);
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public void Clear()
+    private Block? GetBlock(BlockHash key)
+    {
+        if (_cache.TryGet(key, out Block? cached))
         {
-            foreach (BlockHash key in Keys)
+            if (_store.ContainsBlock(key))
             {
-                Remove(key);
+                return cached;
             }
-        }
-
-        public void CopyTo(KeyValuePair<BlockHash, Block>[] array, int arrayIndex)
-        {
-            if (array == null)
+            else
             {
-                throw new ArgumentNullException(nameof(array));
-            }
-
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-            }
-
-            if (Count > array.Length + arrayIndex)
-            {
-                throw new ArgumentException();
-            }
-
-            foreach (KeyValuePair<BlockHash, Block> kv in this)
-            {
-                array[arrayIndex++] = kv;
+                // The cached block had been deleted on _store...
+                _cache.TryRemove(key);
             }
         }
 
-        public bool Remove(KeyValuePair<BlockHash, Block> item) => Remove(item.Key);
-
-        public IEnumerator<KeyValuePair<BlockHash, Block>> GetEnumerator()
+        Block? fetched = _store.GetBlock(key);
+        if (fetched is { })
         {
-            foreach (var key in Keys)
-            {
-                yield return new KeyValuePair<BlockHash, Block>(key, this[key]);
-            }
+            _cache.AddOrUpdate(key, fetched);
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        private Block? GetBlock(BlockHash key)
-        {
-            if (_cache.TryGet(key, out Block? cached))
-            {
-                if (_store.ContainsBlock(key))
-                {
-                    return cached;
-                }
-                else
-                {
-                    // The cached block had been deleted on _store...
-                    _cache.TryRemove(key);
-                }
-            }
-
-            Block? fetched = _store.GetBlock(key);
-            if (fetched is { })
-            {
-                _cache.AddOrUpdate(key, fetched);
-            }
-
-            return fetched;
-        }
+        return fetched;
     }
 }

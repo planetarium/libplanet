@@ -30,7 +30,13 @@ public class CurrencyInputTypeTest
         var result = await ExecuteQueryAsync<TestQuery>(
             @"query
             {
-                currency(currency: { ticker: ""ABC"", decimalPlaces: 5, totalSupplyTrackable: false, minters: null, maximumSupplyMajorUnit: 1 })
+                currency(currency: {
+                    ticker: ""ABC""
+                    decimalPlaces: 5
+                    totalSupplyTrackable: false
+                    minters: null
+                    maximumSupplyMajorUnit: 1
+                })
                 {
                     ticker
                     decimalPlaces
@@ -40,7 +46,8 @@ public class CurrencyInputTypeTest
             }");
         var error = Assert.Single(result.Errors);
         Assert.Contains(
-            "Both \"maximumSupplyMajorUnit\" and \"maximumSupplyMinorUnit\" must be present or omitted",
+            "Both \"maximumSupplyMajorUnit\" and \"maximumSupplyMinorUnit\" must " + 
+            "be present or omitted",
             error.Message);
     }
 
@@ -50,7 +57,16 @@ public class CurrencyInputTypeTest
             new object[] {
                 @"query
                 {
-                    currency(currency: { ticker: ""ABC"", decimalPlaces: 5, totalSupplyTrackable: false, minters: null })
+                    currency(
+                        currency:
+                            {
+                                ticker: ""ABC"",
+                                decimalPlaces: 5,
+                                totalSupplyTrackable:
+                                false,
+                                minters: null
+                            }
+                    )
                     {
                         ticker
                         decimalPlaces

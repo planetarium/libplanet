@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Libplanet.Common;
+using Libplanet.Common.Extensions;
 using Libplanet.Store;
 using Libplanet.Types.Blocks;
 using RocksDbSharp;
@@ -113,9 +113,7 @@ namespace Libplanet.RocksDBStore
                 {
                     if (i == 0)
                     {
-                        BlockDigest digest = GetBlockDigest(hash) ??
-                            throw new InvalidOperationException(
-                                $"Could not find a block corresponding to {hash} in storage.");
+                        BlockDigest digest = GetBlockDigest(hash);
 
                         // NOTE: This means there is a gap between two chain ids.
                         if (digest.Index > hashes.Count)
@@ -159,9 +157,7 @@ namespace Libplanet.RocksDBStore
             }
 
             BlockHash lastHash = hashes.Last();
-            BlockDigest lastDigest = GetBlockDigest(lastHash) ??
-                throw new InvalidOperationException(
-                    $"Could not find a block corresponding to {lastHash} in storage.");
+            BlockDigest lastDigest = GetBlockDigest(lastHash);
 
             if (lastDigest.Index != hashes.Count - 1)
             {

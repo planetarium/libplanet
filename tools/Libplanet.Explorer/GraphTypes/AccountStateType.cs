@@ -12,7 +12,7 @@ namespace Libplanet.Explorer.GraphTypes
     public class AccountStateType : ObjectGraphType<IAccountState>
     {
         internal static readonly KeyBytes ValidatorSetKey =
-            new KeyBytes(new byte[] { _underScore, _underScore, _underScore });
+            KeyBytes.Create(_underScore, _underScore, _underScore);
 
         private const byte _underScore = 95;  // '_'
 
@@ -101,9 +101,9 @@ namespace Libplanet.Explorer.GraphTypes
                     }
                 ),
                 resolve: context =>
-                    context.Source.Trie.Get(ToFungibleAssetKey(
+                    context.Source.Trie[ToFungibleAssetKey(
                         context.GetArgument<Address>("address"),
-                        context.GetArgument<HashDigest<SHA1>>("currencyHash")))
+                        context.GetArgument<HashDigest<SHA1>>("currencyHash"))]
             );
 
             Field<NonNullGraphType<ListGraphType<IValueType>>>(
@@ -125,9 +125,9 @@ namespace Libplanet.Explorer.GraphTypes
                 ),
                 resolve: context =>
                     context.GetArgument<Address[]>("addresses")
-                        .Select(address => context.Source.Trie.Get(
+                        .Select(address => context.Source.Trie[
                             ToFungibleAssetKey(
-                                address, context.GetArgument<HashDigest<SHA1>>("currencyHash"))))
+                                address, context.GetArgument<HashDigest<SHA1>>("currencyHash"))])
             );
 
             Field<IValueType>(
@@ -142,15 +142,15 @@ namespace Libplanet.Explorer.GraphTypes
                     }
                 ),
                 resolve: context =>
-                    context.Source.Trie.Get(ToTotalSupplyKey(
-                        context.GetArgument<HashDigest<SHA1>>("currencyHash")))
+                    context.Source.Trie[ToTotalSupplyKey(
+                        context.GetArgument<HashDigest<SHA1>>("currencyHash"))]
             );
 
             Field<IValueType>(
                 deprecationReason: "Does not work post block protocol version 6.",
                 name: "validatorSet",
                 description: "The validator set.",
-                resolve: context => context.Source.Trie.Get(ValidatorSetKey)
+                resolve: context => context.Source.Trie[ValidatorSetKey]
             );
         }
 
@@ -175,7 +175,7 @@ namespace Libplanet.Explorer.GraphTypes
                 buffer[offset + 2 + i * 2 + 1] = _conversionTable[currencyBytes[i] & 0xf];
             }
 
-            return new KeyBytes(buffer);
+            return KeyBytes.Create(buffer);
         }
 
         internal static KeyBytes ToTotalSupplyKey(HashDigest<SHA1> currencyHash)
@@ -192,7 +192,7 @@ namespace Libplanet.Explorer.GraphTypes
                 buffer[2 + i * 2 + 1] = _conversionTable[currencyBytes[i] & 0xf];
             }
 
-            return new KeyBytes(buffer);
+            return KeyBytes.Create(buffer);
         }
     }
 }

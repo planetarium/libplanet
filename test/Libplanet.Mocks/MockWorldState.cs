@@ -73,7 +73,7 @@ namespace Libplanet.Mocks
         public static MockWorldState CreateLegacy(IStateStore? stateStore = null)
         {
             stateStore ??= new TrieStateStore(new MemoryKeyValueStore());
-            return new MockWorldState(stateStore.GetStateRoot(null), stateStore);
+            return new MockWorldState(stateStore.GetStateRoot(default), stateStore);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Libplanet.Mocks
             int version = BlockMetadata.CurrentProtocolVersion)
         {
             stateStore ??= new TrieStateStore(new MemoryKeyValueStore());
-            ITrie trie = stateStore.GetStateRoot(null);
+            ITrie trie = stateStore.GetStateRoot(default);
             trie = trie.SetMetadata(new TrieMetadata(version));
             trie = stateStore.Commit(trie);
             return new MockWorldState(trie, stateStore);
@@ -103,9 +103,9 @@ namespace Libplanet.Mocks
             Legacy && address.Equals(ReservedAddresses.LegacyAccount)
                 ? new AccountState(Trie)
                 : new AccountState(
-                    Trie.Get(ToStateKey(address)) is { } stateRootNotNull
+                    Trie[ToStateKey(address)] is { } stateRootNotNull
                         ? _stateStore.GetStateRoot(new HashDigest<SHA256>(stateRootNotNull))
-                        : _stateStore.GetStateRoot(null));
+                        : _stateStore.GetStateRoot(default));
 
         /// <summary>
         /// Sets given <paramref name="accountState"/> to <paramref name="address"/>.
@@ -177,10 +177,10 @@ namespace Libplanet.Mocks
                 KeyBytes totalSupplyKey = ToStateKey(CurrencyAccount.TotalSupplyAddress);
 
                 ITrie trie = GetAccountState(accountAddress).Trie;
-                Integer balance = trie.Get(balanceKey) is Integer b
+                Integer balance = trie[balanceKey] is Integer b
                     ? b
                     : new Integer(0);
-                Integer totalSupply = trie.Get(totalSupplyKey) is Integer t
+                Integer totalSupply = trie[totalSupplyKey] is Integer t
                     ? t
                     : new Integer(0);
 
@@ -199,10 +199,10 @@ namespace Libplanet.Mocks
                 ITrie trie = GetAccountState(accountAddress).Trie;
                 if (currency.TotalSupplyTrackable)
                 {
-                    Integer balance = trie.Get(balanceKey) is Integer b
+                    Integer balance = trie[balanceKey] is Integer b
                         ? b
                         : new Integer(0);
-                    Integer totalSupply = trie.Get(totalSupplyKey) is Integer t
+                    Integer totalSupply = trie[totalSupplyKey] is Integer t
                         ? t
                         : new Integer(0);
                     trie = trie.Set(

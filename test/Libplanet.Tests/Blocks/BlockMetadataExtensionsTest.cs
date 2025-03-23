@@ -18,7 +18,7 @@ namespace Libplanet.Tests.Blocks
                 index: 0,
                 timestamp: future,
                 publicKey: publicKey,
-                previousHash: null,
+                previousHash: default,
                 txHash: null,
                 lastCommit: null,
                 evidenceHash: null);

@@ -687,7 +687,7 @@ namespace Libplanet.Tests.Blockchain
                     timestamp: DateTimeOffset.UtcNow,
                     miner: fx.Proposer.Address,
                     publicKey: fx.Proposer.PublicKey,
-                    previousHash: null,
+                    previousHash: default,
                     txHash: BlockContent.DeriveTxHash(txs),
                     lastCommit: null,
                     evidenceHash: null),
@@ -695,7 +695,7 @@ namespace Libplanet.Tests.Blockchain
                 evidence: evs).Propose();
             var genesis = preEvalGenesis.Sign(
                 fx.Proposer,
-                actionEvaluator.Evaluate(preEvalGenesis, null).Last().OutputState);
+                actionEvaluator.Evaluate(preEvalGenesis, default).Last().OutputState);
             var blockChain = BlockChain.Create(
                 policy,
                 stagePolicy,
@@ -735,7 +735,7 @@ namespace Libplanet.Tests.Blockchain
                 protocolVersion: beforePostponeBPV);
             var genesis = preGenesis.Sign(
                 TestUtils.GenesisProposer,
-                actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
+                actionEvaluator.Evaluate(preGenesis, default).Last().OutputState);
             Assert.Equal(beforePostponeBPV, genesis.ProtocolVersion);
 
             var blockChain = TestUtils.MakeBlockChain(

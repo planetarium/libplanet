@@ -20,10 +20,12 @@ public partial class RawStateQueryTest
     {
         // Check value at address path.
         (var source, _, var stateRootHash) = Fixture.CreateMockBlockChainStates(0);
+        var key
+            = "35303033373132623633626161623938303934616436373865613262323462636534343564303736";
         ExecutionResult result = await ExecuteQueryAsync<RawStateQuery>($@"
         {{
             trie(stateRootHash: ""{ByteUtil.Hex(stateRootHash.ByteArray)}"") {{
-                value(key: ""35303033373132623633626161623938303934616436373865613262323462636534343564303736"") {{
+                value(key: ""{key}"") {{
                     hex
                 }}
             }}

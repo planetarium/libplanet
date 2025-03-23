@@ -55,7 +55,8 @@ namespace Libplanet.Explorer.Tests.GraphTypes
             Assert.Equal(vote.Height, resultData["height"]);
             Assert.Equal(vote.Round, resultData["round"]);
             Assert.Equal(vote.BlockHash.ToString(), resultData["blockHash"]);
-            Assert.Equal(new DateTimeOffsetGraphType().Serialize(vote.Timestamp), resultData["timestamp"]);
+            Assert.Equal(
+                new DateTimeOffsetGraphType().Serialize(vote.Timestamp), resultData["timestamp"]);
             Assert.Equal(vote.ValidatorPublicKey.ToString(), resultData["validatorPublicKey"]);
             Assert.Equal(vote.ValidatorPower?.ToString(), resultData["validatorPower"]);
             Assert.Equal(vote.Flag.ToString(), resultData["flag"]);

@@ -202,7 +202,7 @@ internal sealed class BlockChainService(
                 timestamp: DateTimeOffset.MinValue);
         }
 
-        var nullTrie = stateStore.GetStateRoot(null);
+        var nullTrie = stateStore.GetStateRoot(default);
         nullTrie = nullTrie.SetMetadata(new TrieMetadata(BlockMetadata.WorldStateProtocolVersion));
         IWorld world = new World(new WorldBaseState(nullTrie, stateStore));
         var codec = new Codec();

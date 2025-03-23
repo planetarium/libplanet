@@ -35,8 +35,8 @@ namespace Libplanet.Blockchain
             return new WorldBaseState(GetTrie(offset), _stateStore);
         }
 
-        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256}?)"/>
-        public IWorldState GetWorldState(HashDigest<SHA256>? stateRootHash)
+        /// <inheritdoc cref="IBlockChainStates.GetWorldState(HashDigest{SHA256})"/>
+        public IWorldState GetWorldState(HashDigest<SHA256> stateRootHash)
             => new WorldBaseState(GetTrie(stateRootHash), _stateStore);
 
         /// <summary>
@@ -82,10 +82,10 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private ITrie GetTrie(HashDigest<SHA256>? hash)
+        private ITrie GetTrie(HashDigest<SHA256> hash)
         {
             ITrie trie = _stateStore.GetStateRoot(hash);
-            return trie.Recorded
+            return trie.IsCommitted
                 ? trie
                 : throw new ArgumentException(
                     $"Could not find state root {hash} in {nameof(IStateStore)}.",

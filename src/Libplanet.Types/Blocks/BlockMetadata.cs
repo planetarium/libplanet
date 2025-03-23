@@ -160,7 +160,7 @@ namespace Libplanet.Types.Blocks
             long index,
             DateTimeOffset timestamp,
             PublicKey publicKey,
-            BlockHash? previousHash,
+            BlockHash previousHash,
             HashDigest<SHA256>? txHash,
             BlockCommit? lastCommit,
             HashDigest<SHA256>? evidenceHash)
@@ -219,7 +219,7 @@ namespace Libplanet.Types.Blocks
             DateTimeOffset timestamp,
             Address miner,
             PublicKey? publicKey,
-            BlockHash? previousHash,
+            BlockHash previousHash,
             HashDigest<SHA256>? txHash,
             BlockCommit? lastCommit,
             HashDigest<SHA256>? evidenceHash)
@@ -280,7 +280,7 @@ namespace Libplanet.Types.Blocks
             }
 
             // Previous hash validity checks.
-            if (index == 0 ^ previousHash is null)
+            if (index == 0 ^ (previousHash == default))
             {
                 throw new InvalidBlockPreviousHashException(
                     $"{nameof(previousHash)} can be null if and only if {nameof(index)} is 0.");
@@ -328,7 +328,7 @@ namespace Libplanet.Types.Blocks
         public PublicKey? PublicKey { get; }
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash { get; }
+        public BlockHash PreviousHash { get; }
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash { get; private set; }

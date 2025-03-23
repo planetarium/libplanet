@@ -1,7 +1,7 @@
-namespace Libplanet.Tools.Tests.Services;
-
 using Libplanet.Extensions.Cocona.Configuration;
 using Libplanet.Extensions.Cocona.Services;
+
+namespace Libplanet.Tools.Tests.Services;
 
 public class TestToolConfigurationService : IConfigurationService<ToolConfiguration>
 {

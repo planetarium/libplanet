@@ -32,11 +32,11 @@ public class MptCommandTest : IDisposable
         using var stateStoreA = new TrieStateStore(new DefaultKeyValueStore(_pathA));
         using var stateStoreB = new TrieStateStore(new DefaultKeyValueStore(_pathB));
         _trieA = stateStoreA.Commit(
-            stateStoreA.GetStateRoot(null)
+            stateStoreA.GetStateRoot(default)
                 .Set(new KeyBytes("deleted"), Null.Value)
                 .Set(new KeyBytes("common"), (Text)"before"));
         _trieB = stateStoreB.Commit(
-            stateStoreB.GetStateRoot(null)
+            stateStoreB.GetStateRoot(default)
                 .Set(new KeyBytes("created"), Null.Value)
                 .Set(new KeyBytes("common"), (Text)"after"));
     }

@@ -100,7 +100,7 @@ namespace Libplanet.Tests.Store
             Store.GetBlockIndex(blockHash);
 
         /// <inheritdoc cref="IStore.GetBlockDigest(BlockHash)"/>
-        public virtual BlockDigest? GetBlockDigest(BlockHash blockHash) =>
+        public virtual BlockDigest GetBlockDigest(BlockHash blockHash) =>
             Store.GetBlockDigest(blockHash);
 
         /// <inheritdoc cref="IStore.PutBlock{T}(Block{T})"/>

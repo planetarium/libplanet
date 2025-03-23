@@ -68,7 +68,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
             chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                block, chain.GetNextStateRootHash(block.PreviousHash) ?? default);
 
             var actualGold = chain.GetNextWorldState().GetBalance(privateKey.Address, gold);
 
@@ -174,7 +174,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
             chain.Append(block, CreateBlockCommit(block));
             var evaluations = chain.ActionEvaluator.Evaluate(
-                block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                block, chain.GetNextStateRootHash(block.PreviousHash) ?? default);
             var exception = (UnexpectedlyTerminatedActionException)evaluations[0].Exception;
 
             Assert.IsType<GasTraceAction>(exception.Action);
@@ -217,7 +217,7 @@ namespace Libplanet.Tests.Action
             Block block = chain.ProposeBlock(miner);
             chain.Append(block, CreateBlockCommit(block));
             return chain.ActionEvaluator.Evaluate(
-                block, chain.GetNextStateRootHash((BlockHash)block.PreviousHash));
+                block, chain.GetNextStateRootHash(block.PreviousHash) ?? default);
         }
 
         private sealed class GasTraceAction : IAction

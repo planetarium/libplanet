@@ -72,11 +72,11 @@ namespace Libplanet.Blockchain
                     actualProtocolVersion);
             }
 
-            if (block.PreviousHash is { } previousHash)
+            if (block.PreviousHash != default)
             {
                 throw new InvalidBlockPreviousHashException(
                     "A genesis block should not have previous hash, " +
-                    $"but its value is {previousHash}.");
+                    $"but its value is {block.PreviousHash}.");
             }
 
             if (block.LastCommit is { } lastCommit)
@@ -142,7 +142,9 @@ namespace Libplanet.Blockchain
             // FIXME: When the dynamic validator set is possible, the functionality of this
             // condition should be checked once more.
             var validators = block.ProtocolVersion < BlockMetadata.SlothProtocolVersion
-                ? GetWorldState(block.PreviousHash ?? Genesis.Hash).GetValidatorSet()
+                ? GetWorldState(
+                    block.PreviousHash != default ? block.PreviousHash : Genesis.Hash)
+                    .GetValidatorSet()
                 : GetWorldState(block.StateRootHash).GetValidatorSet();
 
             if (block.ProtocolVersion < BlockMetadata.EvidenceProtocolVersion)
@@ -259,7 +261,7 @@ namespace Libplanet.Blockchain
                     $"block #{index - 1}; while previous block's hash is " +
                     $"{prevHash}, the block #{index} {block.Hash}'s pointer to " +
                     "the previous hash refers to " +
-                    (block.PreviousHash?.ToString() ?? "nothing") + ".");
+                    (block.PreviousHash.ToString() ?? "nothing") + ".");
             }
 
             if (block.Timestamp < prevTimestamp)
@@ -303,7 +305,8 @@ namespace Libplanet.Blockchain
 
                 try
                 {
-                    ValidateBlockCommit(this[block.PreviousHash ?? Genesis.Hash], block.LastCommit);
+                    var hash = block.PreviousHash == default ? Genesis.Hash : block.PreviousHash;
+                    ValidateBlockCommit(this[hash], block.LastCommit);
                 }
                 catch (InvalidBlockCommitException ibce)
                 {
@@ -314,7 +317,7 @@ namespace Libplanet.Blockchain
             foreach (var ev in block.Evidence)
             {
                 var stateRootHash = GetNextStateRootHash(ev.Height);
-                var worldState = GetWorldState(stateRootHash);
+                var worldState = GetWorldState(stateRootHash ?? default);
                 var validatorSet = worldState.GetValidatorSet();
                 var evidenceContext = new EvidenceContext(validatorSet);
                 ev.Verify(evidenceContext);

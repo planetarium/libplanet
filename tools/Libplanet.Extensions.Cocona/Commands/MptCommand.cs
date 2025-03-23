@@ -1,30 +1,30 @@
-using Libplanet.Common;
-
-namespace Libplanet.Extensions.Cocona.Commands;
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Bencodex;
 using Bencodex.Types;
 using global::Cocona;
 using global::Cocona.Help;
+using Libplanet.Common;
 using Libplanet.Extensions.Cocona.Configuration;
 using Libplanet.Extensions.Cocona.Services;
 using Libplanet.RocksDBStore;
 using Libplanet.Store;
 using Libplanet.Store.Trie;
 
+namespace Libplanet.Extensions.Cocona.Commands;
+
 internal enum SchemeType
 {
     // For extensibility.
- #pragma warning disable SA1602
+#pragma warning disable SA1602
     // This is set to 0 for `default` value.
     File = 0,
- #pragma warning restore SA1602
+#pragma warning restore SA1602
 }
 
 public class MptCommand
@@ -72,9 +72,9 @@ public class MptCommand
         IStateStore stateStore = new TrieStateStore(LoadKVStoreFromURI(kvStoreUri));
         IStateStore otherStateStore = new TrieStateStore(LoadKVStoreFromURI(otherKvStoreUri));
         var trie =
-            stateStore.GetStateRoot(HashDigest<SHA256>.FromString(stateRootHashHex));
+            stateStore.GetStateRoot(HashDigest<SHA256>.Parse(stateRootHashHex));
         var otherTrie =
-            otherStateStore.GetStateRoot(HashDigest<SHA256>.FromString(otherStateRootHashHex));
+            otherStateStore.GetStateRoot(HashDigest<SHA256>.Parse(otherStateRootHashHex));
 
         var codec = new Codec();
         HashDigest<SHA256> originRootHash = trie.Hash;
@@ -112,20 +112,20 @@ public class MptCommand
         kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
 
         IStateStore stateStore = new TrieStateStore(LoadKVStoreFromURI(kvStoreUri));
-        var trie = stateStore.GetStateRoot(HashDigest<SHA256>.FromString(stateRootHashHex));
+        var trie = stateStore.GetStateRoot(HashDigest<SHA256>.Parse(stateRootHashHex));
         var codec = new Codec();
 
         // This assumes the original key was encoded from a sensible string.
-        ImmutableDictionary<string, byte[]> decoratedStates = trie.IterateValues()
+        ImmutableDictionary<string, byte[]> decoratedStates = trie
             .ToImmutableDictionary(
-                pair => KeyBytes.Encoding.GetString(pair.Path.ToByteArray()),
+                pair => Encoding.UTF8.GetString(pair.Key.ToByteArray()),
                 pair => codec.Encode(pair.Value));
 
         Console.WriteLine(JsonSerializer.Serialize(decoratedStates));
     }
 
     // FIXME: Now, it works like `set` not `add`. It allows override.
-    [Command(Description="Register an alias name to refer to a key-value store.")]
+    [Command(Description = "Register an alias name to refer to a key-value store.")]
     public void Add(
         [Argument(
             Name = "ALIAS",
@@ -161,7 +161,7 @@ public class MptCommand
         configurationService.Store(configuration);
     }
 
-    [Command(Description="Deregister an alias to a key-value store.")]
+    [Command(Description = "Deregister an alias to a key-value store.")]
     public void Remove(
         [Argument(
             Name = "ALIAS",
@@ -174,7 +174,7 @@ public class MptCommand
         configurationService.Store(configuration);
     }
 
-    [Command(Description="List all aliases stored.")]
+    [Command(Description = "List all aliases stored.")]
     public void List(
         [FromService] IConfigurationService<ToolConfiguration> configurationService)
     {
@@ -222,11 +222,9 @@ public class MptCommand
         ToolConfiguration toolConfiguration = configurationService.Load();
         kvStoreUri = ConvertKVStoreUri(kvStoreUri, toolConfiguration);
         IKeyValueStore keyValueStore = LoadKVStoreFromURI(kvStoreUri);
-        var trie = new MerkleTrie(
-            keyValueStore,
-            HashDigest<SHA256>.FromString(stateRootHashHex));
+        var trie = new MerkleTrie(HashDigest<SHA256>.Parse(stateRootHashHex));
         KeyBytes stateKeyBytes = new KeyBytes(stateKey);
-        IReadOnlyList<IValue?> values = trie.Get(new[] { stateKeyBytes });
+        IReadOnlyList<IValue?> values = trie.GetMany([stateKeyBytes]);
         if (values.Count > 0 && values[0] is { } value)
         {
             var codec = new Codec();

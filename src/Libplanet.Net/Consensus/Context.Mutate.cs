@@ -375,7 +375,7 @@ namespace Libplanet.Net.Consensus
 
             int round = message.Round;
             if ((message is ConsensusProposalMsg || message is ConsensusPreCommitMsg) &&
-                GetProposal() is(Block block4, _) &&
+                GetProposal() is (Block block4, _) &&
                 _heightVoteSet.PreCommits(Round).TwoThirdsMajority(out BlockHash hash) &&
                 block4.Hash.Equals(hash) &&
                 IsValid(block4))

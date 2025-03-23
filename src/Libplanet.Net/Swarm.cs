@@ -1304,7 +1304,8 @@ namespace Libplanet.Net
                                     txIds.Count);
                                 BroadcastTxIds(null, txIds);
                             }
-                        }, cancellationToken);
+                        },
+                        cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {

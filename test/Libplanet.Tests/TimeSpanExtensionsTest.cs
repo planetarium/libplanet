@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Libplanet.Common;
+using Libplanet.Common.Extensions;
 using Xunit;
 
 namespace Libplanet.Tests

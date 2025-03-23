@@ -109,7 +109,7 @@ namespace Libplanet.Tests.Blocks
                 index: Block1Metadata.Index,
                 timestamp: DateTimeOffset.UtcNow,
                 publicKey: Block1Metadata.PublicKey,
-                previousHash: null,
+                previousHash: default,
                 txHash: Block1Metadata.TxHash,
                 lastCommit: null,
                 evidenceHash: null));

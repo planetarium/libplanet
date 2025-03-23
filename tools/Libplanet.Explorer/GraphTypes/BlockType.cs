@@ -38,16 +38,7 @@ public class BlockType : ObjectGraphType<Block>
             name: "PreviousBlock",
             description: "The previous block.  If it's a genesis block (i.e., its index is " +
                          "0) this must be null.",
-            resolve: ctx =>
-            {
-                if (ctx.Source.PreviousHash is not { } h)
-                {
-                    return null;
-                }
-
-                return context.Store.GetBlock(h);
-            }
-        );
+            resolve: ctx => context.Store.GetBlock(ctx.Source.PreviousHash));
         Field(x => x.Timestamp);
         Field<NonNullGraphType<ByteStringType>>(
             name: "StateRootHash",

@@ -147,7 +147,7 @@ namespace Libplanet.Tests.Blockchain
                         txHash: null,
                         // ReSharper disable once PossibleInvalidOperationException
                         lastCommit: TestUtils.CreateBlockCommit(
-                            _validNext.PreviousHash.Value, 1, 0),
+                            _validNext.PreviousHash, 1, 0),
                         evidenceHash: null)).Propose(),
                 _fx.Proposer);
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
@@ -262,7 +262,7 @@ namespace Libplanet.Tests.Blockchain
                 protocolVersion: beforePostponeBPV);
             var genesisBlock = preGenesis.Sign(
                 TestUtils.GenesisProposer,
-                actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
+                actionEvaluator.Evaluate(preGenesis, default).Last().OutputState);
             var chain1 = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),
@@ -330,7 +330,7 @@ namespace Libplanet.Tests.Blockchain
                 protocolVersion: beforePostponeBPV);
             var genesisBlock = preGenesis.Sign(
                 TestUtils.GenesisProposer,
-                actionEvaluator.Evaluate(preGenesis, MerkleTrie.EmptyRootHash).Last().OutputState);
+                actionEvaluator.Evaluate(preGenesis, default).Last().OutputState);
             var chain = BlockChain.Create(
                 policy,
                 new VolatileStagePolicy(),

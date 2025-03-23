@@ -118,7 +118,8 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
         Assert.Equal("ABC", currencyDict["ticker"]);
         Assert.Equal(ByteUtil.Hex(Fixture.Currency.Hash.ByteArray), currencyDict["hash"]);
-        FungibleAssetValue expectedTotalSupply = version >= BlockMetadata.CurrencyAccountProtocolVersion
+        FungibleAssetValue expectedTotalSupply
+            = version >= BlockMetadata.CurrencyAccountProtocolVersion
             ? (Fixture.Amount + Fixture.AdditionalSupply)
             : (Fixture.Currency * 0);
         Assert.Equal(
@@ -187,7 +188,8 @@ public partial class StateQueryTest
     [InlineData(BlockMetadata.CurrentProtocolVersion)]
     public async Task ThrowExecutionErrorIfViolateMutualExclusive(int version)
     {
-        (var source, var blockHash, var stateRootHash) = Fixture.CreateMockBlockChainStates(version);
+        (var source, var blockHash, var stateRootHash)
+            = Fixture.CreateMockBlockChainStates(version);
         ExecutionResult result = await ExecuteQueryAsync<StateQuery>($@"
         {{
             states(
@@ -305,7 +307,8 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(totalSupplyDict["currency"]);
         Assert.Equal(Fixture.Currency.Ticker, currencyDict["ticker"]);
         Assert.Equal(ByteUtil.Hex(Fixture.Currency.Hash.ByteArray), currencyDict["hash"]);
-        FungibleAssetValue expectedTotalSupply = version >= BlockMetadata.CurrencyAccountProtocolVersion
+        FungibleAssetValue expectedTotalSupply
+            = version >= BlockMetadata.CurrencyAccountProtocolVersion
             ? (Fixture.Amount + Fixture.AdditionalSupply)
             : (Fixture.Currency * 0);
         Assert.Equal(

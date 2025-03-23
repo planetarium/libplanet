@@ -59,7 +59,7 @@ namespace Libplanet.Blockchain
                     index: 0L,
                     timestamp: timestamp ?? DateTimeOffset.UtcNow,
                     publicKey: privateKey.PublicKey,
-                    previousHash: null,
+                    previousHash: default,
                     txHash: BlockContent.DeriveTxHash(transactions),
                     lastCommit: null,
                     evidenceHash: null),
@@ -67,7 +67,7 @@ namespace Libplanet.Blockchain
                 evidence: Array.Empty<EvidenceBase>());
 
             PreEvaluationBlock preEval = content.Propose();
-            stateRootHash ??= MerkleTrie.EmptyRootHash;
+            stateRootHash ??= default;
             return preEval.Sign(privateKey, (HashDigest<SHA256>)stateRootHash);
         }
 

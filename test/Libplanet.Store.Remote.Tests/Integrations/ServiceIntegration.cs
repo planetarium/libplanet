@@ -26,7 +26,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
             var service = new RemoteKeyValueService(_logger, store);
 
@@ -47,7 +47,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
             });
 
             // Assert
-            Assert.Equal(value, store.Get(key));
+            Assert.Equal(value, store[key]);
             Assert.Equal(value, setResponse.Data);
         }
 
@@ -56,9 +56,9 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
-            store.Set(key, value);
+            store[key] = value;
             var service = new RemoteKeyValueService(_logger, store);
 
             // Act
@@ -74,7 +74,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
 
             // Assert
             Assert.Equal(value, getResponse.Data.ToByteArray());
-            Assert.Throws<KeyNotFoundException>(() => store.Get(key));
+            Assert.Throws<KeyNotFoundException>(() => store[key]);
         }
 
         [Fact]
@@ -82,9 +82,9 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
-            store.Set(key, value);
+            store[key] = value;
             var service = new RemoteKeyValueService(_logger, store);
 
             // Act
@@ -115,7 +115,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
             var service = new RemoteKeyValueService(_logger, store);
 
@@ -136,7 +136,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
 
             // Assert
             Assert.Equal(value, response.Data);
-            Assert.Equal(value, store.Get(key));
+            Assert.Equal(value, store[key]);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
             var service = new RemoteKeyValueService(_logger, store);
 
@@ -176,7 +176,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
             var service = new RemoteKeyValueService(_logger, store);
 
@@ -204,7 +204,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
 
             // Assert
             Assert.Equal(value, response.Data);
-            Assert.Equal(value, store.Get(key));
+            Assert.Equal(value, store[key]);
         }
 
         [Fact]
@@ -212,7 +212,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
             byte[] differentValue = { 0x03 };
             var service = new RemoteKeyValueService(_logger, store);
@@ -241,7 +241,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
 
             // Assert
             Assert.Equal(differentValue, response.Data);
-            Assert.Equal(differentValue, store.Get(key));
+            Assert.Equal(differentValue, store[key]);
         }
 
         [Fact]
@@ -249,7 +249,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
         {
             // Arrange
             var store = (IKeyValueStore)new MemoryKeyValueStore();
-            var key = new KeyBytes(0x01);
+            var key = KeyBytes.Create(0x01);
             byte[] value = { 0x02 };
             byte[] differentValue = { 0x03 };
             var service = new RemoteKeyValueService(_logger, store);
@@ -263,7 +263,8 @@ namespace Libplanet.Store.Remote.Tests.Integrations
                     Value = ByteString.CopyFrom(value).ToKeyValueStoreValue(),
                 },
             });
-            _ = await service.DeleteValue(new DeleteValueRequest { Key = key.ToKeyValueStoreKey() });
+            _ = await service.DeleteValue(
+                new DeleteValueRequest { Key = key.ToKeyValueStoreKey() });
             _ = await service.SetValue(new SetValueRequest
             {
                 Item = new KeyValueStorePair
@@ -279,7 +280,7 @@ namespace Libplanet.Store.Remote.Tests.Integrations
 
             // Assert
             Assert.Equal(differentValue, response.Data);
-            Assert.Equal(differentValue, store.Get(key));
+            Assert.Equal(differentValue, store[key]);
         }
     }
 }

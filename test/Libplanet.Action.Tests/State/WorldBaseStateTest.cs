@@ -23,10 +23,10 @@ namespace Libplanet.Action.Tests.State
         [Fact]
         public void Constructor()
         {
-            ITrie trie = new MerkleTrie(_kvStore);
+            ITrie trie = new MerkleTrie();
             var legacyBaseState = new WorldBaseState(trie, _stateStore);
             Assert.True(legacyBaseState.Legacy);
-            trie = new MerkleTrie(_kvStore);
+            trie = new MerkleTrie();
             trie = trie.SetMetadata(new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
             var modernBaseState = new WorldBaseState(trie, _stateStore);
             Assert.False(modernBaseState.Legacy);
@@ -37,12 +37,12 @@ namespace Libplanet.Action.Tests.State
         {
             var accountAddress = new Address(TestUtils.GetRandomBytes(20));
             var address = new Address(TestUtils.GetRandomBytes(20));
-            ITrie accountTrie = new MerkleTrie(_kvStore);
+            ITrie accountTrie = new MerkleTrie();
             accountTrie = accountTrie.Set(ToStateKey(address), (Text)"foo");
             accountTrie =
                 accountTrie.SetMetadata(new TrieMetadata(BlockMetadata.CurrentProtocolVersion));
             accountTrie = _stateStore.Commit(accountTrie);
-            ITrie worldTrie = new MerkleTrie(_kvStore);
+            ITrie worldTrie = new MerkleTrie();
             worldTrie = worldTrie.Set(
                 ToStateKey(accountAddress),
                 (Binary)accountTrie.Hash.ByteArray);
@@ -67,10 +67,10 @@ namespace Libplanet.Action.Tests.State
         {
             var accountAddress = ReservedAddresses.LegacyAccount;
             var address = new Address(TestUtils.GetRandomBytes(20));
-            ITrie accountTrie = new MerkleTrie(_kvStore);
+            ITrie accountTrie = new MerkleTrie();
             accountTrie = accountTrie.Set(ToStateKey(address), (Text)"foo");
             accountTrie = _stateStore.Commit(accountTrie);
-            ITrie worldTrie = new MerkleTrie(_kvStore);
+            ITrie worldTrie = new MerkleTrie();
             worldTrie = worldTrie.Set(
                 ToStateKey(accountAddress),
                 (Binary)accountTrie.Hash.ByteArray);

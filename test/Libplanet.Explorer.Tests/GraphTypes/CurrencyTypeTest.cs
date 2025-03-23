@@ -20,7 +20,8 @@ public class CurrencyTypeTest
     {
         var addrA = new Address("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
         var addrB = new Address("5003712B63baAB98094aD678EA2B24BcE445D076");
-        var currency = Currency.Capped("ABC", 2, (12345, 67), ImmutableHashSet.Create(addrA, addrB));
+        var currency = Currency.Capped(
+            "ABC", 2, (12345, 67), ImmutableHashSet.Create(addrA, addrB));
         ExecutionResult result = await ExecuteQueryAsync<CurrencyType>(@"
         {
             ticker

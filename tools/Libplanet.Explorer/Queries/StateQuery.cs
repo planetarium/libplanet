@@ -87,7 +87,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
             case (blockhash: not null, _):
                 return context.Source.GetWorldState((BlockHash)blockHash);
             case (_, srh: not null):
-                return context.Source.GetWorldState(stateRootHash);
+                return context.Source.GetWorldState(stateRootHash ?? default);
         }
     }
 
@@ -96,7 +96,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         Address[] addresses = context.GetArgument<Address[]>("addresses");
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -121,7 +121,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
 
             case (_, srh: not null):
                 return context.Source
-                    .GetWorldState(offsetStateRootHash)
+                    .GetWorldState(offsetStateRootHash ?? default)
                     .GetAccountState(ReservedAddresses.LegacyAccount)
                     .GetStates(addresses);
         }
@@ -133,7 +133,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         Currency currency = context.GetArgument<Currency>("currency");
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -157,7 +157,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
 
             case (_, srh: not null):
                 return context.Source
-                    .GetWorldState(offsetStateRootHash)
+                    .GetWorldState(offsetStateRootHash ?? default)
                     .GetBalance(owner, currency);
         }
     }
@@ -167,7 +167,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
         Currency currency = context.GetArgument<Currency>("currency");
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -188,7 +188,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                     .GetTotalSupply(currency);
             case (_, srh: not null):
                 return context.Source
-                    .GetWorldState(offsetStateRootHash)
+                    .GetWorldState(offsetStateRootHash ?? default)
                     .GetTotalSupply(currency);
         }
     }
@@ -197,7 +197,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
     {
         BlockHash? offsetBlockHash =
             context.GetArgument<string?>("offsetBlockHash") is { } blockHashString
-                ? BlockHash.FromString(blockHashString)
+                ? BlockHash.Parse(blockHashString)
                 : null;
         HashDigest<SHA256>? offsetStateRootHash = context
             .GetArgument<HashDigest<SHA256>?>("offsetStateRootHash");
@@ -218,7 +218,7 @@ public class StateQuery : ObjectGraphType<IBlockChainStates>
                     .GetValidatorSet().Validators;
             case (_, srh: not null):
                 return context.Source
-                    .GetWorldState(offsetStateRootHash)
+                    .GetWorldState(offsetStateRootHash ?? default)
                     .GetValidatorSet().Validators;
         }
     }

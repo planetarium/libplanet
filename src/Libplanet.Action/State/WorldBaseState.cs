@@ -49,14 +49,14 @@ namespace Libplanet.Action.State
             {
                 return address.Equals(ReservedAddresses.LegacyAccount)
                     ? new AccountState(Trie)
-                    : new AccountState(_stateStore.GetStateRoot(null));
+                    : new AccountState(_stateStore.GetStateRoot(default));
             }
             else
             {
-                return Trie.Get(ToStateKey(address)) is Binary accountStateRootHash
+                return Trie[ToStateKey(address)] is Binary accountStateRootHash
                     ? new AccountState(_stateStore.GetStateRoot(
                         new HashDigest<SHA256>(accountStateRootHash.ByteArray)))
-                    : new AccountState(_stateStore.GetStateRoot(null));
+                    : new AccountState(_stateStore.GetStateRoot(default));
             }
         }
     }

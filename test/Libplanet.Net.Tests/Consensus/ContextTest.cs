@@ -794,7 +794,8 @@ namespace Libplanet.Net.Tests.Consensus
                                 TestUtils.PrivateKeys[3].PublicKey,
                                 TestUtils.ValidatorSet[3].Power,
                                 VoteFlag.PreVote).Sign(TestUtils.PrivateKeys[3])));
-                }, cts.Token);
+                },
+                cts.Token);
 
             await stepChangedToPreCommit.WaitAsync();
             cts.Cancel();

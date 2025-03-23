@@ -32,13 +32,13 @@ namespace Libplanet.Action.State
         {
             if (WorldVersion >= BlockMetadata.ValidatorSetAccountProtocolVersion)
             {
-                return Trie.Get(KeyConverters.ToStateKey(ValidatorSetAddress)) is { } value
+                return Trie[KeyConverters.ToStateKey(ValidatorSetAddress)] is { } value
                     ? new ValidatorSet(value)
                     : new ValidatorSet();
             }
             else
             {
-                return Trie.Get(KeyConverters.ValidatorSetKey) is { } value
+                return Trie[KeyConverters.ValidatorSetKey] is { } value
                     ? new ValidatorSet(value)
                     : new ValidatorSet();
             }

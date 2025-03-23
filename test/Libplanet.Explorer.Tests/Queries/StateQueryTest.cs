@@ -164,7 +164,8 @@ public partial class StateQueryTest
             Assert.IsAssignableFrom<IDictionary<string, object>>(
                 Assert.IsAssignableFrom<IDictionary<string, object>>(
                     resultDict["world"])["totalSupply"]);
-        FungibleAssetValue expectedTotalSupply = version >= BlockMetadata.CurrencyAccountProtocolVersion
+        FungibleAssetValue expectedTotalSupply
+            = version >= BlockMetadata.CurrencyAccountProtocolVersion
             ? (Fixture.Amount + Fixture.AdditionalSupply)
             : (Fixture.Currency * 0);
         Assert.Equal(

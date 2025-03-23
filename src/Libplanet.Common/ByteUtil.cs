@@ -136,7 +136,7 @@ namespace Libplanet.Common
         /// <seealso cref="ParseHexToImmutable(string)"/>
         [Pure]
         public static string Hex(in ImmutableArray<byte> bytes) =>
-            Hex(bytes.IsDefaultOrEmpty ? Array.Empty<byte>() : bytes.ToArray());
+            Hex(bytes.IsDefaultOrEmpty ? [] : [.. bytes]);
 
         /// <summary>
         /// Calculates a deterministic hash code from a given

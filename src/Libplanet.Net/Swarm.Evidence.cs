@@ -109,7 +109,8 @@ namespace Libplanet.Net
                                     evidenceIds.Count);
                                 BroadcastEvidenceIds(null, evidenceIds);
                             }
-                        }, cancellationToken);
+                        },
+                        cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {

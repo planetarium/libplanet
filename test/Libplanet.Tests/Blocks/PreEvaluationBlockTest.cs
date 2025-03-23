@@ -9,7 +9,6 @@ using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Common;
 using Libplanet.Crypto;
-using Libplanet.Store.Trie;
 using Libplanet.Tests.Fixtures;
 using Libplanet.Tests.Store;
 using Libplanet.Types.Blocks;
@@ -57,7 +56,7 @@ namespace Libplanet.Tests.Blocks
                     new SingleActionLoader(typeof(Arithmetic)));
                 Block genesis = preEvalGenesis.Sign(
                     _contents.GenesisKey,
-                    MerkleTrie.EmptyRootHash);
+                    default);
                 AssertPreEvaluationBlocksEqual(preEvalGenesis, genesis);
                 _output.WriteLine("#1: {0}", genesis);
 
@@ -131,7 +130,7 @@ namespace Libplanet.Tests.Blocks
                     policyActionsRegistry: policy.PolicyActionsRegistry,
                     stateStore: fx.StateStore,
                     actionTypeLoader: new SingleActionLoader(typeof(Arithmetic)));
-                HashDigest<SHA256> genesisStateRootHash = MerkleTrie.EmptyRootHash;
+                HashDigest<SHA256> genesisStateRootHash = default;
                 _output.WriteLine("#0 StateRootHash: {0}", genesisStateRootHash);
                 Block genesis =
                     preEvalGenesis.Sign(_contents.GenesisKey, genesisStateRootHash);

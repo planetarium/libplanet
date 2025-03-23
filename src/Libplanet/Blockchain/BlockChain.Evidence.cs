@@ -79,7 +79,7 @@ namespace Libplanet.Blockchain
             }
 
             var stateRootHash = GetNextStateRootHash(evidence.Height);
-            var worldState = GetWorldState(stateRootHash);
+            var worldState = GetWorldState(stateRootHash ?? default);
             var validatorSet = worldState.GetValidatorSet();
             var evidenceContext = new EvidenceContext(validatorSet);
             evidence.Verify(evidenceContext);

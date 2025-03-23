@@ -67,14 +67,14 @@ namespace Libplanet.Tests.Fixtures
                     index: 0,
                     timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
                     publicKey: GenesisKey.PublicKey,
-                    previousHash: null,
+                    previousHash: default,
                     txHash: BlockContent.DeriveTxHash(genTxs),
                     lastCommit: null,
                     evidenceHash: BlockContent.DeriveEvidenceHash(genEvidence)),
                 transactions: genTxs,
                 evidence: genEvidence);
             GenesisMetadata = new BlockMetadata(GenesisContent);
-            GenesisHash = BlockHash.FromString(
+            GenesisHash = BlockHash.Parse(
                 "341e8f360597d5bc45ab96aabc5f1b0608063f30af7bd4153556c9536a07693a");
 
             Block1Key = PrivateKey.FromString(
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Fixtures
                     evidenceHash: BlockContent.DeriveEvidenceHash(block1Evidence)),
                 transactions: block1Transactions,
                 evidence: block1Evidence);
-            Block1TxHash = HashDigest<SHA256>.FromString(
+            Block1TxHash = HashDigest<SHA256>.Parse(
                 "654698d34b6d9a55b0c93e4ffb2639278324868c91965bc5f96cb3071d6903a0");
             Block1Metadata = new BlockMetadata(Block1Content);
 
@@ -150,7 +150,7 @@ namespace Libplanet.Tests.Fixtures
                     timestamp: new DateTimeOffset(2021, 9, 6, 13, 46, 39, 123, kst),
                     miner: GenesisKey.Address,
                     publicKey: null,
-                    previousHash: null,
+                    previousHash: default,
                     txHash: null,
                     lastCommit: null,
                     evidenceHash: null),

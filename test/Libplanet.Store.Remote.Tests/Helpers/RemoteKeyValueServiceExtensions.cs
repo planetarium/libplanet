@@ -1,29 +1,35 @@
 using Google.Protobuf.WellKnownTypes;
 using Libplanet.Store.Remote.Server;
 
-namespace Libplanet.Store.Remote.Tests.Helpers
+namespace Libplanet.Store.Remote.Tests.Helpers;
+
+public static class RemoteKeyValueServiceExtensions
 {
-    public static class RemoteKeyValueServiceExtensions
-    {
-        public static async Task<KeyValueStoreValue> GetValue(this RemoteKeyValueService service, GetValueRequest request) =>
-            await service.GetValue(request, TestServerCallContextHelper.Create());
+    public static async Task<KeyValueStoreValue> GetValue(
+        this RemoteKeyValueService @this, GetValueRequest request)
+        => await @this.GetValue(request, TestServerCallContextHelper.Create());
 
-        public static async Task<KeyValueStoreValue> SetValue(this RemoteKeyValueService service, SetValueRequest request) =>
-            await service.SetValue(request, TestServerCallContextHelper.Create());
+    public static async Task<KeyValueStoreValue> SetValue(
+        this RemoteKeyValueService @this, SetValueRequest request)
+        => await @this.SetValue(request, TestServerCallContextHelper.Create());
 
-        public static async Task<SetValuesResponse> SetValues(this RemoteKeyValueService service, SetValuesRequest request) =>
-            await service.SetValues(request, TestServerCallContextHelper.Create());
+    public static async Task<SetValuesResponse> SetValues(
+        this RemoteKeyValueService @this, SetValuesRequest request)
+        => await @this.SetValues(request, TestServerCallContextHelper.Create());
 
-        public static async Task<Empty> DeleteValue(this RemoteKeyValueService service, DeleteValueRequest request) =>
-            await service.DeleteValue(request, TestServerCallContextHelper.Create());
+    public static async Task<Empty> DeleteValue(
+        this RemoteKeyValueService @this, DeleteValueRequest request)
+        => await @this.DeleteValue(request, TestServerCallContextHelper.Create());
 
-        public static async Task<Empty> DeleteValues(this RemoteKeyValueService service, DeleteValuesRequest request) =>
-            await service.DeleteValues(request, TestServerCallContextHelper.Create());
+    public static async Task<Empty> DeleteValues(
+        this RemoteKeyValueService @this, DeleteValuesRequest request)
+        => await @this.DeleteValues(request, TestServerCallContextHelper.Create());
 
-        public static async Task<ExistsKeyResponse> ExistsKey(this RemoteKeyValueService service, ExistsKeyRequest request) =>
-            await service.ExistsKey(request, TestServerCallContextHelper.Create());
+    public static async Task<ExistsKeyResponse> ExistsKey(
+        this RemoteKeyValueService @this, ExistsKeyRequest request)
+        => await @this.ExistsKey(request, TestServerCallContextHelper.Create());
 
-        public static async Task<ListKeysResponse> ListKeys(this RemoteKeyValueService service, ListKeysRequest request) =>
-            await service.ListKeys(request, TestServerCallContextHelper.Create());
-    }
+    public static async Task<ListKeysResponse> ListKeys(
+        this RemoteKeyValueService @this, ListKeysRequest request)
+        => await @this.ListKeys(request, TestServerCallContextHelper.Create());
 }

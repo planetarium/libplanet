@@ -98,7 +98,7 @@ namespace Libplanet.Action
         [Pure]
         public IReadOnlyList<ICommittedActionEvaluation> Evaluate(
             IPreEvaluationBlock block,
-            HashDigest<SHA256>? baseStateRootHash)
+            HashDigest<SHA256> baseStateRootHash)
         {
             if (block.ProtocolVersion < BlockMetadata.PBFTProtocolVersion)
             {
@@ -121,7 +121,6 @@ namespace Libplanet.Action
             try
             {
                 IWorld previousState = _stateStore.GetWorld(baseStateRootHash);
-                previousState = _stateStore.MigrateWorld(previousState, block.ProtocolVersion);
 
                 var evaluations = ImmutableList<ActionEvaluation>.Empty;
                 if (_policyActionsRegistry.BeginBlockActions.Length > 0)
@@ -261,7 +260,7 @@ namespace Libplanet.Action
             bool isPolicyAction,
             ILogger? logger = null)
         {
-            if (!context.PreviousState.Trie.Recorded)
+            if (!context.PreviousState.Trie.IsCommitted)
             {
                 throw new InvalidOperationException(
                     $"Given {nameof(context)} must have its previous state's " +
@@ -358,7 +357,7 @@ namespace Libplanet.Action
 
             state = stateStore.CommitWorld(state);
 
-            if (!state.Trie.Recorded)
+            if (!state.Trie.IsCommitted)
             {
                 throw new InvalidOperationException(
                     $"Failed to record {nameof(IAccount)}'s {nameof(ITrie)}.");
@@ -651,12 +650,12 @@ namespace Libplanet.Action
                         miner: evaluation.InputContext.Miner,
                         blockIndex: evaluation.InputContext.BlockIndex,
                         blockProtocolVersion: evaluation.InputContext.BlockProtocolVersion,
-                        previousState: evaluation.InputContext.PreviousState.Trie.Recorded
+                        previousState: evaluation.InputContext.PreviousState.Trie.IsCommitted
                             ? evaluation.InputContext.PreviousState.Trie.Hash
                             : throw new ArgumentException("Trie is not recorded"),
                         randomSeed: evaluation.InputContext.RandomSeed,
                         isPolicyAction: evaluation.InputContext.IsPolicyAction),
-                    outputState: evaluation.OutputState.Trie.Recorded
+                    outputState: evaluation.OutputState.Trie.IsCommitted
                         ? evaluation.OutputState.Trie.Hash
                         : throw new ArgumentException("Trie is not recorded"),
                     exception: evaluation.Exception);

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Security.Cryptography;
 using Bencodex.Types;
@@ -17,19 +16,19 @@ namespace Libplanet.Tests.Store
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(new MemoryKeyValueStore());
-            ITrie emptyTrie = stateStore.GetStateRoot(null);
+            ITrie emptyTrie = stateStore.GetStateRoot(default);
             HashDigest<SHA256> emptyRootHash = emptyTrie.Hash;
 
-            Assert.Null(emptyTrie.Root);
-            Assert.True(stateStore.GetStateRoot(emptyRootHash).Recorded);
-            Assert.Null(stateStore.GetStateRoot(emptyRootHash).Root);
-            Assert.False(keyValueStore.Exists(new KeyBytes(emptyRootHash.ByteArray)));
+            Assert.Null(emptyTrie.Node);
+            Assert.True(stateStore.GetStateRoot(emptyRootHash).IsCommitted);
+            Assert.Null(stateStore.GetStateRoot(emptyRootHash).Node);
+            Assert.False(keyValueStore.ContainsKey(new KeyBytes(emptyRootHash.ByteArray)));
 
             emptyTrie = stateStore.Commit(emptyTrie);
-            Assert.Null(emptyTrie.Root);
+            Assert.Null(emptyTrie.Node);
             Assert.Equal(emptyRootHash, emptyTrie.Hash);
-            Assert.True(stateStore.GetStateRoot(emptyRootHash).Recorded);
-            Assert.False(keyValueStore.Exists(new KeyBytes(emptyRootHash.ByteArray)));
+            Assert.True(stateStore.GetStateRoot(emptyRootHash).IsCommitted);
+            Assert.False(keyValueStore.ContainsKey(new KeyBytes(emptyRootHash.ByteArray)));
         }
 
         [Fact]
@@ -37,10 +36,10 @@ namespace Libplanet.Tests.Store
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(keyValueStore);
-            ITrie trie = stateStore.GetStateRoot(null);
+            ITrie trie = stateStore.GetStateRoot(default);
 
-            trie = trie.Set(new KeyBytes(new byte[] { 0x2c, 0x73 }), new Text("2c73"));
-            trie = trie.Set(new KeyBytes(new byte[] { 0x23, 0x4f }), new Text("234f"));
+            trie = trie.Set(KeyBytes.Create(new byte[] { 0x2c, 0x73 }), new Text("2c73"));
+            trie = trie.Set(KeyBytes.Create(new byte[] { 0x23, 0x4f }), new Text("234f"));
 
             HashDigest<SHA256> hashBeforeCommit = trie.Hash;
             trie = stateStore.Commit(trie);
@@ -50,15 +49,15 @@ namespace Libplanet.Tests.Store
 
             Assert.NotEqual(hashBeforeCommit, hashAfterCommitOnce);
             Assert.Equal(hashAfterCommitOnce, hashAfterCommitTwice);
-            Assert.False(stateStore.GetStateRoot(hashBeforeCommit).Recorded);
-            Assert.True(stateStore.GetStateRoot(hashAfterCommitOnce).Recorded);
-            Assert.False(keyValueStore.Exists(new KeyBytes(hashBeforeCommit.ByteArray)));
-            Assert.True(keyValueStore.Exists(new KeyBytes(hashAfterCommitOnce.ByteArray)));
+            Assert.False(stateStore.GetStateRoot(hashBeforeCommit).IsCommitted);
+            Assert.True(stateStore.GetStateRoot(hashAfterCommitOnce).IsCommitted);
+            Assert.False(keyValueStore.ContainsKey(new KeyBytes(hashBeforeCommit.ByteArray)));
+            Assert.True(keyValueStore.ContainsKey(new KeyBytes(hashAfterCommitOnce.ByteArray)));
 
             trie = stateStore.GetStateRoot(hashAfterCommitOnce);
-            Assert.Equal(2, trie.IterateValues().Count());
-            Assert.Equal(new Text("2c73"), trie.Get(new KeyBytes(new byte[] { 0x2c, 0x73 })));
-            Assert.Equal(new Text("234f"), trie.Get(new KeyBytes(new byte[] { 0x23, 0x4f })));
+            Assert.Equal(2, trie.ToDictionary().Count);
+            Assert.Equal(new Text("2c73"), trie[KeyBytes.Create(new byte[] { 0x2c, 0x73 })]);
+            Assert.Equal(new Text("234f"), trie[KeyBytes.Create(new byte[] { 0x23, 0x4f })]);
         }
 
         [Fact]
@@ -66,13 +65,13 @@ namespace Libplanet.Tests.Store
         {
             IKeyValueStore keyValueStore = new MemoryKeyValueStore();
             IStateStore stateStore = new TrieStateStore(keyValueStore);
-            ITrie trie = stateStore.GetStateRoot(null);
-            trie = trie.Set(new KeyBytes(Array.Empty<byte>()), new Integer(1));
+            ITrie trie = stateStore.GetStateRoot(default);
+            trie = trie.Set(KeyBytes.Create([]), new Integer(1));
             trie = stateStore.Commit(trie);
-            HashNode root = Assert.IsType<HashNode>(trie.Root);
+            HashNode root = Assert.IsType<HashNode>(trie.Node);
             trie = stateStore.GetStateRoot(trie.Hash);
-            Assert.IsType<HashNode>(trie.Root);
-            Assert.Equal(root, trie.Root);
+            Assert.IsType<HashNode>(trie.Node);
+            Assert.Equal(root, trie.Node);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Libplanet.Store.Trie
             IValue value)
         {
             HashDigest<SHA256> targetHash = stateRootHash;
-            PathCursor cursor = new PathCursor(key);
+            PathCursor cursor = PathCursor.Create(key);
             for (int i = 0; i < proof.Count; i++)
             {
                 INode proofNode = proof[i];
@@ -69,7 +69,7 @@ namespace Libplanet.Store.Trie
                         case ValueNode valueNode:
                             if (last)
                             {
-                                return r.NextCursor.Offset == r.NextCursor.Length &&
+                                return r.NextCursor.Position == r.NextCursor.Length &&
                                     valueNode.Value.Equals(value);
                             }
                             else
@@ -102,8 +102,8 @@ namespace Libplanet.Store.Trie
         /// given an <see cref="ITrie"/>'s <see cref="ITrie.Hash"/>.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when either
-        /// <see cref="Recorded"/> is <see langword="false"/> or
-        /// <see cref="Root"/> is <see langword="null"/>.</exception>
+        /// <see cref="IsCommitted"/> is <see langword="false"/> or
+        /// <see cref="Node"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref name="key"/>
         /// and <paramref name="value"/> pair is invalid, i.e. not a key value pair
         /// found in this <see cref="ITrie"/>.</exception>
@@ -113,15 +113,15 @@ namespace Libplanet.Store.Trie
         /// </remarks>
         public IReadOnlyList<INode> GenerateProof(KeyBytes key, IValue value)
         {
-            if (!Recorded)
+            if (!IsCommitted)
             {
                 throw new InvalidOperationException(
                     $"A proof can only be retrieved from a recorded {nameof(ITrie)}");
             }
 
-            INode root = Root ??
+            INode root = Node ??
                 throw new InvalidOperationException(
-                    $"A proof can only be retrieved from a non-null {nameof(Root)}");
+                    $"A proof can only be retrieved from a non-null {nameof(Node)}");
 
             // NOTE: Should never be thrown. A recorded non-null root must always be a HashNode.
             INode hashNode = root is HashNode h
@@ -130,11 +130,12 @@ namespace Libplanet.Store.Trie
                     $"Encountered an unexpected node type {root.GetType()}");
 
             List<INode> proof = new List<INode>();
-            PathCursor cursor = new PathCursor(key);
+            PathCursor cursor = PathCursor.Create(key);
 
             while (hashNode is HashNode currentHashNode)
             {
-                INode unhashedNode = UnhashNode(currentHashNode);
+                // INode unhashedNode = currentHashNode.Expand(keyValueStore);
+                INode unhashedNode = currentHashNode.Expand();
                 proof.Add(unhashedNode);
                 var resolved = ResolveToNextCandidateNode(unhashedNode, cursor);
 
@@ -148,7 +149,7 @@ namespace Libplanet.Store.Trie
                             continue;
 
                         case ValueNode nextValueNode:
-                            if (r.NextCursor.Offset == r.NextCursor.Length)
+                            if (r.NextCursor.Position == r.NextCursor.Length)
                             {
                                 return nextValueNode.Value.Equals(value)
                                     ? proof.ToImmutableList()
@@ -217,7 +218,7 @@ namespace Libplanet.Store.Trie
                     return (valueNode, cursor);
 
                 case ShortNode shortNode:
-                    if (cursor.RemainingNibblesStartWith(shortNode.Key))
+                    if (cursor.NextNibbles.StartsWith(shortNode.Key))
                     {
                         return ResolveToNextCandidateNode(
                             shortNode.Value, cursor.Next(shortNode.Key.Length));
@@ -228,7 +229,7 @@ namespace Libplanet.Store.Trie
                     }
 
                 case FullNode fullNode:
-                    if (cursor.Offset == cursor.Length)
+                    if (cursor.Position == cursor.Length)
                     {
                         // Note: FullNode.Value is either null, a HashNode, or a ValueNode.
                         if (fullNode.Value is INode n)
@@ -242,7 +243,7 @@ namespace Libplanet.Store.Trie
                     }
                     else
                     {
-                        INode? nextNode = fullNode.Children[cursor.NextNibble];
+                        INode? nextNode = fullNode.Children[cursor.Current];
                         if (nextNode is INode n)
                         {
                             return ResolveToNextCandidateNode(n, cursor.Next(1));

@@ -1,123 +1,124 @@
 using System;
 using Libplanet.Store.Trie;
 using Xunit;
-using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Store.Trie
+namespace Libplanet.Tests.Store.Trie;
+
+public class PathCursorTest
 {
-    public class PathCursorTest
+    [Theory]
+    [InlineData("")]
+    [InlineData("cfed4460")]
+    public void Base_Test(string hex)
     {
-        [Fact]
-        public void Constructor()
-        {
-            KeyBytes keyBytes = KeyBytes.FromHex("cfed4460");
-            var cursor = new PathCursor(keyBytes);
-            Assert.Equal(Nibbles.FromKeyBytes(keyBytes), cursor.Nibbles);
-            Assert.Equal(8, cursor.Length);
-            Assert.Equal(0, cursor.Offset);
-        }
+        var nibbles = hex == string.Empty ? Nibbles.Empty : Nibbles.Parse(hex);
+        var cursor = new PathCursor(nibbles);
+        Assert.Equal(nibbles, cursor.Nibbles);
+        Assert.Equal(hex.Length, cursor.Length);
+        Assert.Equal(0, cursor.Position);
+    }
 
-        [Fact]
-        public void Next()
-        {
-            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"));
-            Assert.Equal(0, cursor.Offset);
-            Assert.Equal(8, cursor.RemainingNibbleLength);
-            Assert.Equal((byte)0xc, cursor.NextNibble);
-            AssertBytesEqual(
-                Nibbles.FromHex("cfed4460").ByteArray, cursor.GetRemainingNibbles().ByteArray);
+    [Theory]
+    [InlineData("")]
+    [InlineData("cfed4460")]
+    public void Create_Test(string hex)
+    {
+        var keyBytes = hex == string.Empty ? KeyBytes.Empty : KeyBytes.Parse(hex);
+        var nibbles = Nibbles.FromKeyBytes(keyBytes);
+        var cursor = PathCursor.Create(keyBytes);
+        Assert.Equal(nibbles, cursor.Nibbles);
+        Assert.Equal(hex.Length, cursor.Length);
+        Assert.Equal(0, cursor.Position);
+    }
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(-1); });
-            Assert.Equal(0, cursor.Offset);
-            Assert.Equal(8, cursor.RemainingNibbleLength);
+    [Theory]
+    [InlineData("cfed4460", -1)]
+    [InlineData("cfed4460", 9)]
+    public void Next_ThrowTest(string hex, int offset)
+    {
+        var cursor = PathCursor.Create(KeyBytes.Parse(hex));
+        Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(offset); });
+        Assert.Equal(0, cursor.Position);
+        Assert.Equal(cursor.Length - cursor.Position, cursor.Length - cursor.Position);
+    }
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(9); });
-            Assert.Equal(0, cursor.Offset);
-            Assert.Equal(8, cursor.RemainingNibbleLength);
+    [Theory]
+    [InlineData("cfed4460", 0, 0, 8, 0xc, "cfed4460")]
+    [InlineData("cfed4460", 1, 1, 7, 0xf, "fed4460")]
+    [InlineData("cfed4460", 5, 5, 3, 0x4, "460")]
+    public void Next_Test(
+        string hex,
+        int offset,
+        int expectedOffset,
+        int expectedNextLength,
+        byte expectedCurrent,
+        string expectedNextNibbles)
+    {
+        var cursor = PathCursor.Create(KeyBytes.Parse(hex));
+        var next = cursor.Next(offset);
+        Assert.Equal(cursor.Nibbles, next.Nibbles);
+        Assert.Equal(cursor.Length, next.Length);
+        Assert.Equal(cursor.Position + offset, next.Position);
 
-            var next = cursor.Next(1);
-            Assert.Equal(0, cursor.Offset);
-            Assert.Equal(8, cursor.RemainingNibbleLength);
-            Assert.Equal((byte)0xc, cursor.NextNibble);
-            AssertBytesEqual(
-                Nibbles.FromHex("cfed4460").ByteArray, cursor.GetRemainingNibbles().ByteArray);
-            Assert.Equal(1, next.Offset);
-            Assert.Equal((byte)0xf, next.NextNibble);
-            Assert.Equal(7, next.RemainingNibbleLength);
-            AssertBytesEqual(
-                Nibbles.FromHex("fed4460").ByteArray, next.GetRemainingNibbles().ByteArray);
+        Assert.Equal(expectedOffset, next.Position);
+        Assert.Equal(next.Length - next.Position, expectedNextLength);
+        Assert.Equal(expectedCurrent, next.Current);
+        Assert.Equal(expectedNextNibbles, $"{next.NextNibbles}");
+    }
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => { next = next.Next(-1); });
-            Assert.Equal(1, next.Offset);
-            Assert.Equal(7, next.RemainingNibbleLength);
+    [Fact]
+    public void Next()
+    {
+        var cursor = PathCursor.Create(KeyBytes.Parse("cfed4460"));
+        Assert.Equal(0, cursor.Position);
+        Assert.Equal(8, cursor.Length - cursor.Position);
+        Assert.Equal((byte)0xc, cursor.Current);
+        Assert.Equal<byte>(
+            Nibbles.Parse("cfed4460").ByteArray, cursor.NextNibbles.ByteArray);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => { next = next.Next(8); });
-            Assert.Equal(1, next.Offset);
-            Assert.Equal(7, next.RemainingNibbleLength);
+        Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(-1); });
+        Assert.Equal(0, cursor.Position);
+        Assert.Equal(8, cursor.Length - cursor.Position);
 
-            var next2 = next.Next(5);
-            Assert.Equal(0, cursor.Offset);
-            Assert.Equal(8, cursor.RemainingNibbleLength);
-            Assert.Equal((byte)0xc, cursor.NextNibble);
-            AssertBytesEqual(
-                Nibbles.FromHex("cfed4460").ByteArray, cursor.GetRemainingNibbles().ByteArray);
-            Assert.Equal(1, next.Offset);
-            Assert.Equal(7, next.RemainingNibbleLength);
-            Assert.Equal((byte)0xf, next.NextNibble);
-            AssertBytesEqual(
-                Nibbles.FromHex("fed4460").ByteArray, next.GetRemainingNibbles().ByteArray);
-            Assert.Equal(6, next2.Offset);
-            Assert.Equal(2, next2.RemainingNibbleLength);
-            Assert.Equal((byte)0x6, next2.NextNibble);
-            AssertBytesEqual(
-                Nibbles.FromHex("60").ByteArray, next2.GetRemainingNibbles().ByteArray);
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => { cursor = cursor.Next(9); });
+        Assert.Equal(0, cursor.Position);
+        Assert.Equal(8, cursor.Length - cursor.Position);
 
-        [Fact]
-        public void CountCommonStartingNibbles()
-        {
-            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"));
-            Assert.Equal(
-                0,
-                cursor.CountCommonStartingNibbles(Nibbles.Empty));
-            Assert.Equal(
-                0,
-                cursor.CountCommonStartingNibbles(Nibbles.FromHex("abcd")));
-            Assert.Equal(
-                3,
-                cursor.CountCommonStartingNibbles(Nibbles.FromHex("cfeffff")));
-            Assert.Equal(
-                8,
-                cursor.CountCommonStartingNibbles(Nibbles.FromHex("cfed4460abcd")));
+        var next = cursor.Next(1);
+        Assert.Equal(0, cursor.Position);
+        Assert.Equal(8, cursor.Length - cursor.Position);
+        Assert.Equal((byte)0xc, cursor.Current);
+        Assert.Equal<byte>(
+            Nibbles.Parse("cfed4460").ByteArray, cursor.NextNibbles.ByteArray);
+        Assert.Equal(1, next.Position);
+        Assert.Equal((byte)0xf, next.Current);
+        Assert.Equal(7, next.Length - next.Position);
+        Assert.Equal<byte>(
+            Nibbles.Parse("fed4460").ByteArray, next.NextNibbles.ByteArray);
 
-            PathCursor next = cursor.Next(3);
-            Assert.Equal(
-                0,
-                next.CountCommonStartingNibbles(Nibbles.Empty));
-            Assert.Equal(
-                0,
-                next.CountCommonStartingNibbles(Nibbles.FromHex("cfeffff")));
-            Assert.Equal(
-                3,
-                next.CountCommonStartingNibbles(Nibbles.FromHex("d44abc")));
-            Assert.Equal(
-                5,
-                next.CountCommonStartingNibbles(Nibbles.FromHex("d4460abcd")));
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => { next = next.Next(-1); });
+        Assert.Equal(1, next.Position);
+        Assert.Equal(7, next.Length - next.Position);
 
-        [Fact]
-        public void RemainingNibblesStartWith()
-        {
-            var cursor = new PathCursor(KeyBytes.FromHex("cfed4460"));
-            Assert.True(cursor.RemainingNibblesStartWith(Nibbles.FromHex("cfed4")));
-            Assert.False(
-                cursor.RemainingNibblesStartWith(Nibbles.FromHex("cfed4460a")));
-            Assert.False(cursor.RemainingNibblesStartWith(Nibbles.FromHex("cfedfff")));
+        Assert.Throws<ArgumentOutOfRangeException>(() => { next = next.Next(8); });
+        Assert.Equal(1, next.Position);
+        Assert.Equal(7, next.Length - next.Position);
 
-            PathCursor next = cursor.Next(3);
-            Assert.True(next.RemainingNibblesStartWith(Nibbles.FromHex("d44")));
-            Assert.False(next.RemainingNibblesStartWith(Nibbles.FromHex("d4460abcd")));
-            Assert.False(next.RemainingNibblesStartWith(Nibbles.FromHex("d4abc")));
-        }
+        var next2 = next.Next(5);
+        Assert.Equal(0, cursor.Position);
+        Assert.Equal(8, cursor.Length - cursor.Position);
+        Assert.Equal((byte)0xc, cursor.Current);
+        Assert.Equal<byte>(
+            Nibbles.Parse("cfed4460").ByteArray, cursor.NextNibbles.ByteArray);
+        Assert.Equal(1, next.Position);
+        Assert.Equal(7, next.Length - next.Position);
+        Assert.Equal((byte)0xf, next.Current);
+        Assert.Equal<byte>(
+            Nibbles.Parse("fed4460").ByteArray, next.NextNibbles.ByteArray);
+        Assert.Equal(6, next2.Position);
+        Assert.Equal(2, next2.Length - next2.Position);
+        Assert.Equal((byte)0x6, next2.Current);
+        Assert.Equal<byte>(
+            Nibbles.Parse("60").ByteArray, next2.NextNibbles.ByteArray);
     }
 }

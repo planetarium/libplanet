@@ -11,14 +11,14 @@ namespace Libplanet.Tests.Store.Trie.Nodes
         public void ToBencodex()
         {
             var shortNode = new ShortNode(
-                Nibbles.FromHex("beef"),
+                Nibbles.Parse("beef"),
                 new ValueNode((Text)"foo")
             );
 
             var expected =
                 new List(new IValue[]
                 {
-                    (Binary)Nibbles.FromHex("beef").ByteArray,
+                    (Binary)Nibbles.Parse("beef").ByteArray,
                     new List(new IValue[] { Null.Value, (Text)"foo" }),
                 });
             var encoded = shortNode.ToBencodex();

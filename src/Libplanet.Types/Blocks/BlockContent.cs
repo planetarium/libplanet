@@ -149,7 +149,7 @@ namespace Libplanet.Types.Blocks
         public PublicKey? PublicKey => _blockMetadata.PublicKey;
 
         /// <inheritdoc cref="IBlockMetadata.PreviousHash"/>
-        public BlockHash? PreviousHash => _blockMetadata.PreviousHash;
+        public BlockHash PreviousHash => _blockMetadata.PreviousHash;
 
         /// <inheritdoc cref="IBlockMetadata.TxHash"/>
         public HashDigest<SHA256>? TxHash => _blockMetadata.TxHash;

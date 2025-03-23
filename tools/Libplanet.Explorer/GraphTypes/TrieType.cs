@@ -21,7 +21,7 @@ namespace Libplanet.Explorer.GraphTypes
                         Description = "The key to search.",
                     }
                 ),
-                resolve: context => context.Source.Get(context.GetArgument<KeyBytes>("key"))
+                resolve: context => context.Source[context.GetArgument<KeyBytes>("key")]
             );
 
             Field<IValueType>(
@@ -37,7 +37,7 @@ namespace Libplanet.Explorer.GraphTypes
                 ),
                 resolve: context => context
                     .GetArgument<KeyBytes[]>("keys")
-                    .Select(key => context.Source.Get(key))
+                    .Select(key => context.Source[key])
                     .ToArray()
             );
         }

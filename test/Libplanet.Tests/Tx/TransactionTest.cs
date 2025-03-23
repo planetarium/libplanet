@@ -288,7 +288,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Equality()
         {
-            var genesisHash = BlockHash.FromString(
+            var genesisHash = BlockHash.Parse(
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             Address addressA = new Address("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
             Address addressB = new Address("B61CE2Ce6d28237C1BC6E114616616762f1a12Ab");
@@ -368,7 +368,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void JsonSerialization()
         {
-            var genesisHash = BlockHash.FromString(
+            var genesisHash = BlockHash.Parse(
                 "92854cf0a62a7103b9c610fd588ad45254e64b74ceeeb209090ba572a41bf265");
             Address addressA = new Address("D6D639DA5a58A78A564C2cD3DB55FA7CeBE244A9");
             Address addressB = new Address("B61CE2Ce6d28237C1BC6E114616616762f1a12Ab");

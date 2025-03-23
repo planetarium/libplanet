@@ -49,9 +49,9 @@ public class TransactionQueryGeneratedTest
     {
         var emptyBlock = Fx.Chain.Tip;
         var emptyTx = emptyBlock.Transactions[0];
-        var failBlock = Fx.Chain.Store.GetBlock(emptyBlock.PreviousHash!.Value)!;
+        var failBlock = Fx.Chain.Store.GetBlock(emptyBlock.PreviousHash)!;
         var failTx = failBlock.Transactions[0];
-        var successBlock = Fx.Chain.Store.GetBlock(failBlock.PreviousHash!.Value)!;
+        var successBlock = Fx.Chain.Store.GetBlock(failBlock.PreviousHash)!;
         var successTx = successBlock.Transactions[0];
         var pk = Fx.PrivateKeys[0];
         var stagingTx = Transaction.Create(
