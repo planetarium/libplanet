@@ -1,7 +1,7 @@
 Libplanet changelog
 ===================
 
-Version 5.5.2
+Version 5.6.0
 -------------
 
 To be released.
