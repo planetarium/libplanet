@@ -2,6 +2,9 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
@@ -99,13 +102,15 @@ namespace Libplanet.Store
                 var metadataStopwatch = Stopwatch.StartNew();
                 if (stateTrie.Get(new KeyBytes(Array.Empty<byte>())) is { } metadata)
                 {
+                    // Account State들을 수집하여 병렬 처리
+                    var accountStateData = new List<(HashDigest<SHA256> rootHash, MerkleTrie trie)>();
+
                     foreach (var (path, hash) in stateTrie.IterateValues())
                     {
                         // Ignore metadata
                         if (path.Length > 0)
                         {
                             accountStateCount++;
-                            var accountStateStopwatch = Stopwatch.StartNew();
 
                             HashDigest<SHA256> accountStateRootHash = new HashDigest<SHA256>(hash);
                             var accountStateTrieStopwatch = Stopwatch.StartNew();
@@ -121,23 +126,44 @@ namespace Libplanet.Store
                                     $"state root hash {accountStateRootHash}.");
                             }
 
-                            accountStateTrieCount++;
-                            var accountTrieIterationStopwatch = Stopwatch.StartNew();
-                            foreach (var (key, value) in accountStateTrie.IterateKeyValuePairs())
-                            {
-                                var accountKvSetStopwatch = Stopwatch.StartNew();
-                                targetKeyValueStore.Set(key, value);
-                                accountKvSetStopwatch.Stop();
-                                performanceData.KeyValueSetTimeMs += accountKvSetStopwatch.ElapsedMilliseconds;
-                                count++;
-                            }
-                            accountTrieIterationStopwatch.Stop();
-                            performanceData.TrieIterationTimeMs += accountTrieIterationStopwatch.ElapsedMilliseconds;
-
-                            accountStateStopwatch.Stop();
-                            performanceData.AccountStateProcessingTimeMs += accountStateStopwatch.ElapsedMilliseconds;
+                            accountStateData.Add((accountStateRootHash, accountStateTrie));
                         }
                     }
+
+                                        // 병렬 처리로 Account State들을 처리
+                    _logger.Information("Starting parallel processing of {AccountStateCount} account states", accountStateData.Count);
+                    var parallelStopwatch = Stopwatch.StartNew();
+
+                    var lockObject = new object();
+                    var parallelCount = 0;
+
+                    Parallel.ForEach(accountStateData, accountStateItem =>
+                    {
+                        var (accountStateRootHash, accountStateTrie) = accountStateItem;
+
+                        accountStateTrieCount++;
+                        var kvPairCount = 0;
+
+                        foreach (var (key, value) in accountStateTrie.IterateKeyValuePairs())
+                        {
+                            targetKeyValueStore.Set(key, value);
+                            kvPairCount++;
+                        }
+
+                        lock (lockObject)
+                        {
+                            count += kvPairCount;
+                            parallelCount++;
+                        }
+                    });
+
+                    parallelStopwatch.Stop();
+
+                    // 병렬 처리 시간을 Account State Processing에 할당
+                    performanceData.AccountStateProcessingTimeMs += parallelStopwatch.ElapsedMilliseconds;
+
+                    _logger.Information("Parallel processing completed: {ProcessedCount} account states in {ElapsedMs} ms",
+                        parallelCount, parallelStopwatch.ElapsedMilliseconds);
                 }
                 metadataStopwatch.Stop();
                 performanceData.MetadataProcessingTimeMs += metadataStopwatch.ElapsedMilliseconds;
