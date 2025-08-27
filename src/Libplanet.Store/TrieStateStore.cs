@@ -30,6 +30,13 @@ namespace Libplanet.Store
             _logger = Log.ForContext<TrieStateStore>();
         }
 
+        public TrieStateStore(IKeyValueStore stateKeyValueStore, ILogger logger)
+        {
+            StateKeyValueStore = stateKeyValueStore;
+            _cache = new HashNodeCache();
+            _logger = logger;
+        }
+
         public IKeyValueStore StateKeyValueStore { get; }
 
         /// <summary>
@@ -54,27 +61,42 @@ namespace Libplanet.Store
         {
             IKeyValueStore targetKeyValueStore = targetStateStore.StateKeyValueStore;
             var stopwatch = new Stopwatch();
+            var performanceData = new PerformanceData();
             long count = 0;
+            long accountStateCount = 0;
+            long accountStateTrieCount = 0;
+
             _logger.Verbose("Started {MethodName}()", nameof(CopyStates));
             stopwatch.Start();
+            performanceData.TotalStateRoots = stateRootHashes.Count;
 
             foreach (HashDigest<SHA256> stateRootHash in stateRootHashes)
             {
+                var stateRootStopwatch = Stopwatch.StartNew();
                 var stateTrie = (MerkleTrie)GetStateRoot(stateRootHash);
                 if (!stateTrie.Recorded)
                 {
                     throw new ArgumentException(
                         $"Failed to find a state root for given state root hash {stateRootHash}.");
                 }
+                stateRootStopwatch.Stop();
+                performanceData.StateRootProcessingTimeMs += stateRootStopwatch.ElapsedMilliseconds;
 
+                var trieIterationStopwatch = Stopwatch.StartNew();
                 foreach (var (key, value) in stateTrie.IterateKeyValuePairs())
                 {
+                    var kvSetStopwatch = Stopwatch.StartNew();
                     targetKeyValueStore.Set(key, value);
+                    kvSetStopwatch.Stop();
+                    performanceData.KeyValueSetTimeMs += kvSetStopwatch.ElapsedMilliseconds;
                     count++;
                 }
+                trieIterationStopwatch.Stop();
+                performanceData.TrieIterationTimeMs += trieIterationStopwatch.ElapsedMilliseconds;
 
                 // FIXME: Probably not the right place to implement this.
                 // It'd be better to have it in Libplanet.Action.State.
+                var metadataStopwatch = Stopwatch.StartNew();
                 if (stateTrie.Get(new KeyBytes(Array.Empty<byte>())) is { } metadata)
                 {
                     foreach (var (path, hash) in stateTrie.IterateValues())
@@ -82,9 +104,16 @@ namespace Libplanet.Store
                         // Ignore metadata
                         if (path.Length > 0)
                         {
+                            accountStateCount++;
+                            var accountStateStopwatch = Stopwatch.StartNew();
+
                             HashDigest<SHA256> accountStateRootHash = new HashDigest<SHA256>(hash);
+                            var accountStateTrieStopwatch = Stopwatch.StartNew();
                             MerkleTrie accountStateTrie =
                                 (MerkleTrie)GetStateRoot(accountStateRootHash);
+                            accountStateTrieStopwatch.Stop();
+                            performanceData.AccountStateProcessingTimeMs += accountStateTrieStopwatch.ElapsedMilliseconds;
+
                             if (!accountStateTrie.Recorded)
                             {
                                 throw new ArgumentException(
@@ -92,17 +121,93 @@ namespace Libplanet.Store
                                     $"state root hash {accountStateRootHash}.");
                             }
 
+                            accountStateTrieCount++;
+                            var accountTrieIterationStopwatch = Stopwatch.StartNew();
                             foreach (var (key, value) in accountStateTrie.IterateKeyValuePairs())
                             {
+                                var accountKvSetStopwatch = Stopwatch.StartNew();
                                 targetKeyValueStore.Set(key, value);
+                                accountKvSetStopwatch.Stop();
+                                performanceData.KeyValueSetTimeMs += accountKvSetStopwatch.ElapsedMilliseconds;
                                 count++;
                             }
+                            accountTrieIterationStopwatch.Stop();
+                            performanceData.TrieIterationTimeMs += accountTrieIterationStopwatch.ElapsedMilliseconds;
+
+                            accountStateStopwatch.Stop();
+                            performanceData.AccountStateProcessingTimeMs += accountStateStopwatch.ElapsedMilliseconds;
                         }
                     }
                 }
+                metadataStopwatch.Stop();
+                performanceData.MetadataProcessingTimeMs += metadataStopwatch.ElapsedMilliseconds;
             }
 
             stopwatch.Stop();
+            performanceData.TotalTimeMs = stopwatch.ElapsedMilliseconds;
+            performanceData.TotalKeyValuePairs = count;
+            performanceData.TotalAccountStates = accountStateCount;
+
+            // 성능 분석 로그 출력
+            _logger.Information("=== CopyStates Performance Analysis ===");
+            _logger.Information("Total Execution Time: {TotalTime} ms ({TotalTimeMinutes:F2} minutes)",
+                performanceData.TotalTimeMs, performanceData.TotalTimeMs / 60000.0);
+            _logger.Information("Total State Roots Processed: {StateRoots}", performanceData.TotalStateRoots);
+            _logger.Information("Total Account States Processed: {AccountStates}", performanceData.TotalAccountStates);
+            _logger.Information("Total Account State Tries Processed: {AccountStateTries}", accountStateTrieCount);
+            _logger.Information("Total Key-Value Pairs Copied: {KeyValuePairs}", performanceData.TotalKeyValuePairs);
+
+            // 시간 분포 분석
+            var stateRootPercentage = (double)performanceData.StateRootProcessingTimeMs / performanceData.TotalTimeMs * 100;
+            var trieIterationPercentage = (double)performanceData.TrieIterationTimeMs / performanceData.TotalTimeMs * 100;
+            var keyValueSetPercentage = (double)performanceData.KeyValueSetTimeMs / performanceData.TotalTimeMs * 100;
+            var metadataPercentage = (double)performanceData.MetadataProcessingTimeMs / performanceData.TotalTimeMs * 100;
+            var accountStatePercentage = (double)performanceData.AccountStateProcessingTimeMs / performanceData.TotalTimeMs * 100;
+
+            _logger.Information("=== Time Distribution ===");
+            _logger.Information("State Root Processing: {Time} ms ({Percentage:F1}%)",
+                performanceData.StateRootProcessingTimeMs, stateRootPercentage);
+            _logger.Information("Trie Iteration: {Time} ms ({Percentage:F1}%)",
+                performanceData.TrieIterationTimeMs, trieIterationPercentage);
+            _logger.Information("Key-Value Set Operations: {Time} ms ({Percentage:F1}%)",
+                performanceData.KeyValueSetTimeMs, keyValueSetPercentage);
+            _logger.Information("Metadata Processing: {Time} ms ({Percentage:F1}%)",
+                performanceData.MetadataProcessingTimeMs, metadataPercentage);
+            _logger.Information("Account State Processing: {Time} ms ({Percentage:F1}%)",
+                performanceData.AccountStateProcessingTimeMs, accountStatePercentage);
+
+            // 처리량 분석
+            var totalTimeSeconds = performanceData.TotalTimeMs / 1000.0;
+            var stateRootsPerSecond = performanceData.TotalStateRoots / totalTimeSeconds;
+            var keyValuePairsPerSecond = performanceData.TotalKeyValuePairs / totalTimeSeconds;
+            var accountStatesPerSecond = performanceData.TotalAccountStates / totalTimeSeconds;
+
+            _logger.Information("=== Throughput Analysis ===");
+            _logger.Information("State Roots per second: {Rate:F2}", stateRootsPerSecond);
+            _logger.Information("Key-Value pairs per second: {Rate:F2}", keyValuePairsPerSecond);
+            _logger.Information("Account States per second: {Rate:F2}", accountStatesPerSecond);
+
+            // 병목점 분석
+            _logger.Information("=== Bottleneck Analysis ===");
+            if (keyValueSetPercentage > 50)
+            {
+                _logger.Information("🔴 PRIMARY BOTTLENECK: Key-Value Set operations ({Percentage:F1}%)", keyValueSetPercentage);
+                _logger.Information("   - Consider implementing batch writing");
+                _logger.Information("   - Optimize RocksDB write buffer size");
+            }
+            else if (trieIterationPercentage > 30)
+            {
+                _logger.Information("🟡 SECONDARY BOTTLENECK: Trie iteration ({Percentage:F1}%)", trieIterationPercentage);
+                _logger.Information("   - Consider implementing node caching");
+                _logger.Information("   - Optimize HashNode resolution");
+            }
+            else if (accountStatePercentage > 20)
+            {
+                _logger.Information("🟡 SECONDARY BOTTLENECK: Account state processing ({Percentage:F1}%)", accountStatePercentage);
+                _logger.Information("   - Consider parallel processing of account states");
+                _logger.Information("   - Implement account state batching");
+            }
+
             _logger.Debug(
                 "Finished copying all states with {Count} key value pairs " +
                 "in {ElapsedMilliseconds} ms",
@@ -127,5 +232,22 @@ namespace Libplanet.Store
                 _disposed = true;
             }
         }
+    }
+
+    /// <summary>
+    /// 성능 측정 데이터를 담는 클래스
+    /// </summary>
+    public class PerformanceData
+    {
+        public long TotalTimeMs { get; set; }
+        public long StateRootProcessingTimeMs { get; set; }
+        public long TrieIterationTimeMs { get; set; }
+        public long KeyValueSetTimeMs { get; set; }
+        public long MetadataProcessingTimeMs { get; set; }
+        public long AccountStateProcessingTimeMs { get; set; }
+        public long TotalStateRoots { get; set; }
+        public long TotalKeyValuePairs { get; set; }
+        public long TotalAccountStates { get; set; }
+        public double MemoryUsageMB { get; set; }
     }
 }
