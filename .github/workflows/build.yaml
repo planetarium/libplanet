@@ -64,7 +64,7 @@ jobs:
     - if: env.NUGET_API_KEY != ''
       run: .github/bin/dist-nuget.sh
       env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY_TEST }}
     - if: env.NODE_AUTH_TOKEN != ''
       run: .github/bin/dist-npm.sh
       env:
