@@ -4,7 +4,7 @@ Libplanet changelog
 Version 5.5.2
 -------------
 
-To be released.
+Released on September 15, 2025.
 
 ### Optimize memory usage
 
