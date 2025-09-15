@@ -14,7 +14,7 @@ namespace Libplanet.Store
     public class HashNodeCache
     {
         // FIXME: Tuned to 9c mainnet.  Should be refactored to accept cache size as an argument.
-        private const int _cacheSize = 524_288;
+        private const int _cacheSize = 100_000;
 
         private ICache<HashDigest<SHA256>, IValue> _cache;
 
@@ -22,6 +22,7 @@ namespace Libplanet.Store
         {
             _cache = new ConcurrentLruBuilder<HashDigest<SHA256>, IValue>()
                 .WithMetrics()
+                .WithConcurrencyLevel(Environment.ProcessorCount)
                 .WithExpireAfterAccess(TimeSpan.FromMinutes(10))
                 .WithCapacity(_cacheSize)
                 .Build();

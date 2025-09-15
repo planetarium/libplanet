@@ -6,6 +6,11 @@ Version 5.5.2
 
 To be released.
 
+### Optimize memory usage
+
+ -  Decrease `HashNodeCache` size
+ -  `ActivitySource` as singleton
+
 
 Version 5.5.1
 -------------

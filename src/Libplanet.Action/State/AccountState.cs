@@ -15,13 +15,14 @@ namespace Libplanet.Action.State
     /// </summary>
     public class AccountState : IAccountState
     {
+        private static readonly ActivitySource ActivitySource =
+            new ("Libplanet.Action.State");
+
         private readonly ITrie _trie;
-        private readonly ActivitySource _activitySource;
 
         public AccountState(ITrie trie)
         {
             _trie = trie;
-            _activitySource = new ActivitySource("Libplanet.Action.State");
         }
 
         /// <inheritdoc cref="IAccountState.Trie"/>
@@ -30,7 +31,7 @@ namespace Libplanet.Action.State
         /// <inheritdoc cref="IAccountState.GetState"/>
         public IValue? GetState(Address address)
         {
-            using Activity? a = _activitySource
+            using Activity? a = ActivitySource
                 .StartActivity(ActivityKind.Internal)?
                 .AddTag("Address", address.ToString());
             return Trie.Get(ToStateKey(address));
