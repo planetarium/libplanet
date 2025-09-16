@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace Libplanet.Types.Blocks
+ | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace Libplanet.Types.Blocks
+ | Libplanet ">
+  
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+  
+  
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Types.Blocks">
+
+  <h1 id="Libplanet_Types_Blocks" data-uid="Libplanet.Types.Blocks" class="text-break">Namespace Libplanet.Types.Blocks
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+</h3>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a></h4>
+      <section><p>The complete block including all block contents and action evaluation.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockCommit.html">BlockCommit</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockContent.html">BlockContent</a></h4>
+      <section><p>A block content without any proofs like nonce or hash.  This represents contents of a
+block that is not yet mined.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockExcerptExtensions.html">BlockExcerptExtensions</a></h4>
+      <section><p>The extension methods for <a class="xref" href="Libplanet.Types.Blocks.IBlockExcerpt.html">IBlockExcerpt</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html">BlockHeader</a></h4>
+      <section><p>Block header containing information about <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s except transactions.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockMarshaler.html">BlockMarshaler</a></h4>
+      <section><p>Marshaling and unmarshalling block data.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockMetadata.html">BlockMetadata</a></h4>
+      <section><p>A block metadata without transactions or any proof hash.  This represents
+metadata of a block that is not yet mined nor proven.</p>
+<p>To represent a block content including its metadata and transactions, use
+<a class="xref" href="Libplanet.Types.Blocks.BlockContent.html">BlockContent</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockPolicyViolationException.html">BlockPolicyViolationException</a></h4>
+      <section><p>An exception <em>returned</em> when a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> violates
+a <see cref="!:IBlockPolicy"></see>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.IBlockMetadataExtensions.html">IBlockMetadataExtensions</a></h4>
+      <section><p>Convenient extension methods for <a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockBytesLengthException.html">InvalidBlockBytesLengthException</a></h4>
+      <section><p>An exception thrown when the encoded bytes of <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Transactions">Transactions</a> exceeds
+<see cref="!:IBlockPolicy.GetMaxTransactionsBytes(long)"></see>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockCommitException.html">InvalidBlockCommitException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockEvidenceHashException.html">InvalidBlockEvidenceHashException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockException.html">InvalidBlockException</a></h4>
+      <section><p>Serves as the base class for exceptions related <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>s' integrity and
+validity.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockHashException.html">InvalidBlockHashException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockLastCommitException.html">InvalidBlockLastCommitException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockPreEvaluationHashException.html">InvalidBlockPreEvaluationHashException</a></h4>
+      <section><p>The exception that is thrown when the a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>'s
+<a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_PreEvaluationHash">PreEvaluationHash</a> is invalid.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockPreviousHashException.html">InvalidBlockPreviousHashException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockProtocolVersionException.html">InvalidBlockProtocolVersionException</a></h4>
+      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a>'s
+<a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_ProtocolVersion">ProtocolVersion</a> (or a <a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html">BlockHeader</a>'s
+<a class="xref" href="Libplanet.Types.Blocks.BlockHeader.html#Libplanet_Types_Blocks_BlockHeader_ProtocolVersion">ProtocolVersion</a>) is invalid.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockPublicKeyException.html">InvalidBlockPublicKeyException</a></h4>
+      <section><p>An exception thrown when a block's public key is invalid.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockSignatureException.html">InvalidBlockSignatureException</a></h4>
+      <section><p>An exception thrown when a block's signature is invalid.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockStateRootHashException.html">InvalidBlockStateRootHashException</a></h4>
+      <section><p>The exception that is thrown when the state root hash in the block has
+mismatches to the state root hash of the trie on the block executed in local.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockTimestampException.html">InvalidBlockTimestampException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockTxCountException.html">InvalidBlockTxCountException</a></h4>
+      <section><p>An exception thrown when the count of <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Transactions">Transactions</a>
+does not follow the constraint provided by <see cref="!:IBlockPolicy"></see>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockTxCountPerSignerException.html">InvalidBlockTxCountPerSignerException</a></h4>
+      <section><p>An exception thrown when the count of <a class="xref" href="Libplanet.Types.Blocks.Block.html#Libplanet_Types_Blocks_Block_Transactions">Transactions</a>
+does not follow the constraint provided by <see cref="!:IBlockPolicy"></see>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidBlockTxHashException.html">InvalidBlockTxHashException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.InvalidGenesisBlockException.html">InvalidGenesisBlockException</a></h4>
+      <section><p>The exception that is thrown when the genesis block the <see cref="!:IStore"></see> contains
+mismatches to the genesis block the <see cref="!:BlockChain"></see> constructor (i.e., network)
+expects or the first block of <see cref="!:BlockLocator"></see> which the <see cref="!:IStore"></see>
+doesn't contain, because the block which <see cref="!:IStore"></see> doesn't means
+the genesis block in other network.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlock.html">PreEvaluationBlock</a></h4>
+      <section><p>A block candidate without evaluating actions (in its <a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlock.html#Libplanet_Types_Blocks_PreEvaluationBlock_Transactions">Transactions</a> and
+a possible <see cref="!:Blockchain.Policies.IBlockPolicy.BlockAction"></see>) and state root
+hash.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.PreEvaluationBlockHeader.html">PreEvaluationBlockHeader</a></h4>
+      <section><p>A block candidate without evaluating actions (in its transactions and a possible
+<see cref="!:Blockchain.Policies.IBlockPolicy.BlockAction"></see>) and state root hash.</p>
+</section>
+    <h3 id="structs">Structs
+</h3>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.BlockHash.html">BlockHash</a></h4>
+      <section><p>A value type to represent SHA-256 digest of <a class="xref" href="Libplanet.Types.Blocks.Block.html">Block</a> data.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+</h3>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html">IBlockContent</a></h4>
+      <section><p>A common interface for blocks that do not have any proofs, but have their metadata and
+containing <a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html#Libplanet_Types_Blocks_IBlockContent_Transactions">Transactions</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.IBlockExcerpt.html">IBlockExcerpt</a></h4>
+      <section><p>The very essential metadata extracted from a block.  This purposes to determine
+the canonical chain.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.IBlockHeader.html">IBlockHeader</a></h4>
+      <section><p>A common interface for blocks that have <a class="xref" href="Libplanet.Types.Blocks.IBlockHeader.html#Libplanet_Types_Blocks_IBlockHeader_StateRootHash">StateRootHash</a>es, but no transactions.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html">IBlockMetadata</a></h4>
+      <section><p>A common interface for blocks that do not have any proofs nor transactions (but only
+<a class="xref" href="Libplanet.Types.Blocks.IBlockMetadata.html#Libplanet_Types_Blocks_IBlockMetadata_TxHash">TxHash</a>).</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlock.html">IPreEvaluationBlock</a></h4>
+      <section><p>A common interface for blocks that have their
+<a class="xref" href="Libplanet.Types.Blocks.IBlockContent.html#Libplanet_Types_Blocks_IBlockContent_Transactions">Transactions</a>, but are not evaluated yet (i.e., their state
+root hashes are not yet determined).</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Types.Blocks.IPreEvaluationBlockHeader.html">IPreEvaluationBlockHeader</a></h4>
+      <section><p>A common interface for blocks that are not evaluated yet
+(i.e., state root hash is not yet determined).</p>
+</section>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      Copyright © 2018–2023 <a href="https://planetariumhq.com/">Planetarium</a>
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
