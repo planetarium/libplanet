@@ -1,12 +1,6 @@
 Libplanet changelog
 ===================
 
-Version 5.5.4
--------------
-
-To be released.
-
-
 Version 5.5.3
 -------------
 
