@@ -1,12 +1,6 @@
 Libplanet changelog
 ===================
 
-Version 5.5.4
--------------
-
-To be released.
-
-
 Version 5.5.3
 -------------
 
@@ -14,7 +8,9 @@ Released on September 17, 2025.
 
 ### Optimize memory usage
 
--  Optimize execution time of `TrieStateStore.CopyStates`
+-  Optimize execution time of `TrieStateStore.CopyStates` [[#4044]]
+
+[#4044]: https://github.com/planetarium/libplanet/pull/4044
 
 Version 5.5.2
 -------------
