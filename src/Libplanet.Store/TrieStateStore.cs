@@ -2,6 +2,9 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using Libplanet.Common;
 using Libplanet.Store.Trie;
 using Libplanet.Store.Trie.Nodes;
@@ -77,6 +80,8 @@ namespace Libplanet.Store
                 // It'd be better to have it in Libplanet.Action.State.
                 if (stateTrie.Get(new KeyBytes(Array.Empty<byte>())) is { } metadata)
                 {
+                    var accountStateData = new List<(HashDigest<SHA256> rootHash, MerkleTrie trie)>();
+
                     foreach (var (path, hash) in stateTrie.IterateValues())
                     {
                         // Ignore metadata
@@ -92,13 +97,33 @@ namespace Libplanet.Store
                                     $"state root hash {accountStateRootHash}.");
                             }
 
-                            foreach (var (key, value) in accountStateTrie.IterateKeyValuePairs())
-                            {
-                                targetKeyValueStore.Set(key, value);
-                                count++;
-                            }
+                            accountStateData.Add((accountStateRootHash, accountStateTrie));
                         }
                     }
+
+                    _logger.Information("Starting parallel processing of {AccountStateCount} account states", accountStateData.Count);
+
+                    var lockObject = new object();
+                    var parallelCount = 0;
+
+                    Parallel.ForEach(accountStateData, accountStateItem =>
+                    {
+                        var (_, accountStateTrie) = accountStateItem;
+
+                        var kvPairCount = 0;
+
+                        foreach (var (key, value) in accountStateTrie.IterateKeyValuePairs())
+                        {
+                            targetKeyValueStore.Set(key, value);
+                            kvPairCount++;
+                        }
+
+                        lock (lockObject)
+                        {
+                            count += kvPairCount;
+                            parallelCount++;
+                        }
+                    });
                 }
             }
 
