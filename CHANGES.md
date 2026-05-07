@@ -1,6 +1,18 @@
 Libplanet changelog
 ===================
 
+Version 5.5.4
+-------------
+
+To be released.
+
+### Dependencies
+
+ -  Bumped `Planetarium.NetMQ` fork to upstream `NetMQ` 4.0.4.1.  [[#4050]]
+
+[#4050]: https://github.com/planetarium/libplanet/issues/4050
+
+
 Version 5.5.3
 -------------
 
