@@ -9,7 +9,7 @@ process is half automated, this covers the other half that humans should
 manually conduct.
 
 Note that there is the [quick summary](#quick-summary) to remind those who have
-already read this document of checklist on the bottom.  If it is your first
+already read this document of checklist at the bottom.  If it is your first
 time to this, you should read the whole document first.
 
 
@@ -158,7 +158,7 @@ If what you have just released is a patch release, there are two manual tasks
 to do:
 
  -  Port the released code to the *main* branch, so that the next major/minor
-    release does not miss bugfixes from the previous patch release.
+    release does not miss bug fixes from the previous patch release.
  -  Prepare the next patch release.
 
 First of all, your last release should be ported to the *main* branch.
@@ -235,7 +235,7 @@ git switch --create=1.2-maintenance  # Or: git checkout -b 1.2-maintenance
 git reset --hard upstream/main
 ~~~~
 
-Since this maintenance branch purposes to prepare the next patch release, e.g.,
+Since this maintenance branch's purpose is to prepare the next patch release, e.g.,
 *1.2.1*, the `<VersionPrefix>` field of the *Directory.Build.props*
 file also needs to be updated:
 
@@ -267,7 +267,7 @@ See also the below commit for example:
 
 <https://github.com/planetarium/libplanet/commit/836949f72700cf49f56396be05b92d4d7c994abd>
 
-To prepare the next *major* or *minor* release, you need to do the similar task
+To prepare for the next *major* or *minor* release, you need to do the similar task
 again.  Whether to release a new *major* version or a new *minor* version next
 depends on the roadmap (it should be discussed in advance).  Suppose we plan
 to release *1.3.0* next time here.
@@ -314,7 +314,7 @@ The checklist to release a new version:
  4. Send a pull request and wait until it is merged.
  5. `git tag --sign -m "Libplanet X.Y.Z" X.Y.Z`
  6. `git push upstream X.Y.Z`
- 7. Check if the all automated processes are successful.
+ 7. Check if all automated processes are successful.
      - GitHub Releases
      - NuGet
      - npm

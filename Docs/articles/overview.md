@@ -11,7 +11,7 @@ This document describes the structure and usage of [Libplanet] designed to be ea
 Libplanet
 ---------
 
-Libplanet is a network/storage library for games that run in distributed P2P network. In many traditional multiplayer games, it was up to the game server to manage the network and the state of games.
+Libplanet is a network/storage library for games that run in a distributed P2P network. In many traditional multiplayer games, it was up to the game server to manage the network and the state of games.
 
 ```text
                        Traditional multiplayer game
@@ -80,7 +80,7 @@ As mentioned above, games using Libplanet can manage their state from each clien
 
 ```
 
-- Because the way of transitioning the State through an Action depends on each game, Libplanet does not directly provide implementation of the Action and only provides the interface @"Libplanet.Action.IAction".
+- Because the way of transitioning the State through an Action depends on each game, Libplanet does not directly provide an implementation of the Action and only provides the interface @"Libplanet.Action.IAction".
 - The State is expressed in key-value pairs, and you can set appropriate values for each game.
 - The State is readable at any point, but transitioning it is only possible through an Action.
 - Libplanet does not directly share the transitioned State, but only shares the Action that will transition the State. Also, because State transitioned by an Action occurs on all nodes in the network, the Action must be written deterministically to return the same result from all nodes.
@@ -243,7 +243,7 @@ Consensus
 
 Libplanet is a library that enables game developers to create "centralized server"-less multiplayer games. “Centralized server-less” means that not only one entity is responsible for the state of the game, but every node in the network has the state of the game and synchronizes it accordingly. To synchronize, it should maintain a consistent state even in the event of a failure or tampering. The way of choosing which state is canonical is also called [consensus] in distributed computing and multi-agent environments.
 
-The algorithms used for consensus are various, with many different characteristics and pros and cons. For example, [Proof of Work (PoW)][PoW] allows anyone with computing power to participate in the network, but that cannot guarantee the state of the game at a specific time. In contrast, [Proof of Authority (PoA)][PoA] can guarantee that a game's state is established after a certain time, but only authorized users can join the network. These characteristics may work for some games, but won't for others, making the consensus algorithm also unusable for a general purpose network.
+The algorithms used for consensus are various, with many different characteristics and pros and cons. For example, [Proof of Work (PoW)][PoW] allows anyone with computing power to participate in the network, but that cannot guarantee the state of the game at a specific time. In contrast, [Proof of Authority (PoA)][PoA] can guarantee that a game's state is established after a certain time, but only authorized users can join the network. These characteristics may work for some games, but won't for others, making the consensus algorithm also unusable for a general-purpose network.
 
 Libplanet isn't a tool for creating games of any particular genre, but rather a tool for creating varied types of games. Also it assumes that each game has a different network and consensus algorithm. Nor is Libplanet itself a project that focuses on developing and testing any particular consensus algorithm or mechanism. That's why Libplanet aims to allow game developers to choose a consensus algorithm at implementation time to suit their game's characteristics.
 
