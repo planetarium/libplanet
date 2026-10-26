@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    if: ${{ !startsWith(github.head_ref || github.event.workflow_run.head_branch || github.ref_name, 'donggeul/') }}
     strategy:
       matrix:
         node-version: ['lts/*']

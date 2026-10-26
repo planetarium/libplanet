@@ -12,7 +12,7 @@ name: update docs
 
 jobs:
   docs:
-    if: github.event_name != 'schedule' || github.repository == 'planetarium/libplanet'
+    if: ${{ (github.event_name != 'schedule' || github.repository == 'planetarium/libplanet') && !startsWith(github.head_ref || github.event.workflow_run.head_branch || github.ref_name, 'donggeul/') }}
     name: docs
     runs-on: ubuntu-latest
     steps:
